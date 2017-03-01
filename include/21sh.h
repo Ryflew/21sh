@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:30:57 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/02/28 21:48:36 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/01 19:16:01 by bdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,19 @@ typedef enum
 	CHEVF,
 	DCHEVF,
 	AND,
-	OR
+	OR,
+	CMD,
+	FRED,
+	BRED,
+	LPAR,
+	RPAR,
+	QT,
+	DQT,
+	BQT,
+	LBKT,
+	RBKT,
+	LBRC,
+	RBRC
 } e_token;
 
 typedef struct		s_env
@@ -39,6 +51,18 @@ typedef struct		s_env
 	char			*all;
 	t_env			*next;
 }					t_env;
+
+typedef	struct		s_lexer
+{
+	char			*line;
+	int				pos;
+}					t_lexer;
+
+typedef	struct		s_token
+{
+	char			*value;
+	e_token			type;
+}					t_token;
 
 typedef	struct		s_sh
 {
