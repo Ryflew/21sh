@@ -6,7 +6,7 @@
 #    By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/18 21:04:45 by vdarmaya          #+#    #+#              #
-#    Updated: 2017/02/18 23:46:06 by vdarmaya         ###   ########.fr        #
+#    Updated: 2017/03/20 18:50:08 by vdarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,11 @@ SRCBINDIR = ./src/builtins/
 INCDIR = ./include/
 LINCDIR = ./libft/include
 
-SRC = main.c get_next_line.c core.c list.c env_utils.c utils.c
+SRC = main.c get_next_line.c core.c list.c split_quot.c trim_input.c \
+		parse_command.c manage_node.c check_brackets.c binary.c history.c \
+		check_brackets2.c
 
-SRCBIN = cd2.c
+SRCBIN = cd2.c exit.c env_utils.c
 
 SRCS = $(addprefix $(SRCDIR), $(SRC)) $(addprefix $(SRCBINDIR), $(SRCBIN))
 
@@ -29,7 +31,7 @@ all: $(NAME)
 $(NAME):
 	@make -C $(LIBDIR)
 	@echo "libft - Compilation Done"
-	@gcc $(FLAGS) $(SRCS) -I$(INCDIR) -I$(LINCDIR) -o $(NAME) -L $(LIBDIR) -l ft
+	@gcc $(FLAGS) $(SRCS) -I$(INCDIR) -I$(LINCDIR) -o $(NAME) -L $(LIBDIR) -l ft -g
 	@echo "21sh - Compilation Done"
 
 clean:

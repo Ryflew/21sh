@@ -6,25 +6,25 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 23:49:46 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/02/28 22:09:43 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/20 22:37:43 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "21sh.h"
 
-static e_tocken	get_token(char *str)
+static e_token	get_token(char *str)
 {
 	if (*str == '>' && *(str + 1) && *(str + 1) == '>')
 		return (DCHEVF);
 	else if (*str == '<' && *(str + 1) && *(str + 1) == '<')
 		return (DCHEVB);
 	else if (*str == '>' && *(str + 1) && *(str + 1) != '&')
-		return (CHVF);
-	else if (*str == '<')
-		return (CHVB});
+		return (CHEVF);
+	else if (*str == '<' && *(str + 1) && *(str + 1) != '&')
+		return (CHEVB);
 	else if (*str == '&' && *(str + 1) && *(str + 1) == '&')
-		return (AND});
+		return (AND);
 	else if (*str == '|' && *(str + 1) && *(str + 1) == '|')
 		return (OR);
 	else if (*str == '|')
@@ -33,69 +33,86 @@ static e_tocken	get_token(char *str)
 		return (NONE);
 }
 
-static void	find_token(char **command, char **tmp, t_tree *tree)
+static void	find_token(char **command, char **tmp, t_tree **tree)
 {
 	int		i;
 
 	i = 0;
 	if (!*command)
 		return ;
-	while (*command[i])
+	while ((*command)[i])
 	{
-		if ((tree->token = get_token(*command + i)) != NONE)
+		if (((*tree)->token = get_token(*command + i)) != NONE)
 		{
 			*tmp = ft_strsub(*command, 0, i);
-			if (tree->token == DCHEVF || tree->token == DCHEVB || \
-				tree->token == AND || tree->token == OR)
+			if ((*tree)->token == DCHEVF || (*tree)->token == DCHEVB || \
+				(*tree)->token == AND || (*tree)->token == OR)
 				++i;
-			if (tree->token == DCHEVF && i > 0 && ft_isdigit(*command[i - 1]))
+			if ((*tree)->token == DCHEVF && i > 0 && ft_isdigit(*command[i - 1]))
 				// sortie sur descripteur de fichier
 			*command += i;
+			i = 0;
 			return ;
 		}
 		else
 			++i;
 	}
-	tree->token = EOF;
+	(*tree)->token = ENDOF;
 	*tmp = ft_strsub(*command, 0, i);
+	(*tmp)[i] = '\0';
 	*command += i;
 }
 
-t_tree	get_tree(char *command)
+t_tree	*get_tree(char *command)
 {
-	t_tree	tree;
+	t_tree	*tree;
 	char	*tmp;
 
-	tree = (t_tree){NULL, -1, -1, 0, EOF, NULL, NULL};
+	if (!(tree = init_tree()))
+		return (NULL);
+	tmp = NULL;
 	find_token(&command, &tmp, &tree);
-	if (tree.token == EOF)
+	if (tree->token == ENDOF)
 	{
-		tree.cmd = split_trim_cmd(tmp); // a faire split espaces + guillemets
-		free(tmp);
-		manage_redirection(tree);
+		tree->cmd = split_quot_cmd(tmp);
+		ft_puttabstr(tree->cmd);
+		if (tmp)
+			free(tmp);
+		manage_redirection(&tree);
 	}
 	else
 		get_tree_rec(&tree, tmp, command);
+	return (tree);
 }
 
-t_tree	*get_command(char *command)
+t_tree	**get_command(char *command)
 {
+	char	*tmp;
 	char	**trimed;
 	int		i;
-	t_tree	*tree;
+	t_tree	**tree;
 
-	if (!(trimed = trim_input(command))) // a faire, transforme en char**, gère les guillemets et les points virgules
+	if (!(trimed = trim_input(command)))
 		return (NULL);
-	if (!(tree = (t_tree*)malloc(sizeof(t_tree) * ft_counttab(trimed) + 1)))
+	if (!(tree = (t_tree**)malloc(sizeof(t_tree*) * ft_counttab(trimed) + 1)))
 	{
 		ft_putstr("Malloc failed !\n");
 		return (NULL);
 	}
 	i = -1;
 	while (trimed[++i])
-		tree[i] = get_tree(trimed[i]);
+	{
+		tmp = NULL;
+		if (check_quot_brackets(trimed[i], &tmp))
+		{
+			ft_putstr("Brackets error !\n");
+			free(tmp);
+			return (NULL);
+		}
+		tree[i] = get_tree(tmp);
+		free(tmp);
+	}
 	tree[i] = NULL;
 	ft_strdelpp(&trimed);
 	return (tree);
 }
-

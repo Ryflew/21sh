@@ -6,7 +6,7 @@
 #    By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/04 07:22:10 by vdarmaya          #+#    #+#              #
-#    Updated: 2017/02/27 22:53:45 by vdarmaya         ###   ########.fr        #
+#    Updated: 2017/03/16 03:07:58 by vdarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ SRC = ft_strcpy.c ft_strdup.c ft_strlen.c ft_strncpy.c ft_strcat.c \
 		ft_lstaddmid.c ft_strdelpp.c ft_strstrjoin.c ft_strdiff.c ft_strcont.c \
 		ft_lstdelmid.c ft_putnstr.c ft_putwchar.c ft_countnbr.c ft_putnbrwp.c \
 		ft_putstrwp.c ft_itoabase.c ft_itoabaseu.c ft_countunbr.c \
-		ft_putunbrwp.c ft_putunbr.c ft_putzerox.c ft_counttab.c
+		ft_putunbrwp.c ft_putunbr.c ft_putzerox.c ft_counttab.c ft_strdjoin.c \
+		ft_strcontchar.c
 
 SRC_PRINTF = ft_printf.c ft_printf_parser.c ft_printf_core.c ft_c.c ft_smaj.c \
 				ft_percent.c ft_s.c ft_unicode.c ft_l.c ft_oux.c ft_x.c \
