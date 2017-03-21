@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_strcontchar.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/18 23:23:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/02/28 22:30:02 by vdarmaya         ###   ########.fr       */
+/*   Created: 2017/03/16 03:07:08 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/03/16 03:07:18 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "21sh.h"
-
-char	**split_trim_cmd(char *cmd)
+char	ft_strcontchar(char *str, char c)
 {
-	char	**out;
+	int		i;
 
-	if (!(out = (char**)malloc(sizeof(char*) * )))
+	i = -1;
+	while (str[++i])
+		if (str[i] == c)
+			return (1);
+	return (0);
 }

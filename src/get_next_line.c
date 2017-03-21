@@ -6,116 +6,72 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 21:05:40 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/02/18 21:05:42 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/18 21:07:07 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int			check_end(char **line, t_nextline *list)
+static char		*ft_strcdup(char *s, char c)
 {
-	char	*tmp;
-	char	*tmp2;
-	int		i;
+	char	*dest;
+	size_t	i;
 
 	i = 0;
-	while (list->buffer[i] && list->buffer[i] != '\n')
+	dest = (char *)malloc(sizeof(*dest) * (ft_strlen(s) + 1));
+	if (!dest)
+		return (NULL);
+	while (i < ft_strlen(s) && s[i] != c)
+	{
+		dest[i] = s[i];
 		i++;
-	if (!(tmp = ft_strsub(list->buffer, 0, i)))
-		return (-1);
-	if (ft_strlen(*line) > 0 && ft_strlen(tmp) > 0)
-		tmp2 = ft_strjoin(*line, tmp);
-	else if (ft_strlen(*line) == 0 && ft_strlen(tmp) > 0)
-		tmp2 = ft_strdup(tmp);
-	else if (ft_strlen(*line) > 0 && ft_strlen(tmp) == 0)
-		tmp2 = ft_strdup(*line);
-	else
-		tmp2 = ft_strdup("");
-	free(tmp);
-	free(*line);
-	*line = tmp2;
-	return (1);
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
-int					end(t_nextline *elem)
+static int		ft_return(char *readfile, char **line)
 {
-	elem->fd = -1;
+	char	*temp;
+
+	temp = ft_strchr(readfile, '\n');
+	if (temp != NULL)
+	{
+		*line = ft_strcdup(readfile, '\n');
+		ft_strcpy(readfile, temp + 1);
+		return (1);
+	}
+	else if (ft_strlen(readfile) > 0)
+	{
+		*line = ft_strdup(readfile);
+		*readfile = '\0';
+		return (1);
+	}
 	return (0);
 }
 
-static int			treat_extrastr(char **line, t_nextline *list)
+int				get_next_line(const int fd, char **line)
 {
-	char	*str;
-	int		i;
-	int		bytes;
+	int				ret;
+	char			buf[BUFF_SIZE + 1];
+	char			*temp;
+	static char		*readfile = NULL;
 
-	i = ft_strlen(list->buffer);
-	if (!(str = ft_strchr(list->buffer, '\n')))
-		return (0);
-	str++;
-	if (!(bytes = ft_strlen(str)))
-		return (3);
-	if (!(str = ft_strsub(str, 0, ft_strlen(str))))
+	if (fd < -0 || !line || BUFF_SIZE <= 0)
 		return (-1);
-	ft_bzero(list->buffer, BUFF_SIZE + 1);
-	ft_memcpy(list->buffer, str, ft_strlen(str));
-	free(str);
-	if (ft_strchr(list->buffer, '\n'))
-		return (check_end(line, list));
-	str = *line;
-	*line = ft_strjoin(*line, list->buffer);
-	free(str);
-	ft_bzero(list->buffer, BUFF_SIZE);
-	return (2);
-}
-
-static t_nextline	*set_list(char **line, t_nextline **list, const int fd)
-{
-	t_nextline	*tmp;
-
-	tmp = *list;
-	while (tmp)
+	if (!(readfile))
+		readfile = ft_strnew(0);
+	while (!(ft_strchr(readfile, '\n')))
 	{
-		if (tmp->fd == fd)
-		{
-			tmp->nbr = treat_extrastr(line, tmp);
-			return (tmp);
-		}
-		tmp = tmp->next;
+		ret = read(fd, buf, BUFF_SIZE);
+		if (ret == -1)
+			return (-1);
+		if (ret == 0)
+			return (ft_return(readfile, line));
+		buf[ret] = '\0';
+		temp = ft_strjoin(readfile, buf);
+		free(readfile);
+		readfile = temp;
 	}
-	tmp = (t_nextline*)malloc(sizeof(t_nextline));
-	tmp->fd = fd;
-	tmp->nbr = 42;
-	tmp->next = *list;
-	*list = tmp;
-	return (tmp);
-}
-
-int					get_next_line(const int fd, char **line)
-{
-	static t_nextline	*list = NULL;
-	t_nextline			*list_tmp;
-	char				*tmp;
-	int					bytes;
-
-	if (!line || !(*line = (char*)malloc(1)) || fd < 0 || read(fd, NULL, 0) < 0)
-		return (-1);
-	ft_bzero(*line, ft_strlen(*line));
-	if ((list_tmp = set_list(line, &list, fd)) && !list_tmp->nbr)
-		return (end(list_tmp));
-	if (list_tmp->nbr >= -1 && list_tmp->nbr <= 1)
-		return (list_tmp->nbr);
-	while (1)
-	{
-		bytes = read(fd, list_tmp->buffer, BUFF_SIZE);
-		list_tmp->buffer[bytes] = '\0';
-		if (!bytes && !ft_strlen(*line))
-			return (end(list_tmp));
-		if (bytes < BUFF_SIZE || ft_strchr(list_tmp->buffer, '\n'))
-			return (check_end(line, list_tmp));
-		tmp = *line;
-		*line = ft_strjoin(*line, list_tmp->buffer);
-		free(tmp);
-	}
-	return (-1);
+	return (ft_return(readfile, line));
 }

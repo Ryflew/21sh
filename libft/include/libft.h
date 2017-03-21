@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 19:09:28 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/02/27 22:53:21 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/16 03:07:42 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void				ft_putwchar(wchar_t c);
 void				ft_putzerox(char letter);
 char				ft_strdiff(char *str, int c);
 char				ft_strcont(char *s1, char *s2);
+char				ft_strcontchar(char *str, char c);
 char				*ft_itoabase(long nbr, int base, char min);
 char				*ft_itoabaseu(unsigned long nbr, int base, char min);
 char				*ft_delchar(char *str, int c);
@@ -100,6 +101,7 @@ void				*ft_memchr(const void *s, int c, size_t n);
 void				*ft_memalloc(size_t size);
 char				*ft_strrev(char *str);
 char				*ft_strjoin(char const *s1, char const *s2);
+char				*ft_strdjoin(char *s1, char *s2, char *s3);
 t_list				*ft_lstnew(void const *content, size_t content_size);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 char				**ft_strsplit(char const *s, char c);

@@ -1,40 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   remove_useless_space.c                             :+:      :+:    :+:   */
+/*   ft_strdjoin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/28 23:21:57 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/01 18:12:08 by vdarmaya         ###   ########.fr       */
+/*   Created: 2017/03/14 02:24:06 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/03/14 02:26:58 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*remove_useless_space(char *str)
-{
-	int		i;
-	int		j;
-	int		have_space;
-	char	*out;
-	char	buff[ft_strlen(str)];
+#include <stdlib.h>
+#include "libft.h"
 
-	ft_bzero(buff, ft_strlen(str));
-	have_space = 0;
-	j = -1;
+char	*ft_strdjoin(char *s1, char *s2, char *s3)
+{
+	char	*str;
+	int		len;
+	int		i;
+
 	i = -1;
-	while (str[++i])
+	len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1;
+	if (!(str = (char*)malloc(sizeof(char) * len)))
+		return (NULL);
+	while (*s1)
 	{
-		if (str[i] != ' ' && str[i] != '\t')
-		{
-			if (have_space && j != -1)
-			{
-				buff[++j] = ' ';
-				have_space = 0;
-			}
-			buff[++j] = str[i];
-		}
-		else
-			have_space = 1;
+		str[++i] = *s1;
+		s1++;
 	}
-	return (ft_strdup(buff));
+	while (*s2)
+	{
+		str[++i] = *s2;
+		s2++;
+	}
+	while (*s3)
+	{
+		str[++i] = *s3;
+		s3++;
+	}
+	str[++i] = '\0';
+	return (str);
 }
