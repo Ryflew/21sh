@@ -53,6 +53,12 @@ typedef	struct		s_token
 	e_token			type;
 }					t_token;
 
+typedef struct		s_pos
+{
+	int				x;
+	int				y;
+}					t_pos;
+
 typedef	struct		s_sh
 {
 	char			*prompt;
@@ -79,6 +85,7 @@ void				exit_command(char **av);
 
 void				init_termcap(t_sh *shell, t_env *env);
 void				signals_set(void);
+void				errexit(char *content, char *reason);
 void				print_env(t_env *env);
 void				go_core(char *command, t_env **env, t_sh *shell);
 void				manage_redirection(t_tree **tree);

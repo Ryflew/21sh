@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/20 21:36:46 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/21 05:59:28 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			main(int ac, char **av, char **termenv)
 	(void)ac;
 	(void)av;
 	env = get_env(termenv);
-	// init_termcap();
+	// init_termcap(&g_sh, env);
 	get_current_path(env);
 	print_prompt(g_sh.prompt);
 	signal(SIGINT, sig_hand);

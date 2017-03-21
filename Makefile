@@ -6,7 +6,7 @@
 #    By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/18 21:04:45 by vdarmaya          #+#    #+#              #
-#    Updated: 2017/03/20 18:50:08 by vdarmaya         ###   ########.fr        #
+#    Updated: 2017/03/21 05:54:40 by vdarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LINCDIR = ./libft/include
 
 SRC = main.c get_next_line.c core.c list.c split_quot.c trim_input.c \
 		parse_command.c manage_node.c check_brackets.c binary.c history.c \
-		check_brackets2.c
+		check_brackets2.c init_termcap.c
 
 SRCBIN = cd2.c exit.c env_utils.c
 
@@ -31,7 +31,8 @@ all: $(NAME)
 $(NAME):
 	@make -C $(LIBDIR)
 	@echo "libft - Compilation Done"
-	@gcc $(FLAGS) $(SRCS) -I$(INCDIR) -I$(LINCDIR) -o $(NAME) -L $(LIBDIR) -l ft -g
+	@gcc $(FLAGS) $(SRCS) -I$(INCDIR) -I$(LINCDIR) -o $(NAME) -L $(LIBDIR) -l ft \
+		-ltermcap -g
 	@echo "21sh - Compilation Done"
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 19:09:28 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/16 03:07:42 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/21 05:53:13 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int					ft_strnequ(char const *s1, char const *s2, size_t n);
 size_t				ft_strlcat(char *dest, const char *src, size_t n);
 size_t				ft_lstcount(t_list *lst);
 size_t				ft_strlen(char *str);
-size_t				ft_counttab(char **tab);
+size_t				ft_counttab(char **tabu);
 void				ft_putchar(char c);
 void				ft_putstr(char const *s);
 void				ft_putendl(char const *s);

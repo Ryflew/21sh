@@ -6,14 +6,14 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 22:25:11 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/17 23:05:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/21 05:47:40 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "21sh.h"
 
-static void	errexit(char *content, char *reason)
+void		errexit(char *content, char *reason)
 {
 	ft_putstr_fd(content, 2);
 	ft_putstr_fd(": ", 2);
