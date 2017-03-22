@@ -75,6 +75,7 @@ typedef	struct		s_sh
 	t_termios		old;
 	t_pos			cursor;
 	t_pos			max_window;
+	char			is_listen_bracket;
 	char			**history;
 }					t_sh;
 
@@ -108,7 +109,7 @@ char				check_quot_brackets(char *str, char **tmp, t_sh *shell);
 char				*get_with_tilde(char *path, t_env *env);
 char				*remove_useless_space(char *str);
 char				*find_env(t_env *env, char *name);
-char				*get_line(t_sh *shell, char *buff);
+char				*get_line(t_sh *shell, char *buff, char is_bracket);
 char				**conv_env(t_env *env);
 char				**trim_input(char *cmd);
 char				**split_quot_cmd(char *cmd);

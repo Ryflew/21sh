@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 23:49:46 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/22 03:58:54 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/22 04:47:47 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ t_tree	**get_command(char *command, t_sh *shell)
 			free(tmp);
 			return (NULL);
 		}
+		if (*tmp && tmp[0] == '\t')
+			return (NULL);
 		tree[i] = get_tree(tmp);
 		free(tmp);
 	}

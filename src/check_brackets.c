@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/22 04:02:34 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/22 05:11:55 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,13 @@ static char listen_std(int j, char **out, char *op, t_sh *shell)
 	prompt_listen(op[j], shell);
 	while (1)
 	{
-		str = get_line(shell, buff);
+		shell->is_listen_bracket = 1;
+		str = get_line(shell, buff, 1);
+		if (*str && str[0] == '\t')
+		{
+			*out = str;
+			return (0);
+		}
 		clear_line(&str, j, op[j]);
 		tofree = str;
 		while (*str)

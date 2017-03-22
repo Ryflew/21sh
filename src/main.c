@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/22 02:42:51 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/22 06:03:58 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,20 @@ static void	print_prompt(void)
 	get_cursor(&g_sh);
 }
 
-// static void	sig_hand(int sig)
-// {
-// 	if (!stop_binary(sig))
-// 	{
-// 		ft_putstr("\n");
-// 		print_prompt();
-// 	}
-// }
+static void	sig_hand(int sig)
+{
+	char	c = 4;
+	if (!stop_binary(sig))
+	{
+		if (g_sh.is_listen_bracket) // faire le ctrl c pour les btackets !
+			ft_putchar(c);
+		else
+		{
+			ft_putstr("\n");
+			print_prompt();
+		}
+	}
+}
 
 int			main(int ac, char **av, char **termenv)
 {
@@ -55,11 +61,12 @@ int			main(int ac, char **av, char **termenv)
 	init_termcap(&g_sh, env);
 	get_current_path(env);
 	print_prompt();
-	// signal(SIGINT, sig_hand);
+	signal(SIGINT, sig_hand);
 	// load_history(&g_sh, env);
 	while (1)
 	{
-		command = get_line(&g_sh, buff);
+		g_sh.is_listen_bracket = 0;
+		command = get_line(&g_sh, buff, 0);
 		if (*command)
 			go_core(command, &env, &g_sh);
 		free(command);
