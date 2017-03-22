@@ -1,9 +1,10 @@
 
 ----------- TODO --------------
 
-- Les termcaps
-- L'historique
-- Gerer le ctrl-D (a faire apres les termcaps), sur ecoute des quote brackets
+- Les termcaps (en cours)
+- L'historique (reste a implementer avec les fleches et a rajouter le lignes entre)
+- Gerer le ctrl-D sur ecoute des quote brackets
+- Gerer le ctrl-c sur l'ecoute des brackets
 - Edition de la ligne de commande
 
 ---------- BONUS --------------

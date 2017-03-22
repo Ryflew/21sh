@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 23:49:46 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/20 22:37:43 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/22 03:58:54 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_tree	*get_tree(char *command)
 	return (tree);
 }
 
-t_tree	**get_command(char *command)
+t_tree	**get_command(char *command, t_sh *shell)
 {
 	char	*tmp;
 	char	**trimed;
@@ -103,7 +103,7 @@ t_tree	**get_command(char *command)
 	while (trimed[++i])
 	{
 		tmp = NULL;
-		if (check_quot_brackets(trimed[i], &tmp))
+		if (check_quot_brackets(trimed[i], &tmp, shell))
 		{
 			ft_putstr("Brackets error !\n");
 			free(tmp);

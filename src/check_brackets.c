@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/20 21:36:25 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/22 04:02:34 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include "get_next_line.h"
 #include "21sh.h"
 
-static void	prompt_listen(char c)
+static void	prompt_listen(char c, t_sh *shell)
 {
+	ft_putchar('\n');
 	if (c == '\'')
 		ft_putstr("quote> ");
 	else if (c == '"')
@@ -29,7 +30,8 @@ static void	prompt_listen(char c)
 	else if (c == '[')
 		ft_putstr("cro> ");
 	else if (c == '|')
-		ft_putstr("pipe> ");	
+		ft_putstr("pipe> ");
+		get_cursor(shell);
 }
 
 static void	clear_line(char **str, int j, char c)
@@ -72,15 +74,17 @@ static int	listen_std2(char **out, char *op, char **str, int *j)
 	return (0);
 }
 
-static char listen_std(int j, char **out, char *op)
+static char listen_std(int j, char **out, char *op, t_sh *shell)
 {
 	char	*str;
 	int		value;
 	char	*tofree;
+	char	buff[3];
 
-	prompt_listen(op[j]);
-	while (get_next_line(0, &str))
+	prompt_listen(op[j], shell);
+	while (1)
 	{
+		str = get_line(shell, buff);
 		clear_line(&str, j, op[j]);
 		tofree = str;
 		while (*str)
@@ -96,12 +100,12 @@ static char listen_std(int j, char **out, char *op)
 			}
 		}
 		free(tofree);
-		prompt_listen(op[j]);
+		prompt_listen(op[j], shell);
 	}
 	return (0);
 }
 
-char		check_quot_brackets(char *str, char **tmp)
+char		check_quot_brackets(char *str, char **tmp, t_sh *shell)
 {
 	int		i;
 	int		j;
@@ -123,7 +127,7 @@ char		check_quot_brackets(char *str, char **tmp)
 	if (j > -1)
 	{
 		*tmp = ft_strjoin(str, "\n");
-		if (listen_std(j, tmp, op))
+		if (listen_std(j, tmp, op, shell))
 			return (1);
 	}
 	else

@@ -6,13 +6,14 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/20 02:29:29 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/21 05:59:24 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/22 03:41:11 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <curses.h>
 #include <term.h>
 #include <stdlib.h>
+#include <sys/ioctl.h>
 #include "21sh.h"
 
 static void	build_term(t_sh *shell)
@@ -21,7 +22,8 @@ static void	build_term(t_sh *shell)
 
 	term = shell->old;
 	term.c_lflag &= ~(ICANON);
-	// term.c_lflag &= ~(ECHO);
+	term.c_lflag &= ~(ECHO);
+	term.c_cflag &= ~CREAD;
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &term) == -1)
@@ -30,8 +32,9 @@ static void	build_term(t_sh *shell)
 
 void	init_termcap(t_sh *shell, t_env *env)
 {
-	t_termios	tmp;
-	char		*term_name;
+	struct winsize	w;	
+	t_termios		tmp;
+	char			*term_name;
 
 	if ((term_name = find_env(env, "TERM")) == NULL)
 	{
@@ -46,4 +49,7 @@ void	init_termcap(t_sh *shell, t_env *env)
 	tcgetattr(0, &tmp);
 	ft_memmove(&shell->old, &tmp, sizeof(tmp));
 	build_term(shell);
+	ioctl(0, TIOCGWINSZ, &w);
+	shell->max_window.x = w.ws_col;
+	shell->max_window.y = w.ws_row - 1;	
 }
