@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/22 06:03:58 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/22 23:21:21 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,10 @@ static void	print_prompt(void)
 
 static void	sig_hand(int sig)
 {
-	char	c = 4;
 	if (!stop_binary(sig))
 	{
-		if (g_sh.is_listen_bracket) // faire le ctrl c pour les btackets !
-			ft_putchar(c);
+		if (g_sh.is_listen_bracket)
+			ft_putchar(4);
 		else
 		{
 			ft_putstr("\n");

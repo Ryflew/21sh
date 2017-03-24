@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/20 02:29:29 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/22 04:51:11 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/23 21:26:27 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ void	init_termcap(t_sh *shell, t_env *env)
 	ft_memmove(&shell->old, &tmp, sizeof(tmp));
 	build_term(shell);
 	ioctl(0, TIOCGWINSZ, &w);
-	shell->max_window.x = w.ws_col;
-	shell->max_window.y = w.ws_row - 1;
+	shell->pos.max_window.x = w.ws_col;
+	shell->pos.max_window.y = w.ws_row - 1;
 }

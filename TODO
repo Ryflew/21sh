@@ -2,9 +2,11 @@
 ----------- TODO --------------
 
 - Les termcaps (en cours)
+	-> le resize
 - L'historique (reste a implementer avec les fleches et a rajouter le lignes entre)
+- Revoir le ^C, clear le buffer
 - Gerer le ctrl-c sur l'ecoute des brackets
-- Edition de la ligne de commande
+- CTRL + d quand il y a de la data ecrit
 
 ---------- BONUS --------------
 

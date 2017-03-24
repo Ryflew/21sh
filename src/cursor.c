@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 23:14:28 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/22 03:39:37 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/23 21:28:24 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	get_cursor(t_sh *shell)
     {
         buff[bytes] = '\0';
         i = 2;
-        shell->cursor.y = get_number(buff, &i) - 1;
+        shell->pos.cursor.y = get_number(buff, &i) - 1;
         ++i;
-        shell->cursor.x = get_number(buff, &i) - 1;
+        shell->pos.cursor.x = get_number(buff, &i) - 1;
     }
 }

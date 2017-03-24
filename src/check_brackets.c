@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/22 05:11:55 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/22 19:08:34 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	prompt_listen(char c, t_sh *shell)
 		ft_putstr("cro> ");
 	else if (c == '|')
 		ft_putstr("pipe> ");
-		get_cursor(shell);
+	get_cursor(shell);
 }
 
 static void	clear_line(char **str, int j, char c)

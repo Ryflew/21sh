@@ -69,12 +69,19 @@ typedef struct		s_pos
 	int				y;
 }					t_pos;
 
+typedef struct		s_term_pos
+{
+	t_pos			cursor; // pos du cureur actuelle
+	t_pos			max_window; // size de la fenetre
+	t_pos			first; // pos du debut
+	t_pos			last; // pos de la fin du text ecrit
+}					t_term_pos;
+
 typedef	struct		s_sh
 {
 	char			*prompt;
 	t_termios		old;
-	t_pos			cursor;
-	t_pos			max_window;
+	t_term_pos		pos;
 	char			is_listen_bracket;
 	char			**history;
 }					t_sh;
@@ -90,6 +97,8 @@ void				init_termcap(t_sh *shell, t_env *env);
 void				signals_set(void);
 void				errexit(char *content, char *reason);
 void				print_env(t_env *env);
+void				left_arrow(t_sh *shell);
+void				rigth_arrow(t_sh *shell);
 void				do_termcap(char *key);
 void				move_to(int x, int y);
 void				get_cursor(t_sh *shell);
