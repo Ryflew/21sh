@@ -1,12 +1,14 @@
 
 ----------- TODO --------------
 
+- Parsing de la ligne de commande
+	-> ^C (pour les 2 input) (clear le buffer)
+	-> ^D (pour les 2 input) (clear le buffer)
+	-> Clear les espaces de la ligne entrée
+	-> Faire des test pour des mauvais bracket
 - Les termcaps (en cours)
 	-> le resize
 - L'historique (reste a implementer avec les fleches et a rajouter le lignes entre)
-- Revoir le ^C, clear le buffer
-- Gerer le ctrl-c sur l'ecoute des brackets
-- CTRL + d quand il y a de la data ecrit
 
 ---------- BONUS --------------
 

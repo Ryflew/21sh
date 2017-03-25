@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/22 23:21:21 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/25 04:18:01 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,32 @@ static void	get_current_path(t_env *env)
 	g_sh.prompt = get_with_tilde(cwd, env);
 }
 
-static void	print_prompt(void)
+void	print_prompt(e_state state, char *op)
 {
-	ft_putstr("[21sh:");
-	ft_putstr(g_sh.prompt);
-	ft_putstr("] $> ");
+	if (state == BASIC_SHELL)
+	{
+		ft_putstr("[21sh:");
+		ft_putstr(g_sh.prompt);
+		ft_putstr("] $> ");
+	}
+	else
+	{
+		ft_putchar('\n');
+		if (op[ft_strlen(op) - 1] == '\'')
+			ft_putstr("quote> ");
+		else if (op[ft_strlen(op) - 1] == '"')
+			ft_putstr("dquote> ");
+		else if (op[ft_strlen(op) - 1] == '`')
+			ft_putstr("bquote> ");
+		else if (op[ft_strlen(op) - 1] == '(')
+			ft_putstr("par> ");
+		else if (op[ft_strlen(op) - 1] == '{')
+			ft_putstr("aco> ");
+		else if (op[ft_strlen(op) - 1] == '[')
+			ft_putstr("cro> ");
+		else if (op[ft_strlen(op) - 1] == '|')
+			ft_putstr("pipe> ");
+	}
 	get_cursor(&g_sh);
 }
 
@@ -38,20 +59,94 @@ static void	sig_hand(int sig)
 {
 	if (!stop_binary(sig))
 	{
-		if (g_sh.is_listen_bracket)
-			ft_putchar(4);
+		ft_putstr("\n");
+		print_prompt(BASIC_SHELL, NULL);
+	}
+}
+
+static char	shell_loop2(char *command, char **last, e_state *state, char **op)
+{
+	char	*tmp;
+
+	if (*state == BASIC_SHELL)
+	{
+		*op = check_quot_brackets(command, state);
+		if (*state == ADVANCE_SHELL)
+		{
+			*last = ft_strjoin(command, "\n");
+			return (1);
+		}
+	}
+	if (*state == BRACKET_ERROR)
+	{
+		ft_putstr("Brackets error !\n");
+		*state = BASIC_SHELL;
+		if (*last)
+			free(*last);
+		*last = NULL;
+		return (1);
+	}
+	if (*state == ADVANCE_SHELL)
+	{
+		treat_second_prompt(command, op, state);
+		if (*state == BRACKET_ERROR)
+			return (shell_loop2(command, last, state, op));
+		if (!**op)
+			*state = COMMAND_RUN;
 		else
 		{
-			ft_putstr("\n");
-			print_prompt();
+			tmp = *last;
+			*last = ft_strdjoin(*last, command, "\n");
+			free(tmp);
+			return (1);
 		}
+	}
+	return (0);
+}
+		
+static void	shell_loop(t_env **env)
+{
+	char	*last;
+	char	*command;
+	char	*tmp;
+	char	*op;
+	char	buff[3];
+	e_state	state;
+
+	op = NULL;
+	last = NULL;
+	state = BASIC_SHELL;
+	while (1)
+	{
+		command = get_line(&g_sh, buff, &state, op);
+		// clear la ligne des espaces !
+		if (shell_loop2(command, &last, &state, &op))
+		{
+			free(command);
+			continue ;
+		}
+		if (!last)
+			last = command;
+		else
+		{
+			tmp = last;
+			last = ft_strjoin(last, command);
+			free(command);
+			free(tmp);
+		}
+		if (*last)
+			go_core(last, env, &g_sh);
+		ft_putchar('\n');
+		free(op);
+		free(last);
+		op = NULL;
+		last = NULL;
+		state = BASIC_SHELL;
 	}
 }
 
 int			main(int ac, char **av, char **termenv)
 {
-	char	buff[3];
-	char	*command;
 	t_env	*env;
 
 	(void)ac;
@@ -59,18 +154,8 @@ int			main(int ac, char **av, char **termenv)
 	env = get_env(termenv);
 	init_termcap(&g_sh, env);
 	get_current_path(env);
-	print_prompt();
 	signal(SIGINT, sig_hand);
 	// load_history(&g_sh, env);
-	while (1)
-	{
-		g_sh.is_listen_bracket = 0;
-		command = get_line(&g_sh, buff, 0);
-		if (*command)
-			go_core(command, &env, &g_sh);
-		free(command);
-		ft_putchar('\n');
-		print_prompt();
-	}
+	shell_loop(&env);
 	return (0);
 }

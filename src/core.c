@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 23:06:58 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/22 03:58:29 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/25 02:27:27 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	go_core(char *command, t_env **env, t_sh *shell)
 	int			i;
 
 	(void)env;
-	if (!(all_command = get_command(command, shell)))
+	if (!(all_command = get_command(command)))
 		return ;
 	i = -1;
 	while (all_command[++i])

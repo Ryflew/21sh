@@ -1,30 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_brackets2.c                                  :+:      :+:    :+:   */
+/*   second_prompt.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/20 18:44:24 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/20 21:28:48 by vdarmaya         ###   ########.fr       */
+/*   Created: 2017/03/24 23:43:54 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/03/25 04:17:51 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "21sh.h"
-
-char		check_quot_brackets2(char *str, char *op, int i, int *j)
-{
-	if (str[i] == '(' || str[i] == '{' || str[i] == '[')
-		op[++*j] = str[i];
-	else if (*j > -1 && ((str[i] == ')' && op[*j] != '(') || \
-		(str[i] == '}' && op[*j] != '{') || (str[i] == ']' && op[*j] != '[')))
-		return (1);
-	else if (*j > -1 && ((str[i] == ')' && op[*j] == '(') || \
-		(str[i] == '}' && op[*j] == '{') || (str[i] == ']' && op[*j] == '[')))
-		op[(*j)--] = 0;
-	return (0);
-}
 
 char		check_new_open(char *str, char *op, int *j)
 {
@@ -45,7 +32,7 @@ char		check_new_open(char *str, char *op, int *j)
 	return (0);
 }
 
-char		get_good_char(char c)
+static char		get_good_char(char c)
 {
 	if (c == '(')
 		return (')');
@@ -57,22 +44,15 @@ char		get_good_char(char c)
 		return (c);
 }
 
-char		go_to_c(char **str, char **tmp, char c)
+static char		go_to_c(char **str, char c)
 {
 	int		i;
-	char	*temp;
-	char	*temp2;
 
 	i = -1;
 	while ((*str)[++i])
 	{
 		if ((*str)[i] == c)
 		{
-			temp = ft_strsub(*str, 0, i + 1);
-			temp2 = *tmp;
-			*tmp = ft_strjoin(*tmp, temp);
-			free(temp);
-			free(temp2);
 			*str += i + 1;
 			return (1);
 		}
@@ -80,19 +60,42 @@ char		go_to_c(char **str, char **tmp, char c)
 	return (0);
 }
 
-char		check_quot(char *str, char *op, int *i, int *j)
+static void	sync_op(char *new, char *old)
 {
-	char	c;
-	
-	c = str[*i];
-	if (!(c == '|' && !str[*i + 1]))
+	int		i;
+
+	i = -1;
+	while (old[++i])
+		new[i] = old[i];
+}
+
+void	treat_second_prompt(char *string, char **op, e_state *state)
+{
+	int		j;
+	char	*str;
+	char	new_op[ft_strlen(string)];
+
+	str = string;
+	j = ft_strlen(*op) - 1;
+	sync_op(new_op, *op);
+	while (*str)
 	{
-		while (str[++*i])
+		if (new_op[j] == '|' && !(new_op[j--] = '\0'))
+			return ;
+		else if (go_to_c(&str, get_good_char(new_op[j])))
 		{
-			if (str[*i] == c)
-				return (0);
+			new_op[j--] = '\0';
+			continue ;
+		}
+		else
+		{
+			if (j == -1 || (new_op[j] != '\'' && new_op[j] != '"' && new_op[j] != '`'))
+				if (check_new_open(str, new_op, &j))
+					*state = BRACKET_ERROR;
+			break ;
 		}
 	}
-	op[++*j] = c;
-	return (1);
+	new_op[++j] = '\0';
+	free(*op);
+	*op = ft_strdup(new_op);
 }

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/22 19:08:34 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/25 04:17:56 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,129 +14,62 @@
 #include "get_next_line.h"
 #include "21sh.h"
 
-static void	prompt_listen(char c, t_sh *shell)
+char		check_quot_brackets2(char *str, char *op, int i, int *j)
 {
-	ft_putchar('\n');
-	if (c == '\'')
-		ft_putstr("quote> ");
-	else if (c == '"')
-		ft_putstr("dquote> ");
-	else if (c == '`')
-		ft_putstr("bquote> ");
-	else if (c == '(')
-		ft_putstr("par> ");
-	else if (c == '{')
-		ft_putstr("aco> ");
-	else if (c == '[')
-		ft_putstr("cro> ");
-	else if (c == '|')
-		ft_putstr("pipe> ");
-	get_cursor(shell);
-}
-
-static void	clear_line(char **str, int j, char c)
-{
-	char	*tmp;
-
-	if (j == -1 || (c != '\'' && c != '"' && c != '`'))
-	{
-		tmp = remove_useless_space(*str);
-		free(*str);
-		*str = tmp;
-	}
-}
-
-static int	listen_std2(char **out, char *op, char **str, int *j)
-{
-	char	*tmp2;
-
-	if (*j > -1 && op[*j] == '|' && !(op[(*j)--] = 0))
-		return (-1);
-	else if (*j > -1 && go_to_c(str, out, get_good_char(op[*j])))
-	{
-		if (--*j > -1 && !**str)
-			return (-2);
-		else if (*j > -1)
-			return (-1);
-		else if (!**str)
-			return (0);
-	}
-	else
-	{
-		if ((*j == -1 || (op[*j] != '\'' && op[*j] != '"' && \
-			op[*j] != '`')) && check_new_open(*str, op, j))
-			return (1);
-		tmp2 = *out;
-		*out = ft_strdjoin(*out, *str, "\n");
-		free(tmp2);
-		return (-2);
-	}
+	if (str[i] == '(' || str[i] == '{' || str[i] == '[')
+		op[++*j] = str[i];
+	else if (*j > -1 && ((str[i] == ')' && op[*j] != '(') || \
+		(str[i] == '}' && op[*j] != '{') || (str[i] == ']' && op[*j] != '[')))
+		return (1);
+	else if (*j > -1 && ((str[i] == ')' && op[*j] == '(') || \
+		(str[i] == '}' && op[*j] == '{') || (str[i] == ']' && op[*j] == '[')))
+		op[(*j)--] = 0;
 	return (0);
 }
 
-static char listen_std(int j, char **out, char *op, t_sh *shell)
+char		check_quot(char *str, char *op, int *i, int *j)
 {
-	char	*str;
-	int		value;
-	char	*tofree;
-	char	buff[3];
-
-	prompt_listen(op[j], shell);
-	while (1)
+	char	c;
+	
+	c = str[*i];
+	if (!(c == '|' && !str[*i + 1]))
 	{
-		shell->is_listen_bracket = 1;
-		str = get_line(shell, buff, 1);
-		if (*str && str[0] == '\t')
+		while (str[++*i])
 		{
-			*out = str;
-			return (0);
+			if (str[*i] == c)
+				return (0);
 		}
-		clear_line(&str, j, op[j]);
-		tofree = str;
-		while (*str)
-		{
-			if ((value = listen_std2(out, op, &str, &j)) == -1)
-				continue ;
-			else if (value == -2)
-				break ;
-			else
-			{
-				free(tofree);
-				return (value);
-			}
-		}
-		free(tofree);
-		prompt_listen(op[j], shell);
 	}
-	return (0);
+	op[++*j] = c;
+	return (1);
 }
 
-char		check_quot_brackets(char *str, char **tmp, t_sh *shell)
+char		*check_quot_brackets(char *str, e_state *state)
 {
 	int		i;
 	int		j;
 	char	op[ft_strlen(str)];
-	char	error;
 
-	error = 0;
-	i = -1;
 	j = -1;
+	i = -1;
 	while (str[++i])
 	{
 		if ((str[i] == '"' || str[i] == '\'' || str[i] == '`' || \
 			str[i] == '|') && check_quot(str, op, &i, &j))
 			break ;
 		else
-			if ((error = check_quot_brackets2(str, op, i, &j)))
-				return (1);
+		{
+			if (check_quot_brackets2(str, op, i, &j))
+			{
+				*state = BRACKET_ERROR;
+				return (NULL);
+			}
+		}
 	}
-	if (j > -1)
-	{
-		*tmp = ft_strjoin(str, "\n");
-		if (listen_std(j, tmp, op, shell))
-			return (1);
-	}
+	if (j == -1)
+		*state = COMMAND_RUN;
 	else
-		*tmp = ft_strdup(str);
-	return (0);
+		*state = ADVANCE_SHELL;
+	op[++j] = '\0';
+	return (ft_strdup(op));
 }

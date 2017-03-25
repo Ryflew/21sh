@@ -33,6 +33,14 @@ typedef enum
 	RBRC
 } e_token;
 
+typedef enum
+{
+	BASIC_SHELL,
+	ADVANCE_SHELL,
+	BRACKET_ERROR,
+	COMMAND_RUN,	
+} e_state;
+
 typedef struct		s_env
 {
 	char			*var_name;
@@ -71,10 +79,10 @@ typedef struct		s_pos
 
 typedef struct		s_term_pos
 {
-	t_pos			cursor; // pos du cureur actuelle
-	t_pos			max_window; // size de la fenetre
-	t_pos			first; // pos du debut
-	t_pos			last; // pos de la fin du text ecrit
+	t_pos			max_window;
+	t_pos			cursor;
+	t_pos			first;
+	t_pos			last;
 }					t_term_pos;
 
 typedef	struct		s_sh
@@ -82,7 +90,6 @@ typedef	struct		s_sh
 	char			*prompt;
 	t_termios		old;
 	t_term_pos		pos;
-	char			is_listen_bracket;
 	char			**history;
 }					t_sh;
 
@@ -102,6 +109,8 @@ void				rigth_arrow(t_sh *shell);
 void				do_termcap(char *key);
 void				move_to(int x, int y);
 void				get_cursor(t_sh *shell);
+void				print_prompt(e_state state, char *op);
+void				treat_second_prompt(char *string, char **op, e_state *state);
 void				go_core(char *command, t_env **env, t_sh *shell);
 void				manage_redirection(t_tree **tree);
 void				load_history(t_sh *shell, t_env *env);
@@ -109,22 +118,20 @@ void				free_tree(t_tree **tree);
 void				get_tree_rec(t_tree **tree, char *left, char *right);
 char				check_alpha(char *str);
 char				stop_binary(int sig);
-char				check_quot_brackets2(char *str, char *op, int i, int *j);
 char				check_new_open(char *str, char *op, int *j);
-char				get_good_char(char c);
-char				go_to_c(char **str, char **tmp, char c);
 char				check_quot(char *str, char *op, int *i, int *j);
-char				check_quot_brackets(char *str, char **tmp, t_sh *shell);
+char				check_quot_brackets2(char *str, char *op, int i, int *j);
+char				*check_quot_brackets(char *str, e_state *state);
 char				*get_with_tilde(char *path, t_env *env);
 char				*remove_useless_space(char *str);
 char				*find_env(t_env *env, char *name);
-char				*get_line(t_sh *shell, char *buff, char is_bracket);
+char				*get_line(t_sh *shell, char *buff, e_state *state, char *op);
 char				**conv_env(t_env *env);
 char				**trim_input(char *cmd);
 char				**split_quot_cmd(char *cmd);
 t_env				*new_env(char *str);
 t_env				*get_env(char **env);
-t_tree				**get_command(char *command, t_sh *shell);
+t_tree				**get_command(char *command);
 t_tree				*get_tree(char *command);
 t_tree				*init_tree();
 

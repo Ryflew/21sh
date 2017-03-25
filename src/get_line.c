@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/24 04:02:12 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/25 03:52:41 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static void	arrows(char *buff, char *command, int *j, t_sh *shell)
 		;
 	else if (buff[2] == 'B') // bas
 		;
-	else if (buff[2] == 'C') // droite
+	else if (buff[2] == 'C')
 		rigth_arrow(shell);
-	else if (buff[2] == 'D') // gauche
+	else if (buff[2] == 'D')
 		left_arrow(shell);
 }
 
@@ -48,23 +48,28 @@ static void	delete_char(char *command, int *j, t_sh *shell)
 
 }
 
-static char	*ctrl_d(t_sh *shell, char is_bracket)
+static char	*ctrl_d(t_sh *shell, e_state state)
 {
-	if (!is_bracket)
+	if (state == BASIC_SHELL)
 	{
 		tcsetattr(0, TCSADRAIN, &(shell->old));
 		ft_putstr("exit\n");
 		exit(EXIT_SUCCESS);
 	}
 	else
-		return (ft_strdup("\t"));
+		return (ft_strdup("\t")); // controle d a faire
 }
-#include <unistd.h>
-static void	add_char(char *command, int *j, t_sh *shell, char c)
+
+static char	add_char(char *command, int *j, t_sh *shell, char c)
 {
 	int		total;
 	int		i;
 
+	if (*j + 1 == ARG_MAX)
+	{
+		ft_putstr("\nInput too long.");
+		return (1);
+	}
 	if (shell->pos.cursor.y == shell->pos.last.y && shell->pos.cursor.x == shell->pos.last.x)
 	{
 		command[++(*j)] = c;
@@ -115,27 +120,24 @@ static void	add_char(char *command, int *j, t_sh *shell, char c)
 		}
 		move_to(shell->pos.cursor.x, shell->pos.cursor.y);
 	}
+	return (0);
 }
 
-char	*get_line(t_sh *shell, char *buff, char is_bracket)
+char	*get_line(t_sh *shell, char *buff, e_state *state, char *op)
 {
 	int			j;
 	char		command[ARG_MAX];
 
+	print_prompt(*state, op);
 	shell->pos.first = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
 	shell->pos.last = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
 	j = -1;
 	while (1)
 	{
-		if (j + 1 == ARG_MAX)
-		{
-			ft_putstr("Input too long.");
-			return (ft_strdup(""));
-		}
 		ft_bzero(buff, 3);
 		read(0, buff, 3);
-		if (buff[0] == 4 && !buff[1] && !buff[2])
-			return (ctrl_d(shell, is_bracket));
+		if (buff[0] == 4 && !buff[1] && !buff[2] && j == -1)
+			return (ctrl_d(shell, ADVANCE_SHELL));
 		else if (buff[0] == 27 && buff[1] == 91)
 			arrows(buff, command, &j, shell);
 		else if (buff[0] == 127 && !buff[1] && !buff[2] && j > -1)
@@ -146,7 +148,8 @@ char	*get_line(t_sh *shell, char *buff, char is_bracket)
 			break ;
 		}
 		else if (ft_isprint(buff[0]) && !buff[1] && !buff[2])
-			add_char(command, &j, shell, buff[0]);
+			if (add_char(command, &j, shell, buff[0]))
+				return (ft_strdup(""));
 	}
 	command[++j] = '\0';
 	return (ft_strdup(command));
