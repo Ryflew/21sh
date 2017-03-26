@@ -1,6 +1,7 @@
 #ifndef TOSH_H
 # define TOSH_H
 
+# include <limits.h>
 # include <termios.h>
 # include "libft.h"
 
@@ -88,9 +89,16 @@ typedef struct		s_term_pos
 typedef	struct		s_sh
 {
 	char			*prompt;
+	char			command[ARG_MAX];
+	char			*total_command;
+	char			*op;
+	int				j;
+	e_state			state;
 	t_termios		old;
 	t_term_pos		pos;
 	char			**history;
+	char			*history_mem;
+	int				history_pos;
 }					t_sh;
 
 /* -------------- Builtins --------------- */
@@ -106,7 +114,9 @@ void				errexit(char *content, char *reason);
 void				print_env(t_env *env);
 void				left_arrow(t_sh *shell);
 void				rigth_arrow(t_sh *shell);
+void				sig_hand(int sig);
 void				do_termcap(char *key);
+void				browse_history(t_sh *shell, char arrow);
 void				move_to(int x, int y);
 void				get_cursor(t_sh *shell);
 void				print_prompt(e_state state, char *op);
@@ -116,6 +126,7 @@ void				manage_redirection(t_tree **tree);
 void				load_history(t_sh *shell, t_env *env);
 void				free_tree(t_tree **tree);
 void				get_tree_rec(t_tree **tree, char *left, char *right);
+char				add_char(char *command, int *j, t_sh *shell, char c);
 char				check_alpha(char *str);
 char				stop_binary(int sig);
 char				check_new_open(char *str, char *op, int *j);
@@ -123,7 +134,7 @@ char				check_quot(char *str, char *op, int *i, int *j);
 char				check_quot_brackets2(char *str, char *op, int i, int *j);
 char				*check_quot_brackets(char *str, e_state *state);
 char				*get_with_tilde(char *path, t_env *env);
-char				*remove_useless_space(char *str);
+char				*remove_useless_space(char *str, char c);
 char				*find_env(t_env *env, char *name);
 char				*get_line(t_sh *shell, char *buff, e_state *state, char *op);
 char				**conv_env(t_env *env);

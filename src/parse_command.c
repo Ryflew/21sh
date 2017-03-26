@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 23:49:46 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/25 02:26:42 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/25 23:01:12 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ t_tree	*get_tree(char *command)
 
 	if (!(tree = init_tree()))
 		return (NULL);
-	tmp = NULL;
 	find_token(&command, &tmp, &tree);
 	if (tree->token == ENDOF)
 	{

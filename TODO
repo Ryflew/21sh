@@ -2,18 +2,22 @@
 ----------- TODO --------------
 
 - Parsing de la ligne de commande
-	-> ^C (pour les 2 input) (clear le buffer)
-	-> ^D (pour les 2 input) (clear le buffer)
-	-> Clear les espaces de la ligne entrée
-	-> Faire des test pour des mauvais bracket
-- Les termcaps (en cours)
-	-> le resize
-- L'historique (reste a implementer avec les fleches et a rajouter le lignes entre)
+	-> Bonton home et end pour aller au debut et a la fin de la ligne
+	-> Deplacement d'un mot a l'autre avec ctrl + fleche gauche/droite
+	-> Deplacement de haut en bas avec ctrl + fleche haut/bas
+	-> les copier/coller
+	-> Le delete dans la ligne
+	-> l'historique
+		-> ajout d'un nouvelle input
+		-> sauvegarde dans le fichier quand on quit
+- Completion
+- Recherche dans l'historique avec Ctrl R
 
 ---------- BONUS --------------
 
 - Gérer la valeur de retour des programes et pouvoir l'afficher avec "echo $?"
 - Gérer les || et && dans la lignes de commandes
+- Resize
 
 ------------ BUG --------------
 

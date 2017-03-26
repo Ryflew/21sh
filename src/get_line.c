@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/25 03:52:41 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/26 04:09:37 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,15 @@
 #include <stdlib.h>
 #include "21sh.h"
 
-static void	arrows(char *buff, char *command, int *j, t_sh *shell)
+static void	arrows(t_sh *shell, char c)
 {
-	(void)command;
-	(void)j;
-	if (buff[2] == 'A') // haut
-		;
-	else if (buff[2] == 'B') // bas
-		;
-	else if (buff[2] == 'C')
+	if (c == 'A')
+		browse_history(shell, c);
+	else if (c == 'B')
+		browse_history(shell, c);
+	else if (c == 'C')
 		rigth_arrow(shell);
-	else if (buff[2] == 'D')
+	else if (c == 'D')
 		left_arrow(shell);
 }
 
@@ -48,19 +46,19 @@ static void	delete_char(char *command, int *j, t_sh *shell)
 
 }
 
-static char	*ctrl_d(t_sh *shell, e_state state)
+void	ctrl_d(t_sh *shell)
 {
-	if (state == BASIC_SHELL)
+	if (shell->state == BASIC_SHELL)
 	{
 		tcsetattr(0, TCSADRAIN, &(shell->old));
 		ft_putstr("exit\n");
 		exit(EXIT_SUCCESS);
 	}
 	else
-		return (ft_strdup("\t")); // controle d a faire
+		sig_hand(0);
 }
 
-static char	add_char(char *command, int *j, t_sh *shell, char c)
+char	add_char(char *command, int *j, t_sh *shell, char c)
 {
 	int		total;
 	int		i;
@@ -68,6 +66,7 @@ static char	add_char(char *command, int *j, t_sh *shell, char c)
 	if (*j + 1 == ARG_MAX)
 	{
 		ft_putstr("\nInput too long.");
+		sig_hand(0);
 		return (1);
 	}
 	if (shell->pos.cursor.y == shell->pos.last.y && shell->pos.cursor.x == shell->pos.last.x)
@@ -125,32 +124,29 @@ static char	add_char(char *command, int *j, t_sh *shell, char c)
 
 char	*get_line(t_sh *shell, char *buff, e_state *state, char *op)
 {
-	int			j;
-	char		command[ARG_MAX];
-
 	print_prompt(*state, op);
 	shell->pos.first = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
 	shell->pos.last = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
-	j = -1;
+	shell->j = -1;
 	while (1)
 	{
 		ft_bzero(buff, 3);
 		read(0, buff, 3);
-		if (buff[0] == 4 && !buff[1] && !buff[2] && j == -1)
-			return (ctrl_d(shell, ADVANCE_SHELL));
+		if (buff[0] == 4 && !buff[1] && !buff[2] && shell->j == -1)
+			ctrl_d(shell);
 		else if (buff[0] == 27 && buff[1] == 91)
-			arrows(buff, command, &j, shell);
-		else if (buff[0] == 127 && !buff[1] && !buff[2] && j > -1)
-			delete_char(command, &j, shell);
+			arrows(shell, buff[2]);
+		else if (buff[0] == 127 && !buff[1] && !buff[2] && shell->j > -1)
+			delete_char(shell->command, &(shell->j), shell);
 		else if (buff[0] == 10 && !buff[1] && !buff[2])
 		{
 			move_to(shell->pos.last.x, shell->pos.last.y);
 			break ;
 		}
 		else if (ft_isprint(buff[0]) && !buff[1] && !buff[2])
-			if (add_char(command, &j, shell, buff[0]))
+			if (add_char(shell->command, &(shell->j), shell, buff[0]))
 				return (ft_strdup(""));
 	}
-	command[++j] = '\0';
-	return (ft_strdup(command));
+	shell->command[++(shell->j)] = '\0';
+	return (ft_strdup(shell->command));
 }

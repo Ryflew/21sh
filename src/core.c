@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 23:06:58 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/25 02:27:27 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/25 23:01:16 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ void	go_core(char *command, t_env **env, t_sh *shell)
 	i = -1;
 	while (all_command[++i])
 	{
-		if (/*special_chars(all_command[i]) || \
-			*/go_builtins(all_command[i], env, shell)/* || \
+		if (go_builtins(all_command[i], env, shell)/* || \
 			go_path(all_command[i], *env)*/)
 			;
 		else

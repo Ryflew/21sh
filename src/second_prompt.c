@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 23:43:54 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/25 04:17:51 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/25 23:52:40 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char		check_new_open(char *str, char *op, int *j)
 
 	error = 0;
 	i = -1;
-	while (str[++i])
+	while (str[++i] && !error)
 	{
 		if ((str[i] == '"' || str[i] == '\'' || str[i] == '`') && check_quot(str, op, &i, j))
 			break ;
@@ -69,14 +69,31 @@ static void	sync_op(char *new, char *old)
 		new[i] = old[i];
 }
 
+static char	check_bad_bracket(char *str, char *op)
+{
+	char	tmp_op[ft_strlen(str) + ft_strlen(op)];
+	int		j;
+
+	j = ft_strlen(op) - 1;
+	sync_op(tmp_op, op);
+	return (check_new_open(str, op, &j));
+}
+
 void	treat_second_prompt(char *string, char **op, e_state *state)
 {
 	int		j;
 	char	*str;
-	char	new_op[ft_strlen(string)];
+	char	new_op[ft_strlen(string) + ft_strlen(*op)];
 
 	str = string;
 	j = ft_strlen(*op) - 1;
+	ft_bzero(new_op, ft_strlen(string) + ft_strlen(*op));
+	if (check_bad_bracket(string, *op))
+	{
+		free(*op);
+		*state = BRACKET_ERROR;
+		return ;
+	}
 	sync_op(new_op, *op);
 	while (*str)
 	{

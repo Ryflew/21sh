@@ -6,12 +6,12 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/25 04:18:01 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/26 04:09:51 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include "get_next_line.h"
 #include "21sh.h"
 
@@ -55,31 +55,75 @@ void	print_prompt(e_state state, char *op)
 	get_cursor(&g_sh);
 }
 
-static void	sig_hand(int sig)
+void	sig_hand(int sig)
 {
 	if (!stop_binary(sig))
 	{
+		if (g_sh.j > -1)
+			ft_bzero(g_sh.command, g_sh.j);
+		g_sh.j = -1;
+		if (g_sh.op)
+			free(g_sh.op);
+		g_sh.op = NULL;
+		if (g_sh.total_command)
+			free(g_sh.total_command);
+		g_sh.total_command = NULL;
+		g_sh.state = BASIC_SHELL;
 		ft_putstr("\n");
 		print_prompt(BASIC_SHELL, NULL);
+		g_sh.pos.first = (t_pos){g_sh.pos.cursor.x, g_sh.pos.cursor.y};
+		g_sh.pos.last = (t_pos){g_sh.pos.cursor.x, g_sh.pos.cursor.y};
 	}
 }
 
-static char	shell_loop2(char *command, char **last, e_state *state, char **op)
+char	*remove_useless_space(char *str, char c)
+{
+	int		i;
+	int		j;
+	int		have_space;
+	char	buff[ft_strlen(str)];
+
+	have_space = 0;
+	j = -1;
+	i = -1;
+	while (str[++i])
+	{
+		if (c)
+			buff[++j] = str[i];
+		else if (str[i] != ' ' && str[i] != '\t')
+		{
+			if (have_space && j != -1)
+				buff[++j] = ' ';
+			have_space = 0;
+			buff[++j] = str[i];
+		}
+		else if (!c && (str[i] == ' ' || str[i] == '\t'))
+			have_space = 1;
+		if (!c && (str[i] == '\'' || str[i] == '"' || str[i] == '`'))
+			c = str[i];
+		else if (c == str[i])
+			c = '\0';
+	}
+	buff[++j] = '\0';
+	return (ft_strdup(buff));
+}
+
+static char	shell_loop2(char **command, char **last, e_state *state, char **op)
 {
 	char	*tmp;
 
 	if (*state == BASIC_SHELL)
 	{
-		*op = check_quot_brackets(command, state);
+		*op = check_quot_brackets(*command, state);
 		if (*state == ADVANCE_SHELL)
 		{
-			*last = ft_strjoin(command, "\n");
+			*last = ft_strjoin(*command, "\n");
 			return (1);
 		}
 	}
 	if (*state == BRACKET_ERROR)
 	{
-		ft_putstr("Brackets error !\n");
+		ft_putstr("\nBrackets error !\n");
 		*state = BASIC_SHELL;
 		if (*last)
 			free(*last);
@@ -88,7 +132,7 @@ static char	shell_loop2(char *command, char **last, e_state *state, char **op)
 	}
 	if (*state == ADVANCE_SHELL)
 	{
-		treat_second_prompt(command, op, state);
+		treat_second_prompt(*command, op, state);
 		if (*state == BRACKET_ERROR)
 			return (shell_loop2(command, last, state, op));
 		if (!**op)
@@ -96,52 +140,51 @@ static char	shell_loop2(char *command, char **last, e_state *state, char **op)
 		else
 		{
 			tmp = *last;
-			*last = ft_strdjoin(*last, command, "\n");
+			*last = ft_strdjoin(*last, *command, "\n");
 			free(tmp);
 			return (1);
 		}
 	}
 	return (0);
 }
-		
+
 static void	shell_loop(t_env **env)
 {
-	char	*last;
 	char	*command;
 	char	*tmp;
-	char	*op;
 	char	buff[3];
-	e_state	state;
 
-	op = NULL;
-	last = NULL;
-	state = BASIC_SHELL;
+	g_sh.op = NULL;
+	g_sh.total_command = NULL;
+	g_sh.state = BASIC_SHELL;
 	while (1)
 	{
-		command = get_line(&g_sh, buff, &state, op);
-		// clear la ligne des espaces !
-		if (shell_loop2(command, &last, &state, &op))
+		command = get_line(&g_sh, buff, &(g_sh.state), g_sh.op);
+		tmp = command;
+		command = remove_useless_space(command, !g_sh.op ? 0 : g_sh.op[ft_strlen(g_sh.op) - 1]);
+		free(tmp);
+		if (shell_loop2(&command, &(g_sh.total_command), &(g_sh.state), &(g_sh.op)))
 		{
 			free(command);
 			continue ;
 		}
-		if (!last)
-			last = command;
+		if (!g_sh.total_command)
+			g_sh.total_command = command;
 		else
 		{
-			tmp = last;
-			last = ft_strjoin(last, command);
+			tmp = g_sh.total_command;
+			g_sh.total_command = ft_strjoin(g_sh.total_command, command);
 			free(command);
 			free(tmp);
 		}
-		if (*last)
-			go_core(last, env, &g_sh);
+		if (*g_sh.total_command)
+			go_core(g_sh.total_command, env, &g_sh);
 		ft_putchar('\n');
-		free(op);
-		free(last);
-		op = NULL;
-		last = NULL;
-		state = BASIC_SHELL;
+		free(g_sh.op);
+		free(g_sh.total_command);
+		g_sh.op = NULL;
+		g_sh.total_command = NULL;
+		g_sh.state = BASIC_SHELL;
 	}
 }
 
@@ -155,7 +198,7 @@ int			main(int ac, char **av, char **termenv)
 	init_termcap(&g_sh, env);
 	get_current_path(env);
 	signal(SIGINT, sig_hand);
-	// load_history(&g_sh, env);
+	load_history(&g_sh, env);
 	shell_loop(&env);
 	return (0);
 }

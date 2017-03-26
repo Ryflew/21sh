@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 22:30:04 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/21 00:55:57 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/25 23:23:43 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,43 +79,11 @@ static void	trim_input2(char ***out, char *cmd)
 	}
 }
 
-char		*remove_useless_space(char *str)
-{
-	int		i;
-	int		j;
-	int		have_space;
-	char	buff[ft_strlen(str)];
-
-	have_space = 0;
-	j = -1;
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] != ' ' && str[i] != '\t')
-		{
-			if (have_space && j != -1)
-				buff[++j] = ' ';
-			have_space = 0;
-			buff[++j] = str[i];
-		}
-		else
-			have_space = 1;
-	}
-	buff[++j] = '\0';
-	return (ft_strdup(buff));
-}
-
 char		**trim_input(char *cmd)
 {
 	char	**out;
 	int		nb;
 
-	cmd = remove_useless_space(cmd);
-	if (!*cmd)
-	{
-		free(cmd);
-		return (NULL);
-	}
 	nb = count_sep(cmd);
 	if (!(out = (char**)malloc(sizeof(char*) * (nb + 1))))
 	{
@@ -124,6 +92,5 @@ char		**trim_input(char *cmd)
 	}
 	out[nb] = NULL;
 	trim_input2(&out, cmd);
-	free(cmd);
 	return (out);
 }
