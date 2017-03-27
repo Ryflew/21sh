@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 23:06:58 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/25 23:01:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/27 22:19:12 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,31 @@ static char	go_builtins(t_tree *tree, t_env **env, t_sh *shell)
 	return (1);
 }
 
-	#include <unistd.h>
+static void	add_to_history(t_sh *shell, char *command)
+{
+	int		i;
+	char	*tmp;
+	
+	if (!ft_strcont(command, "\n"))
+		add_line(shell, command);
+	else
+	{
+		i = -1;
+		while (command[++i] && command[i] != '\n')
+			;
+		tmp = ft_strsub(command, 0, i);
+		add_line(shell, tmp);
+		free(tmp);
+	}
+}
+
 void	go_core(char *command, t_env **env, t_sh *shell)
 {
 	t_tree		**all_command;
 	int			i;
 
 	(void)env;
+	add_to_history(shell, command);
 	if (!(all_command = get_command(command)))
 		return ;
 	i = -1;

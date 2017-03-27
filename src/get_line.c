@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/26 04:09:37 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/27 21:59:24 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	ctrl_d(t_sh *shell)
 {
 	if (shell->state == BASIC_SHELL)
 	{
+		save_history(shell);
 		tcsetattr(0, TCSADRAIN, &(shell->old));
 		ft_putstr("exit\n");
 		exit(EXIT_SUCCESS);

@@ -88,6 +88,7 @@ typedef struct		s_term_pos
 
 typedef	struct		s_sh
 {
+	t_env			*env;
 	char			*prompt;
 	char			command[ARG_MAX];
 	char			*total_command;
@@ -116,7 +117,9 @@ void				left_arrow(t_sh *shell);
 void				rigth_arrow(t_sh *shell);
 void				sig_hand(int sig);
 void				do_termcap(char *key);
+void				save_history(t_sh *shell);
 void				browse_history(t_sh *shell, char arrow);
+void				add_line(t_sh *shell, char *toadd);
 void				move_to(int x, int y);
 void				get_cursor(t_sh *shell);
 void				print_prompt(e_state state, char *op);

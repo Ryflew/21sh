@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/26 04:09:51 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/27 21:12:54 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,15 +190,13 @@ static void	shell_loop(t_env **env)
 
 int			main(int ac, char **av, char **termenv)
 {
-	t_env	*env;
-
 	(void)ac;
 	(void)av;
-	env = get_env(termenv);
-	init_termcap(&g_sh, env);
-	get_current_path(env);
+	g_sh.env = get_env(termenv);
+	init_termcap(&g_sh, g_sh.env);
+	get_current_path(g_sh.env);
 	signal(SIGINT, sig_hand);
-	load_history(&g_sh, env);
-	shell_loop(&env);
+	load_history(&g_sh, g_sh.env);
+	shell_loop(&(g_sh.env));
 	return (0);
 }

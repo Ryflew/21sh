@@ -6,7 +6,7 @@
 #    By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/18 21:04:45 by vdarmaya          #+#    #+#              #
-#    Updated: 2017/03/25 02:21:23 by vdarmaya         ###   ########.fr        #
+#    Updated: 2017/03/27 21:11:07 by vdarmaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ LINCDIR = ./libft/include
 SRC = main.c get_next_line.c core.c list.c split_quot.c trim_input.c \
 		parse_command.c manage_node.c check_brackets.c binary.c history.c \
 		second_prompt.c init_termcap.c get_line.c cursor.c termcap.c \
-		ft_putcharint.c arrows.c
+		ft_putcharint.c arrows.c history2.c
 
 SRCBIN = cd2.c exit.c env_utils.c
 

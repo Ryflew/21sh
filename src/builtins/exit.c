@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 22:25:11 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/21 23:17:30 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/27 20:54:54 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void		exit_command(char **av, t_sh *shell)
 
 	if (!*++av)
 	{
+		save_history(shell);
 		tcsetattr(0, TCSADRAIN, &(shell->old));
 		exit(EXIT_SUCCESS);
 	}
@@ -37,6 +38,7 @@ void		exit_command(char **av, t_sh *shell)
 	if (!*(*av + i) && !*(av + 1))
 	{
 		tcsetattr(0, TCSADRAIN, &(shell->old));
+		save_history(shell);
 		exit(ft_atoi(*av));
 	}
 	else if ((**av >= '0' && **av <= '9') && *(*av + i))
