@@ -62,6 +62,8 @@ t_tree	*redirection(t_sh *sh, t_tree *left)
 	t_token	*token;
 	t_tree	*new_node;
 
+	if (!sh->current_token)
+		return (NULL);
 	// '>' WORD
 	if ((new_node = basic_red(sh, CHEVF, left)))
 		;
