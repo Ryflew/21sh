@@ -40,11 +40,12 @@ t_token	*lex_str(char *line, char string_operator, t_lexer *lexer)
 	int	i;
 
 	i = 0;
-	while (line[i] && line[i] != string_operator)
+	while (line && *line != string_operator)
+	{
 		++i;
-	line[i] = 0;
-	ft_putendl(line);
-	return (new_token(lexer, TEXT, remove_useless_space(line)));
+		++line;
+	}
+	return (new_token(lexer, TEXT, remove_useless_space(ft_strsub(line -= i - 1, 0, i))));
 }
 
 t_token	*lex_number(char *line, t_lexer *lexer)
@@ -55,11 +56,12 @@ t_token	*lex_number(char *line, t_lexer *lexer)
 	type = NUM;
 	i = 0;
 	while (line[i] && line[i] != ' ' && !is_operator(line[i], line[i + 1]))
+	{
 		if (!ft_isdigit(line[i]))
 			type = WORD;
 		++i;
-	line[i] = 0;
-	return (new_token(lexer, type, line));
+	}
+	return (new_token(lexer, type, ft_strsub(line += i - 1, 0, i)));
 }
 
 t_token	*lex_word(char *line, t_lexer *lexer)
@@ -67,10 +69,12 @@ t_token	*lex_word(char *line, t_lexer *lexer)
 	int	i;
 
 	i = 0;
+	ft_putendl(line);
 	while (line[i] && !is_operator(line[i], line[i + 1]))
 		++i;
-	line[i] = 0;
-	return (new_token(lexer, WORD, line));
+	ft_putnbr(i);
+	ft_putendl(ft_strsub(line, 0, i));
+	return (new_token(lexer, WORD, ft_strsub(line += i - 1, 0, i)));
 }
 
 t_token	*get_next_token(t_lexer *lexer)
@@ -122,12 +126,12 @@ t_token	*get_next_token(t_lexer *lexer)
 			else if (*lexer->line && *lexer->line == '`')
 				token = new_token(lexer, BQT, "`");
 			else if (*lexer->line && ft_isdigit(*lexer->line))
-				token = lex_number(ft_strdup(lexer->line), lexer);
-			else if (*lexer->line && *lexer->line == '`')
-				token = lex_word(ft_strdup(lexer->line), lexer);
+				token = lex_number(lexer->line, lexer);
+			else if (*lexer->line)
+				token = lex_word(lexer->line, lexer);
 		}
 		else
-			token = lex_str(ft_strdup(lexer->line), lexer->string_operator, lexer);
+			token = lex_str(lexer->line, lexer->string_operator, lexer);
 		++lexer->line;
 		if (token)
 			return (token);

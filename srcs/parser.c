@@ -67,14 +67,17 @@ t_token	*text(t_sh *sh)
 		return (NULL);
 	token = sh->current_token;
 	ft_putendl("step7-1");
-//	ft_putendl(token->value);
+	ft_putendl(token->value);
 	if (sh->current_token->type == WORD)
+	{
+	ft_putendl("step7-2");
 		eat(sh, WORD);
+	}
 	else if (sh->current_token->type == NUM)
 		eat(sh, NUM);
 	else
 		token = str(sh);
-	ft_putendl("step7-2");
+	ft_putendl("step7-3");
 	return (token);
 }
 
@@ -140,6 +143,7 @@ t_tree	*cmd_with_op(t_sh *sh)
 	ft_putendl("step9");
 	while (left)
 	{
+		ft_putendl("step9-0");
 		if ((tmp = pipe_rule(sh, left)))
 			left = tmp;
 		else if ((tmp = redirection(sh, left)))
@@ -163,7 +167,7 @@ t_tree	*cmds_line(t_sh *sh)
 	sh->lexer->string_operator = 0;
 	sh->current_token = get_next_token(sh->lexer);
 	ft_putendl("step1-1");
-//	ft_putendl(sh->current_token->value);
+	ft_putendl(sh->current_token->value);
 	if (sh->current_token && sh->current_token->type == SCL)
 	{
 		ft_putendl("step2");
