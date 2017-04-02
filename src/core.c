@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 23:06:58 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/27 22:19:12 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/03/28 00:07:43 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	add_to_history(t_sh *shell, char *command)
 		add_line(shell, tmp);
 		free(tmp);
 	}
+	shell->history_pos = -1;
 }
 
 void	go_core(char *command, t_env **env, t_sh *shell)

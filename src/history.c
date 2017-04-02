@@ -37,7 +37,7 @@ static void	clear_line(t_sh *shell)
 	shell->pos.last = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
 }
 
-void	browse_history(t_sh *shell, char arrow)
+void	browse_history(t_sh *shell, unsigned long arrow)
 {
 	int			i;
 	int			max;
@@ -49,7 +49,7 @@ void	browse_history(t_sh *shell, char arrow)
 		;
 	--max;
 	i = -1;
-	if (arrow == 'A' && shell->history_pos < max)
+	if (arrow == UP_ARROW && shell->history_pos < max)
 	{
 		if (shell->j > -1)
 		{
@@ -70,7 +70,7 @@ void	browse_history(t_sh *shell, char arrow)
 			}
 		}
 	}
-	else if (arrow == 'B' && shell->history_pos <= max && shell->history_pos > 0) 
+	else if (arrow == DOWN_ARROW && shell->history_pos <= max && shell->history_pos > 0) 
 	{
 		if (shell->j > -1)
 			clear_line(shell);
@@ -84,7 +84,7 @@ void	browse_history(t_sh *shell, char arrow)
 			}
 		}
 	}
-	else if (arrow == 'B' && !shell->history_pos && shell->j > -1)
+	else if (arrow == DOWN_ARROW && !shell->history_pos && shell->j > -1)
 	{
 		shell->history_pos = -1;
 		clear_line(shell);

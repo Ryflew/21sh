@@ -6,33 +6,14 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 23:43:54 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/25 23:52:40 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/04/02 03:34:00 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "21sh.h"
 
-char		check_new_open(char *str, char *op, int *j)
-{
-	int		i;
-	char	error;
-
-	error = 0;
-	i = -1;
-	while (str[++i] && !error)
-	{
-		if ((str[i] == '"' || str[i] == '\'' || str[i] == '`') && check_quot(str, op, &i, j))
-			break ;
-		else
-			error = check_quot_brackets2(str, op, i, j);
-	}
-	if (error)
-		return (1);
-	return (0);
-}
-
-static char		get_good_char(char c)
+static char	get_good_char(char c)
 {
 	if (c == '(')
 		return (')');
@@ -42,22 +23,6 @@ static char		get_good_char(char c)
 		return (']');
 	else
 		return (c);
-}
-
-static char		go_to_c(char **str, char c)
-{
-	int		i;
-
-	i = -1;
-	while ((*str)[++i])
-	{
-		if ((*str)[i] == c)
-		{
-			*str += i + 1;
-			return (1);
-		}
-	}
-	return (0);
 }
 
 static void	sync_op(char *new, char *old)
@@ -79,7 +44,33 @@ static char	check_bad_bracket(char *str, char *op)
 	return (check_new_open(str, op, &j));
 }
 
-void	treat_second_prompt(char *string, char **op, e_state *state)
+static void	continue_treat(char *str, int *j, char *new_op, e_state *state)
+{
+	while (*str)
+	{
+		if (new_op[*j] == '|' && !(new_op[(*j)--] = '\0'))
+		{
+			if (check_new_open(str, new_op, j))
+				*state = BRACKET_ERROR;
+			return ;
+		}
+		else if (go_to_c(&str, get_good_char(new_op[*j])))
+		{
+			new_op[(*j)--] = '\0';
+			continue ;
+		}
+		else
+		{
+			if (*j == -1 || (new_op[*j] != '\'' && \
+				new_op[*j] != '"' && new_op[*j] != '`'))
+				if (check_new_open(str, new_op, j))
+					*state = BRACKET_ERROR;
+			return ;
+		}
+	}
+}
+
+void		treat_second_prompt(char *string, char **op, e_state *state)
 {
 	int		j;
 	char	*str;
@@ -95,23 +86,7 @@ void	treat_second_prompt(char *string, char **op, e_state *state)
 		return ;
 	}
 	sync_op(new_op, *op);
-	while (*str)
-	{
-		if (new_op[j] == '|' && !(new_op[j--] = '\0'))
-			return ;
-		else if (go_to_c(&str, get_good_char(new_op[j])))
-		{
-			new_op[j--] = '\0';
-			continue ;
-		}
-		else
-		{
-			if (j == -1 || (new_op[j] != '\'' && new_op[j] != '"' && new_op[j] != '`'))
-				if (check_new_open(str, new_op, &j))
-					*state = BRACKET_ERROR;
-			break ;
-		}
-	}
+	continue_treat(str, &j, new_op, state);
 	new_op[++j] = '\0';
 	free(*op);
 	*op = ft_strdup(new_op);

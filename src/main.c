@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/27 21:12:54 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/04/02 03:41:30 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,9 @@ void	sig_hand(int sig)
 			free(g_sh.total_command);
 		g_sh.total_command = NULL;
 		g_sh.state = BASIC_SHELL;
+		move_to(g_sh.pos.last.x, g_sh.pos.last.y);
 		ft_putstr("\n");
 		print_prompt(BASIC_SHELL, NULL);
-		g_sh.pos.first = (t_pos){g_sh.pos.cursor.x, g_sh.pos.cursor.y};
-		g_sh.pos.last = (t_pos){g_sh.pos.cursor.x, g_sh.pos.cursor.y};
 	}
 }
 
@@ -108,84 +107,13 @@ char	*remove_useless_space(char *str, char c)
 	return (ft_strdup(buff));
 }
 
-static char	shell_loop2(char **command, char **last, e_state *state, char **op)
+static void	init_shell(t_sh *shell)
 {
-	char	*tmp;
-
-	if (*state == BASIC_SHELL)
-	{
-		*op = check_quot_brackets(*command, state);
-		if (*state == ADVANCE_SHELL)
-		{
-			*last = ft_strjoin(*command, "\n");
-			return (1);
-		}
-	}
-	if (*state == BRACKET_ERROR)
-	{
-		ft_putstr("\nBrackets error !\n");
-		*state = BASIC_SHELL;
-		if (*last)
-			free(*last);
-		*last = NULL;
-		return (1);
-	}
-	if (*state == ADVANCE_SHELL)
-	{
-		treat_second_prompt(*command, op, state);
-		if (*state == BRACKET_ERROR)
-			return (shell_loop2(command, last, state, op));
-		if (!**op)
-			*state = COMMAND_RUN;
-		else
-		{
-			tmp = *last;
-			*last = ft_strdjoin(*last, *command, "\n");
-			free(tmp);
-			return (1);
-		}
-	}
-	return (0);
-}
-
-static void	shell_loop(t_env **env)
-{
-	char	*command;
-	char	*tmp;
-	char	buff[3];
-
-	g_sh.op = NULL;
-	g_sh.total_command = NULL;
-	g_sh.state = BASIC_SHELL;
-	while (1)
-	{
-		command = get_line(&g_sh, buff, &(g_sh.state), g_sh.op);
-		tmp = command;
-		command = remove_useless_space(command, !g_sh.op ? 0 : g_sh.op[ft_strlen(g_sh.op) - 1]);
-		free(tmp);
-		if (shell_loop2(&command, &(g_sh.total_command), &(g_sh.state), &(g_sh.op)))
-		{
-			free(command);
-			continue ;
-		}
-		if (!g_sh.total_command)
-			g_sh.total_command = command;
-		else
-		{
-			tmp = g_sh.total_command;
-			g_sh.total_command = ft_strjoin(g_sh.total_command, command);
-			free(command);
-			free(tmp);
-		}
-		if (*g_sh.total_command)
-			go_core(g_sh.total_command, env, &g_sh);
-		ft_putchar('\n');
-		free(g_sh.op);
-		free(g_sh.total_command);
-		g_sh.op = NULL;
-		g_sh.total_command = NULL;
-		g_sh.state = BASIC_SHELL;
-	}
+	shell->ref_pos = -1;
+	shell->saved = NULL;
+	shell->history_pos = -1;
+	shell->history_mem = NULL;
+	
 }
 
 int			main(int ac, char **av, char **termenv)
@@ -193,10 +121,11 @@ int			main(int ac, char **av, char **termenv)
 	(void)ac;
 	(void)av;
 	g_sh.env = get_env(termenv);
+	init_shell(&g_sh);
 	init_termcap(&g_sh, g_sh.env);
 	get_current_path(g_sh.env);
 	signal(SIGINT, sig_hand);
 	load_history(&g_sh, g_sh.env);
-	shell_loop(&(g_sh.env));
+	shell_loop(&(g_sh));
 	return (0);
 }

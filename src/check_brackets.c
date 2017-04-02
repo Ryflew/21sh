@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/26 01:05:29 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/04/02 03:40:54 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char		check_quot_brackets2(char *str, char *op, int i, int *j)
 char		check_quot(char *str, char *op, int *i, int *j)
 {
 	char	c;
-	
+
 	c = str[*i];
 	if (!(c == '|' && !str[*i + 1]))
 	{
@@ -55,15 +55,13 @@ char		*check_quot_brackets(char *str, e_state *state)
 	while (str[++i])
 	{
 		if ((str[i] == '"' || str[i] == '\'' || str[i] == '`' || \
-			str[i] == '|') && check_quot(str, op, &i, &j))
+			(str[i] == '|' && !str[i + 1])) && check_quot(str, op, &i, &j))
 			break ;
 		else
 		{
-			if (check_quot_brackets2(str, op, i, &j))
-			{
-				*state = BRACKET_ERROR;
+			if (check_quot_brackets2(str, op, i, &j) && \
+				(*state = BRACKET_ERROR) == BRACKET_ERROR)
 				return (NULL);
-			}
 		}
 	}
 	if (j == -1)

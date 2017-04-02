@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/27 21:59:24 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/04/02 03:21:32 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,39 @@
 #include <stdlib.h>
 #include "21sh.h"
 
-static void	arrows(t_sh *shell, char c)
+static void	arrows(t_sh *shell, unsigned long c)
 {
-	if (c == 'A')
+	if (c == UP_ARROW)
 		browse_history(shell, c);
-	else if (c == 'B')
+	else if (c == DOWN_ARROW)
 		browse_history(shell, c);
-	else if (c == 'C')
+	else if (c == RIGTH_ARROW)
 		rigth_arrow(shell);
-	else if (c == 'D')
+	else if (c == LEFT_ARROW)
 		left_arrow(shell);
+	else if (c == HOME)
+		move_to((shell->pos.cursor.x = shell->pos.first.x), \
+			(shell->pos.cursor.y = shell->pos.first.y));
+	else if (c == END)
+		move_to((shell->pos.cursor.x = shell->pos.last.x), \
+			(shell->pos.cursor.y = shell->pos.last.y));
 }
 
-static void	delete_char(char *command, int *j, t_sh *shell)
+static void maj_arrows(t_sh *shell, unsigned long c)
 {
-	command[(*j)--] = '\0';
-	if (shell->pos.cursor.x > 0)
-	{
-		--(shell->pos.last.x);
-		move_to(--(shell->pos.cursor.x), shell->pos.cursor.y);
-	}
-	else
-	{
-		--(shell->pos.last.y);
-		shell->pos.last.x = shell->pos.max_window.x - 1;
-		move_to((shell->pos.cursor.x = shell->pos.max_window.x - 1), --(shell->pos.cursor.y));
-	}
-	ft_putchar(' ');
-	move_to(shell->pos.cursor.x, shell->pos.cursor.y);
-
+	if (c == MAJ_LEFT)
+		maj_left_arrow(shell);
+	else if (c == MAJ_RIGTH)
+		maj_rigth_arrow(shell);
+	else if (c == MAJ_UP)
+		maj_up_arrow(shell);
+	else if (c == MAJ_DOWN)
+		maj_down_arrow(shell);
+	else if (c == CTRL_MAJ_LEFT || c == CTRL_MAJ_RIGTH)
+		copy_data(shell, c, 0);
 }
 
-void	ctrl_d(t_sh *shell)
+static void	ctrl_d(t_sh *shell)
 {
 	if (shell->state == BASIC_SHELL)
 	{
@@ -59,93 +60,46 @@ void	ctrl_d(t_sh *shell)
 		sig_hand(0);
 }
 
-char	add_char(char *command, int *j, t_sh *shell, char c)
+static char	get_line2(t_sh *shell, unsigned long buff)
 {
-	int		total;
-	int		i;
-
-	if (*j + 1 == ARG_MAX)
-	{
-		ft_putstr("\nInput too long.");
-		sig_hand(0);
-		return (1);
-	}
-	if (shell->pos.cursor.y == shell->pos.last.y && shell->pos.cursor.x == shell->pos.last.x)
-	{
-		command[++(*j)] = c;
-		ft_putchar(c);
-		if (++(shell->pos.cursor.x) == shell->pos.max_window.x)
-		{
-			ft_putchar(' ');
-			if (shell->pos.cursor.y < shell->pos.max_window.y)
-				move_to((shell->pos.cursor.x = 0), ++(shell->pos.cursor.y));
-			else
-			{
-				--(shell->pos.first.y);
-				move_to((shell->pos.cursor.x = 0), shell->pos.cursor.y);
-			}
-		}
-		shell->pos.last.x = shell->pos.cursor.x;
-		shell->pos.last.y = shell->pos.cursor.y;
-	}
+	if (shell->saved && shell->ref_pos > -1 && buff != CTRL_MAJ_LEFT && \
+		buff != CTRL_MAJ_RIGTH)
+		clean_selected(shell);
+	if (buff == EOT && shell->j == -1)
+		ctrl_d(shell);
+	else if (buff == UP_ARROW || buff == DOWN_ARROW || buff == LEFT_ARROW || \
+		buff == RIGTH_ARROW || buff == HOME || buff == END)
+		arrows(shell, buff);
+	else if (buff == CTRL_P && shell->saved)
+		past_data(shell);
+	else if (buff == MAJ_LEFT || buff == MAJ_RIGTH || buff == MAJ_UP || \
+		buff == MAJ_DOWN || buff == CTRL_MAJ_LEFT || buff == CTRL_MAJ_RIGTH)
+		maj_arrows(shell, buff);
+	else if (buff == DELETE && shell->j > -1 && !(shell->pos.cursor.x == \
+		shell->pos.first.x && shell->pos.cursor.y == shell->pos.first.y))
+		delete_char(shell->command, &(shell->j), shell);
 	else
-	{
-		if (shell->pos.first.y == shell->pos.cursor.y)
-			total = shell->pos.cursor.x - shell->pos.first.x;
-		else
-			total = (shell->pos.max_window.x - shell->pos.first.x) + \
-				((shell->pos.cursor.y - shell->pos.first.y - 1) * shell->pos.max_window.x) + shell->pos.cursor.x;
-		i = ++(*j) + 1;
-		while (total < --i)
-			command[i] = command[i - 1];
-		command[total] = c;
-		while (total <= *j)
-			ft_putchar(command[total++]);
-		if (++(shell->pos.cursor.x) == shell->pos.max_window.x)
-		{
-			shell->pos.cursor.x = 0;
-			++(shell->pos.cursor.y);
-		}
-		if (++(shell->pos.last.x) == shell->pos.max_window.x)
-		{
-			ft_putchar(' ');
-			shell->pos.last.x = 0;
-			if (shell->pos.last.y < shell->pos.max_window.y)
-				++(shell->pos.last.y);
-			else if (shell->pos.last.y == shell->pos.max_window.y)
-			{
-				--(shell->pos.cursor.y);
-				--(shell->pos.first.y);
-			}
-		}
-		move_to(shell->pos.cursor.x, shell->pos.cursor.y);
-	}
-	return (0);
+		return (0);
+	return (1);
 }
 
-char	*get_line(t_sh *shell, char *buff, e_state *state, char *op)
+char	*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
-	shell->pos.first = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
-	shell->pos.last = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
 	shell->j = -1;
 	while (1)
 	{
-		ft_bzero(buff, 3);
-		read(0, buff, 3);
-		if (buff[0] == 4 && !buff[1] && !buff[2] && shell->j == -1)
-			ctrl_d(shell);
-		else if (buff[0] == 27 && buff[1] == 91)
-			arrows(shell, buff[2]);
-		else if (buff[0] == 127 && !buff[1] && !buff[2] && shell->j > -1)
-			delete_char(shell->command, &(shell->j), shell);
-		else if (buff[0] == 10 && !buff[1] && !buff[2])
+		buff = 0;
+		read(0, &buff, sizeof(unsigned long));
+		if (get_line2(shell, buff))
+			;
+		else if (buff == ENTER)
 		{
 			move_to(shell->pos.last.x, shell->pos.last.y);
 			break ;
 		}
-		else if (ft_isprint(buff[0]) && !buff[1] && !buff[2])
-			if (add_char(shell->command, &(shell->j), shell, buff[0]))
+		else if (buff >= 32 && buff <= 126)
+			if (add_char(shell->command, &(shell->j), shell, (char)buff))
 				return (ft_strdup(""));
 	}
 	shell->command[++(shell->j)] = '\0';

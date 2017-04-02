@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 19:09:28 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/21 05:53:13 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/04/01 21:59:16 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void				ft_putzerox(char letter);
 char				ft_strdiff(char *str, int c);
 char				ft_strcont(char *s1, char *s2);
 char				ft_strcontchar(char *str, char c);
+char				*ft_strjoinchar(char *s1, char s2);
 char				*ft_itoabase(long nbr, int base, char min);
 char				*ft_itoabaseu(unsigned long nbr, int base, char min);
 char				*ft_delchar(char *str, int c);

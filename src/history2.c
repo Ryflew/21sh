@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 20:56:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/27 22:05:36 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/04/01 21:11:46 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ void	load_history(t_sh *shell, t_env *env)
 	char		*home;
 	struct stat	buff;
 
-	shell->history_pos = -1;
-	shell->history_mem = NULL;
 	if (!(home = find_env(env, "HOME")))
 		return ;
 	home = ft_strjoin(home, "/.21sh_history");
