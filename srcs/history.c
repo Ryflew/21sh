@@ -18,7 +18,7 @@
 #include <fcntl.h>
 #include "21sh.h"
 
-static void	clear_line(t_sh *shell)
+void	clear_line(t_sh *shell)
 {
 	int		i;
 	char	white_space[shell->j + 2];
@@ -30,11 +30,11 @@ static void	clear_line(t_sh *shell)
 	move_to(shell->pos.first.x, shell->pos.first.y);
 	ft_putstr(white_space);
 	move_to(shell->pos.first.x, shell->pos.first.y);
-	ft_bzero(shell->command, shell->j);
+	if (shell->j > -1)
+		ft_bzero(shell->command, shell->j);
 	shell->j = -1;
-	get_cursor(shell);
-	shell->pos.first = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
-	shell->pos.last = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
+	shell->pos.last = (t_pos){shell->pos.first.x, shell->pos.first.y};
+	shell->pos.cursor = shell->pos.first;
 }
 
 void	browse_history(t_sh *shell, unsigned long arrow)

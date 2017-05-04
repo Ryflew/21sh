@@ -10,7 +10,7 @@
 # define UP_ARROW 4283163
 # define DOWN_ARROW 4348699
 # define LEFT_ARROW 4479771
-# define RIGTH_ARROW 4414235
+# define RIGHT_ARROW 4414235
 # define HOME 4741915
 # define END 4610843
 # define MAJ_LEFT 74982532143899
@@ -20,6 +20,7 @@
 # define CTRL_MAJ_LEFT 74999712013083
 # define CTRL_MAJ_RIGTH 73900200385307
 # define CTRL_P 16
+# define CTRL_R 18
 # define DELETE 127
 # define ENTER 10
 # define EOT 4
@@ -150,13 +151,14 @@ void				errexit(char *content, char *reason);
 void				shell_loop(t_sh *shell);
 void				print_env(t_env *env);
 void				left_arrow(t_sh *shell);
-void				rigth_arrow(t_sh *shell);
+void				right_arrow(t_sh *shell);
 void				maj_up_arrow(t_sh *shell);
 void				maj_down_arrow(t_sh *shell);
 void				maj_left_arrow(t_sh *shell);
-void				maj_rigth_arrow(t_sh *shell);
+void				maj_right_arrow(t_sh *shell);
 void				sig_hand(int sig);
 void				do_termcap(char *key);
+void				search_mode(t_sh *shell);
 void				save_history(t_sh *shell);
 void				browse_history(t_sh *shell, unsigned long arrow);
 void				add_line(t_sh *shell, char *toadd);
@@ -169,6 +171,7 @@ void				treat_second_prompt(char *string, char **op, e_state *state);
 void				go_core(char *command, t_env **env, t_sh *shell);
 void				manage_redirection(t_tree **tree);
 void				load_history(t_sh *shell, t_env *env);
+void				clear_line(t_sh *shell);
 void				get_tree_rec(t_tree **tree, char *left, char *right);
 char				add_char(char *command, int *j, t_sh *shell, char c);
 char				check_alpha(char *str);

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 23:06:06 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/04/02 02:31:42 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/04 18:04:28 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	left_arrow(t_sh *shell)
 	}
 }
 
-void	rigth_arrow(t_sh *shell)
+void	right_arrow(t_sh *shell)
 {
 	if (!(shell->pos.cursor.x == shell->pos.last.x && \
 		shell->pos.cursor.y == shell->pos.last.y))

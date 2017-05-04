@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/29 20:51:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/29 23:18:05 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/04 18:04:26 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	maj_left_arrow(t_sh *shell)
 	}
 }
 
-void	maj_rigth_arrow(t_sh *shell)
+void	maj_right_arrow(t_sh *shell)
 {
 	int		i;
 
@@ -75,12 +75,12 @@ void	maj_rigth_arrow(t_sh *shell)
 		{
 			while (i < shell->j && shell->command[i] == ' ')
 			{
-				rigth_arrow(shell);
+				right_arrow(shell);
 				++i;
 			}
 			break ;
 		}
-		rigth_arrow(shell);
+		right_arrow(shell);
 		++i;
 	}
 }

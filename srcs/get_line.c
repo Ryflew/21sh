@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/04/02 03:21:32 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/04 18:43:15 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	arrows(t_sh *shell, unsigned long c)
 		browse_history(shell, c);
 	else if (c == DOWN_ARROW)
 		browse_history(shell, c);
-	else if (c == RIGTH_ARROW)
-		rigth_arrow(shell);
+	else if (c == RIGHT_ARROW)
+		right_arrow(shell);
 	else if (c == LEFT_ARROW)
 		left_arrow(shell);
 	else if (c == HOME)
@@ -38,7 +38,7 @@ static void maj_arrows(t_sh *shell, unsigned long c)
 	if (c == MAJ_LEFT)
 		maj_left_arrow(shell);
 	else if (c == MAJ_RIGTH)
-		maj_rigth_arrow(shell);
+		maj_right_arrow(shell);
 	else if (c == MAJ_UP)
 		maj_up_arrow(shell);
 	else if (c == MAJ_DOWN)
@@ -68,7 +68,7 @@ static char	get_line2(t_sh *shell, unsigned long buff)
 	if (buff == EOT && shell->j == -1)
 		ctrl_d(shell);
 	else if (buff == UP_ARROW || buff == DOWN_ARROW || buff == LEFT_ARROW || \
-		buff == RIGTH_ARROW || buff == HOME || buff == END)
+		buff == RIGHT_ARROW || buff == HOME || buff == END)
 		arrows(shell, buff);
 	else if (buff == CTRL_P && shell->saved)
 		past_data(shell);
@@ -78,6 +78,8 @@ static char	get_line2(t_sh *shell, unsigned long buff)
 	else if (buff == DELETE && shell->j > -1 && !(shell->pos.cursor.x == \
 		shell->pos.first.x && shell->pos.cursor.y == shell->pos.first.y))
 		delete_char(shell->command, &(shell->j), shell);
+	else if (buff == CTRL_R)
+		search_mode(shell);
 	else
 		return (0);
 	return (1);

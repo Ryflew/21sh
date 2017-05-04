@@ -42,8 +42,12 @@ FILES = add_char.c \
 				shell_loop.c \
 				split_quot.c \
 				termcap.c \
-				trim_input.c
+				trim_input.c \
+				history_search.c
 		#		setenv.c \#
+
+# SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
+#@ $(CC) $(CFLAGS) $(SRCS) -I$(INCLUDE_DIR) -o $(NAME) -L $(DIR_LIB) -l ft -ltermcap -g # debug
 
 OBJS = $(patsubst %.c, $(DIR_OBJ)%.o, $(FILES)) $(patsubst %.c, $(DIR_OBJ)%.o, $(MAIN))
 

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/04/02 03:41:30 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/04 18:37:50 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	lexer->string_operator = 0;
 	lexer->red = 0;
 	shell->lexer = lexer;
-	shell->current_token = get_next_token(shell->lexer);
+	// shell->current_token = get_next_token(shell->lexer);
 	
 }
 

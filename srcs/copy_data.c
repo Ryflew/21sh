@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 00:01:43 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/04/02 02:30:29 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/04 18:04:27 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	ctrl_maj_rigth(t_sh *shell, int current, char *tmp)
 	else
 		remove_char(shell, current, tmp, 1);
 	move_to(shell->pos.cursor.x, shell->pos.cursor.y);
-	rigth_arrow(shell);
+	right_arrow(shell);
 }
 
 static void	ctrl_maj_left(t_sh *shell, int current, char *tmp, char *tmp2)
