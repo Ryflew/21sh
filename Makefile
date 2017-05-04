@@ -18,7 +18,6 @@ MAIN =	main.c
 
 FILES = add_char.c \
 				arrows.c \
-				ast_build.c \
 				binary.c \
 				cd2.c \
 				check_brackets.c \
