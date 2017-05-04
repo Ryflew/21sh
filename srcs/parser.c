@@ -181,6 +181,27 @@ t_tree	*cmd_with_op(t_sh *sh)
 	sh->current_token = get_next_token(sh->lexer);
 }*/
 
+t_tree	*condition_operators(t_sh *sh)
+{
+	t_tree	*left;
+	t_tree	*right;
+	t_token	*token;
+
+	left = cmd_with_op(sh);
+	while (sh->current_token)
+	{
+	ft_putendl("step11");
+		token = sh->current_token;
+		if (token->type == OR)
+						eat(sh, OR);
+		else if (token->type == AND)
+						eat(sh, AND);
+		if ((right = cmd_with_op(sh)))
+			left = create_node(left, token, NULL, right);
+	}
+	return (left);
+}
+
 t_tree	*get_commands(t_sh *sh)
 {
 	t_tree	*left;
@@ -196,14 +217,14 @@ t_tree	*get_commands(t_sh *sh)
 		eat(sh, SCL);
 	}
 	ft_putendl("step3");
-	left = cmd_with_op(sh);
+	left = condition_operators(sh);
 	ft_putendl("step10");
 	while (sh->current_token && sh->current_token->type == SCL)
 	{
 	ft_putendl("step11");
 		token = sh->current_token;
 		eat(sh, SCL);
-		if ((right = cmd_with_op(sh)))
+		if ((right = condition_operators(sh)))
 			left = create_node(left, token, NULL, right);
 	}
 	return (left);
