@@ -1,14 +1,14 @@
 
 ----------- TODO --------------
 
-- Recherche dans l'historique avec Ctrl R
+- builtins :
+	- echo : Mettre en form POSIX
+	- cd : Rajouter -L -P
 - Completion
 - Norme
 
 ---------- BONUS --------------
 
-- Gérer la valeur de retour des programes et pouvoir l'afficher avec "echo $?"
-- Gérer les || et && dans la lignes de commandes
 - Resize
 
 ------------ BUG --------------

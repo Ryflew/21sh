@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:20:57 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/04 23:29:45 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/04 20:01:14 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,17 @@ char	**conv_env(t_env *env)
 	return (out);
 }
 
-// char	check_alpha(char *str)
-// {
-// 	while (*str)
-// 	{
-// 		if (!ft_isalpha(*str))
-// 		{
-// 			errexit("setenv", "Variable name must contain alphanumeric " \
-// 					"characters.");
-// 			return (1);
-// 		}
-// 		++str;
-// 	}
-// 	return (0);
-// }
+char	check_alpha(char *str)
+{
+	while (*str)
+	{
+		if (!ft_isalpha(*str))
+		{
+			errexit("setenv", "Variable name must contain alphanumeric " \
+					"characters.");
+			return (1);
+		}
+		++str;
+	}
+	return (0);
+}

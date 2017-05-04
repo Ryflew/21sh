@@ -27,6 +27,9 @@
 
 
 typedef struct termios	t_termios;
+typedef struct dirent	t_dirent;
+typedef struct stat		t_stat;
+
 
 typedef enum
 {
@@ -171,17 +174,27 @@ void				treat_second_prompt(char *string, char **op, e_state *state);
 void				go_core(char *command, t_env **env, t_sh *shell);
 void				manage_redirection(t_tree **tree);
 void				load_history(t_sh *shell, t_env *env);
+void				set_env(char **av, t_env **env);
+void				unset_env(char **av, t_env **env);
+void				del_env(t_env *todel);
+void				change_prompt(char *path, t_env *env);
 void				clear_line(t_sh *shell);
 void				get_tree_rec(t_tree **tree, char *left, char *right);
 char				add_char(char *command, int *j, t_sh *shell, char c);
 char				check_alpha(char *str);
 char				go_to_c(char **str, char c);
+char				cd_path_validity(char *path);
+char				is_absolute(char **av, t_env *env);
+char				is_binary(char *path);
+char				del_all_env(t_env **list);
+char				env_command(char **av, t_env *env);
 char				check_new_open(char *str, char *op, int *j);
 char				shell_loop2(char **command, char **last, e_state *state, char **op);
 char				stop_binary(int sig);
 char				check_new_open(char *str, char *op, int *j);
 char				check_quot(char *str, char *op, int *i, int *j);
 char				check_quot_brackets2(char *str, char *op, int i, int *j);
+char				*clear_quot(char *str);
 char				*check_quot_brackets(char *str, e_state *state);
 char				*get_with_tilde(char *path, t_env *env);
 char				*remove_useless_space(char *str);

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:35:32 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/18 17:15:37 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/04 20:10:43 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,28 @@ t_env	*new_env(char *str)
 	elem->next = NULL;
 	return (elem);
 }
+
+void	del_env(t_env *todel)
+{
+	free(todel->var_name);
+	free(todel->var_content);
+	free(todel->all);
+	free(todel);
+}
+
+char	del_all_env(t_env **list)
+{
+	t_env	*tmp;
+
+	while (*list)
+	{
+		tmp = (*list)->next;
+		del_env(*list);
+		*list = tmp;
+	}
+	return (1);
+}
+
 
 char		**ftp_list_to_tabstr(t_list *list)
 {

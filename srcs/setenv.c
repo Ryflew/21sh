@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 21:18:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/02/26 21:21:50 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/04 20:01:20 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	override_env(char **av, t_env **env)
 	free((*env)->all);
 	if (!*++av)
 		(*env)->var_content = ft_strdup("");
-	//else
-		//(*env)->var_content = clear_quot(*av);
+	else
+		(*env)->var_content = clear_quot(*av);
 	(*env)->all = ft_strstrjoin((*env)->var_name, "=", (*env)->var_content);
 }
 
@@ -74,7 +74,7 @@ static char	*get_tmp(char **av)
 		return (ft_strjoin(*av, "="));
 	else
 	{
-//		str = clear_quot(*(av + 1)); // a modifier dans le 21sh
+		str = clear_quot(*(av + 1)); // a modifier dans le 21sh
 		str = *(av + 1);
 		tmp = ft_strstrjoin(*av, "=", str);
 		free(str);

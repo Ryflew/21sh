@@ -19,18 +19,22 @@ MAIN =	main.c
 FILES = add_char.c \
 				arrows.c \
 				binary.c \
+				cd.c \
 				cd2.c \
 				check_brackets.c \
 				copy_data.c \
 				core.c \
 				cursor.c \
 				delete_char.c \
+				echo.c \
+				env.c \
 				env_utils.c \
 				exit.c \
 				ft_putcharint.c \
 				get_line.c \
 				history.c \
 				history2.c \
+				history_search.c \
 				init_termcap.c \
 				lexer.c \
 				list.c \
@@ -39,12 +43,13 @@ FILES = add_char.c \
 				redirection_parser.c \
 				second_prompt.c \
 				second_prompt2.c \
+				setenv.c \
 				shell_loop.c \
 				split_quot.c \
 				termcap.c \
 				trim_input.c \
-				history_search.c
-		#		setenv.c \#
+				unsetenv.c \
+				utils.c
 
 # SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 #@ $(CC) $(CFLAGS) $(SRCS) -I$(INCLUDE_DIR) -o $(NAME) -L $(DIR_LIB) -l ft -ltermcap -g # debug
