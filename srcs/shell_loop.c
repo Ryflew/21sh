@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:58:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/04 18:43:12 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/06 00:27:01 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ char		shell_loop2(char **command, char **last, e_state *state, char **op)
 void		shell_loop(t_sh *shell)
 {
 	char	*command;
-	//char	*tmp;
 
 	shell->op = NULL;
 	shell->total_command = NULL;
@@ -97,12 +96,6 @@ void		shell_loop(t_sh *shell)
 	while (1)
 	{
 		command = get_line(shell, 0, &(shell->state), shell->op);
-		shell->lexer->line = command;
-		shell->current_token = get_next_token(shell->lexer);
-		//tmp = command;
-		//command = remove_useless_space(command, !shell->op ? 0 : \
-//			shell->op[ft_strlen(shell->op) - 1]);
-		//free(tmp);
 		if (shell_loop2(&command, &(shell->total_command), \
 			&(shell->state), &(shell->op)))
 		{

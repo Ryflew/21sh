@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:35:32 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/04 20:10:43 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/06 00:09:02 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,15 @@ char		**list_to_tabstr(t_list *list)
 				tmp = list;
 				size = ft_list_size(list);
 				if (!(args = (char**)malloc(sizeof(char*) * (size + 1))))
-								ft_exiterror("ERROR: malloc failure\n", 0);
+					ft_exiterror("ERROR: malloc failure\n", 0);
 				args[size] = NULL;
 				i = 0;
+				char *yolo;
 				while (tmp)
 				{
-								args[i++] = (char*)tmp->data;
-								tmp = tmp->next;
+					args[i++] = (char*)tmp->data;
+					yolo = args[i - 1];
+					tmp = tmp->next;
 				}
 				return (args);
 }

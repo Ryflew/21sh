@@ -4,7 +4,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-MFLAGS = -lft -ltermcap -g
+MFLAGS = -lft -ltermcap
 
 INCLUDE_DIR = ./includes
 
@@ -52,8 +52,7 @@ FILES = add_char.c \
 				utils.c \
 				operators.c
 
-# SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
-		# @ $(CC) $(CFLAGS) $(SRCS) -I$(INCLUDE_DIR) -o $(NAME) -L $(DIR_LIB) -l ft -ltermcap -g # debug
+SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 
 OBJS = $(patsubst %.c, $(DIR_OBJ)%.o, $(FILES)) $(patsubst %.c, $(DIR_OBJ)%.o, $(MAIN))
 
@@ -85,12 +84,19 @@ clean:
 fclean: clean
 	@ make fclean -C $(DIR_LIB)
 	@ /bin/echo -n "Removing library:"
-	@ $(RM) $(NAME) 
+	@ $(RM) $(NAME)
+	@ $(RM) $(NAME).dSYM
 	@ echo " \033[32mdone\033[0m"
 
 re: fclean all
 
 src_msg:
 	@ echo " src functions:"
+
+debug: mkdirobj $(DEP_OBJ)
+		@ make -C $(DIR_LIB)
+		@ /bin/echo -n "Archiving object in $(NAME):"
+		@ $(CC) $(CFLAGS) $(SRCS) -I$(INCLUDE_DIR) -o $(NAME) -L $(DIR_LIB) -l ft -ltermcap -g # debug
+		@ echo " \033[32mAll done!\033[0m"
 
 .PHONY : all clean fclean re
