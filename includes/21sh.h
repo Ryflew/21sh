@@ -206,14 +206,14 @@ char				**trim_input(char *cmd);
 char				**split_quot_cmd(char *cmd);
 t_env				*new_env(char *str);
 t_env				*get_env(char **env);
-t_tree			*get_commands(t_sh *sh);
+t_tree			*commands_line_rules(t_sh *sh);
 int					is_string_op(int c);
 t_token			*get_next_token(t_lexer *lexer);
-t_tree			*redirection(t_sh *sh, t_tree *left);
+t_tree			*redirection_rules(t_sh *sh, t_tree *left);
 t_tree			*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *right);
 void				eat(t_sh *sh, e_token token);
-t_token			*text(t_sh *sh);
+t_token			*text_rules(t_sh *sh);
 void				init(t_sh *sh);
 char				**ftp_list_to_tabstr(t_list *list);
-
+void				operators(t_tree *node);
 #endif

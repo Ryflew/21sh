@@ -60,12 +60,15 @@ static void	add_to_history(t_sh *shell, char *command)
 
 void	browse_tree(t_tree *node, t_env **env, t_sh *shell)
 {
+	int	fd_in;
+
+	fd_in = 0;
 	if (node->left)
 		browse_tree(node->left, env, shell);
 	if (node->right)
 		browse_tree(node->right, env, shell);
 	if (node->token)
-					operators(node);
+			operators(node, &fd_in);
 	if (node->tokens)
 	{
 		if (go_builtins(node, env, shell)/* || \
@@ -86,7 +89,7 @@ void	go_core(char *command, t_env **env, t_sh *shell)
 	(void)env;
 	add_to_history(shell, command);
 	shell->lexer->line = command;
-	if (!(commands_tree = get_commands(shell)))
+	if (!(commands_tree = commands_line_rules(shell)))
 		return ;
 	browse_tree(commands_tree, env, shell);
 }
