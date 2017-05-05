@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 23:06:58 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/28 00:07:43 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/05 02:21:47 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ static char	go_builtins(t_tree *node, t_env **env, t_sh *shell)
 					;
 		//echo(ftp_list_to_tabstr(node->tokens), *env);
 	else if (!ft_strncmp(node->tokens->data, "cd", 2))
-					;
-		//cd(ftp_list_to_tabstr(node->tokens), *env, path);
+		cd(ftp_list_to_tabstr(node->tokens), *env, shell);
 	else if (!ft_strncmp(node->tokens->data, "setenv", 6))
 					;
 		//set_env(ftp_list_to_tabstr(node->tokens), env);

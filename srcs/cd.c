@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "21sh.h"
 
-void	change_path(char *path, t_env *env, char **prompt)
+static void	change_path(char *path, t_env *env, t_sh *shell)
 {
 	char	**av;
 	char	buff[4097];
@@ -26,13 +26,13 @@ void	change_path(char *path, t_env *env, char **prompt)
 	av[1] = ft_strdup("PWD");
 	av[2] = ft_strdup(getcwd(buff, 4097));
 	av[3] = NULL;
-	free(*prompt);
-	*prompt = get_with_tilde(getcwd(buff, 4097), env);
+	free(shell->prompt);
+	shell->prompt = get_with_tilde(getcwd(buff, 4097), env);
 	set_env(av, &env);
 	ft_strdelpp(&av);
 }
 
-void	print_cd_error(char *tmp, char *path)
+static void	print_cd_error(char *tmp, char *path)
 {
 	t_stat	file;
 
@@ -44,7 +44,7 @@ void	print_cd_error(char *tmp, char *path)
 		errexit(tmp, "Permission denied.");
 }
 
-void	cd_current_dir(char *path, t_env *env, char **prompt)
+static void	cd_current_dir(char *path, t_env *env, t_sh *shell)
 {
 	char	*cwd;
 	char	*tmp;
@@ -58,7 +58,7 @@ void	cd_current_dir(char *path, t_env *env, char **prompt)
 	if (cd_path_validity(path))
 	{
 		if (cwd)
-			change_path(path, env, prompt);
+			change_path(path, env, shell);
 		else
 			errexit("cd", "Absolute path too large.");
 		return ;
@@ -71,7 +71,7 @@ void	cd_current_dir(char *path, t_env *env, char **prompt)
 	free(tmp);
 }
 
-void	cd_tilde(char *str, t_env *env, char **prompt)
+static void	cd_tilde(char *str, t_env *env, t_sh *shell)
 {
 	char	*tmp;
 	char	*tmp2;
@@ -85,22 +85,22 @@ void	cd_tilde(char *str, t_env *env, char **prompt)
 		tmp2 = ft_strdup(tmp);
 	else
 		tmp2 = ft_strjoin(tmp, str + 1);
-	cd_current_dir(tmp2, env, prompt);
+	cd_current_dir(tmp2, env, shell);
 	free(tmp2);
 }
 
-void	cd(char **av, t_env *env, char **path)
+void	cd(char **av, t_env *env, t_sh *shell)
 {
 	if (!*++av || (*av[0] == '~'))
-		cd_tilde(*av, env, path);
+		cd_tilde(*av, env, shell);
 	else if (*(av + 1))
 		errexit("cd", "Too many arguments.");
 	else if (!ft_strcmp(*av, "-") && find_env(env, "OLDPWD"))
-		change_path(find_env(env, "OLDPWD"), env, path);
+		change_path(find_env(env, "OLDPWD"), env, shell);
 	else if (*av[0] == '/')
 	{
 		if (cd_path_validity(*av))
-			change_path(*av, env, path);
+			change_path(*av, env, shell);
 		else
 		{
 			if (!lstat(*av, NULL))
@@ -110,5 +110,5 @@ void	cd(char **av, t_env *env, char **path)
 		}
 	}
 	else
-		cd_current_dir(*av, env, path);
+		cd_current_dir(*av, env, shell);
 }

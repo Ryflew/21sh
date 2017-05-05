@@ -140,6 +140,7 @@ typedef	struct		s_sh
 
 /* -------------- Builtins --------------- */
 
+void				cd(char **av, t_env *env, t_sh *shell);
 void				exit_command(char **av, t_sh *shell);
 
 /* --------------- Others ---------------- */

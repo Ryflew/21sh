@@ -29,7 +29,7 @@ void	eat(t_sh *sh, e_token token)
 			ft_putendl("NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
 	}
 	else
-					ft_putendl("SYNTAX ERROR");
+		ft_putendl("SYNTAX ERROR");
 	//	syntax_error();
 }
 
