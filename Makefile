@@ -36,9 +36,9 @@ FILES = add_char.c \
 				history2.c \
 				history_search.c \
 				init_termcap.c \
-				lexer.c \
 				list.c \
 				maj_arrows.c \
+				lexer.c \
 				parser.c \
 				redirection_parser.c \
 				second_prompt.c \
@@ -49,7 +49,8 @@ FILES = add_char.c \
 				termcap.c \
 				trim_input.c \
 				unsetenv.c \
-				utils.c
+				utils.c \
+				operators.c
 
 # SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 		# @ $(CC) $(CFLAGS) $(SRCS) -I$(INCLUDE_DIR) -o $(NAME) -L $(DIR_LIB) -l ft -ltermcap -g # debug
