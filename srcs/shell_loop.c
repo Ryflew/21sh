@@ -97,6 +97,8 @@ void		shell_loop(t_sh *shell)
 	while (1)
 	{
 		command = get_line(shell, 0, &(shell->state), shell->op);
+		shell->lexer->line = command;
+		shell->current_token = get_next_token(shell->lexer);
 		//tmp = command;
 		//command = remove_useless_space(command, !shell->op ? 0 : \
 //			shell->op[ft_strlen(shell->op) - 1]);

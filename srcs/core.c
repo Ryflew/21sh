@@ -19,21 +19,21 @@ static char	go_builtins(t_tree *node, t_env **env, t_sh *shell)
 	(void)shell;
 	if (!ft_strncmp(node->tokens->data, "echo", 4))
 					;
-		//echo(ftp_list_to_tabstr(node->tokens), *env);
+		//echo(list_to_tabstr(node->tokens), *env);
 	else if (!ft_strncmp(node->tokens->data, "cd", 2))
-		cd(ftp_list_to_tabstr(node->tokens), *env, shell);
+		cd(list_to_tabstr(node->tokens), *env, shell);
 	else if (!ft_strncmp(node->tokens->data, "setenv", 6))
 					;
-		//set_env(ftp_list_to_tabstr(node->tokens), env);
+		//set_env(list_to_tabstr(node->tokens), env);
 	else if (!ft_strncmp(node->tokens->data, "unsetenv", 8))
 					;
-		//unset_env(ftp_list_to_tabstr(node->tokens), env);
+		//unset_env(list_to_tabstr(node->tokens), env);
 	else if (!ft_strncmp(node->tokens->data, "env", 3))
 					;
-		//env_command(ftp_list_to_tabstr(node->tokens), *env);
+		//env_command(list_to_tabstr(node->tokens), *env);
 	else if (!ft_strncmp(node->tokens->data, "exit", 4))
 					;
-	//	exit_command(ftp_list_to_tabstr(node->tokens), shell);
+	//	exit_command(list_to_tabstr(node->tokens), shell);
 	else
 		return (0);
 	return (1);

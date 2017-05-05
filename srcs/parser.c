@@ -175,12 +175,12 @@ t_tree	*cmd_with_op_rules(t_sh *sh)
 	return (left);
 }
 
-void		init(t_sh *sh)
+/*void		init(t_sh *sh)
 {
 	sh->lexer->string_operator = 0;
 	sh->lexer->red = 0;
 	sh->current_token = get_next_token(sh->lexer);
-}
+}*/
 
 t_tree	*condition_operators_rules(t_sh *sh)
 {

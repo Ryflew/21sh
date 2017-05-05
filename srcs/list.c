@@ -53,7 +53,7 @@ char	del_all_env(t_env **list)
 }
 
 
-char		**ftp_list_to_tabstr(t_list *list)
+char		**list_to_tabstr(t_list *list)
 {
 				t_list		*tmp;
 				char		**args;

@@ -214,6 +214,6 @@ t_tree			*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *righ
 void				eat(t_sh *sh, e_token token);
 t_token			*text_rules(t_sh *sh);
 void				init(t_sh *sh);
-char				**ftp_list_to_tabstr(t_list *list);
-void				operators(t_tree *node);
+char				**list_to_tabstr(t_list *list);
+void				operators(t_tree *node, int *fd_in);
 #endif
