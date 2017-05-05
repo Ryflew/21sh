@@ -65,9 +65,7 @@ void	browse_tree(t_tree *node, t_env **env, t_sh *shell)
 	if (node->right)
 		browse_tree(node->right, env, shell);
 	if (node->token)
-	{
-	
-	}
+					operators(node);
 	if (node->tokens)
 	{
 		if (go_builtins(node, env, shell)/* || \

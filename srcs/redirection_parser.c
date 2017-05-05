@@ -10,7 +10,7 @@ t_tree	*basic_red(t_sh *sh, e_token type, t_tree *left)
 		eat(sh, type);
 		if (!sh->current_token)
 						return (NULL);
-		return (create_node(left, token, NULL, create_node(NULL, text(sh), NULL, NULL)));
+		return (create_node(left, token, NULL, create_node(NULL, text_rules(sh), NULL, NULL)));
 	}
 	return (NULL);
 }
@@ -29,7 +29,7 @@ t_tree	*adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 		if (!sh->current_token)
 						return (NULL);
 		if (sh->current_token->type == WORD)
-			new_node = create_node(left, token, NULL, create_node(NULL, text(sh), NULL, NULL));
+			new_node = create_node(left, token, NULL, create_node(NULL, text_rules(sh), NULL, NULL));
 		else if (sh->current_token->type == FD)
 		{
 			new_node = create_node(left, token, NULL, NULL);
@@ -63,12 +63,12 @@ t_tree	*adv_red_backward(t_sh *sh, e_token type, t_tree *left)
 		if (sh->current_token->type == WORD)
 		{
 		ft_putendl("<& WORD");
-			new_node = create_node(left, token, NULL, create_node(NULL, text(sh), NULL, NULL));
+			new_node = create_node(left, token, NULL, create_node(NULL, text_rules(sh), NULL, NULL));
 		}
 		else if (is_string_op(*sh->current_token->value))
 		{
 		ft_putendl("<& TEXT");
-			new_node = create_node(left, token, NULL, create_node(NULL, text(sh), NULL, NULL));
+			new_node = create_node(left, token, NULL, create_node(NULL, text_rules(sh), NULL, NULL));
 		ft_putendl("ANOUKKKKKKKKKKKKKKKKKKKKKK <3 je crois que je t'aime");
 //		ft_putendl(sh->current_token->value);
 		}
@@ -83,7 +83,7 @@ t_tree	*adv_red_backward(t_sh *sh, e_token type, t_tree *left)
 	return (new_node);
 }
 
-t_tree	*redirection(t_sh *sh, t_tree *left)
+t_tree	*redirection_rules(t_sh *sh, t_tree *left)
 {
 	t_token	*token;
 	t_tree	*new_node;
