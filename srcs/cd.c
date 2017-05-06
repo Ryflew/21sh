@@ -9,15 +9,19 @@ static void	change_path(char *path, t_env *env, t_sh *shell)
 	char	buff[4097];
 	char	*tmp;
 
-	if (!(av = (char**)malloc(sizeof(char*) * 4)))
-		exit(EXIT_FAILURE);
-	av[0] = ft_strdup("setenv");
-	av[1] = ft_strdup("OLDPWD");
-	av[2] = ft_strdup(getcwd(buff, 4097));
-	av[3] = NULL;
+	tmp = getcwd(buff, 4097);
+	if (cd_path_validity(tmp))
+	{
+		if (!(av = (char**)malloc(sizeof(char*) * 4)))
+			exit(EXIT_FAILURE);
+		av[0] = ft_strdup("setenv");
+		av[1] = ft_strdup("OLDPWD");
+		av[2] = ft_strdup(tmp);
+		av[3] = NULL;
+		set_env(av, &env);
+		ft_strdelpp(&av);
+	}
 	tmp = ft_strdup(path);
-	set_env(av, &env);
-	ft_strdelpp(&av);
 	change_prompt(tmp, env);
 	free(tmp);
 	if (!(av = (char**)malloc(sizeof(char*) * 4)))
@@ -50,25 +54,24 @@ static void	cd_current_dir(char *path, t_env *env, t_sh *shell)
 	char	*tmp;
 	char	buff[4097];
 
-	if (!(cwd = getcwd(buff, 4097)))
+	if (*path == '/' || (cwd = getcwd(buff, 4097))) // edit pour pouvoir faire .. quand on del un dir
 	{
-		errexit(path, "Permission denied.");
-		return ;
-	}
-	if (cd_path_validity(path))
-	{
-		if (cwd)
+		if (cd_path_validity(path))
 			change_path(path, env, shell);
 		else
-			errexit("cd", "Absolute path too large.");
-		return ;
+		{
+			if (cwd && *path != '/')
+			{
+				tmp = ft_strstrjoin(cwd, "/", path);
+				print_cd_error(tmp, path);
+				free(tmp);
+			}
+			else
+				print_cd_error(path, path);
+		}
 	}
-	if (*path == '/')
-		tmp = ft_strdup(path);
 	else
-		tmp = ft_strstrjoin(cwd, "/", path);
-	print_cd_error(tmp, path);
-	free(tmp);
+		print_cd_error(path, path);
 }
 
 static void	cd_tilde(char *str, t_env *env, t_sh *shell)
@@ -91,12 +94,18 @@ static void	cd_tilde(char *str, t_env *env, t_sh *shell)
 
 void	cd(char **av, t_env *env, t_sh *shell)
 {
+	char	*tmp;
+
 	if (!*++av || (*av[0] == '~'))
 		cd_tilde(*av, env, shell);
 	else if (*(av + 1))
 		errexit("cd", "Too many arguments.");
 	else if (!ft_strcmp(*av, "-") && find_env(env, "OLDPWD"))
-		change_path(find_env(env, "OLDPWD"), env, shell);
+	{
+		tmp = ft_strdup(find_env(env, "OLDPWD"));
+		change_path(tmp, env, shell);
+		free(tmp);
+	}
 	else if (*av[0] == '/')
 	{
 		if (cd_path_validity(*av))

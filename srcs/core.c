@@ -7,21 +7,21 @@ static char go_builtins(char **cmd, t_env **env, t_sh *shell)
 	(void)shell;
 	if (!ft_strncmp(cmd[0], "echo", 4))
 		;
-	//echo(cmd, *env);
+	// echo(cmd, *env);
 	else if (!ft_strncmp(cmd[0], "cd", 2))
 		cd(cmd, *env, shell);
 	else if (!ft_strncmp(cmd[0], "setenv", 6))
-		;
-	//set_env(cmd, *env);
+	set_env(cmd, env);
+		// ;
 	else if (!ft_strncmp(cmd[0], "unsetenv", 8))
-		;
-	//unset_env(cmd, *env);
+	unset_env(cmd, env);
+		// ;
 	else if (!ft_strncmp(cmd[0], "env", 3))
-		;
-	//env_command(cmd, *env);
+	env_command(cmd, *env);
+		// ;
 	else if (!ft_strncmp(cmd[0], "exit", 4))
-		;
-	//	exit_command(cmd, shell);
+		exit_command(cmd, shell);
+		// ;
 	else
 		return (0);
 	return (1);

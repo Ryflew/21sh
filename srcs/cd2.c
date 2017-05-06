@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:54:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/04 20:20:48 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/06 19:43:13 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ void	change_prompt(char *path, t_env *env)
 			change_prompt2(&path2, path, &tmp);
 		treat_current(tmp);
 		free(tmp);
-		change_prompt(path2, env);
+		if (ft_strlen(path2) > 0)
+			change_prompt(path2, env);
 		free(path2);
 	}
 }

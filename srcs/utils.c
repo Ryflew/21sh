@@ -9,7 +9,7 @@ char	cd_path_validity(char *path)
 {
 	DIR		*dir;
 
-	if (!(dir = opendir(path)))
+	if (!path || !(dir = opendir(path)))
 		return (0);
 	closedir(dir);
 	return (1);
