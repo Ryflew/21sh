@@ -5,28 +5,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-char	*clear_quot(char *str)
-{
-	int		i;
-	int		count;
-	char	*out;
-
-	i = -1;
-	count = 0;
-	while (str[++i])
-		if (str[i] != 34)
-			++count;
-	if (!(out = (char*)malloc(sizeof(char) * (count + 1))))
-		exit(EXIT_FAILURE);
-	i = -1;
-	count = -1;
-	while (str[++i])
-		if (str[i] != 34)
-			out[++count] = str[i];
-	out[++count] = '\0';
-	return (out);
-}
-
 char	cd_path_validity(char *path)
 {
 	DIR		*dir;
@@ -54,4 +32,27 @@ char	is_binary(char *path)
 	}
 	close(fd);
 	return (type);
+}
+
+char *clear_quot(char *str)
+{
+	int i;
+	int count;
+	char *out;
+
+	i = -1;
+	count = 0;
+	while (str[++i])
+		if (str[i] != '"' && str[i] != '\'' && str[i] != '`')
+			++count;
+	if (!(out = (char *)malloc(sizeof(char) * (count + 1))))
+		exit(EXIT_FAILURE);
+	i = -1;
+	count = -1;
+	while (str[++i])
+		if (str[i] != '"' && str[i] != '\'' && str[i] != '`')
+			out[++count] = str[i];
+	out[++count] = '\0';
+	free(str);
+	return (out);
 }

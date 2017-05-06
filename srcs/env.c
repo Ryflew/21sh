@@ -34,7 +34,6 @@ t_env	*cpy_env(t_env *env)
 void	add_new_var(char ***av, t_env **env)
 {
 	char	**new_av;
-	char	*tmp;
 	int		i;
 
 	if (**av[0] == '=')
@@ -47,9 +46,7 @@ void	add_new_var(char ***av, t_env **env)
 		exit(EXIT_FAILURE);
 	new_av[0] = ft_strdup("unsetenv");
 	new_av[1] = ft_strsub(**av, 0, ft_strchr(**av, '=') - **av);
-	tmp = clear_quot(ft_strchr(**av, '=') + 1);
-	new_av[2] = ft_strdup(tmp);
-	free(tmp);
+	new_av[2] = ft_strdup(ft_strchr(**av, '=') + 1);
 	new_av[3] = NULL;
 	set_env(new_av, env);
 	ft_strdelpp(&new_av);
