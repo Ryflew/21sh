@@ -1,39 +1,27 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   core.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/18 23:06:58 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/06 00:33:07 by vdarmaya         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdlib.h>
 #include "21sh.h"
 
-static char go_builtins(t_tree *node, t_env **env, t_sh *shell)
+static char go_builtins(char **cmd, t_env **env, t_sh *shell)
 {
 	(void)env;
 	(void)shell;
-	if (!ft_strncmp(node->tokens->data, "echo", 4))
+	if (!ft_strncmp(cmd[0], "echo", 4))
 		;
-	//echo(list_to_tabstr(node->tokens), *env);
-	else if (!ft_strncmp(node->tokens->data, "cd", 2))
-		cd(list_to_tabstr(node->tokens), *env, shell);
-	else if (!ft_strncmp(node->tokens->data, "setenv", 6))
+	//echo(cmd, *env);
+	else if (!ft_strncmp(cmd[0], "cd", 2))
+		cd(cmd, *env, shell);
+	else if (!ft_strncmp(cmd[0], "setenv", 6))
 		;
-	//set_env(list_to_tabstr(node->tokens), env);
-	else if (!ft_strncmp(node->tokens->data, "unsetenv", 8))
+	//set_env(cmd, *env);
+	else if (!ft_strncmp(cmd[0], "unsetenv", 8))
 		;
-	//unset_env(list_to_tabstr(node->tokens), env);
-	else if (!ft_strncmp(node->tokens->data, "env", 3))
+	//unset_env(cmd, *env);
+	else if (!ft_strncmp(cmd[0], "env", 3))
 		;
-	//env_command(list_to_tabstr(node->tokens), *env);
-	else if (!ft_strncmp(node->tokens->data, "exit", 4))
+	//env_command(cmd, *env);
+	else if (!ft_strncmp(cmd[0], "exit", 4))
 		;
-	//	exit_command(list_to_tabstr(node->tokens), shell);
+	//	exit_command(cmd, shell);
 	else
 		return (0);
 	return (1);
@@ -58,28 +46,32 @@ static void add_to_history(t_sh *shell, char *command)
 	shell->history_pos = -1;
 }
 
-void browse_tree(t_tree *node, t_env **env, t_sh *shell)
+void	exec_cmds(char **cmd, t_env **env, t_sh *shell)
+{
+	if (go_builtins(cmd, env, shell) || execve(cmd[0], cmd, conv_env(*env)))
+		;
+	else
+	{
+		ft_putstr(cmd[0]);
+		ft_putendl(": Command not found.");
+	}
+}
+
+
+void browse_tree(t_tree *node, t_env **env, t_sh *shell, e_token parent_type)
 {
 	int fd_in;
 
 	fd_in = 0;
+	node->parent_type = parent_type;
 	if (node->left)
-		browse_tree(node->left, env, shell);
+		browse_tree(node->left, env, shell, node->token->type);
 	if (node->right)
-		browse_tree(node->right, env, shell);
+		browse_tree(node->right, env, shell, node->token->type);
 	if (node->token)
-		operators(node, &fd_in);
-	if (node->tokens)
-	{
-		if (go_builtins(node, env, shell) /* || \
-		go_path(commands_tree[i], *env)*/)
-			;
-		else
-		{
-			ft_putstr(node->tokens->data);
-			ft_putendl(": Command not found.");
-		}
-	}
+		operators(node, &fd_in, env, shell);
+	if (node->tokens && node->parent_type != PIPE)
+		exec_cmds(list_to_tabstr(node->tokens), env, shell);
 }
 
 void go_core(char *command, t_env **env, t_sh *shell)
@@ -92,5 +84,5 @@ void go_core(char *command, t_env **env, t_sh *shell)
 	shell->current_token = get_next_token(shell->lexer);
 	if (!(commands_tree = commands_line_rules(shell)))
 		return;
-	browse_tree(commands_tree, env, shell);
+	browse_tree(commands_tree, env, shell, NONE);
 }
