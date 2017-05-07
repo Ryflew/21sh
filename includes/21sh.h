@@ -106,6 +106,7 @@ typedef struct		s_tree
 	struct s_tree	*left;
 	struct s_tree	*right;
 	e_token			parent_type;
+	struct s_tree	*parent;
 }					t_tree;
 
 typedef struct		s_pos
@@ -193,7 +194,7 @@ char				add_char(char *command, int *j, t_sh *shell, char c);
 char				check_alpha(char *str);
 char				go_to_c(char **str, char c);
 char				cd_path_validity(char *path);
-char				is_absolute(char **av, t_env *env);
+char				is_absolute(char **av, t_env *env, char pipe);
 char				is_binary(char *path);
 char				del_all_env(t_env **list);
 char				env_command(char **av, t_env *env);
@@ -224,8 +225,8 @@ t_token			*text_rules(t_sh *sh);
 void				init(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
 void				operators(t_tree *node, int *fd_in, t_env **env, t_sh *shell);
-char				exec_cmds(char **cmd, t_env **env, t_sh *shell);
-char				run_binary(char *path, char **av, t_env *env);
-char				get_path(char **cmd, t_env *env);
+char				exec_cmds(char **cmd, t_env **env, t_sh *shell, char pipe);
+char				run_binary(char *path, char **av, t_env *env, char pipe);
+char				get_path(char **cmd, t_env *env, char pipe);
 
 #endif

@@ -38,13 +38,13 @@ static char	check_path(char *command, char *path)
 		  return (0);
 }
 
-char			get_path(char **cmd, t_env *env)
+char			get_path(char **cmd, t_env *env, char pipe)
 {
 		  char	*content;
 		  char	**tmp;
 		  int		i;
 
-		  if (is_absolute(cmd, env))
+		  if (is_absolute(cmd, env, pipe))
 					 return (1);
 		  if (!(content = find_env(env, "PATH")))
 					 return (0);
@@ -57,7 +57,7 @@ char			get_path(char **cmd, t_env *env)
 		  {
 					 if (check_path(content, tmp[i]))
 					 {
-								run_binary(ft_strstrjoin(tmp[i], "/", content), cmd, env);
+								run_binary(ft_strstrjoin(tmp[i], "/", content), cmd, env, pipe);
 								ft_strdelpp(&tmp);
 								return (1);
 					 }

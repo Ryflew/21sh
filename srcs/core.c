@@ -46,13 +46,13 @@ static void add_to_history(t_sh *shell, char *command)
 	shell->history_pos = -1;
 }
 
-char	exec_cmds(char **cmd, t_env **env, t_sh *shell)
+char	exec_cmds(char **cmd, t_env **env, t_sh *shell, char pipe)
 {
 	char	ret;
 
 	if ((ret = go_builtins(cmd, env, shell)) == -1)
 	{
-	 	if (!(ret = get_path(cmd, *env)))
+	 	if (!(ret = get_path(cmd, *env, pipe)))
 		{
 			ft_putstr(cmd[0]);
 			ft_putendl(": Command not found.");
@@ -62,22 +62,20 @@ char	exec_cmds(char **cmd, t_env **env, t_sh *shell)
 }
 
 
-void browse_tree(t_tree *node, t_env **env, t_sh *shell, e_token parent_type)
+void browse_tree(t_tree *node, t_env **env, t_sh *shell, t_tree *parent)
 {
 	int fd_in;
 
 	fd_in = -1;
-	node->parent_type = parent_type;
-	if (node->token)
-					ft_putendl(node->token->value);
+	node->parent = parent;
 	if (node->left)
-		browse_tree(node->left, env, shell, node->token->type);
+		browse_tree(node->left, env, shell, node);
 	if (node->right)
-		browse_tree(node->right, env, shell, node->token->type);
+		browse_tree(node->right, env, shell, node);
 	if (node->token)
 		operators(node, &fd_in, env, shell);
-	if (node->tokens && node->parent_type != PIPE && node->parent_type != AND && node->parent_type != OR)
-		exec_cmds(list_to_tabstr(node->tokens), env, shell);
+	if (node->tokens && node->parent->token->type != PIPE && node->parent->token->type != AND && node->parent->token->type != OR)
+		exec_cmds(list_to_tabstr(node->tokens), env, shell, 0);
 }
 
 void go_core(char *command, t_env **env, t_sh *shell)
@@ -90,5 +88,5 @@ void go_core(char *command, t_env **env, t_sh *shell)
 	shell->current_token = get_next_token(shell->lexer);
 	if (!(commands_tree = commands_line_rules(shell)))
 		return;
-	browse_tree(commands_tree, env, shell, NONE);
+	browse_tree(commands_tree, env, shell, NULL);
 }

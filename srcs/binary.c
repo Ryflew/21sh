@@ -31,30 +31,40 @@ char	stop_binary(int sig)
 	return (0);
 }
 
-char	run_binary(char *path, char **av, t_env *env)
+char	run_binary(char *path, char **av, t_env *env, char pipe)
 {
 	char	**envi;
 
-	g_father = fork();
-	if (g_father > 0)
+	if (!pipe)
 	{
-		wait(NULL);
+		g_father = fork();
+		if (g_father > 0)
+		{
+			wait(NULL);
+			g_father = -1;
+		}
+		else if (g_father == 0)
+		{
+			envi = conv_env(env);
+			execve(path, av, envi);
+			if (envi)
+				ft_strdelpp(&envi);
+			exit(EXIT_SUCCESS);
+		}
 		g_father = -1;
 	}
-	else if (g_father == 0)
+	else
 	{
 		envi = conv_env(env);
 		execve(path, av, envi);
 		if (envi)
 			ft_strdelpp(&envi);
-		exit(EXIT_SUCCESS);
 	}
-	g_father = -1;
-	//free(path);
+	free(path);
 	return (1);
 }
 
-char	current_binary(char **av, t_env *env)
+static char	current_binary(char **av, t_env *env, char pipe)
 {
 	int		i;
 	char	*str;
@@ -76,12 +86,12 @@ char	current_binary(char **av, t_env *env)
 	while (av[++i])
 		tab[i] = ft_strdup(av[i]);
 	tab[i] = NULL;
-	i = is_absolute(tab, env);
+	i = is_absolute(tab, env, pipe);
 	ft_strdelpp(&tab);
 	return (i);
 }
 
-char	is_absolute(char **av, t_env *env)
+char	is_absolute(char **av, t_env *env, char pipe)
 {
 	t_stat		file;
 
@@ -90,7 +100,7 @@ char	is_absolute(char **av, t_env *env)
 		if (!lstat(*av, &file) && S_ISREG(file.st_mode) && is_binary(*av) &&
 			!access(*av, R_OK | X_OK))
 		{
-			run_binary(ft_strdup(*av), av, env);
+			run_binary(ft_strdup(*av), av, env, pipe);
 			return (1);
 		}
 		else if (access(*av, F_OK) == -1)
@@ -105,6 +115,6 @@ char	is_absolute(char **av, t_env *env)
 		}
 	}
 	else if (**av && **av == '.' && *(*av + 1) && *(*av + 1) == '/')
-		return (current_binary(av, env));
+		return (current_binary(av, env, pipe));
 	return (0);
 }
