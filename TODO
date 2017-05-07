@@ -3,8 +3,6 @@
 
 - builtins :
 	- echo : Mettre en form POSIX
-	- cd : Rajouter -L -P
-	- env : Rajouter -P -S -v
 - Completion
 - Norme
 

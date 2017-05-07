@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:35:32 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/06 00:09:02 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/07 04:43:51 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,21 @@ char	del_all_env(t_env **list)
 
 char		**list_to_tabstr(t_list *list)
 {
-				t_list		*tmp;
-				char		**args;
-				uint32_t	size;
-				uint32_t	i;
+	t_list		*tmp;
+	char		**args;
+	uint32_t	size;
+	uint32_t	i;
 
-				tmp = list;
-				size = ft_list_size(list);
-				if (!(args = (char**)malloc(sizeof(char*) * (size + 1))))
-					ft_exiterror("ERROR: malloc failure\n", 0);
-				args[size] = NULL;
-				i = 0;
-				char *yolo;
-				while (tmp)
-				{
-					args[i++] = (char*)tmp->data;
-					yolo = args[i - 1];
-					tmp = tmp->next;
-				}
-				return (args);
+	tmp = list;
+	size = ft_list_size(list);
+	if (!(args = (char**)malloc(sizeof(char*) * (size + 1))))
+		ft_exiterror("ERROR: malloc failure\n", 0);
+	args[size] = NULL;
+	i = 0;
+	while (tmp)
+	{
+		args[i++] = (char*)tmp->data;
+		tmp = tmp->next;
+	}
+	return (args);
 }

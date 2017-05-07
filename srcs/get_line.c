@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/06 02:38:47 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/07 04:48:30 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
 	shell->j = -1;
-	// return (ft_strdup("env yolo=\"bite\" env"));
+	// return (ft_strdup("cd -"));
 	while (1)
 	{
 		buff = 0;
