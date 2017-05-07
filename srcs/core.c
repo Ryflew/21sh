@@ -74,7 +74,7 @@ void browse_tree(t_tree *node, t_env **env, t_sh *shell, t_tree *parent)
 		browse_tree(node->right, env, shell, node);
 	if (node->token)
 		operators(node, &fd_in, env, shell);
-	if (node->tokens && node->parent->token->type != PIPE && node->parent->token->type != AND && node->parent->token->type != OR)
+	if (node->tokens && (!node->parent || (node->parent->token->type != PIPE && node->parent->token->type != AND && node->parent->token->type != OR)))
 		exec_cmds(list_to_tabstr(node->tokens), env, shell, 0);
 }
 
