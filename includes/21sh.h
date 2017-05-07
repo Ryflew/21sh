@@ -224,7 +224,8 @@ t_token			*text_rules(t_sh *sh);
 void				init(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
 void				operators(t_tree *node, int *fd_in, t_env **env, t_sh *shell);
-void				exec_cmds(char **cmd, t_env **env, t_sh *shell);
+char				exec_cmds(char **cmd, t_env **env, t_sh *shell);
 char				run_binary(char *path, char **av, t_env *env);
+char				get_path(char **cmd, t_env *env);
 
 #endif

@@ -34,9 +34,8 @@ void manage_and(t_env **env, t_sh *shell, t_tree *node, int *fd_in)
 			manage_pipe(env, shell, list_to_tabstr(node->right->tokens), fd_in);
 	}
 	else
-		;
-		//if (run_binary(, list_to_tabstr(node->left->tokens), *env)) // miss first param -> char *path
-		//	run_binary(, list_to_tabstr(node->right->tokens), *env);
+		if (exec_cmds(list_to_tabstr(node->left->tokens), env, shell))
+			exec_cmds(list_to_tabstr(node->right->tokens), env, shell);
 }
 
 void manage_or(t_env **env, t_sh *shell, t_tree *node, int *fd_in)
@@ -47,9 +46,8 @@ void manage_or(t_env **env, t_sh *shell, t_tree *node, int *fd_in)
 			manage_pipe(env, shell, list_to_tabstr(node->right->tokens), fd_in);
 	}
 	else
-		;
-		//if (!run_binary(, list_to_tabstr(node->left->tokens), *env)) // miss first param -> char *path
-		//	run_binary(, list_to_tabstr(node->right->tokens), *env);
+		if (!exec_cmds(list_to_tabstr(node->left->tokens), env, shell))
+			exec_cmds(list_to_tabstr(node->right->tokens), env, shell);
 }
 
 void operators(t_tree *node, int *fd_in, t_env **env, t_sh *shell)

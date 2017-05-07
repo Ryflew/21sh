@@ -1,3 +1,7 @@
+#include "21sh.h"
+#include <sys/stat.h>
+#include <dirent.h>
+
 static char	check_path_end(char **tmp, DIR **dir)
 {
 		  free(*tmp);
@@ -34,18 +38,18 @@ static char	check_path(char *command, char *path)
 		  return (0);
 }
 
-char			go_path(char **av, t_env *env)
+char			get_path(char **cmd, t_env *env)
 {
 		  char	*content;
 		  char	**tmp;
 		  int		i;
 
-		  if (is_absolute(av, env))
+		  if (is_absolute(cmd, env))
 					 return (1);
 		  if (!(content = find_env(env, "PATH")))
 					 return (0);
 		  tmp = ft_strsplit(content, ':');
-		  content = av[0];
+		  content = cmd[0];
 		  if (ft_strrchr(content, '/'))
 					 content = ft_strrchr(content, '/') + 1;
 		  i = -1;
@@ -53,7 +57,7 @@ char			go_path(char **av, t_env *env)
 		  {
 					 if (check_path(content, tmp[i]))
 					 {
-								run_binary(ft_strstrjoin(tmp[i], "/", content), av, env);
+								run_binary(ft_strstrjoin(tmp[i], "/", content), cmd, env);
 								ft_strdelpp(&tmp);
 								return (1);
 					 }
