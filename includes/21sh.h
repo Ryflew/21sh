@@ -76,6 +76,13 @@ typedef struct		s_env
 	struct s_env	*next;
 }					t_env;
 
+typedef struct		s_cd
+{
+	char			is_P;
+	char			is_L;
+	char			is_oldpwd;
+}					t_cd;
+
 typedef	struct		s_lexer
 {
 	char			*line;
@@ -179,7 +186,7 @@ void				load_history(t_sh *shell, t_env *env);
 void				set_env(char **av, t_env **env);
 void				unset_env(char **av, t_env **env);
 void				del_env(t_env *todel);
-void				change_prompt(char *path, t_env *env);
+void				change_prompt(char *path, t_env *env, char **new_prompt, t_cd *opt);
 void				clear_line(t_sh *shell);
 void				get_tree_rec(t_tree **tree, char *left, char *right);
 char				add_char(char *command, int *j, t_sh *shell, char c);

@@ -6,14 +6,14 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:54:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/06 19:43:13 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/07 03:35:21 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "21sh.h"
 
-static void	treat_current2(void)
+static void	cd_dot_dot(char **new_prompt)
 {
 	char	*tmp;
 	char	*cwd;
@@ -26,12 +26,16 @@ static void	treat_current2(void)
 			tmp = ft_strdup("/");
 		else
 			tmp = ft_strsub(cwd, 0, ft_strrchr(cwd, '/') - cwd);
+		ft_strdel(new_prompt);
+		*new_prompt = ft_strdup(tmp);
 		chdir(tmp);
 		free(tmp);
 	}
+	else
+		*new_prompt = ft_strdup(getcwd(buff, 4097));
 }
 
-static void	treat_current(char *path)
+static void	treat_current(char *path, char **new_prompt, t_cd *opt)
 {
 	char	*tmp;
 	char	*cwd;
@@ -40,9 +44,13 @@ static void	treat_current(char *path)
 	if (!ft_strcmp(path, "."))
 		return ;
 	else if (!ft_strcmp(path, ".."))
-		treat_current2();
+		cd_dot_dot(new_prompt);
 	else if (*path == '/')
+	{
 		chdir(path);
+		ft_strdel(new_prompt);
+		*new_prompt = ft_strdup(path);
+	}
 	else
 	{
 		cwd = getcwd(buff, 4097);
@@ -50,8 +58,20 @@ static void	treat_current(char *path)
 			tmp = ft_strjoin(cwd, path);
 		else
 			tmp = ft_strstrjoin(cwd, "/", path);
-		if (!access(tmp, R_OK | R_OK))
+		if (opt->is_P && !access(tmp, R_OK | R_OK))
+		{
 			chdir(tmp);
+			ft_strdel(new_prompt);
+			*new_prompt = ft_strdup(getcwd(buff, 4097));
+		}
+		else if (!access(tmp, R_OK | R_OK))
+		{
+			ft_strdel(new_prompt);
+			*new_prompt = ft_strdup(tmp);
+			chdir(tmp);
+		}
+		else
+			errexit("cd", "permission denied.");
 		free(tmp);
 	}
 }
@@ -68,13 +88,13 @@ static void	change_prompt2(char **path2, char *path, char **tmp)
 	*path2 = ft_strsub(path, i + 1, ft_strlen(path) - i - 1);
 }
 
-void	change_prompt(char *path, t_env *env)
+void	change_prompt(char *path, t_env *env, char **new_prompt, t_cd *opt)
 {
 	char	*tmp;
 	char	*path2;
 
 	if (!ft_strchr(path, '/') || !ft_strcmp(path, "/"))
-		treat_current(path);
+		treat_current(path, new_prompt, opt);
 	else
 	{
 		if (*path == '/' && !ft_strchr(path + 1, '/'))
@@ -84,10 +104,10 @@ void	change_prompt(char *path, t_env *env)
 		}
 		else
 			change_prompt2(&path2, path, &tmp);
-		treat_current(tmp);
+		treat_current(tmp, new_prompt, opt);
 		free(tmp);
 		if (ft_strlen(path2) > 0)
-			change_prompt(path2, env);
+			change_prompt(path2, env, new_prompt, opt);
 		free(path2);
 	}
 }
