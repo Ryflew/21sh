@@ -50,7 +50,8 @@ FILES = add_char.c \
 				trim_input.c \
 				unsetenv.c \
 				utils.c \
-				operators.c
+				operators.c \
+				path.c
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 
