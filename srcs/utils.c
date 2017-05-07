@@ -19,19 +19,20 @@ char	is_binary(char *path)
 {
 	int		fd;
 	char	buff[300];
-	char	type;
 	int		bytes;
 
-	type = 0;
 	fd = open(path, O_RDONLY);
 	if ((bytes = read(fd, buff, 299)) > 0)
 	{
 		while (--bytes)
 			if (buff[bytes] == '\0')
-				type = 1;
+			{
+				close(fd);
+				return (1);
+			}
 	}
 	close(fd);
-	return (type);
+	return (0);
 }
 
 char *clear_quot(char *str)

@@ -21,9 +21,16 @@ static char go_builtins(char **cmd, t_env **env, t_sh *shell)
 	//env_command(cmd, *env);
 	else if (!ft_strncmp(cmd[0], "exit", 4))
 		;
+	else if (ft_strcmp(cmd[0], "true"))
+		return (1);
+	else if (ft_strcmp(cmd[0], "false"))
+		return (1);
 	//	exit_command(cmd, shell);
 	else
-		return (0);
+	{
+		ft_putendl("not a builtin");
+		return (-1);
+	}
 	return (1);
 }
 
@@ -48,8 +55,8 @@ static void add_to_history(t_sh *shell, char *command)
 
 void	exec_cmds(char **cmd, t_env **env, t_sh *shell)
 {
-	if (go_builtins(cmd, env, shell) || execve(cmd[0], cmd, conv_env(*env)))
-		;
+	if (go_builtins(cmd, env, shell))
+		run_binary(cmd[0], cmd, *env);
 	else
 	{
 		ft_putstr(cmd[0]);
@@ -64,6 +71,8 @@ void browse_tree(t_tree *node, t_env **env, t_sh *shell, e_token parent_type)
 
 	fd_in = 0;
 	node->parent_type = parent_type;
+	if (node->token)
+					ft_putendl(node->token->value);
 	if (node->left)
 		browse_tree(node->left, env, shell, node->token->type);
 	if (node->right)
@@ -71,7 +80,10 @@ void browse_tree(t_tree *node, t_env **env, t_sh *shell, e_token parent_type)
 	if (node->token)
 		operators(node, &fd_in, env, shell);
 	if (node->tokens && node->parent_type != PIPE)
+	{
+		//ft_putendl("simple command");
 		exec_cmds(list_to_tabstr(node->tokens), env, shell);
+	}
 }
 
 void go_core(char *command, t_env **env, t_sh *shell)

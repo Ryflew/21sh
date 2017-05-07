@@ -31,7 +31,7 @@ char	stop_binary(int sig)
 	return (0);
 }
 
-void	run_binary(char *path, char **av, t_env *env)
+char	run_binary(char *path, char **av, t_env *env)
 {
 	char	**envi;
 
@@ -50,7 +50,8 @@ void	run_binary(char *path, char **av, t_env *env)
 		exit(EXIT_SUCCESS);
 	}
 	g_father = -1;
-	free(path);
+	//free(path);
+	return (1);
 }
 
 char	current_binary(char **av, t_env *env)

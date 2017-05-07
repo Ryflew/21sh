@@ -16,7 +16,7 @@ int is_string_op(int c)
 
 void skip_whitespace(t_lexer *lexer)
 {
-	ft_putendl("blank");
+	//ft_putendl("blank");
 	while (*lexer->line && ft_isblank(*lexer->line))
 		++lexer->line;
 }
@@ -51,7 +51,7 @@ t_token *lex_str(t_lexer *lexer)
 
 	i = 0;
 	token = NULL;
-	ft_putendl("STR");
+	//ft_putendl("STR");
 	while ((lexer->line)[i] && (lexer->line)[i] != lexer->string_operator)
 		++i;
 	token = new_token(lexer, TEXT, ft_strsub(lexer->line, 0, i));
@@ -98,7 +98,7 @@ t_token *lex_word(t_lexer *lexer)
 	string_op = 0;
 	i = 0;
 	token = NULL;
-	ft_putendl("WORD");
+	//ft_putendl("WORD");
 	while (((lexer->line)[i] && !is_operator((lexer->line)[i], (lexer->line)[i + 1]) && !ft_isblank((lexer->line)[i])) || (string_op && (lexer->line)[i]))
 		{
 			if (is_string_op((lexer->line)[i]))
@@ -123,10 +123,10 @@ t_token *get_next_token(t_lexer *lexer)
 	while (*lexer->line)
 	{
 		token = NULL;
-		ft_putendl(lexer->line);
-		ft_putstr("|");
-		ft_putchar(*lexer->line);
-		ft_putstr("|\n");
+		//ft_putendl(lexer->line);
+		//ft_putstr("|");
+		//ft_putchar(*lexer->line);
+		//ft_putstr("|\n");
 		if (ft_isblank(*lexer->line) && !lexer->string_operator)
 		{
 			skip_whitespace(lexer);
@@ -179,7 +179,7 @@ t_token *get_next_token(t_lexer *lexer)
 			token = new_token(lexer, BQT, "`");
 		else
 			token = lex_str(lexer);
-		ft_putendl(lexer->line);
+		//ft_putendl(lexer->line);
 		if (token)
 			return (token);
 	}
