@@ -57,3 +57,14 @@ char *clear_quot(char *str)
 	free(str);
 	return (out);
 }
+
+char	only_space(char *str)
+{
+	while (*str)
+	{
+		if (*str != ' ')
+			return (0);
+		++str;
+	}
+	return (1);
+}

@@ -1,14 +1,14 @@
 
 ----------- TODO --------------
 
-- builtins :
-	- echo : Mettre en form POSIX
-- Completion
 - Norme
 
 ---------- BONUS --------------
 
+- Completion
+- Table de hashage
 - Resize
+- Usage / help commands
 
 ------------ BUG --------------
 
