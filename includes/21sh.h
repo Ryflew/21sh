@@ -23,6 +23,7 @@
 # define CTRL_R 18
 # define DELETE 127
 # define ENTER 10
+# define TAB 9
 # define EOT 4
 
 
@@ -157,12 +158,18 @@ typedef	struct		s_sh
 /* -------------- Builtins --------------- */
 
 void				cd(char **av, t_env *env, t_sh *shell);
+void				change_prompt(char *path, t_env *env, char **new_prompt, t_cd *opt);
+void				echo_builtin(char **av, t_env *env);
+void				set_env(char **av, t_env **env);
+void				unset_env(char **av, t_env **env);
 void				exit_command(char **av, t_sh *shell);
 
 /* --------------- Others ---------------- */
 
+int					is_string_op(int c);
 int					ft_putcharint(int c);
 int					get_current_pos_in_command(t_sh *shell);
+int					base_converter(int nb, int frombase, int tobase);
 void				copy_data(t_sh *shell, unsigned long c, int current);
 void				clean_selected(t_sh *shell);
 void				init_termcap(t_sh *shell, t_env *env);
@@ -191,18 +198,18 @@ void				treat_second_prompt(char *string, char **op, e_state *state);
 void				go_core(char *command, t_env **env, t_sh *shell);
 void				manage_redirection(t_tree **tree);
 void				load_history(t_sh *shell, t_env *env);
-void				set_env(char **av, t_env **env);
-void				unset_env(char **av, t_env **env);
 void				del_env(t_env *todel);
-void				change_prompt(char *path, t_env *env, char **new_prompt, t_cd *opt);
+void				go_completion(t_sh *shell);
 void				clear_line(t_sh *shell);
 void				get_tree_rec(t_tree **tree, char *left, char *right);
+void				eat(t_sh *sh, e_token token);
 char				add_char(char *command, int *j, t_sh *shell, char c);
 char				check_alpha(char *str);
 char				go_to_c(char **str, char c);
 char				cd_path_validity(char *path);
 char				is_absolute(char **av, t_env *env, char pipe);
 char				is_binary(char *path);
+char				only_space(char *str);
 char				del_all_env(t_env **list);
 char				env_command(char **av, t_env *env);
 char				check_new_open(char *str, char *op, int *j);
@@ -222,14 +229,13 @@ char				**trim_input(char *cmd);
 char				**split_quot_cmd(char *cmd);
 t_env				*new_env(char *str);
 t_env				*get_env(char **env);
-t_tree			*commands_line_rules(t_sh *sh);
+t_tree				*commands_line_rules(t_sh *sh);
 int					is_string_op(int c);
-t_token			*get_next_token(t_lexer *lexer);
-t_tree			*redirection_rules(t_sh *sh, t_tree *left);
-t_tree			*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *right);
+t_token				*get_next_token(t_lexer *lexer);
+t_tree				*redirection_rules(t_sh *sh, t_tree *left);
+t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *right);
 void				eat(t_sh *sh, e_token token);
-t_token			*text_rules(t_sh *sh);
-void				init(t_sh *sh);
+t_token				*text_rules(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
 void				operators(t_tree *node, t_env **env, t_sh *shell, char right_side);
 char				exec_cmds(char **cmd, t_env **env, t_sh *shell, char pipe);
@@ -237,6 +243,5 @@ char				run_binary(char *path, char **av, t_env *env, char pipe);
 char				get_path(char **cmd, t_env *env, char pipe, char exec);
 char				is_builtins(char **cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
-
 
 #endif

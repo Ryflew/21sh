@@ -18,10 +18,12 @@ MAIN =	main.c
 
 FILES = add_char.c \
 				arrows.c \
+				base_converter.c \
 				binary.c \
 				cd.c \
 				cd2.c \
 				check_brackets.c \
+				completion.c \
 				copy_data.c \
 				core.c \
 				cursor.c \

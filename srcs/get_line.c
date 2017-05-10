@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/07 04:48:30 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/09 01:59:41 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ static char	get_line2(t_sh *shell, unsigned long buff)
 		delete_char(shell->command, &(shell->j), shell);
 	else if (buff == CTRL_R)
 		search_mode(shell);
+	else if (buff == TAB)
+		go_completion(shell);
 	else
 		return (0);
 	return (1);
@@ -89,7 +91,7 @@ char	*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
 	shell->j = -1;
-	//return (ft_strdup("ls | grep i | tr i I"));
+	// return (ft_strdup("echo \'this is\\050real handy\'"));
 	while (1)
 	{
 		buff = 0;

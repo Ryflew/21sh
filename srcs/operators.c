@@ -28,13 +28,7 @@ static char manage_pipe(t_env **env, t_sh *shell, t_tree *node, char right_side)
 		close(fd[1]);
 		shell->pipe->fd_in = fd[0];
 	}
-	ft_putstr("ret -> ");
-	ft_putnbr(ret);
-	ft_putendl("");
-	ft_putstr("wxit status -> ");
-	ft_putnbr(WEXITSTATUS(ret));
-	ft_putendl("");
-	return (WEXITSTATUS(ret)); // TODO
+	return (WEXITSTATUS(ret));
 }
 
 static void manage_and(t_env **env, t_sh *shell, t_tree *node, char right_side)
@@ -55,13 +49,8 @@ static void manage_and(t_env **env, t_sh *shell, t_tree *node, char right_side)
 		}
 		else
 		{
-			ft_putendl("and pipe not builtins");
 			if (!(ret = manage_pipe(env, shell, node->left, 0)))
-			{
-				ft_putnbr(ret);
-				ft_putendl(" -> ????");
 				manage_pipe(env, shell, node->right, right_side);
-			}
 		}
 	}
 	else
@@ -98,7 +87,6 @@ void	init_pipe(t_sh *shell)
 	if (!(shell->pipe = (t_pipe*)malloc(sizeof(t_pipe))))
 		ft_exiterror("Malloc failure ", -1);
 	shell->pipe->fd_in = -1; 
-	//shell->pipe->ret = 1; 
 }
 
 void	operators(t_tree *node, t_env **env, t_sh *shell, char right_side)

@@ -6,8 +6,7 @@ char go_builtins(char **cmd, t_env **env, t_sh *shell)
 	(void)env;
 	(void)shell;
 	if (!ft_strcmp(cmd[0], "echo"))
-		;
-	// echo(cmd, *env);
+		echo_builtin(cmd, *env);
 	else if (!ft_strcmp(cmd[0], "cd"))
 		cd(cmd, *env, shell);
 	else if (!ft_strcmp(cmd[0], "setenv"))
@@ -102,7 +101,6 @@ void go_core(char *command, t_env **env, t_sh *shell)
 {
 	t_tree *commands_tree;
 
-	(void)env;
 	add_to_history(shell, command);
 	shell->lexer->line = command;
 	shell->current_token = get_next_token(shell->lexer);
