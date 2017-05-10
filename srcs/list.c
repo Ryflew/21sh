@@ -60,6 +60,8 @@ char		**list_to_tabstr(t_list *list)
 	uint32_t	size;
 	uint32_t	i;
 
+	if (!list)
+		return (NULL);
 	tmp = list;
 	size = ft_list_size(list);
 	if (!(args = (char**)malloc(sizeof(char*) * (size + 1))))
@@ -68,7 +70,7 @@ char		**list_to_tabstr(t_list *list)
 	i = 0;
 	while (tmp)
 	{
-		args[i++] = (char*)tmp->data;
+		args[i++] = ft_strdup((char*)tmp->data);
 		tmp = tmp->next;
 	}
 	return (args);

@@ -89,7 +89,7 @@ char	*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
 	shell->j = -1;
-//	return (ft_strdup("ls | grep i | (true && tr 'i' 'I')"));
+	//return (ft_strdup("ls | grep i | tr i I"));
 	while (1)
 	{
 		buff = 0;

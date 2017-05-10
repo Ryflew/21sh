@@ -117,7 +117,7 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	lexer->string_operator = 0;
 	lexer->red = 0;
 	shell->lexer = lexer;
-	
+	shell->pipe = NULL;
 }
 
 int			main(int ac, char **av, char **termenv)

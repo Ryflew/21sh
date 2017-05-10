@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "21sh.h"
 
-static char go_builtins(char **cmd, t_env **env, t_sh *shell)
+char go_builtins(char **cmd, t_env **env, t_sh *shell)
 {
 	(void)env;
 	(void)shell;
@@ -19,12 +19,35 @@ static char go_builtins(char **cmd, t_env **env, t_sh *shell)
 	else if (!ft_strcmp(cmd[0], "exit"))
 		exit_command(cmd, shell);
 	else if (!ft_strcmp(cmd[0], "true"))
-		return (1);
-	else if (!ft_strcmp(cmd[0], "false"))
 		return (0);
+	else if (!ft_strcmp(cmd[0], "false"))
+		return (1);
 	else
-		return (-1);
-	return (1);
+		return (1);
+	return (0);
+}
+
+char is_builtins(char **cmd)
+{
+	if (!ft_strcmp(cmd[0], "echo"))
+		;
+	else if (!ft_strcmp(cmd[0], "cd"))
+		;
+	else if (!ft_strcmp(cmd[0], "setenv"))
+		;
+	else if (!ft_strcmp(cmd[0], "unsetenv"))
+		;
+	else if (!ft_strcmp(cmd[0], "env"))
+		;
+	else if (!ft_strcmp(cmd[0], "exit"))
+		;
+	else if (!ft_strcmp(cmd[0], "true"))
+		;
+	else if (!ft_strcmp(cmd[0], "false"))
+		;
+	else
+		return (1);
+	return (0);
 }
 
 static void add_to_history(t_sh *shell, char *command)
@@ -50,9 +73,9 @@ char	exec_cmds(char **cmd, t_env **env, t_sh *shell, char pipe)
 {
 	char	ret;
 
-	if ((ret = go_builtins(cmd, env, shell)) == -1)
+	if ((ret = go_builtins(cmd, env, shell)) == 1)
 	{
-	 	if (!(ret = get_path(cmd, *env, pipe)))
+	 	if ((ret = get_path(cmd, *env, pipe, 1)))
 		{
 			ft_putstr(cmd[0]);
 			ft_putendl(": Command not found.");
@@ -62,20 +85,17 @@ char	exec_cmds(char **cmd, t_env **env, t_sh *shell, char pipe)
 }
 
 
-void browse_tree(t_tree *node, t_env **env, t_sh *shell, t_tree *parent)
+void browse_tree(t_tree *node, t_env **env, t_sh *shell, t_tree *parent, char right_side)
 {
-	int fd_in;
-
-	fd_in = -1;
 	node->parent = parent;
 	if (node->left)
-		browse_tree(node->left, env, shell, node);
+		browse_tree(node->left, env, shell, node, 0);
 	if (node->right)
-		browse_tree(node->right, env, shell, node);
-	if (node->token)
-		operators(node, &fd_in, env, shell);
-	if (node->tokens && (!node->parent || (node->parent->token->type != PIPE && node->parent->token->type != AND && node->parent->token->type != OR)))
-		exec_cmds(list_to_tabstr(node->tokens), env, shell, 0);
+		browse_tree(node->right, env, shell, node, right_side);
+	if (node->token && (node->left->cmds || node->right->cmds))
+		operators(node, env, shell, right_side);
+	if (node->cmds && (!node->parent || (node->parent->token->type != PIPE && node->parent->token->type != AND && node->parent->token->type != OR)))
+		exec_cmds(node->cmds, env, shell, 0);
 }
 
 void go_core(char *command, t_env **env, t_sh *shell)
@@ -88,5 +108,5 @@ void go_core(char *command, t_env **env, t_sh *shell)
 	shell->current_token = get_next_token(shell->lexer);
 	if (!(commands_tree = commands_line_rules(shell)))
 		return;
-	browse_tree(commands_tree, env, shell, NULL);
+	browse_tree(commands_tree, env, shell, NULL, 1);
 }

@@ -98,14 +98,12 @@ typedef	struct		s_token
 
 typedef struct		s_tree
 {
-	//char			**cmd;
+	char			**cmds;
 	int				from_fd;
 	int				to_fd;
 	t_token			*token;
-	t_list			*tokens;
 	struct s_tree	*left;
 	struct s_tree	*right;
-	e_token			parent_type;
 	struct s_tree	*parent;
 }					t_tree;
 
@@ -123,11 +121,20 @@ typedef struct		s_term_pos
 	t_pos			last;
 }					t_term_pos;
 
+typedef	struct		s_pipe
+{
+	int				fd_in;
+	int				ret;
+}					t_pipe;
+
+
 typedef	struct		s_sh
 {
 	t_env			*env;
-	t_lexer		*lexer;
-	t_token		*current_token;
+
+	t_lexer			*lexer;
+	t_token			*current_token;
+	t_pipe			*pipe;
 
 	char			*prompt;
 	char			command[ARG_MAX];
@@ -224,9 +231,12 @@ void				eat(t_sh *sh, e_token token);
 t_token			*text_rules(t_sh *sh);
 void				init(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
-void				operators(t_tree *node, int *fd_in, t_env **env, t_sh *shell);
+void				operators(t_tree *node, t_env **env, t_sh *shell, char right_side);
 char				exec_cmds(char **cmd, t_env **env, t_sh *shell, char pipe);
 char				run_binary(char *path, char **av, t_env *env, char pipe);
-char				get_path(char **cmd, t_env *env, char pipe);
+char				get_path(char **cmd, t_env *env, char pipe, char exec);
+char				is_builtins(char **cmd);
+char				go_builtins(char **cmd, t_env **env, t_sh *shell);
+
 
 #endif

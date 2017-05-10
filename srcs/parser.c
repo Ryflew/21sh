@@ -12,11 +12,12 @@ t_tree *create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *right)
 	t_tree *new_node;
 
 	if (!(new_node = (t_tree *)malloc(sizeof(t_tree))))
-		ft_exiterror("Malloc failure", -1);
+		ft_exiterror("Malloc failure", 1);
 	new_node->left = left;
 	new_node->right = right;
 	new_node->token = token;
-	new_node->tokens = tokens;
+	new_node->cmds = list_to_tabstr(tokens);
+	ft_clear_list(&tokens, free);
 	return (new_node);
 }
 
@@ -29,7 +30,7 @@ void eat(t_sh *sh, e_token token)
 			;//ft_putendl("NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
 	}
 	else
-		ft_putendl("SYNTAX ERROR");
+		ft_exiterror("SYNTAX ERROR", 1);
 	//	syntax_error();
 }
 
@@ -105,7 +106,7 @@ t_tree *cmd_rules(t_sh *sh)
 		eat(sh, sh->current_token->type);
 		//ft_putendl(sh->current_token->value);
 		new_node = commands_line_rules(sh);
-		eat(sh, delimiter_token->type);
+		eat(sh, delimiter_token->type + 1);
 	}
 	else
 	{
@@ -212,7 +213,7 @@ t_tree *commands_line_rules(t_sh *sh)
 
 	//ft_putendl("step1");
 	//ft_putendl(sh->current_token->value);
-	if (sh->current_token && sh->current_token->type == SCL)
+	if (sh->current_token && sh->current_token->type == SCL) // TODO BUG TO FIXE
 	{
 		//ft_putendl("step2");
 		eat(sh, SCL);
