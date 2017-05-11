@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/20 02:29:29 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/04/01 21:10:29 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/11 02:54:48 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ static void	build_term(t_sh *shell)
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &term) == -1)
+	{
 		errexit("21sh", "Impossible de set le nouveau terminal");
+		exit(EXIT_FAILURE);
+	}
+	ft_memmove(&shell->our, &term, sizeof(term));
 }
 
 void	init_termcap(t_sh *shell, t_env *env)

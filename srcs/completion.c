@@ -13,6 +13,8 @@ static char	*get_start_str(t_sh *shell)
 	end = i;
 	while (--i > -1 && shell->command[i] != ' ')
 		;
+	if (i == shell->j)
+		return (NULL);
 	return (ft_strsub(shell->command, i + 1, end - (i + 1)));
 }
 
@@ -176,7 +178,7 @@ void	go_completion(t_sh *shell)
 	if (!(tmp = get_start_str(shell)))
 		return ;
 	if (*tmp == '~')
-		tild_to_home(&tmp, shell->env); // transforme le ~ en home
+		tild_to_home(&tmp, shell->env);
 	if (!tmp)
 		return ;
 	if (ft_strchr(shell->command, ' ') || *tmp == '/')

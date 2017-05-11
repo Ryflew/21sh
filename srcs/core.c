@@ -74,7 +74,7 @@ char	exec_cmds(char **cmd, t_env **env, t_sh *shell, char pipe)
 
 	if ((ret = go_builtins(cmd, env, shell)) == 1)
 	{
-	 	if ((ret = get_path(cmd, *env, pipe, 1)))
+	 	if ((ret = get_path(cmd, shell, pipe, 1)))
 		{
 			ft_putstr(cmd[0]);
 			ft_putendl(": Command not found.");

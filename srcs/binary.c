@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/04 20:26:51 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/11 03:06:35 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,30 @@ char	stop_binary(int sig)
 	if (g_father != -1 && sig == SIGINT)
 	{
 		kill(g_father, sig);
+		g_father = -1;
 		ft_putchar('\n');
 		return (1);
 	}
 	return (0);
 }
 
-char	run_binary(char *path, char **av, t_env *env, char pipe)
+char	run_binary(char *path, char **av, t_sh *shell, char pipe)
 {
 	char	**envi;
 
+	if (tcsetattr(0, TCSADRAIN, &(shell->old)) == -1)
+	{
+		errexit("21sh", "Impossible de set l'ancien terminal");
+		exit(EXIT_FAILURE);
+	}
 	if (!pipe)
 	{
 		g_father = fork();
 		if (g_father > 0)
-		{
 			wait(NULL);
-			g_father = -1;
-		}
 		else if (g_father == 0)
 		{
-			envi = conv_env(env);
+			envi = conv_env(shell->env);
 			execve(path, av, envi);
 			if (envi)
 				ft_strdelpp(&envi);
@@ -55,16 +58,21 @@ char	run_binary(char *path, char **av, t_env *env, char pipe)
 	}
 	else
 	{
-		envi = conv_env(env);
+		envi = conv_env(shell->env);
 		execve(path, av, envi);
 		if (envi)
 			ft_strdelpp(&envi);
 	}
 	free(path);
+	if (tcsetattr(0, TCSADRAIN, &(shell->our)) == -1)
+	{
+		errexit("21sh", "Impossible de set le nouveau terminal");
+		exit(EXIT_FAILURE);
+	}
 	return (1);
 }
 
-static char	current_binary(char **av, t_env *env, char pipe)
+static char	current_binary(char **av, t_sh *shell, char pipe)
 {
 	int		i;
 	char	*str;
@@ -86,12 +94,12 @@ static char	current_binary(char **av, t_env *env, char pipe)
 	while (av[++i])
 		tab[i] = ft_strdup(av[i]);
 	tab[i] = NULL;
-	i = is_absolute(tab, env, pipe);
+	i = is_absolute(tab, shell, pipe);
 	ft_strdelpp(&tab);
 	return (i);
 }
 
-char	is_absolute(char **av, t_env *env, char pipe)
+char	is_absolute(char **av, t_sh *shell, char pipe)
 {
 	t_stat		file;
 
@@ -100,7 +108,7 @@ char	is_absolute(char **av, t_env *env, char pipe)
 		if (!lstat(*av, &file) && S_ISREG(file.st_mode) && is_binary(*av) &&
 			!access(*av, R_OK | X_OK))
 		{
-			run_binary(ft_strdup(*av), av, env, pipe);
+			run_binary(ft_strdup(*av), av, shell, pipe);
 			return (1);
 		}
 		else if (access(*av, F_OK) == -1)
@@ -115,6 +123,6 @@ char	is_absolute(char **av, t_env *env, char pipe)
 		}
 	}
 	else if (**av && **av == '.' && *(*av + 1) && *(*av + 1) == '/')
-		return (current_binary(av, env, pipe));
+		return (current_binary(av, shell, pipe));
 	return (0);
 }

@@ -145,6 +145,7 @@ typedef	struct		s_sh
 
 	e_state			state;
 	t_termios		old;
+	t_termios		our;
 	t_term_pos		pos;
 
 	char			**history;
@@ -207,7 +208,7 @@ char				add_char(char *command, int *j, t_sh *shell, char c);
 char				check_alpha(char *str);
 char				go_to_c(char **str, char c);
 char				cd_path_validity(char *path);
-char				is_absolute(char **av, t_env *env, char pipe);
+char				is_absolute(char **av, t_sh *shell, char pipe);
 char				is_binary(char *path);
 char				only_space(char *str);
 char				del_all_env(t_env **list);
@@ -239,8 +240,8 @@ t_token				*text_rules(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
 void				operators(t_tree *node, t_env **env, t_sh *shell, char right_side);
 char				exec_cmds(char **cmd, t_env **env, t_sh *shell, char pipe);
-char				run_binary(char *path, char **av, t_env *env, char pipe);
-char				get_path(char **cmd, t_env *env, char pipe, char exec);
+char				run_binary(char *path, char **av, t_sh *shell, char pipe);
+char				get_path(char **cmd, t_sh *shell, char pipe, char exec);
 char				is_builtins(char **cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
 
