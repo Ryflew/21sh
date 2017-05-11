@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/04 18:37:50 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/11 03:38:21 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ static void	get_current_path(t_env *env)
 
 	cwd = getcwd(buff, 4097);
 	g_sh.prompt = get_with_tilde(cwd, env);
+}
+
+t_sh	*get_shell()
+{
+	return (&g_sh);
 }
 
 void	print_prompt(e_state state, char *op)

@@ -230,6 +230,7 @@ char				**trim_input(char *cmd);
 char				**split_quot_cmd(char *cmd);
 t_env				*new_env(char *str);
 t_env				*get_env(char **env);
+t_sh				*get_shell();
 t_tree				*commands_line_rules(t_sh *sh);
 int					is_string_op(int c);
 t_token				*get_next_token(t_lexer *lexer);

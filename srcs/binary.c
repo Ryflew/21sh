@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/11 03:06:35 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/11 03:39:19 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ char	stop_binary(int sig)
 	{
 		kill(g_father, sig);
 		g_father = -1;
+		if (tcsetattr(0, TCSADRAIN, &(get_shell()->our)) == -1)
+		{
+			errexit("21sh", "Impossible de set le nouveau terminal");
+			exit(EXIT_FAILURE);
+		}
 		ft_putchar('\n');
 		return (1);
 	}
