@@ -132,6 +132,7 @@ typedef	struct		s_pipe
 typedef	struct		s_sh
 {
 	t_env			*env;
+	t_env			*hash;
 
 	t_lexer			*lexer;
 	t_token			*current_token;
@@ -194,6 +195,7 @@ void				move_to(int x, int y);
 void				past_data(t_sh *shell);
 void				delete_char(char *command, int *j, t_sh *shell);
 void				get_cursor(t_sh *shell);
+void				hash_tab(char **av, t_sh *shell);
 void				print_prompt(e_state state, char *op);
 void				treat_second_prompt(char *string, char **op, e_state *state);
 void				go_core(char *command, t_env **env, t_sh *shell);

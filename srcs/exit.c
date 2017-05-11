@@ -6,7 +6,6 @@ void		errexit(char *content, char *reason)
 	ft_fputstr(content, 2);
 	ft_fputstr(": ", 2);
 	ft_fputendl(reason, 2);
-	// exit(EXIT_FAILURE);
 }
 
 void		exit_command(char **av, t_sh *shell)

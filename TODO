@@ -1,6 +1,9 @@
 
 ----------- TODO --------------
 
+- Lancer les binaires depuis env
+- Completion pour les builtins
+- Check les (void)X pour les virer
 - Norme
 
 ---------- BONUS --------------

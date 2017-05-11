@@ -3,8 +3,6 @@
 
 char go_builtins(char **cmd, t_env **env, t_sh *shell)
 {
-	(void)env;
-	(void)shell;
 	if (!ft_strcmp(cmd[0], "echo"))
 		echo_builtin(cmd, *env);
 	else if (!ft_strcmp(cmd[0], "cd"))
@@ -15,6 +13,8 @@ char go_builtins(char **cmd, t_env **env, t_sh *shell)
 		unset_env(cmd, env);
 	else if (!ft_strcmp(cmd[0], "env"))
 		env_command(cmd, *env);
+	else if (!ft_strcmp(cmd[0], "hash"))
+		hash_tab(cmd, shell);
 	else if (!ft_strcmp(cmd[0], "exit"))
 		exit_command(cmd, shell);
 	else if (!ft_strcmp(cmd[0], "true"))

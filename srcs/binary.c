@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/11 03:39:19 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/11 23:24:38 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ char	run_binary(char *path, char **av, t_sh *shell, char pipe)
 
 	if (tcsetattr(0, TCSADRAIN, &(shell->old)) == -1)
 	{
+		ft_putstr("test");
 		errexit("21sh", "Impossible de set l'ancien terminal");
 		exit(EXIT_FAILURE);
 	}
