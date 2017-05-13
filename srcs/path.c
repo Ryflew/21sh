@@ -47,7 +47,7 @@ char get_path(t_tree *node, t_env *env, t_sh *shell, char exec)
 	if (is_absolute(node, env, shell))
 		return (1);
 	if (!(content = find_env(env, "PATH")))
-		return (0);
+		return (1);
 	tmp = ft_strsplit(content, ':');
 	content = node->cmds[0];
 	if (ft_strrchr(content, '/'))

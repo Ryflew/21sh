@@ -34,6 +34,7 @@ FILES = add_char.c \
 				exit.c \
 				ft_putcharint.c \
 				get_line.c \
+				hash_tab.c \
 				history.c \
 				history2.c \
 				history_search.c \

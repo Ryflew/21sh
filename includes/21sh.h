@@ -127,6 +127,7 @@ typedef struct		s_term_pos
 typedef	struct		s_sh
 {
 	t_env			*env;
+	t_env			*hash;
 
 	t_lexer			*lexer;
 	t_token			*current_token;
@@ -141,6 +142,7 @@ typedef	struct		s_sh
 
 	e_state			state;
 	t_termios		old;
+	t_termios		our;
 	t_term_pos		pos;
 
 	char			**history;
@@ -189,6 +191,7 @@ void				move_to(int x, int y);
 void				past_data(t_sh *shell);
 void				delete_char(char *command, int *j, t_sh *shell);
 void				get_cursor(t_sh *shell);
+void				hash_tab(char **av, t_sh *shell);
 void				print_prompt(e_state state, char *op);
 void				treat_second_prompt(char *string, char **op, e_state *state);
 void				go_core(char *command, t_env **env, t_sh *shell);
@@ -225,6 +228,7 @@ char				**trim_input(char *cmd);
 char				**split_quot_cmd(char *cmd);
 t_env				*new_env(char *str);
 t_env				*get_env(char **env);
+t_sh				*get_shell();
 t_tree				*commands_line_rules(t_sh *sh);
 int					is_string_op(int c);
 void 				get_lexems(t_sh *sh);

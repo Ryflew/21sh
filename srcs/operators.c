@@ -171,7 +171,7 @@ static char manage_and(t_env **env, t_sh *shell, t_tree *node, char right_side)
 			if (!go_builtins(node->left->cmds, env, shell))
 				manage_pipe(env, shell, node->right, right_side);
 		}
-		else if (get_path(node->left, *env, 0, 0))
+		else if (get_path(node->left, *env, shell, 0))
 		{
 			ft_putstr(node->left->cmds[0]);
 			ft_putendl(": Command not found.");
@@ -207,7 +207,7 @@ static char manage_or(t_env **env, t_sh *shell, t_tree *node, char right_side)
 			if (go_builtins(node->left->cmds, env, shell))
 				return (manage_pipe(env, shell, node->right, right_side));
 		}
-		else if (get_path(node->left, *env, 0, 0))
+		else if (get_path(node->left, *env, shell, 0))
 		{
 			ft_putstr(node->left->cmds[0]);
 			ft_putendl(": Command not found.");

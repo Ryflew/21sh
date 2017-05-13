@@ -44,7 +44,7 @@ void	add_new_var(char ***av, t_env **env)
 	i = 0;
 	if (!(new_av = (char**)malloc(sizeof(char*) * 4)))
 		exit(EXIT_FAILURE);
-	new_av[0] = ft_strdup("unsetenv");
+	new_av[0] = ft_strdup("setenv");
 	new_av[1] = ft_strsub(**av, 0, ft_strchr(**av, '=') - **av);
 	new_av[2] = ft_strdup(ft_strchr(**av, '=') + 1);
 	new_av[3] = NULL;
@@ -56,7 +56,6 @@ void	u_opt(char ***av, t_env **env)
 {
 	char	**out;
 
-	(void)env;
 	if (!*(*av + 1))
 		env_usage('u');
 	else

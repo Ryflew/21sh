@@ -21,7 +21,8 @@ char	is_binary(char *path)
 	char	buff[300];
 	int		bytes;
 
-	fd = open(path, O_RDONLY);
+	if (!(fd = open(path, O_RDONLY)))
+		return (0);
 	if ((bytes = read(fd, buff, 299)) > 0)
 	{
 		while (--bytes)

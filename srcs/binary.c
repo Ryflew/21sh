@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/04 20:26:51 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/05/11 23:24:38 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ char	stop_binary(int sig)
 	if (g_father != -1 && sig == SIGINT)
 	{
 		kill(g_father, sig);
+		g_father = -1;
+		if (tcsetattr(0, TCSADRAIN, &(get_shell()->our)) == -1)
+		{
+			errexit("21sh", "Impossible de set le nouveau terminal");
+			exit(EXIT_FAILURE);
+		}
 		ft_putchar('\n');
 		return (1);
 	}
@@ -106,7 +112,12 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 	int		fd[2];
 	char	**envi;
 	char	**cmds;
-	
+
+	if (tcsetattr(0, TCSADRAIN, &(shell->old)) == -1)
+	{
+		errexit("21sh", "Impossible de set l'ancien terminal");
+		exit(EXIT_FAILURE);
+	}	
 	if ((ret = open_file(node, shell, fd)) == -1)
 		return (-1);
 	if ((g_father = fork()) == -1)
@@ -123,6 +134,11 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 	else
 		ret = father(shell, fd);
 	free(path);
+	if (tcsetattr(0, TCSADRAIN, &(shell->our)) == -1)
+	{
+		errexit("21sh", "Impossible de set le nouveau terminal");
+		exit(EXIT_FAILURE);
+	}
 	return (WEXITSTATUS(ret));		
 }
 
