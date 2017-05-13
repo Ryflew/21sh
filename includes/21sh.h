@@ -41,6 +41,8 @@ typedef enum
 	DCHEVB,
 	CHEVF,
 	DCHEVF,
+	FRED,
+	BRED,
 	AND,
 	OR,
 	SCL,
@@ -48,13 +50,11 @@ typedef enum
 	WORD,
 	TEXT,
 	FD,
-	FRED,
-	BRED,
-	LPAR,
-	RPAR,
 	QT,
 	DQT,
 	BQT,
+	LPAR,
+	RPAR,
 	LBKT,
 	RBKT,
 	LBRC,
@@ -89,6 +89,7 @@ typedef	struct		s_lexer
 	char			*line;
 	int				red;
 	char			string_operator;
+	t_list			*lexems;
 }					t_lexer;
 
 typedef	struct		s_token
@@ -106,6 +107,7 @@ typedef struct		s_tree
 	struct s_tree	*left;
 	struct s_tree	*right;
 	struct s_tree	*parent;
+	t_list			*tokens;
 }					t_tree;
 
 typedef struct		s_pos
@@ -122,20 +124,14 @@ typedef struct		s_term_pos
 	t_pos			last;
 }					t_term_pos;
 
-typedef	struct		s_pipe
-{
-	int				fd_in;
-	int				ret;
-}					t_pipe;
-
-
 typedef	struct		s_sh
 {
 	t_env			*env;
 
 	t_lexer			*lexer;
 	t_token			*current_token;
-	t_pipe			*pipe;
+	int				fd_in;
+	int				right_side;
 
 	char			*prompt;
 	char			command[ARG_MAX];
@@ -207,7 +203,7 @@ char				add_char(char *command, int *j, t_sh *shell, char c);
 char				check_alpha(char *str);
 char				go_to_c(char **str, char c);
 char				cd_path_validity(char *path);
-char				is_absolute(char **av, t_env *env, char pipe);
+char				is_absolute(t_tree *node, t_env *env, t_sh *shell);
 char				is_binary(char *path);
 char				only_space(char *str);
 char				del_all_env(t_env **list);
@@ -231,17 +227,32 @@ t_env				*new_env(char *str);
 t_env				*get_env(char **env);
 t_tree				*commands_line_rules(t_sh *sh);
 int					is_string_op(int c);
-t_token				*get_next_token(t_lexer *lexer);
+void 				get_lexems(t_sh *sh);
 t_tree				*redirection_rules(t_sh *sh, t_tree *left);
 t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *right);
 void				eat(t_sh *sh, e_token token);
 t_token				*text_rules(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
-void				operators(t_tree *node, t_env **env, t_sh *shell, char right_side);
-char				exec_cmds(char **cmd, t_env **env, t_sh *shell, char pipe);
-char				run_binary(char *path, char **av, t_env *env, char pipe);
-char				get_path(char **cmd, t_env *env, char pipe, char exec);
+char				operators(t_tree *node, t_env **env, t_sh *shell, char right_side);
+char				exec_cmds(t_tree *node, t_env **env, t_sh *shell);
+char				run_binary(char *path, t_tree *node, t_env *env, t_sh *shell);
+char				get_path(t_tree *node, t_env *env, t_sh *shell, char exec);
 char				is_builtins(char **cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
+char				**manage_dchevb(t_tree *node);
+char				**manage_chevb(t_tree *node, int fd_file);
+char				**manage_dchevf(t_tree *node, int fd_file);
+char				**manage_chevf(t_tree *node, int fd_file);
+char				**manage_fred(t_tree *node, int fd_file);
+int					open_dchevf(t_tree *node);
+int					open_chevb(t_tree *node);
+int					open_chevf(t_tree *node);
+char				current_binary(t_tree *node, t_env *env, t_sh *shell);
+t_token				*lex_str(t_lexer *lexer);
+t_token				*lex_number(t_lexer *lexer);
+t_token				*lex_word(t_lexer *lexer);
+t_token				*new_token(t_lexer *lexer, e_token token_type, char *value);
+t_tree				*cmd_rules(t_sh *sh);
+t_token				*new_token(t_lexer *lexer, e_token token_type, char *value);
 
 #endif

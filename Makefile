@@ -53,7 +53,12 @@ FILES = add_char.c \
 				unsetenv.c \
 				utils.c \
 				operators.c \
-				path.c
+				path.c \
+				builtins.c \
+				lex_string.c \
+				parse_cmds.c \
+				parse_text.c \
+				create.c
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 

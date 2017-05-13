@@ -31,40 +31,102 @@ char	stop_binary(int sig)
 	return (0);
 }
 
-char	run_binary(char *path, char **av, t_env *env, char pipe)
+char **run_with_pipe(t_tree *node, t_sh *shell, int *fd)
 {
-	char	**envi;
-
-	if (!pipe)
-	{
-		g_father = fork();
-		if (g_father > 0)
-		{
-			wait(NULL);
-			g_father = -1;
-		}
-		else if (g_father == 0)
-		{
-			envi = conv_env(env);
-			execve(path, av, envi);
-			if (envi)
-				ft_strdelpp(&envi);
-			exit(EXIT_SUCCESS);
-		}
-		g_father = -1;
-	}
-	else
-	{
-		envi = conv_env(env);
-		execve(path, av, envi);
-		if (envi)
-			ft_strdelpp(&envi);
-	}
-	free(path);
-	return (1);
+	if (node->from_fd != -1 && node->to_fd != -1)
+		dup2(fd[1], node->from_fd);
+	dup2(shell->fd_in, 0);
+	if (!shell->right_side)
+		dup2(fd[1], 1);
+	close(fd[0]);
+	return (node->cmds);
 }
 
-static char	current_binary(char **av, t_env *env, char pipe)
+char	**child(t_tree *node, t_sh *shell, int *fd, int fd_file)
+{
+	char	**cmds;
+		
+	cmds = NULL;
+	if (node->token && node->token->type == DCHEVB)
+		cmds = manage_dchevb(node);
+	else if (node->token && node->token->type == CHEVB)
+		cmds = manage_chevb(node, fd_file);
+	else if (node->token && node->token->type == DCHEVF)
+		cmds = manage_dchevf(node, fd_file);
+	else if (node->token && node->token->type == CHEVF)
+		cmds = manage_chevf(node, fd_file);
+	else if (node->token && node->token->type == FRED)
+		cmds = manage_fred(node, fd_file);
+	else if (shell->fd_in != -1)
+		cmds = run_with_pipe(node, shell, fd);
+	else
+	{
+		if (node->from_fd != -1 && node->to_fd != -1)
+			dup2(node->from_fd, node->to_fd);
+		else if (node->to_fd != -1)
+			dup2(1, node->to_fd);
+		cmds = node->cmds;
+	}
+	return (cmds);
+}
+
+int		open_file(t_tree *node, t_sh *shell, int *fd)
+{
+	if (shell->fd_in != -1)
+		return (pipe(fd));
+	if (node->token && node->token->type == CHEVB)
+		return (open_chevb(node));
+	else if (node->token && (node->token->type == CHEVF || (node->token->type == FRED && ft_strcmp(node->right->cmds[0], "-"))))
+		return (open_chevf(node));
+	else if (node->token && node->token->type == DCHEVF)
+		return (open_dchevf(node));
+	else
+		return (0);
+}
+
+int		father(t_sh *shell, int *fd)
+{
+	int ret;
+
+	wait(&ret);	
+	if (shell->fd_in != -1)
+	{
+		close(fd[1]);
+		shell->fd_in = fd[0];
+		if (shell->right_side)
+			shell->fd_in = -1;
+	}
+	g_father = -1;
+	return (ret);
+}
+
+char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
+{
+	int		ret;
+	int		fd[2];
+	char	**envi;
+	char	**cmds;
+	
+	if ((ret = open_file(node, shell, fd)) == -1)
+		return (-1);
+	if ((g_father = fork()) == -1)
+		ft_exiterror("fork failure !", -1);	
+	else if (!g_father)
+	{
+		envi = conv_env(env);
+		if ((cmds = child(node, shell, fd, ret)))
+			execve(path, cmds, envi);
+		if (envi)
+			ft_strdelpp(&envi);
+		exit(EXIT_SUCCESS);
+	}
+	else
+		ret = father(shell, fd);
+	free(path);
+	return (WEXITSTATUS(ret));		
+}
+
+char	current_binary(t_tree *node, t_env *env, t_sh *shell)
 {
 	int		i;
 	char	*str;
@@ -72,9 +134,9 @@ static char	current_binary(char **av, t_env *env, char pipe)
 	char	**tab;
 	char	buff[4097];
 
-	str = ft_strsub(*av, 2, ft_strlen(*av) - 2);
+	str = ft_strsub(*node->cmds, 2, ft_strlen(*node->cmds) - 2);
 	i = -1;
-	while (av[++i])
+	while (node->cmds[++i])
 		;
 	if (!(tab = (char**)malloc(sizeof(char*) * (i + 1))))
 		exit(EXIT_FAILURE);
@@ -83,38 +145,10 @@ static char	current_binary(char **av, t_env *env, char pipe)
 	tab[0] = ft_strstrjoin(cwd, "/", str);
 	free(str);
 	i = 0;
-	while (av[++i])
-		tab[i] = ft_strdup(av[i]);
+	while (node->cmds[++i])
+		tab[i] = ft_strdup(node->cmds[i]);
 	tab[i] = NULL;
-	i = is_absolute(tab, env, pipe);
-	ft_strdelpp(&tab);
+	i = is_absolute(node, env, shell);
+	ft_strdelpp(&node->cmds);
 	return (i);
-}
-
-char	is_absolute(char **av, t_env *env, char pipe)
-{
-	t_stat		file;
-
-	if (**av && **av == '/')
-	{
-		if (!lstat(*av, &file) && S_ISREG(file.st_mode) && is_binary(*av) &&
-			!access(*av, R_OK | X_OK))
-		{
-			run_binary(ft_strdup(*av), av, env, pipe);
-			return (1);
-		}
-		else if (access(*av, F_OK) == -1)
-		{
-			errexit(*av, "No such file or directory.");
-			return (1);
-		}
-		else if (access(*av, R_OK | X_OK) == -1)
-		{
-			errexit(*av, "Permission denied.");
-			return (1);
-		}
-	}
-	else if (**av && **av == '.' && *(*av + 1) && *(*av + 1) == '/')
-		return (current_binary(av, env, pipe));
-	return (0);
 }
