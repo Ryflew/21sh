@@ -24,7 +24,8 @@ t_token *str_rules(t_sh *sh)
 		//ft_putendl("step7-1-4");
 		//ft_putnbr(sh->current_token->type);
 		//ft_putnbr(old_token->type);
-		eat(sh, old_token->type);
+		if (eat(sh, old_token->type) == -1)
+			return ((void*)-1);
 	}
 	//ft_putendl("step7-1-5");
 	return (token);

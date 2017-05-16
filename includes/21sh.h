@@ -201,7 +201,6 @@ void				del_env(t_env *todel);
 void				go_completion(t_sh *shell);
 void				clear_line(t_sh *shell);
 void				get_tree_rec(t_tree **tree, char *left, char *right);
-void				eat(t_sh *sh, e_token token);
 char				add_char(char *command, int *j, t_sh *shell, char c);
 char				check_alpha(char *str);
 char				go_to_c(char **str, char c);
@@ -234,7 +233,7 @@ int					is_string_op(int c);
 void 				get_lexems(t_sh *sh);
 t_tree				*redirection_rules(t_sh *sh, t_tree *left);
 t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *right);
-void				eat(t_sh *sh, e_token token);
+char				eat(t_sh *sh, e_token token);
 t_token				*text_rules(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
 char				operators(t_tree *node, t_env **env, t_sh *shell, char right_side);
@@ -258,5 +257,6 @@ t_token				*lex_word(t_lexer *lexer);
 t_token				*new_token(t_lexer *lexer, e_token token_type, char *value);
 t_tree				*cmd_rules(t_sh *sh);
 t_token				*new_token(t_lexer *lexer, e_token token_type, char *value);
+char				parse_error(t_sh *sh);
 
 #endif

@@ -65,7 +65,10 @@ void go_core(char *command, t_env **env, t_sh *shell)
 	shell->lexer->line = command;
 	get_lexems(shell);
 	shell->current_token = shell->lexer->lexems->data;
-	if (!(commands_tree = commands_line_rules(shell)))
-		return;
+	if (!(commands_tree = commands_line_rules(shell)) || commands_tree == (void*)-1)
+	{
+		parse_error(shell);
+		return ;
+	}
 	browse_tree(commands_tree, env, shell, NULL, 1);
 }

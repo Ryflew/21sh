@@ -1,6 +1,6 @@
 #include "21sh.h"
 
-void eat(t_sh *sh, e_token token)
+char eat(t_sh *sh, e_token token)
 {
 	if (sh->current_token->type == token)
 	{
@@ -13,12 +13,8 @@ void eat(t_sh *sh, e_token token)
 			;//ft_putendl("NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
 	}
 	else
-	{
-		ft_putstr("parse error near '");
-		ft_putstr(sh->current_token->value);
-		ft_putendl("'");
-		exit(-1);
-	}
+		return (-1);// parse_error(sh));
+	return (0);
 	//	syntax_error();
 }
 
@@ -31,6 +27,11 @@ static t_tree *pipe_rules(t_sh *sh, t_tree *left)
 	new_node = NULL;
 	while (sh->current_token && sh->current_token->type == PIPE)
 	{
+		if (!left->right && left->token && left->token->type != SCL)
+		{
+			// parse_error(sh);
+			return ((void*)-1);
+		}
 		//ft_putendl("step9-1-2");
 		token = sh->current_token;
 		//ft_putendl(sh->current_token->value);
@@ -52,10 +53,11 @@ static t_tree *cmd_with_op_rules(t_sh *sh)
 	t_tree *tmp;
 
 	//ft_putendl("step4");
-	left = cmd_rules(sh);
+	if ((!(left = cmd_rules(sh)) && sh->current_token->type != CHEVF && sh->current_token->type != DCHEVF) || left == (void*)-1)
+		return (left);
 	//ft_putendl(((t_token *)left->tokens)->value);
 	//ft_putendl("step9");
-	while (left)
+	while ((left || (sh->current_token->type == CHEVF || sh->current_token->type == DCHEVF)) && left != (void*)-1)
 	{
 		//ft_putendl("step9-0");
 		//		ft_putendl(sh->current_token->value);
@@ -71,16 +73,11 @@ static t_tree *cmd_with_op_rules(t_sh *sh)
 			//ft_putendl("step9-3");
 			return (left);
 		}
+		else if (tmp == (void*)-1)
+			return (tmp);
 	}
 	return (left);
 }
-
-/*void		init(t_sh *sh)
-{
-	sh->lexer->string_operator = 0;
-	sh->lexer->red = 0;
-	sh->current_token = get_next_token(sh->lexer);
-}*/
 
 static t_tree *condition_operators_rules(t_sh *sh)
 {
@@ -88,7 +85,8 @@ static t_tree *condition_operators_rules(t_sh *sh)
 	t_tree *right;
 	t_token *token;
 
-	left = cmd_with_op_rules(sh);
+	if (!(left = cmd_with_op_rules(sh)) || left == (void*)-1)
+		return (left);
 	//ft_putendl("step12");
 	while (sh->current_token && (sh->current_token->type == OR || sh->current_token->type == AND))
 	{
@@ -98,7 +96,7 @@ static t_tree *condition_operators_rules(t_sh *sh)
 			eat(sh, OR);
 		else if (token->type == AND)
 			eat(sh, AND);
-		if ((right = cmd_with_op_rules(sh)))
+		if ((right = cmd_with_op_rules(sh)) != (void*)-1)
 			left = create_node(left, token, NULL, right);
 	}
 	return (left);
@@ -112,20 +110,26 @@ t_tree *commands_line_rules(t_sh *sh)
 
 	//ft_putendl("step1");
 	//ft_putendl(sh->current_token->value);
-	if (sh->current_token && sh->current_token->type == SCL) // TODO BUG TO FIXE
+	while (sh->current_token && sh->current_token->type == SCL)
 	{
 		//ft_putendl("step2");
 		eat(sh, SCL);
 	}
 	//ft_putendl("step3");
-	left = condition_operators_rules(sh);
+	if (!(left = condition_operators_rules(sh)) || left == (void*)-1)
+	{
+		// parse_error(sh);
+		return (left);
+	}
 	//ft_putendl("step10");
 	while (sh->current_token && sh->current_token->type == SCL)
 	{
+		while (sh->current_token && sh->current_token->type == SCL)
+			eat(sh, SCL);
 		//ft_putendl("step11");
 		token = sh->current_token;
 		eat(sh, SCL);
-		if ((right = condition_operators_rules(sh)))
+		if (sh->current_token && (right = condition_operators_rules(sh)))
 			left = create_node(left, token, NULL, right);
 	}
 	return (left);

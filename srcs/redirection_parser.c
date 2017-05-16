@@ -3,14 +3,22 @@
 t_tree *basic_red(t_sh *sh, e_token type, t_tree *left)
 {
 	t_token *token;
+	t_token	*file_name;
 
+	if (!left->right && left->token && left->token->type != SCL)
+	{
+		// parse_error(sh);
+		return ((void*)-1);
+	}
 	if (sh->current_token->type == type)
 	{
 		token = sh->current_token;
 		eat(sh, type);
 		if (!sh->current_token)
 			return (NULL);
-		return (create_node(left, token, NULL, create_node(NULL, NULL, ft_create_node((text_rules(sh))->value), NULL)));
+		if (!(file_name = text_rules(sh)))
+			return ((void*)-1);
+		return (create_node(left, token, NULL, create_node(NULL, NULL, ft_create_node(file_name->value), NULL)));
 	}
 	return (NULL);
 }
@@ -18,26 +26,26 @@ t_tree *basic_red(t_sh *sh, e_token type, t_tree *left)
 t_tree *adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 {
 	t_token *token_type;
-	t_token *token;
+	t_token *file_name;
 	t_tree *new_node;
 
 	//ft_putendl("adv_red_forward");
 	new_node = NULL;
+	if (!left->right && left->token && left->token->type != SCL)
+	{
+		// parse_error(sh);
+		return ((void*)-1);
+	}
 	if (sh->current_token->type == type)
 	{
 		token_type = sh->current_token;
 		eat(sh, type);
 		if (!sh->current_token)
 			return (NULL);
-		if ((token = text_rules(sh)))
-			new_node = create_node(left, token_type, NULL, create_node(NULL, NULL, ft_create_node(token->value), NULL));
-		else
-		{
-			ft_putstr("parse error near '");
-			ft_putstr(sh->current_token->value);
-			ft_putendl("'");
-			exit(-1);
-		}
+		if (!(file_name = text_rules(sh)))
+			return ((void*)-1);
+		new_node = create_node(left, token_type, NULL, create_node(NULL, NULL, ft_create_node(file_name->value), NULL));
+
 		/*else if (sh->current_token->type == FD)
 		{
 			new_node = create_node(left, token, NULL, NULL);
@@ -93,6 +101,11 @@ t_tree *redirection_with_fd(t_sh *sh, t_tree *left)
 	t_token *token;	
 	
 	new_node = NULL;
+	if (!left->right && left->token && left->token->type != SCL)
+	{
+		// parse_error(sh);
+		return ((void*)-1);
+	}
 	token = sh->current_token;
 	eat(sh, FD);
 	//ft_putendl("test");

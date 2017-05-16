@@ -1,5 +1,13 @@
 #include "21sh.h"
 
+char	parse_error(t_sh *sh)
+{
+	ft_putstr("parse error near '");
+	ft_putstr(sh->current_token->value);
+	ft_putendl("'");
+	return (-1);
+}
+
 static int is_delimiter_op(e_token token)
 {
 	if (token == LPAR || token == RPAR || token == LBKT || token == RBKT || token == LBRC || token == RBRC)
@@ -41,7 +49,7 @@ static void cmd_without_delimiter_rules(t_sh *sh, t_tree **new_node)
 	cmd_tokens = NULL;
 	fd[0] = -1;
 	fd[1] = -1;
-	while ((token = text_rules(sh)) || (aggregation_rules(sh, fd)))
+	while ((token = text_rules(sh)) || (token != (void*)-1 && aggregation_rules(sh, fd)))
 	{
 		//ft_putendl("step8");
 		//ft_putendl(delimiter_token->value);
@@ -49,11 +57,16 @@ static void cmd_without_delimiter_rules(t_sh *sh, t_tree **new_node)
 			ft_node_push_back(&cmd_tokens, token->value);
 		//	exit(1);
 	}
-	*new_node = create_node(NULL, NULL, cmd_tokens, NULL);
-	if (fd[0] != -1)
+	if (token == (void*)-1)
+		*new_node = (void*)-1;
+	if (cmd_tokens)
 	{
-		(*new_node)->from_fd = fd[0];
-		(*new_node)->to_fd = fd[1];
+		*new_node = create_node(NULL, NULL, cmd_tokens, NULL);
+		if (fd[0] != -1)
+		{
+			(*new_node)->from_fd = fd[0];
+			(*new_node)->to_fd = fd[1];
+		}
 	}
 }
 
@@ -76,6 +89,6 @@ t_tree *cmd_rules(t_sh *sh)
 		eat(sh, delimiter_token->type + 1);
 	}
 	else
-        cmd_without_delimiter_rules(sh, &new_node);
+		cmd_without_delimiter_rules(sh, &new_node);
 	return (new_node);
 }
