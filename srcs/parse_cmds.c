@@ -3,7 +3,10 @@
 char	parse_error(t_sh *sh)
 {
 	ft_putstr("parse error near '");
-	ft_putstr(sh->current_token->value);
+	if (sh->current_token)
+		ft_putstr(sh->current_token->value);
+	else
+		ft_putstr("\\n");
 	ft_putendl("'");
 	return (-1);
 }

@@ -36,6 +36,8 @@ t_token *new_token(t_lexer *lexer, e_token token_type, char *value)
 	lexer->line += ft_strlen(value);
 	token->type = token_type;
 	//token->value = clear_quot(value);
+	if (token_type != WORD && token_type != NUM && token_type != TEXT && token_type != FD)
+		value = ft_strdup(value);
 	token->value = value;
 	return (token);
 }

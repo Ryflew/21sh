@@ -5,19 +5,26 @@ t_tree *basic_red(t_sh *sh, e_token type, t_tree *left)
 	t_token *token;
 	t_token	*file_name;
 
-	if (!left->right && left->token && left->token->type != SCL)
+	if (!left)
+		ft_putendl("step0");		
+	if (left && !left->right && left->token && left->token->type != SCL)
 	{
 		// parse_error(sh);
 		return ((void*)-1);
 	}
+		ft_putendl("step0,5");		
 	if (sh->current_token->type == type)
 	{
+		ft_putendl("step1");		
 		token = sh->current_token;
 		eat(sh, type);
+		ft_putendl("step2");		
 		if (!sh->current_token)
-			return (NULL);
+			return ((void*)-1);
+		ft_putendl("step3");		
 		if (!(file_name = text_rules(sh)))
 			return ((void*)-1);
+		ft_putendl("step4");		
 		return (create_node(left, token, NULL, create_node(NULL, NULL, ft_create_node(file_name->value), NULL)));
 	}
 	return (NULL);
@@ -29,9 +36,9 @@ t_tree *adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 	t_token *file_name;
 	t_tree *new_node;
 
-	//ft_putendl("adv_red_forward");
+	ft_putendl("adv_red_forward");
 	new_node = NULL;
-	if (!left->right && left->token && left->token->type != SCL)
+	if (left && !left->right && left->token && left->token->type != SCL)
 	{
 		// parse_error(sh);
 		return ((void*)-1);
@@ -41,7 +48,7 @@ t_tree *adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 		token_type = sh->current_token;
 		eat(sh, type);
 		if (!sh->current_token)
-			return (NULL);
+			return ((void*)-1);
 		if (!(file_name = text_rules(sh)))
 			return ((void*)-1);
 		new_node = create_node(left, token_type, NULL, create_node(NULL, NULL, ft_create_node(file_name->value), NULL));
@@ -110,7 +117,7 @@ t_tree *redirection_with_fd(t_sh *sh, t_tree *left)
 	eat(sh, FD);
 	//ft_putendl("test");
 	if (!sh->current_token)
-		return ((void *)-1);
+		return ((void*)-1);
 	//return (create_node(NULL, token, NULL, NULL));
 	// FD '>' WORD
 	if ((new_node = basic_red(sh, CHEVF, left)))
@@ -138,18 +145,18 @@ t_tree *redirection_rules(t_sh *sh, t_tree *left)
 {
 	t_tree *new_node;
 
-	//ft_putendl("WESHHHHHHHHHHHHHHHHHH");
+	ft_putendl("WESHHHHHHHHHHHHHHHHHH");
 	if (!sh->current_token)
 		return (NULL);
 	// '>' WORD
 	if ((new_node = basic_red(sh, CHEVF, left)))
-		; //ft_putendl("redirection >");
+		ft_putendl("redirection >");
 	// '>&' WORD
 	else if ((new_node = adv_red_forward(sh, FRED, left)))
-		; //ft_putendl("redirection >&");
+		ft_putendl("redirection >&");
 	// '>>' WORD
 	else if ((new_node = basic_red(sh, DCHEVF, left)))
-		; //ft_putendl("redirection >>");
+		ft_putendl("redirection >>");
 	// '<' WORD
 	else if ((new_node = basic_red(sh, CHEVB, left)))
 		; //ft_putendl("redirection <");

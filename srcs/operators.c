@@ -252,9 +252,12 @@ char	operators(t_tree *node, t_env **env, t_sh *shell, char right_side)
 		return (manage_and(env, shell, node, right_side));
 	else if (node->token->type == OR)
 		return (manage_or(env, shell, node, right_side));
-	else if (node->token->type == CHEVB || node->token->type == DCHEVB || node->token->type == CHEVF || node->token->type == DCHEVF || node->token->type == FRED)
+	else if ((node->token->type == CHEVB || node->token->type == DCHEVB || node->token->type == CHEVF || node->token->type == DCHEVF || node->token->type == FRED))
 	{
-		node->cmds = node->left->cmds;
+		if (node->left)
+			node->cmds = node->left->cmds;
+		else
+			node->cmds = NULL;
 		return (exec_cmds(node, env, shell));
 	}
 	return (0);
