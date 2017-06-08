@@ -25,7 +25,11 @@ static char check_path(char *command, char *path)
 			tmp = ft_strstrjoin(path, "/", ent->d_name);
 			if (!stat(tmp, &file) && S_ISREG(file.st_mode) && is_binary(tmp) &&
 				!access(tmp, R_OK | X_OK))
-				return (check_path_end(&tmp, &dir));
+				{
+					if (!is_in_hashtab(tmp, get_shell()->hash))
+						add_hash_line(ent->d_name, tmp, get_shell());
+					return (check_path_end(&tmp, &dir));
+				}
 			else if (access(tmp, R_OK | X_OK) == -1)
 			{
 				errexit(tmp, "Permission denied.");
@@ -44,7 +48,13 @@ char get_path(t_tree *node, t_env *env, t_sh *shell, char exec)
 	char **tmp;
 	int i;
 
-	if (is_absolute(node, env, shell))
+	if ((content = find_env(shell->hash, node->cmds[0])))
+	{
+		if (exec)
+			run_binary(content, node, env, shell);
+		return (0);
+	}
+	if (is_absolute(node, env, shell) && exec)
 		return (1);
 	if (!(content = find_env(env, "PATH")))
 		return (1);

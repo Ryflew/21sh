@@ -2,8 +2,6 @@
 
 char go_builtins(char **cmd, t_env **env, t_sh *shell)
 {
-	(void)env;
-	(void)shell;
 	if (!ft_strcmp(cmd[0], "echo"))
 		echo_builtin(cmd, *env);
 	else if (!ft_strcmp(cmd[0], "cd"))
@@ -16,6 +14,8 @@ char go_builtins(char **cmd, t_env **env, t_sh *shell)
 		env_command(cmd, *env);
 	else if (!ft_strcmp(cmd[0], "exit"))
 		exit_command(cmd, shell);
+	else if (!ft_strcmp(cmd[0], "hash"))
+		hash_tab(cmd, shell);
 	else if (!ft_strcmp(cmd[0], "true"))
 		return (0);
 	else if (!ft_strcmp(cmd[0], "false"))
@@ -28,22 +28,22 @@ char go_builtins(char **cmd, t_env **env, t_sh *shell)
 char is_builtins(char **cmd)
 {
 	if (!ft_strcmp(cmd[0], "echo"))
-		;
+		return (0);
 	else if (!ft_strcmp(cmd[0], "cd"))
-		;
+		return (0);
 	else if (!ft_strcmp(cmd[0], "setenv"))
-		;
+		return (0);
 	else if (!ft_strcmp(cmd[0], "unsetenv"))
-		;
+		return (0);
 	else if (!ft_strcmp(cmd[0], "env"))
-		;
+		return (0);
 	else if (!ft_strcmp(cmd[0], "exit"))
-		;
+		return (0);
+	else if (!ft_strcmp(cmd[0], "hash"))
+		return (0);
 	else if (!ft_strcmp(cmd[0], "true"))
-		;
+		return (0);
 	else if (!ft_strcmp(cmd[0], "false"))
-		;
-	else
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }

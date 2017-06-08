@@ -1,5 +1,8 @@
 #include "21sh.h"
 #include <stdlib.h>
+#include <sys/types.h> 
+#include <sys/stat.h> 
+#include <unistd.h>
 
 static void add_to_history(t_sh *shell, char *command)
 {
@@ -36,7 +39,6 @@ char	exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 	return (ret);
 }
 
-
 static char browse_tree(t_tree *node, t_env **env, t_sh *shell, t_tree *parent, char right_side)
 {
 	node->parent = parent;
@@ -52,8 +54,45 @@ static char browse_tree(t_tree *node, t_env **env, t_sh *shell, t_tree *parent, 
 	}
 	if (node->token && ((node->left && node->left->cmds) || (node->right && node->right->cmds)))
 		return (operators(node, env, shell, right_side));
-	if (node->cmds && (!node->parent || node->parent->token->type == SCL)) //!= PIPE && node->parent->token->type != AND && node->parent->token->type != OR && node->parent->token->type != CHEVB)))
+	if (node->cmds && (!node->parent || node->parent->token->type == SCL))
 		return (exec_cmds(node, env, shell));
+	return (0);
+}
+
+static char check_cmd(char *cmd, t_sh *shell, t_tree *node)
+{
+	if (!cmd || !cmd[0])
+		return (-1);
+	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") ||
+		!ft_strcmp(cmd, "exit") || !ft_strcmp(cmd, "setenv") ||
+		!ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "unsetenv") || 
+		!ft_strcmp(cmd, "hash"))
+		return (0);
+	if (get_path(node, shell->env, shell, 0) == 1)
+	{
+		ft_putstr(cmd);
+		ft_putendl(": Command not found.");
+		return (-1);
+	}
+	return (0);
+}
+
+static char cmd_validity(t_tree *node, t_sh *shell)
+{
+	if (node->left)
+	{
+		if (cmd_validity(node->left, shell) == -1)
+			return (-1);
+	}
+	if (node->right)
+	{
+		if (node->token->type != CHEVB && node->token->type != DCHEVB && 
+		node->token->type != CHEVF && node->token->type != DCHEVF &&
+		node->token->type != FRED && cmd_validity(node->right, shell) == -1)
+			return (-1);
+	}
+	if (node->cmds)
+		return (check_cmd(node->cmds[0], shell, node));
 	return (0);
 }
 
@@ -77,6 +116,7 @@ void go_core(char *command, t_env **env, t_sh *shell)
 		ft_clear_list(&shell->lexer->lexems, (void*)&clear_lexems);		
 		return ;
 	}
-	browse_tree(commands_tree, env, shell, NULL, 1);
+	if (!cmd_validity(commands_tree, shell))
+		browse_tree(commands_tree, env, shell, NULL, 1);
 	ft_clear_list(&shell->lexer->lexems, (void*)&clear_lexems);
 }

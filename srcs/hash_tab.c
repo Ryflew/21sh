@@ -44,7 +44,7 @@ static void	del_hash_line(char *name, t_sh *shell)
 		errexit("hash", "program name not found.");
 }
 
-static void	add_hash_line(char *name, char *path, t_sh *shell)
+void	add_hash_line(char *name, char *path, t_sh *shell)
 {
 	char	**new_av;
 	int		i;
@@ -63,6 +63,17 @@ static void	add_hash_line(char *name, char *path, t_sh *shell)
 	new_av[3] = NULL;
 	set_env(new_av, &(shell->hash));
 	ft_strdelpp(&new_av);
+}
+
+char	is_in_hashtab(char *path, t_env *env)
+{
+	while (env)
+	{
+		if (!ft_strcmp(env->var_content, path))
+			return (1);
+		env = env->next;
+	}
+	return (0);
 }
 
 void	hash_tab(char **av, t_sh *shell)
