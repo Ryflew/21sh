@@ -4,39 +4,6 @@
 #include <unistd.h>
 #include "21sh.h"
 
-static char	*get_start_str(t_sh *shell)
-{
-	int		end;
-	int		i;
-
-	i = shell->j + 1;
-	end = i;
-	while (--i > -1 && shell->command[i] != ' ')
-		;
-	if (i == shell->j)
-		return (NULL);
-	return (ft_strsub(shell->command, i + 1, end - (i + 1)));
-}
-
-static char	*check_dir_content(char *part, char *path)
-{
-	DIR			*dir;
-	t_dirent	*ent;
-
-	if (!(dir = opendir(path)))
-		return (0);
-	while ((ent = readdir(dir)))
-	{
-		if (!ft_strncmp(ent->d_name, part, ft_strlen(part)))
-		{
-			closedir(dir);
-			return (ft_strdup(ent->d_name));
-		}
-	}
-	closedir(dir);
-	return (NULL);
-}
-
 static char	*find_match_binary(t_sh *shell, char *tosearch)
 {
 	int		i;
@@ -61,18 +28,20 @@ static char	*find_match_binary(t_sh *shell, char *tosearch)
 	return (NULL);
 }
 
-static char	reg_or_dir(char *path)
-{
-	t_stat	buff;
-
-	if (lstat(path, &buff) == -1)
-		return (0);
-	if (S_ISDIR(buff.st_mode) || S_ISLNK(buff.st_mode))
-		return (1);
-	else if (S_ISREG(buff.st_mode))
-		return (2);
-	return (0);
-}
+// static void print_mising2()
+// {
+	
+// 	tmp = ft_strsub(part, 0, ft_strrchr(part, '/') - part);
+// 	str = ft_strstrjoin(tmp, "/", all);
+// 	free(tmp);
+// 	if (*part != '/')
+// 	{
+// 		tmp = str;
+// 		str = ft_strstrjoin(cwd, "/", tmp);
+// 		free(tmp);
+// 	}
+// 	part = ft_strrchr(part, '/') + 1;
+// }
 
 static void	print_missing(t_sh *shell, char *part, char *all)
 {
@@ -87,6 +56,7 @@ static void	print_missing(t_sh *shell, char *part, char *all)
 		return ;
 	if (ft_strchr(part, '/'))
 	{
+		// print_missing2();
 		tmp = ft_strsub(part, 0, ft_strrchr(part, '/') - part);
 		str = ft_strstrjoin(tmp, "/", all);
 		free(tmp);
@@ -111,12 +81,20 @@ static void	print_missing(t_sh *shell, char *part, char *all)
 	free(str);
 }
 
-static char	*find_match_elem(char *path)
+static void find_match_elem2(char *path, char **tmp, char **tmp2, char **cwd)
+{
+	if (!*tmp)
+		*tmp = path;
+	*tmp2 = ft_strsub(path, 0, ft_strlen(path) - ft_strlen(*tmp));
+	*cwd = ft_strstrjoin(*cwd, "/", *tmp2);
+	free(*tmp2);
+	if (**tmp == '/')
+		++(*tmp);
+}
+
+static char	*find_match_elem(char *path, char *cwd, char *tmp, char *tmp2)
 {
 	char	buff[4097];
-	char	*cwd;
-	char	*tmp;
-	char	*tmp2;
 
 	if (*path == '/')
 	{
@@ -132,13 +110,7 @@ static char	*find_match_elem(char *path)
 		tmp = ft_strrchr(path, '/');
 		if ((!tmp || !*(tmp + 1)) && ft_strchr(path, '/'))
 			return (NULL);
-		if (!tmp)
-			tmp = path;
-		tmp2 = ft_strsub(path, 0, ft_strlen(path) - ft_strlen(tmp));
-		cwd = ft_strstrjoin(cwd, "/", tmp2);
-		free(tmp2);
-		if (*tmp == '/')
-			++tmp;
+		find_match_elem2(path, &tmp, &tmp2, &cwd);
 	}
 	if ((tmp2 = check_dir_content(tmp, cwd)))
 	{
@@ -147,24 +119,6 @@ static char	*find_match_elem(char *path)
 	}
 	free(cwd);
 	return (NULL);
-}
-
-static void	tild_to_home(char **str, t_env *env)
-{
-	char	*home;
-	char	*tmp;
-
-	if ((home = find_env(env, "HOME")))
-	{
-		tmp = *str;
-		*str = ft_strjoin(home, *str + 1);
-		free(tmp);
-	}
-	else
-	{
-		free(*str);
-		*str = NULL;
-	}
 }
 
 void	go_completion(t_sh *shell)
@@ -182,9 +136,11 @@ void	go_completion(t_sh *shell)
 	if (!tmp)
 		return ;
 	if (ft_strchr(shell->command, ' ') || *tmp == '/')
-		name = find_match_elem(tmp);
+		name = find_match_elem(tmp, NULL, NULL, NULL);
 	else
 		name = find_match_binary(shell, tmp);
+	if (!name)
+		name = find_builtins(tmp);
 	if (name)
 	{
 		print_missing(shell, tmp, name);

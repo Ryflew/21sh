@@ -2,7 +2,6 @@
 ----------- TODO --------------
 
 - Lancer les binaires depuis env | Fait non ?
-- Completion pour les builtins
 - Check les (void)X pour les virer
 - Norme
 - Revoir le parsing avec un fd avant ou apres

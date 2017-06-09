@@ -24,6 +24,7 @@ FILES = add_char.c \
 				cd2.c \
 				check_brackets.c \
 				completion.c \
+				completion2.c \
 				copy_data.c \
 				core.c \
 				cursor.c \
@@ -59,7 +60,7 @@ FILES = add_char.c \
 				lex_string.c \
 				parse_cmds.c \
 				parse_text.c \
-				create.c
+				create.c \
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 
