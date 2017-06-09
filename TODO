@@ -1,7 +1,7 @@
 
 ----------- TODO --------------
 
-- Lancer les binaires depuis env
+- Lancer les binaires depuis env | Fait non ?
 - Completion pour les builtins
 - Check les (void)X pour les virer
 - Norme
@@ -9,9 +9,8 @@
 
 ---------- BONUS --------------
 
-- Table de hashage
-- Resize
 - Usage / help commands
+- Unset + Export
 
 ------------ BUG --------------
 
