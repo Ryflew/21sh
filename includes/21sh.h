@@ -248,6 +248,7 @@ char				exec_cmds(t_tree *node, t_env **env, t_sh *shell);
 char				run_binary(char *path, t_tree *node, t_env *env, t_sh *shell);
 char				get_path(t_tree *node, t_env *env, t_sh *shell, char exec);
 char				is_builtins(char **cmd);
+char				is_writable_builtins(char *cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
 char				**manage_dchevb(t_tree *node);
 char				**manage_chevb(t_tree *node, int fd_file);
@@ -265,5 +266,7 @@ t_token				*new_token(t_lexer *lexer, e_token token_type, char *value);
 t_tree				*cmd_rules(t_sh *sh);
 t_token				*new_token(t_lexer *lexer, e_token token_type, char *value);
 char				parse_error(t_sh *sh);
+char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
+char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
 
 #endif

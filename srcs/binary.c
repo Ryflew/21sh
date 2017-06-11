@@ -142,6 +142,41 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 	return (WEXITSTATUS(ret));		
 }
 
+char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
+{
+	int		ret;
+	int		fd[2];
+	char	**envi;
+	char	**cmds;
+
+	if (tcsetattr(0, TCSADRAIN, &(shell->old)) == -1)
+	{
+		errexit("21sh", "Impossible de set l'ancien terminal");
+		exit(EXIT_FAILURE);
+	}	
+	if ((ret = open_file(node, shell, fd)) == -1)
+		return (-1);
+	if ((g_father = fork()) == -1)
+		ft_exiterror("fork failure !", -1);	
+	else if (!g_father && node->cmds)
+	{
+		envi = conv_env(*env);
+		if ((cmds = child(node, shell, fd, ret)))
+			go_builtins(cmds, env, shell);
+		if (envi)
+			ft_strdelpp(&envi);
+		exit(EXIT_SUCCESS);
+	}
+	else
+		ret = father(shell, fd);
+	if (tcsetattr(0, TCSADRAIN, &(shell->our)) == -1)
+	{
+		errexit("21sh", "Impossible de set le nouveau terminal");
+		exit(EXIT_FAILURE);
+	}
+	return (WEXITSTATUS(ret));		
+}
+
 char	current_binary(t_tree *node, t_env *env, t_sh *shell)
 {
 	int		i;

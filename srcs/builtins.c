@@ -1,6 +1,6 @@
 #include "21sh.h"
 
-char go_builtins(char **cmd, t_env **env, t_sh *shell)
+char 	go_builtins(char **cmd, t_env **env, t_sh *shell)
 {
 	if (!ft_strcmp(cmd[0], "echo"))
 		echo_builtin(cmd, *env);
@@ -25,17 +25,22 @@ char go_builtins(char **cmd, t_env **env, t_sh *shell)
 	return (0);
 }
 
-char is_builtins(char **cmd)
+char	is_writable_builtins(char *cmd)
 {
-	if (!ft_strcmp(cmd[0], "echo"))
+	if (!ft_strcmp(cmd, "echo"))
 		return (0);
-	else if (!ft_strcmp(cmd[0], "cd"))
+	else if (!ft_strcmp(cmd, "env"))
+		return (0);
+	return (1);
+}
+
+char	is_builtins(char **cmd)
+{
+	if (!ft_strcmp(cmd[0], "cd"))
 		return (0);
 	else if (!ft_strcmp(cmd[0], "setenv"))
 		return (0);
 	else if (!ft_strcmp(cmd[0], "unsetenv"))
-		return (0);
-	else if (!ft_strcmp(cmd[0], "env"))
 		return (0);
 	else if (!ft_strcmp(cmd[0], "exit"))
 		return (0);
@@ -45,5 +50,6 @@ char is_builtins(char **cmd)
 		return (0);
 	else if (!ft_strcmp(cmd[0], "false"))
 		return (0);
-	return (1);
+	else
+		return (is_writable_builtins(cmd[0]));
 }

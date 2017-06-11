@@ -4,7 +4,7 @@
 static char manage_pipe(t_env **env, t_sh *shell, t_tree *node, char right_side)
 {
 	shell->right_side = right_side;
-	return (exec_cmds(node, env, shell));
+	return (exec_cmds_with_op(node, env, shell));
 }
 
 char	**manage_dchevb(t_tree *node)
@@ -258,7 +258,7 @@ char	operators(t_tree *node, t_env **env, t_sh *shell, char right_side)
 			node->cmds = node->left->cmds;
 		else
 			node->cmds = NULL;
-		return (exec_cmds(node, env, shell));
+		return (exec_cmds_with_op(node, env, shell));
 	}
 	return (0);
 }

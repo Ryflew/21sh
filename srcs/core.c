@@ -39,6 +39,25 @@ char	exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 	return (ret);
 }
 
+char	exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell)
+{
+	char	ret;
+
+	ret = 0;
+	if (node->cmds && (ret = is_writable_builtins(node->cmds[0])))
+	{
+	 	if ((ret = get_path(node, *env, shell, 1)))
+		{
+			ft_putstr(node->cmds[0]);
+			ft_putendl(": Command not found.");
+			ret = -1;
+		}
+	}
+	else
+		run_builtins(node, env, shell);
+	return (ret);
+}
+
 static char browse_tree(t_tree *node, t_env **env, t_sh *shell, t_tree *parent, char right_side)
 {
 	node->parent = parent;

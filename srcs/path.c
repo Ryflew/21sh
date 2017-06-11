@@ -51,7 +51,7 @@ char get_path(t_tree *node, t_env *env, t_sh *shell, char exec)
 	if ((content = find_env(shell->hash, node->cmds[0])))
 	{
 		if (exec)
-			run_binary(content, node, env, shell);
+			run_binary(ft_strdup(content), node, env, shell);
 		return (0);
 	}
 	if (is_absolute(node, env, shell) && exec)
