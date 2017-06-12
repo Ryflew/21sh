@@ -53,11 +53,11 @@ static t_tree *cmd_with_op_rules(t_sh *sh)
 	t_tree *tmp;
 
 	//ft_putendl("step4");
-	if ((!(left = cmd_rules(sh)) && sh->current_token->type != CHEVF && sh->current_token->type != DCHEVF) || left == (void*)-1)
+	if ((!(left = cmd_rules(sh)) && sh->current_token->type != CHEVF && sh->current_token->type != DCHEVF && sh->current_token->type != CHEVB && sh->current_token->type != DCHEVB) || left == (void*)-1)
 		return (left);
 	//ft_putendl(((t_token *)left->tokens)->value);
 	//ft_putendl("step9");
-	while ((left || (sh->current_token->type == CHEVF || sh->current_token->type == DCHEVF)) && left != (void*)-1)
+	while ((left || (sh->current_token->type == CHEVF || sh->current_token->type == DCHEVF || sh->current_token->type == CHEVB || sh->current_token->type == DCHEVB)) && left != (void*)-1)
 	{
 		ft_putendl("step9-0");
 		//		ft_putendl(sh->current_token->value);

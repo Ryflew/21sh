@@ -16,19 +16,37 @@ char	**manage_dchevb(t_tree *node)
 	pipe(fd);
 	while (gnl(0, &line) && ft_strcmp(line, node->right->cmds[0]))
 	{
-		ft_putendl(line);
+//		ft_putendl(line);
 		ft_fputendl(line, fd[1]);
+		free(line);
 	}
+	free(line);	
 	if (node->to_fd != -1)
 		dup2(fd[0], node->to_fd);
 	else
-		dup2(fd[0], 0);
+	{
+		close(fd[1]);
+		if (node->left)
+			dup2(fd[0], 0);
+		else
+		{
+			while (gnl(fd[0], &line))
+			{
+				ft_putendl(line);
+				free(line);				
+			}
+			free(line);
+		}
+	}
 	close(fd[1]);
 	if (node->from_fd != -1 && node->to_fd != -1)
 		dup2(node->from_fd, node->to_fd);
 	else if (node->to_fd != -1)
 		dup2(1, node->to_fd);
-	return (node->left->cmds);
+	if (node->left)
+		return (node->left->cmds);
+	else
+		return (NULL);
 }
 
 int	open_chevb(t_tree *node)
@@ -43,18 +61,31 @@ int	open_chevb(t_tree *node)
 	return (fd_file);
 }
 
-char	**manage_chevb(t_tree *node, int fd_file)
+char	**manage_chevb(t_tree *node, int fd_file, char **envi)
 {
+	char	**new_cmd;
+
+	ft_putendl("works");
 	if (node->to_fd != -1)
 		dup2(fd_file, node->to_fd);
 	else
-		dup2(fd_file, 0);
-	if (node->from_fd != -1 && node->to_fd != -1)
-		dup2(node->from_fd, node->to_fd);
-	else if (node->to_fd != -1)
-		dup2(1, node->to_fd);
+	{
+		if (node->left)
+			dup2(fd_file, 0);
+		else
+		{
+			new_cmd = (char**)malloc(sizeof(char*) * 3);
+			new_cmd[2] = NULL;
+			new_cmd[0] = ft_strdup("/bin/cat");
+			new_cmd[1] = ft_strdup(node->right->cmds[0]);
+			execve(new_cmd[0], new_cmd, envi);
+		}
+	}
 	close(fd_file);
-	return (node->left->cmds);
+	if (node->left)
+		return (node->left->cmds);
+	else
+		return (NULL);
 }
 
 int	open_dchevf(t_tree *node)

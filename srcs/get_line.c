@@ -91,7 +91,7 @@ char	*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
 	shell->j = -1;
-	//return (ft_strdup("< yolo"));
+	//return (ft_strdup("< auteur"));
 	while (1)
 	{
 		buff = 0;

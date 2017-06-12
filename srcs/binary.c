@@ -51,12 +51,18 @@ char **run_with_pipe(t_tree *node, t_sh *shell, int *fd)
 char	**child(t_tree *node, t_sh *shell, int *fd, int fd_file)
 {
 	char	**cmds;
+	char	**envi;
 		
 	cmds = NULL;
 	if (node->token && node->token->type == DCHEVB)
 		cmds = manage_dchevb(node);
 	else if (node->token && node->token->type == CHEVB)
-		cmds = manage_chevb(node, fd_file);
+	{
+		envi = conv_env(shell->env);		
+		cmds = manage_chevb(node, fd_file, envi);
+		if (envi)
+			ft_strdelpp(&envi);
+	}
 	else if (node->token && node->token->type == DCHEVF)
 		cmds = manage_dchevf(node, fd_file);
 	else if (node->token && node->token->type == CHEVF)
@@ -118,21 +124,22 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 		errexit("21sh", "Impossible de set l'ancien terminal");
 		exit(EXIT_FAILURE);
 	}	
-	if ((ret = open_file(node, shell, fd)) == -1)
-		return (-1);
-	if ((g_father = fork()) == -1)
-		ft_exiterror("fork failure !", -1);	
-	else if (!g_father)
+	if ((ret = open_file(node, shell, fd)) != -1)
 	{
-		envi = conv_env(env);
-		if ((cmds = child(node, shell, fd, ret)))
-			execve(path, cmds, envi);
-		if (envi)
-			ft_strdelpp(&envi);
-		exit(EXIT_SUCCESS);
+		if ((g_father = fork()) == -1)
+			ft_exiterror("fork failure !", -1);	
+		else if (!g_father)
+		{
+			envi = conv_env(env);
+			if ((cmds = child(node, shell, fd, ret)))
+				execve(path, cmds, envi);
+			if (envi)
+				ft_strdelpp(&envi);
+			exit(EXIT_SUCCESS);
+		}
+		else
+			ret = father(shell, fd);
 	}
-	else
-		ret = father(shell, fd);
 	free(path);
 	if (tcsetattr(0, TCSADRAIN, &(shell->our)) == -1)
 	{
@@ -154,21 +161,22 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 		errexit("21sh", "Impossible de set l'ancien terminal");
 		exit(EXIT_FAILURE);
 	}	
-	if ((ret = open_file(node, shell, fd)) == -1)
-		return (-1);
-	if ((g_father = fork()) == -1)
-		ft_exiterror("fork failure !", -1);	
-	else if (!g_father && node->cmds)
+	if ((ret = open_file(node, shell, fd)) != -1)
 	{
-		envi = conv_env(*env);
-		if ((cmds = child(node, shell, fd, ret)))
-			go_builtins(cmds, env, shell);
-		if (envi)
-			ft_strdelpp(&envi);
-		exit(EXIT_SUCCESS);
+		if ((g_father = fork()) == -1)
+			ft_exiterror("fork failure !", -1);	
+		else if (!g_father && (node->cmds || node->token->type == CHEVB || node->token->type == DCHEVB))
+		{
+			envi = conv_env(*env);
+			if ((cmds = child(node, shell, fd, ret)))
+				go_builtins(cmds, env, shell);
+			if (envi)
+				ft_strdelpp(&envi);
+			exit(EXIT_SUCCESS);
+		}
+		else
+   			ret = father(shell, fd);
 	}
-	else
-		ret = father(shell, fd);
 	if (tcsetattr(0, TCSADRAIN, &(shell->our)) == -1)
 	{
 		errexit("21sh", "Impossible de set le nouveau terminal");
