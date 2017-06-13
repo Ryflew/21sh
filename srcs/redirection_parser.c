@@ -5,26 +5,26 @@ t_tree *basic_red(t_sh *sh, e_token type, t_tree *left)
 	t_token *token;
 	t_token	*file_name;
 
-	if (!left)
-		ft_putendl("step0");		
+	// if (!left)
+	// 	ft_putendl("step0");		
 	if (left && !left->right && left->token && left->token->type != SCL)
 	{
 		// parse_error(sh);
 		return ((void*)-1);
 	}
-		ft_putendl("step0,5");		
+		// ft_putendl("step0,5");		
 	if (sh->current_token->type == type)
 	{
-		ft_putendl("step1");		
+		// ft_putendl("step1");		
 		token = sh->current_token;
 		eat(sh, type);
-		ft_putendl("step2");		
+		// ft_putendl("step2");		
 		if (!sh->current_token)
 			return ((void*)-1);
-		ft_putendl("step3");		
+		// ft_putendl("step3");		
 		if (!(file_name = text_rules(sh)))
 			return ((void*)-1);
-		ft_putendl("step4");		
+		// ft_putendl("step4");		
 		return (create_node(left, token, NULL, create_node(NULL, NULL, ft_create_node(file_name->value), NULL)));
 	}
 	return (NULL);
@@ -36,7 +36,7 @@ t_tree *adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 	t_token *file_name;
 	t_tree *new_node;
 
-	ft_putendl("adv_red_forward");
+	// ft_putendl("adv_red_forward");
 	new_node = NULL;
 	if (left && !left->right && left->token && left->token->type != SCL)
 	{
@@ -145,7 +145,7 @@ t_tree *redirection_rules(t_sh *sh, t_tree *left)
 {
 	t_tree *new_node;
 
-	ft_putendl("WESHHHHHHHHHHHHHHHHHH");
+	// ft_putendl("WESHHHHHHHHHHHHHHHHHH");
 	if (!sh->current_token)
 		return (NULL);
 	// '>' WORD

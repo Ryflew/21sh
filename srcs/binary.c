@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/11 23:24:38 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/13 02:14:11 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,21 @@
 
 static pid_t	g_father = -1;
 
+pid_t	child_pid()
+{
+	return (g_father);
+}
 char	stop_binary(int sig)
 {
-	if (g_father != -1 && sig == SIGINT)
+	if (g_father != -1 && g_father != 0 && sig == SIGINT)
 	{
 		kill(g_father, sig);
 		g_father = -1;
-		if (tcsetattr(0, TCSADRAIN, &(get_shell()->our)) == -1)
-		{
-			errexit("21sh", "Impossible de set le nouveau terminal");
-			exit(EXIT_FAILURE);
-		}
+		// if (tcsetattr(0, TCSADRAIN, &(get_shell()->our)) == -1)
+		// {
+		// 	errexit("21sh", "Impossible de set le nouveau terminal");
+		// 	exit(EXIT_FAILURE);
+		// }
 		ft_putchar('\n');
 		return (1);
 	}
@@ -94,7 +98,7 @@ int		father(t_sh *shell, int *fd)
 {
 	int ret;
 
-	wait(&ret);	
+	waitpid(g_father, &ret, 0);
 	if (shell->fd_in != -1)
 	{
 		close(fd[1]);
@@ -121,9 +125,10 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 	if ((ret = open_file(node, shell, fd)) == -1)
 		return (-1);
 	if ((g_father = fork()) == -1)
-		ft_exiterror("fork failure !", -1);	
+		ft_exiterror("fork failure !", -1);
 	else if (!g_father)
 	{
+		signal(SIGTSTP, SIG_DFL);
 		envi = conv_env(env);
 		if ((cmds = child(node, shell, fd, ret)))
 			execve(path, cmds, envi);
@@ -139,6 +144,7 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 		errexit("21sh", "Impossible de set le nouveau terminal");
 		exit(EXIT_FAILURE);
 	}
+	ft_putendl("test");
 	return (WEXITSTATUS(ret));		
 }
 

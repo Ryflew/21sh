@@ -268,5 +268,6 @@ t_token				*new_token(t_lexer *lexer, e_token token_type, char *value);
 char				parse_error(t_sh *sh);
 char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
 char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
+pid_t				child_pid();
 
 #endif

@@ -16,7 +16,7 @@ char	**manage_dchevb(t_tree *node)
 	pipe(fd);
 	while (gnl(0, &line) && ft_strcmp(line, node->right->cmds[0]))
 	{
-		ft_putendl(line);
+		// ft_putendl(line);
 		ft_fputendl(line, fd[1]);
 	}
 	if (node->to_fd != -1)

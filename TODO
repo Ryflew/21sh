@@ -16,3 +16,4 @@
 - pipe | pipe
 - cat << auteur -> affichage des caracteres et delete des caracteres quand on lit stdin
 - ls dffd 2>& > fail
+- /bin/werw => 2 retour d'erreur

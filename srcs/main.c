@@ -6,13 +6,15 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/11 18:59:59 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/13 01:40:32 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "21sh.h"
+#include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "21sh.h"
+#include <signal.h>
 
 static t_sh	g_sh;
 
