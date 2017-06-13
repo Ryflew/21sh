@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_line.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/06/13 01:53:19 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include <limits.h>
 #include <stdlib.h>
@@ -79,7 +91,11 @@ char	*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
 	shell->j = -1;
+<<<<<<< HEAD
+	// return (ft_strdup("cd << EOF"));
+=======
 	//return (ft_strdup("< auteur"));
+>>>>>>> 21995f07a3b3b99e81ebd0398e5681ae12f79819
 	while (1)
 	{
 		buff = 0;

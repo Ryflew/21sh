@@ -251,7 +251,7 @@ char				is_builtins(char **cmd);
 char				is_writable_builtins(char *cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
 char				**manage_dchevb(t_tree *node);
-char				**manage_chevb(t_tree *node, int fd_file);
+char				**manage_chevb(t_tree *node, int fd_file, char **envi);
 char				**manage_dchevf(t_tree *node, int fd_file);
 char				**manage_chevf(t_tree *node, int fd_file);
 char				**manage_fred(t_tree *node, int fd_file);
