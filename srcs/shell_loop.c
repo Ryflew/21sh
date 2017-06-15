@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:58:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/07 23:29:06 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/15 17:45:53 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	treat_command(t_sh *shell, char *command)
 	}
 	ft_putchar('\n');
 	if (*shell->total_command && !only_space(shell->total_command))
-		go_core(shell->total_command, &(shell->env), shell);
+		go_core(shell->total_command, shell);
 	free(shell->op);
 	free(shell->total_command);
 	shell->op = NULL;

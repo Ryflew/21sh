@@ -21,7 +21,7 @@ static void	arrows(t_sh *shell, unsigned long c)
 			(shell->pos.cursor.y = shell->pos.last.y));
 }
 
-static void maj_arrows(t_sh *shell, unsigned long c)
+static void	maj_arrows(t_sh *shell, unsigned long c)
 {
 	if (c == MAJ_LEFT)
 		maj_left_arrow(shell);
@@ -75,7 +75,7 @@ static char	get_line2(t_sh *shell, unsigned long buff)
 	return (1);
 }
 
-char	*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
+char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
 	shell->j = -1;

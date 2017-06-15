@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-static int		check_hist_occur(t_sh *shell, char *str)
+static int	check_hist_occur(t_sh *shell, char *str)
 {
 	int		len;
 
@@ -15,7 +15,7 @@ static int		check_hist_occur(t_sh *shell, char *str)
 	return (-1);
 }
 
-static	void clear_to_bot(t_sh *shell)
+static void	clear_to_bot(t_sh *shell)
 {
 	int		i;
 
@@ -25,13 +25,8 @@ static	void clear_to_bot(t_sh *shell)
 		do_termcap("dl");
 }
 
-static	void print_history(t_sh *shell, t_sh *bis_sh)
+static void	print_history2(t_sh *shell, t_sh *bis_sh)
 {
-	char	*tmp;
-	int		save;
-	int		i;
-
-	save = bis_sh->pos.first.y == shell->pos.first.y ? shell->pos.last.y + 1 : bis_sh->pos.first.y;
 	if (shell->pos.last.y == shell->pos.max_window.y)
 	{
 		bis_sh->pos.first = (t_pos){16, shell->pos.last.y};
@@ -48,6 +43,17 @@ static	void print_history(t_sh *shell, t_sh *bis_sh)
 		bis_sh->pos.cursor = (t_pos){16, shell->pos.last.y + 1};
 		move_to(shell->pos.last.x, shell->pos.last.y);
 	}
+}
+
+static void	print_history(t_sh *shell, t_sh *bis_sh)
+{
+	char	*tmp;
+	int		save;
+	int		i;
+
+	save = bis_sh->pos.first.y == shell->pos.first.y ? shell->pos.last.y + 1 :\
+		bis_sh->pos.first.y;
+	print_history2(shell, bis_sh);
 	ft_putstr("\nhistory-search: ");
 	bis_sh->command[bis_sh->j + 1] = '\0';
 	tmp = ft_strdup(bis_sh->command);
@@ -57,7 +63,8 @@ static	void print_history(t_sh *shell, t_sh *bis_sh)
 	while (tmp[++i])
 		add_char(bis_sh->command, &(bis_sh->j), bis_sh, tmp[i]);
 	free(tmp);
-	if (save - bis_sh->pos.first.y != 0 && bis_sh->pos.last.y == shell->pos.max_window.y)
+	if (save - bis_sh->pos.first.y != 0 && bis_sh->pos.last.y == \
+		shell->pos.max_window.y)
 	{
 		shell->pos.first.y -= save - bis_sh->pos.first.y;
 		shell->pos.last.y -= save - bis_sh->pos.first.y;
@@ -77,9 +84,11 @@ static char	write_history(t_sh *shell, t_sh *bis_sh)
 		move_to(shell->pos.first.x, shell->pos.first.y);
 		i = -1;
 		while (shell->history[pos][++i])
-			add_char(shell->command, &(shell->j), shell, shell->history[pos][i]);
+			add_char(shell->command, &(shell->j), shell, \
+				shell->history[pos][i]);
 		print_history(shell, bis_sh);
-		i = ft_strstr(shell->history[pos], bis_sh->command) - shell->history[pos];
+		i = ft_strstr(shell->history[pos], bis_sh->command) - \
+			shell->history[pos];
 		move_to(shell->pos.first.x, shell->pos.first.y);
 		shell->pos.cursor = (t_pos){shell->pos.first.x, shell->pos.first.y};
 		while (i--)
@@ -90,7 +99,26 @@ static char	write_history(t_sh *shell, t_sh *bis_sh)
 	return (0);
 }
 
-void	loop_search(t_sh *shell, t_sh *bis_sh)
+static void	loop_search2(t_sh *shell, t_sh *bis_sh)
+{
+	if (bis_sh->j > -1)
+	{
+		move_to(bis_sh->pos.cursor.x, bis_sh->pos.cursor.y);
+		delete_char(bis_sh->command, &(bis_sh->j), bis_sh);
+	}
+	if (bis_sh->j == -1)
+	{
+		clear_line(shell);
+		clear_to_bot(shell);
+		move_to(shell->pos.last.x, shell->pos.last.y);
+		ft_putstr("\nhistory-search: ");
+		move_to(shell->pos.first.x, shell->pos.first.y);
+	}
+	else
+		write_history(shell, bis_sh);
+}
+
+void		loop_search(t_sh *shell, t_sh *bis_sh)
 {
 	unsigned long	buff;
 
@@ -107,23 +135,7 @@ void	loop_search(t_sh *shell, t_sh *bis_sh)
 				bis_sh->command[(bis_sh->j)--] = '\0';
 		}
 		else if (buff == DELETE)
-		{
-			if (bis_sh->j > -1)
-			{
-				move_to(bis_sh->pos.cursor.x, bis_sh->pos.cursor.y);
-				delete_char(bis_sh->command, &(bis_sh->j), bis_sh);
-			}
-			if (bis_sh->j == -1)
-			{
-				clear_line(shell);
-				clear_to_bot(shell);
-				move_to(shell->pos.last.x, shell->pos.last.y);
-				ft_putstr("\nhistory-search: ");
-				move_to(shell->pos.first.x, shell->pos.first.y);
-			}
-			else
-				write_history(shell, bis_sh);
-		}
+			loop_search2(shell, bis_sh);
 		else
 		{
 			clear_to_bot(shell);
@@ -133,13 +145,12 @@ void	loop_search(t_sh *shell, t_sh *bis_sh)
 	}
 }
 
-void	search_mode(t_sh *shell)
+void		search_mode(t_sh *shell)
 {
 	t_sh	bis_sh;
 
 	bis_sh.j = -1;
 	bis_sh.pos = shell->pos;
-
 	bis_sh.pos.cursor.x = 16;
 	bis_sh.pos.first.x = 16;
 	bis_sh.pos.last.x = 16;

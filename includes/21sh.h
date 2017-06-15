@@ -195,7 +195,7 @@ void				get_cursor(t_sh *shell);
 void				hash_tab(char **av, t_sh *shell);
 void				print_prompt(e_state state, char *op);
 void				treat_second_prompt(char *string, char **op, e_state *state);
-void				go_core(char *command, t_env **env, t_sh *shell);
+void				go_core(char *command, t_sh *shell);
 void				manage_redirection(t_tree **tree);
 void				load_history(t_sh *shell, t_env *env);
 void				del_env(t_env *todel);

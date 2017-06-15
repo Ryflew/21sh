@@ -1,6 +1,6 @@
 #include "21sh.h"
 
-void	get_hash_opt(char ***hash, char *r_opt, char *p_opt, char *d_opt)
+void		get_hash_opt(char ***hash, char *r_opt, char *p_opt, char *d_opt)
 {
 	*r_opt = 0;
 	*p_opt = 0;
@@ -44,7 +44,7 @@ static void	del_hash_line(char *name, t_sh *shell)
 		errexit("hash", "program name not found.");
 }
 
-void	add_hash_line(char *name, char *path, t_sh *shell)
+void		add_hash_line(char *name, char *path, t_sh *shell)
 {
 	char	**new_av;
 	int		i;
@@ -65,7 +65,7 @@ void	add_hash_line(char *name, char *path, t_sh *shell)
 	ft_strdelpp(&new_av);
 }
 
-char	is_in_hashtab(char *path, t_env *env)
+char		is_in_hashtab(char *path, t_env *env)
 {
 	while (env)
 	{
@@ -76,12 +76,12 @@ char	is_in_hashtab(char *path, t_env *env)
 	return (0);
 }
 
-void	hash_tab(char **av, t_sh *shell)
+void		hash_tab(char **av, t_sh *shell)
 {
 	char	r_opt;
 	char	p_opt;
 	char	d_opt;
-	
+
 	if (!*(++av))
 	{
 		if (!shell->hash)

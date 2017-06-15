@@ -1,7 +1,7 @@
 #include "21sh.h"
 #include <dirent.h>
 #include <sys/types.h>
-#include <sys/stat.h> 
+#include <sys/stat.h>
 #include <unistd.h>
 
 char	*check_dir_content(char *part, char *path)

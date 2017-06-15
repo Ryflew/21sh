@@ -1,5 +1,5 @@
 #include <sys/stat.h>
-#include <sys/types.h> 
+#include <sys/types.h>
 #include <dirent.h>
 #include <unistd.h>
 #include "21sh.h"
@@ -12,7 +12,7 @@ static char	*find_match_binary(t_sh *shell, char *tosearch)
 	char	**tmp;
 
 	if (!(content = find_env(shell->env, "PATH")))
-			return (NULL);
+		return (NULL);
 	tmp = ft_strsplit(content, ':');
 	content = tosearch;
 	i = -1;
@@ -28,31 +28,35 @@ static char	*find_match_binary(t_sh *shell, char *tosearch)
 	return (NULL);
 }
 
+static void	print_missing2(char **str, char **part, char *all)
+{
+	char	*tmp;
+	char	buff[4097];
+
+	tmp = ft_strsub(*part, 0, ft_strrchr(*part, '/') - *part);
+	*str = ft_strstrjoin(tmp, "/", all);
+	free(tmp);
+	if (**part != '/')
+	{
+		tmp = *str;
+		*str = ft_strstrjoin(getcwd(buff, 4097), "/", tmp);
+		free(tmp);
+	}
+	*part = ft_strrchr(*part, '/') + 1;
+}
+
 static void	print_missing(t_sh *shell, char *part, char *all)
 {
 	int		i;
 	char	buff[4097];
 	char	*cwd;
 	char	*str;
-	char	*tmp;
 
 	i = -1;
 	if (!(cwd = getcwd(buff, 4097)))
 		return ;
 	if (ft_strchr(part, '/'))
-	{
-		// print_missing2();
-		tmp = ft_strsub(part, 0, ft_strrchr(part, '/') - part);
-		str = ft_strstrjoin(tmp, "/", all);
-		free(tmp);
-		if (*part != '/')
-		{
-			tmp = str;
-			str = ft_strstrjoin(cwd, "/", tmp);
-			free(tmp);
-		}
-		part = ft_strrchr(part, '/') + 1;
-	}
+		print_missing2(&str, &part, all);
 	else
 		str = ft_strstrjoin(cwd, "/", all);
 	while (part[++i] && all[i] && part[i] == all[i])
@@ -66,7 +70,7 @@ static void	print_missing(t_sh *shell, char *part, char *all)
 	free(str);
 }
 
-static void find_match_elem2(char *path, char **tmp, char **tmp2, char **cwd)
+static void	find_match_elem2(char *path, char **tmp, char **tmp2, char **cwd)
 {
 	if (!*tmp)
 		*tmp = path;
@@ -106,7 +110,7 @@ static char	*find_match_elem(char *path, char *cwd, char *tmp, char *tmp2)
 	return (NULL);
 }
 
-void	go_completion(t_sh *shell)
+void		go_completion(t_sh *shell)
 {
 	char	*tmp;
 	char	*name;

@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,13 +6,13 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 00:51:22 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/26 04:28:45 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/15 18:26:07 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <sys/types.h> 
-#include <sys/stat.h> 
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include "21sh.h"
@@ -37,6 +36,51 @@ void	clear_line(t_sh *shell)
 	shell->pos.cursor = shell->pos.first;
 }
 
+static char	browse_history_top(t_sh *shell, int *i)
+{
+	if (shell->j > -1)
+	{
+		if (!shell->history_mem && shell->history_pos == -1)
+		{
+			shell->command[++(shell->j)] = '\0';
+			shell->history_mem = ft_strdup(shell->command);
+		}
+		clear_line(shell);
+	}
+	++(shell->history_pos);
+	while (shell->history[shell->history_pos][++(*i)])
+	{
+		if (add_char(shell->command, &(shell->j), shell, \
+			shell->history[shell->history_pos][*i]))
+		{
+			sig_hand(0);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+static char	browse_history_bot_last(t_sh *shell, int *i)
+{
+	shell->history_pos = -1;
+	clear_line(shell);
+	if (shell->history_mem)
+	{
+		while (shell->history_mem[++(*i)])
+		{
+			if (add_char(shell->command, &(shell->j), shell, \
+				shell->history_mem[*i]))
+			{
+				sig_hand(0);
+				return (1);
+			}
+		}
+		free(shell->history_mem);
+		shell->history_mem = NULL;
+	}
+	return (0);
+}
+
 void	browse_history(t_sh *shell, unsigned long arrow)
 {
 	int			i;
@@ -51,33 +95,19 @@ void	browse_history(t_sh *shell, unsigned long arrow)
 	i = -1;
 	if (arrow == UP_ARROW && shell->history_pos < max)
 	{
-		if (shell->j > -1)
-		{
-			if (!shell->history_mem && shell->history_pos == -1)
-			{
-				shell->command[++(shell->j)] = '\0';
-				shell->history_mem = ft_strdup(shell->command);
-			}
-			clear_line(shell);
-		}
-		++(shell->history_pos);
-		while (shell->history[shell->history_pos][++i])
-		{
-			if (add_char(shell->command, &(shell->j), shell, shell->history[shell->history_pos][i]))
-			{
-				sig_hand(0);
-				return ;
-			}
-		}
+		if (browse_history_top(shell, &i))
+			return ;
 	}
-	else if (arrow == DOWN_ARROW && shell->history_pos <= max && shell->history_pos > 0) 
+	else if (arrow == DOWN_ARROW && shell->history_pos <= max && \
+		shell->history_pos > 0)
 	{
 		if (shell->j > -1)
 			clear_line(shell);
 		--(shell->history_pos);
 		while (shell->history[shell->history_pos][++i])
 		{
-			if (add_char(shell->command, &(shell->j), shell, shell->history[shell->history_pos][i]))
+			if (add_char(shell->command, &(shell->j), shell, \
+				shell->history[shell->history_pos][i]))
 			{
 				sig_hand(0);
 				return ;
@@ -85,21 +115,6 @@ void	browse_history(t_sh *shell, unsigned long arrow)
 		}
 	}
 	else if (arrow == DOWN_ARROW && !shell->history_pos && shell->j > -1)
-	{
-		shell->history_pos = -1;
-		clear_line(shell);
-		if (shell->history_mem)
-		{
-			while (shell->history_mem[++i])
-			{
-				if (add_char(shell->command, &(shell->j), shell, shell->history_mem[i]))
-				{
-					sig_hand(0);
-					return ;
-				}
-			}
-			free(shell->history_mem);
-			shell->history_mem = NULL;
-		}
-	}
+		if (browse_history_bot_last(shell, &i))
+			return ;
 }
