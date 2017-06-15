@@ -28,21 +28,6 @@ static char	*find_match_binary(t_sh *shell, char *tosearch)
 	return (NULL);
 }
 
-// static void print_mising2()
-// {
-	
-// 	tmp = ft_strsub(part, 0, ft_strrchr(part, '/') - part);
-// 	str = ft_strstrjoin(tmp, "/", all);
-// 	free(tmp);
-// 	if (*part != '/')
-// 	{
-// 		tmp = str;
-// 		str = ft_strstrjoin(cwd, "/", tmp);
-// 		free(tmp);
-// 	}
-// 	part = ft_strrchr(part, '/') + 1;
-// }
-
 static void	print_missing(t_sh *shell, char *part, char *all)
 {
 	int		i;

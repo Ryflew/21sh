@@ -1,6 +1,6 @@
 #include "21sh.h"
 
-char 	go_builtins(char **cmd, t_env **env, t_sh *shell)
+char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 {
 	if (!ft_strcmp(cmd[0], "echo"))
 		echo_builtin(cmd, *env);

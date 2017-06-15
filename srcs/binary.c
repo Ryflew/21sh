@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/13 02:41:44 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/15 02:55:01 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@
 
 static pid_t	g_father = -1;
 
-pid_t	child_pid()
+pid_t	child_pid(void)
 {
 	return (g_father);
 }
+
 char	stop_binary(int sig)
 {
 	if (g_father != -1 && g_father != 0 && sig == SIGINT)
@@ -41,7 +42,7 @@ char	stop_binary(int sig)
 	return (0);
 }
 
-char **run_with_pipe(t_tree *node, t_sh *shell, int *fd)
+char	**run_with_pipe(t_tree *node, t_sh *shell, int *fd)
 {
 	if (node->from_fd != -1 && node->to_fd != -1)
 		dup2(fd[1], node->from_fd);
@@ -52,17 +53,26 @@ char **run_with_pipe(t_tree *node, t_sh *shell, int *fd)
 	return (node->cmds);
 }
 
+void	child2(t_tree *node, char ***cmds)
+{
+	if (node->from_fd != -1 && node->to_fd != -1)
+		dup2(node->from_fd, node->to_fd);
+	else if (node->to_fd != -1)
+		dup2(1, node->to_fd);
+	*cmds = node->cmds;
+}
+
 char	**child(t_tree *node, t_sh *shell, int *fd, int fd_file)
 {
 	char	**cmds;
 	char	**envi;
-		
+
 	cmds = NULL;
 	if (node->token && node->token->type == DCHEVB)
 		cmds = manage_dchevb(node);
 	else if (node->token && node->token->type == CHEVB)
 	{
-		envi = conv_env(shell->env);		
+		envi = conv_env(shell->env);
 		cmds = manage_chevb(node, fd_file, envi);
 		if (envi)
 			ft_strdelpp(&envi);
@@ -76,13 +86,7 @@ char	**child(t_tree *node, t_sh *shell, int *fd, int fd_file)
 	else if (shell->fd_in != -1)
 		cmds = run_with_pipe(node, shell, fd);
 	else
-	{
-		if (node->from_fd != -1 && node->to_fd != -1)
-			dup2(node->from_fd, node->to_fd);
-		else if (node->to_fd != -1)
-			dup2(1, node->to_fd);
-		cmds = node->cmds;
-	}
+		child2(node, &cmds);
 	return (cmds);
 }
 
@@ -92,7 +96,8 @@ int		open_file(t_tree *node, t_sh *shell, int *fd)
 		return (pipe(fd));
 	if (node->token && node->token->type == CHEVB)
 		return (open_chevb(node));
-	else if (node->token && (node->token->type == CHEVF || (node->token->type == FRED && ft_strcmp(node->right->cmds[0], "-"))))
+	else if (node->token && (node->token->type == CHEVF || \
+		(node->token->type == FRED && ft_strcmp(node->right->cmds[0], "-"))))
 		return (open_chevf(node));
 	else if (node->token && node->token->type == DCHEVF)
 		return (open_dchevf(node));
@@ -116,6 +121,24 @@ int		father(t_sh *shell, int *fd)
 	return (ret);
 }
 
+void	set_old_term(t_sh *shell)
+{
+	if (tcsetattr(0, TCSADRAIN, &(shell->old)) == -1)
+	{
+		errexit("21sh", "Impossible de set l'ancien terminal");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	set_our_term(t_sh *shell)
+{
+	if (tcsetattr(0, TCSADRAIN, &(shell->our)) == -1)
+	{
+		errexit("21sh", "Impossible de set le nouveau terminal");
+		exit(EXIT_FAILURE);
+	}
+}
+
 char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 {
 	int		ret;
@@ -123,18 +146,14 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 	char	**envi;
 	char	**cmds;
 
-	if (tcsetattr(0, TCSADRAIN, &(shell->old)) == -1)
-	{
-		errexit("21sh", "Impossible de set l'ancien terminal");
-		exit(EXIT_FAILURE);
-	}	
+	set_old_term(shell);
 	if ((ret = open_file(node, shell, fd)) != -1)
 	{
 		if ((g_father = fork()) == -1)
-			ft_exiterror("fork failure !", -1);	
+			ft_exiterror("fork failure !", -1);
 		else if (!g_father)
 		{
-			signal(SIGTSTP, SIG_DFL);
+			// signal(SIGTSTP, SIG_DFL);
 			envi = conv_env(env);
 			if ((cmds = child(node, shell, fd, ret)))
 				execve(path, cmds, envi);
@@ -145,13 +164,9 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 		else
 			ret = father(shell, fd);
 	}
+	set_our_term(shell);
 	free(path);
-	if (tcsetattr(0, TCSADRAIN, &(shell->our)) == -1)
-	{
-		errexit("21sh", "Impossible de set le nouveau terminal");
-		exit(EXIT_FAILURE);
-	}
-	return (WEXITSTATUS(ret));		
+	return (WEXITSTATUS(ret));
 }
 
 char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
@@ -161,16 +176,13 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 	char	**envi;
 	char	**cmds;
 
-	if (tcsetattr(0, TCSADRAIN, &(shell->old)) == -1)
-	{
-		errexit("21sh", "Impossible de set l'ancien terminal");
-		exit(EXIT_FAILURE);
-	}	
+	set_old_term(shell);
 	if ((ret = open_file(node, shell, fd)) != -1)
 	{
 		if ((g_father = fork()) == -1)
-			ft_exiterror("fork failure !", -1);	
-		else if (!g_father && (node->cmds || node->token->type == CHEVB || node->token->type == DCHEVB))
+			ft_exiterror("fork failure !", -1);
+		else if (!g_father && (node->cmds || node->token->type == CHEVB || \
+			node->token->type == DCHEVB))
 		{
 			envi = conv_env(*env);
 			if ((cmds = child(node, shell, fd, ret)))
@@ -180,14 +192,10 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 			exit(EXIT_SUCCESS);
 		}
 		else
-   			ret = father(shell, fd);
+			ret = father(shell, fd);
 	}
-	if (tcsetattr(0, TCSADRAIN, &(shell->our)) == -1)
-	{
-		errexit("21sh", "Impossible de set le nouveau terminal");
-		exit(EXIT_FAILURE);
-	}
-	return (WEXITSTATUS(ret));		
+	set_our_term(shell);
+	return (WEXITSTATUS(ret));
 }
 
 char	current_binary(t_tree *node, t_env *env, t_sh *shell)

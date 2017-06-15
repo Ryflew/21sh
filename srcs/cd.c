@@ -3,6 +3,18 @@
 #include <stdlib.h>
 #include "21sh.h"
 
+static void	init_setenv(char ***av, t_env **env, char *tmp)
+{
+	if (!(*av = (char**)malloc(sizeof(char*) * 4)))
+		exit(EXIT_FAILURE);
+	(*av)[0] = ft_strdup("setenv");
+	(*av)[1] = ft_strdup("OLDPWD");
+	(*av)[2] = ft_strdup(tmp);
+	(*av)[3] = NULL;
+	set_env(*av, env);
+	ft_strdelpp(av);
+}
+
 static void	change_path(char *path, t_env *env, t_sh *shell, t_cd *opt)
 {
 	char	**av;
@@ -12,16 +24,7 @@ static void	change_path(char *path, t_env *env, t_sh *shell, t_cd *opt)
 
 	tmp = getcwd(buff, 4097);
 	if (cd_path_validity(tmp))
-	{
-		if (!(av = (char**)malloc(sizeof(char*) * 4)))
-			exit(EXIT_FAILURE);
-		av[0] = ft_strdup("setenv");
-		av[1] = ft_strdup("OLDPWD");
-		av[2] = ft_strdup(tmp);
-		av[3] = NULL;
-		set_env(av, &env);
-		ft_strdelpp(&av);
-	}
+		init_setenv(&av, &env, tmp);
 	new_prompt = NULL;
 	tmp = ft_strdup(path);
 	change_prompt(tmp, env, &new_prompt, opt);
@@ -109,7 +112,20 @@ static void	get_cd_opt(char ***av, t_cd *opt)
 	}
 }
 
-void	cd(char **av, t_env *env, t_sh *shell)
+static void	cd2(char **av, t_env *env, t_sh *shell, t_cd *opt)
+{
+	if (cd_path_validity(*av))
+		change_path(*av, env, shell, opt);
+	else
+	{
+		if (!lstat(*av, NULL))
+			errexit("cd", "Not a directory.");
+		else
+			errexit("cd", "No such file or directory.");
+	}
+}
+
+void		cd(char **av, t_env *env, t_sh *shell)
 {
 	char	*tmp;
 	t_cd	opt;
@@ -132,17 +148,7 @@ void	cd(char **av, t_env *env, t_sh *shell)
 			errexit("cd", "OLDPWD not set.");
 	}
 	else if (*av[0] == '/')
-	{
-		if (cd_path_validity(*av))
-			change_path(*av, env, shell, &opt);
-		else
-		{
-			if (!lstat(*av, NULL))
-				errexit("cd", "Not a directory.");
-			else
-				errexit("cd", "No such file or directory.");
-		}
-	}
+		cd2(av, env, shell, &opt);
 	else
 		cd_current_dir(*av, env, shell, &opt);
 }

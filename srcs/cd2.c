@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:54:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/07 03:35:21 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/15 03:17:05 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,26 @@ static void	cd_dot_dot(char **new_prompt)
 		*new_prompt = ft_strdup(getcwd(buff, 4097));
 }
 
+static void	treat_current2(t_cd *opt, char *tmp, char **new_prompt)
+{
+	char	buff[4097];
+
+	if (opt->is_P && !access(tmp, R_OK | R_OK))
+	{
+		chdir(tmp);
+		ft_strdel(new_prompt);
+		*new_prompt = ft_strdup(getcwd(buff, 4097));
+	}
+	else if (!access(tmp, R_OK | R_OK))
+	{
+		ft_strdel(new_prompt);
+		*new_prompt = ft_strdup(tmp);
+		chdir(tmp);
+	}
+	else
+		errexit("cd", "permission denied.");
+}
+
 static void	treat_current(char *path, char **new_prompt, t_cd *opt)
 {
 	char	*tmp;
@@ -58,20 +78,7 @@ static void	treat_current(char *path, char **new_prompt, t_cd *opt)
 			tmp = ft_strjoin(cwd, path);
 		else
 			tmp = ft_strstrjoin(cwd, "/", path);
-		if (opt->is_P && !access(tmp, R_OK | R_OK))
-		{
-			chdir(tmp);
-			ft_strdel(new_prompt);
-			*new_prompt = ft_strdup(getcwd(buff, 4097));
-		}
-		else if (!access(tmp, R_OK | R_OK))
-		{
-			ft_strdel(new_prompt);
-			*new_prompt = ft_strdup(tmp);
-			chdir(tmp);
-		}
-		else
-			errexit("cd", "permission denied.");
+		treat_current2(opt, tmp, new_prompt);
 		free(tmp);
 	}
 }
@@ -88,7 +95,7 @@ static void	change_prompt2(char **path2, char *path, char **tmp)
 	*path2 = ft_strsub(path, i + 1, ft_strlen(path) - i - 1);
 }
 
-void	change_prompt(char *path, t_env *env, char **new_prompt, t_cd *opt)
+void		change_prompt(char *path, t_env *env, char **new_prompt, t_cd *opt)
 {
 	char	*tmp;
 	char	*path2;
@@ -112,7 +119,7 @@ void	change_prompt(char *path, t_env *env, char **new_prompt, t_cd *opt)
 	}
 }
 
-char	*get_with_tilde(char *path, t_env *env)
+char		*get_with_tilde(char *path, t_env *env)
 {
 	char	*home;
 	char	*tmp;
