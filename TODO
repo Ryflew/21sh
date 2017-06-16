@@ -5,6 +5,8 @@
 - Check les (void)X pour les virer
 - Norme
 - Revoir le parsing avec un fd avant ou apres
+- Segfault guillemet, ex : eee"ddd"
+- ; ne marche pas
 
 ---------- BONUS --------------
 

@@ -1,17 +1,17 @@
 #include "21sh.h"
 #include <fcntl.h>
 
-static char manage_pipe(t_env **env, t_sh *shell, t_tree *node, char right_side)
+static char	manage_pipe(t_env **env, t_sh *shell, t_tree *node, char right_side)
 {
 	shell->right_side = right_side;
 	return (exec_cmds_with_op(node, env, shell));
 }
 
-char	**manage_dchevb(t_tree *node)
+char		**manage_dchevb(t_tree *node)
 {
 	int		fd[2];
 	char	*line;
-	
+
 	line = NULL;
 	pipe(fd);
 	while (gnl(0, &line) && ft_strcmp(line, node->right->cmds[0]))
@@ -20,7 +20,7 @@ char	**manage_dchevb(t_tree *node)
 		ft_fputendl(line, fd[1]);
 		free(line);
 	}
-	free(line);	
+	free(line);
 	if (node->to_fd != -1)
 		dup2(fd[0], node->to_fd);
 	else
@@ -33,7 +33,7 @@ char	**manage_dchevb(t_tree *node)
 			while (gnl(fd[0], &line))
 			{
 				ft_putendl(line);
-				free(line);				
+				free(line);
 			}
 			free(line);
 		}
@@ -49,9 +49,9 @@ char	**manage_dchevb(t_tree *node)
 		return (NULL);
 }
 
-int	open_chevb(t_tree *node)
+int			open_chevb(t_tree *node)
 {
-	int		fd_file;	
+	int		fd_file;
 
 	if ((fd_file = open(node->right->cmds[0], O_RDONLY)) == -1)
 	{
@@ -61,7 +61,7 @@ int	open_chevb(t_tree *node)
 	return (fd_file);
 }
 
-char	**manage_chevb(t_tree *node, int fd_file, char **envi)
+char		**manage_chevb(t_tree *node, int fd_file, char **envi)
 {
 	char	**new_cmd;
 
@@ -87,11 +87,12 @@ char	**manage_chevb(t_tree *node, int fd_file, char **envi)
 		return (NULL);
 }
 
-int	open_dchevf(t_tree *node)
+int			open_dchevf(t_tree *node)
 {
 	int		fd_file;
-	
-	if ((fd_file = open(node->right->cmds[0], O_WRONLY | O_APPEND | O_CREAT, 0644)) == -1)
+
+	if ((fd_file = open(node->right->cmds[0], O_WRONLY | O_APPEND | \
+		O_CREAT, 0644)) == -1)
 	{
 		ft_putstr("Open failure -> ");
 		ft_putendl(node->right->cmds[0]);
@@ -99,7 +100,7 @@ int	open_dchevf(t_tree *node)
 	return (fd_file);
 }
 
-char	**manage_dchevf(t_tree *node, int fd_file)
+char		**manage_dchevf(t_tree *node, int fd_file)
 {
 	if (node->from_fd != -1)
 		dup2(fd_file, node->from_fd);
@@ -109,15 +110,16 @@ char	**manage_dchevf(t_tree *node, int fd_file)
 		dup2(node->from_fd, node->to_fd);
 	else if (node->to_fd != -1)
 		dup2(1, node->to_fd);
-	close(fd_file);	
+	close(fd_file);
 	return (node->left->cmds);
 }
 
-int	open_chevf(t_tree *node)
+int			open_chevf(t_tree *node)
 {
 	int		fd_file;
-	
-	if ((fd_file = open(node->right->cmds[0], O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
+
+	if ((fd_file = open(node->right->cmds[0], O_WRONLY | O_CREAT | \
+		O_TRUNC, 0644)) == -1)
 	{
 		ft_putstr("Open failure -> ");
 		ft_putendl(node->right->cmds[0]);
@@ -125,12 +127,12 @@ int	open_chevf(t_tree *node)
 	return (fd_file);
 }
 
-char	**manage_chevf(t_tree *node, int fd_file)
+char		**manage_chevf(t_tree *node, int fd_file)
 {
 	if (node->from_fd != -1)
 		dup2(fd_file, node->from_fd);
 	else
-		dup2(fd_file, 1);		
+		dup2(fd_file, 1);
 	if (node->from_fd != -1 && node->to_fd != -1)
 		dup2(node->from_fd, node->to_fd);
 	else if (node->to_fd != -1)
@@ -143,7 +145,7 @@ char	**manage_chevf(t_tree *node, int fd_file)
 {
 	if (!ft_strcmp(node->right->cmds[0], "-"))
 	{
-		if (node->to_fd)				
+		if (node->to_fd)
 			close(node->to_fd);
 		else
 			close(0);
@@ -157,12 +159,12 @@ char	**manage_chevf(t_tree *node, int fd_file)
 	}
 }*/
 
-char	**manage_fred(t_tree *node, int fd_file)
+char		**manage_fred(t_tree *node, int fd_file)
 {
 	if (!ft_strcmp(node->right->cmds[0], "-"))
 	{
 		// TODO test valid fd
-		if (node->from_fd != -1)				
+		if (node->from_fd != -1)
 			close(node->from_fd);
 		else
 			close(1);
@@ -170,7 +172,7 @@ char	**manage_fred(t_tree *node, int fd_file)
 	}
 	/*else if (node->from_fd != -1 && node->to_fd != -1)
 	{
-		if (node->from_fd)		
+		if (node->from_fd)
 			dup2(node->from_fd, node->to_fd);
 		else
 			dup2(1, node->to_fd);
@@ -184,14 +186,14 @@ char	**manage_fred(t_tree *node, int fd_file)
 		}
 		else if (node->to_fd == -1)
 			dup2(fd_file, node->from_fd); // TODO test valid fd
-		close(fd_file);		
+		close(fd_file);
 		return (node->left->cmds);
 	}
 }
 
-static char manage_and(t_env **env, t_sh *shell, t_tree *node, char right_side)
+static char	manage_and(t_env **env, t_sh *shell, t_tree *node, char right_side)
 {
-	int ret; 
+	int ret;
 
 	ret = 0;
 	if (shell->fd_in != -1)
@@ -212,7 +214,7 @@ static char manage_and(t_env **env, t_sh *shell, t_tree *node, char right_side)
 			if (!(ret = manage_pipe(env, shell, node->left, 0)))
 				manage_pipe(env, shell, node->right, right_side);
 			else if (ret == -1)
-				shell->fd_in = -1;				
+				shell->fd_in = -1;
 		}
 	}
 	else
@@ -225,7 +227,7 @@ static char manage_and(t_env **env, t_sh *shell, t_tree *node, char right_side)
 	return (ret);
 }
 
-static char manage_or(t_env **env, t_sh *shell, t_tree *node, char right_side)
+static char	manage_or(t_env **env, t_sh *shell, t_tree *node, char right_side)
 {
 	int ret;
 
@@ -250,7 +252,7 @@ static char manage_or(t_env **env, t_sh *shell, t_tree *node, char right_side)
 			if ((ret = manage_pipe(env, shell, node->left, 0)) != 0 && ret != -1)
 				return (manage_pipe(env, shell, node->right, right_side));
 			else if (ret == -1)
-				shell->fd_in = -1;				
+				shell->fd_in = -1;
 		}
 	}
 	else
@@ -263,7 +265,7 @@ static char manage_or(t_env **env, t_sh *shell, t_tree *node, char right_side)
 	return (ret);
 }
 
-char	operators(t_tree *node, t_env **env, t_sh *shell, char right_side)
+char		operators(t_tree *node, t_env **env, t_sh *shell, char right_side)
 {
 	int	ret;
 

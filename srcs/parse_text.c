@@ -1,6 +1,6 @@
 #include "21sh.h"
 
-t_token *str_rules(t_sh *sh)
+t_token	*str_rules(t_sh *sh)
 {
 	t_token *old_token;
 	t_token *token;
@@ -31,7 +31,7 @@ t_token *str_rules(t_sh *sh)
 	return (token);
 }
 
-t_token *text_rules(t_sh *sh)
+t_token	*text_rules(t_sh *sh)
 {
 	t_token *token;
 

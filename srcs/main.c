@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/13 01:40:32 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/15 23:16:29 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	get_current_path(t_env *env)
 	g_sh.prompt = get_with_tilde(cwd, env);
 }
 
-t_sh	*get_shell()
+t_sh	*get_shell(void)
 {
 	return (&g_sh);
 }
@@ -81,17 +81,11 @@ void	sig_hand(int sig)
 	}
 }
 
-char	*remove_useless_space(char *str)
+char	*remove_useless_space(char *str, int i, int j, int have_space)
 {
-	int		i;
-	int		j;
-	int		have_space;
 	char	buff[ft_strlen(str)];
 	char	c;
 
-	have_space = 0;
-	j = -1;
-	i = -1;
 	c = 0;
 	while (str[++i])
 	{

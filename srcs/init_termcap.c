@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/20 02:29:29 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/11 02:54:48 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/15 22:25:40 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static void	build_term(t_sh *shell)
 	ft_memmove(&shell->our, &term, sizeof(term));
 }
 
-void	init_termcap(t_sh *shell, t_env *env)
+void		init_termcap(t_sh *shell, t_env *env)
 {
-	struct winsize	w;	
+	struct winsize	w;
 	t_termios		tmp;
 	char			*term_name;
 

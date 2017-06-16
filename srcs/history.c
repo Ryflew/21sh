@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 00:51:22 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/15 18:26:07 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/15 22:23:23 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <fcntl.h>
 #include "21sh.h"
 
-void	clear_line(t_sh *shell)
+void		clear_line(t_sh *shell)
 {
 	int		i;
 	char	white_space[shell->j + 2];
@@ -60,6 +60,23 @@ static char	browse_history_top(t_sh *shell, int *i)
 	return (0);
 }
 
+static char	browse_history_bot(t_sh *shell, int *i)
+{
+	if (shell->j > -1)
+		clear_line(shell);
+	--(shell->history_pos);
+	while (shell->history[shell->history_pos][++(*i)])
+	{
+		if (add_char(shell->command, &(shell->j), shell, \
+			shell->history[shell->history_pos][*i]))
+		{
+			sig_hand(0);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 static char	browse_history_bot_last(t_sh *shell, int *i)
 {
 	shell->history_pos = -1;
@@ -81,7 +98,7 @@ static char	browse_history_bot_last(t_sh *shell, int *i)
 	return (0);
 }
 
-void	browse_history(t_sh *shell, unsigned long arrow)
+void		browse_history(t_sh *shell, unsigned long arrow)
 {
 	int			i;
 	int			max;
@@ -101,18 +118,8 @@ void	browse_history(t_sh *shell, unsigned long arrow)
 	else if (arrow == DOWN_ARROW && shell->history_pos <= max && \
 		shell->history_pos > 0)
 	{
-		if (shell->j > -1)
-			clear_line(shell);
-		--(shell->history_pos);
-		while (shell->history[shell->history_pos][++i])
-		{
-			if (add_char(shell->command, &(shell->j), shell, \
-				shell->history[shell->history_pos][i]))
-			{
-				sig_hand(0);
-				return ;
-			}
-		}
+		if (browse_history_bot(shell, &i))
+			return ;
 	}
 	else if (arrow == DOWN_ARROW && !shell->history_pos && shell->j > -1)
 		if (browse_history_bot_last(shell, &i))

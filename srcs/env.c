@@ -87,7 +87,7 @@ void	env_command2(char **av, t_env **cpy)
 		else
 		{
 			// --- LANCER LE BINAIRE ---
-			// if (!go_path(av, *cpy))
+			// if (!get_path(av, *cpy))
 			// {
 			// 	if (!find_env(*cpy, "HOME"))
 			// 		errexit("cd", "HOME not set.");

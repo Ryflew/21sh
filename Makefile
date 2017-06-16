@@ -51,7 +51,6 @@ FILES = add_char.c \
 				shell_loop.c \
 				split_quot.c \
 				termcap.c \
-				trim_input.c \
 				unsetenv.c \
 				utils.c \
 				operators.c \

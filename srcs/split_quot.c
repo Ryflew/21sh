@@ -6,14 +6,14 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/04 23:11:41 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/18 23:58:52 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/16 02:55:50 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "21sh.h"
 
-static int	count_quot(char *str, char c, int i, int nb) // bug avec "ls -la" random
+static int	count_quot(char *str, char c, int i, int nb)
 {
 	int value;
 

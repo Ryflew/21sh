@@ -1,6 +1,6 @@
 #include "21sh.h"
 
-char eat(t_sh *sh, e_token token)
+char			eat(t_sh *sh, e_token token)
 {
 	if (sh->current_token->type == token)
 	{
@@ -18,10 +18,10 @@ char eat(t_sh *sh, e_token token)
 	//	syntax_error();
 }
 
-static t_tree *pipe_rules(t_sh *sh, t_tree *left)
+static t_tree	*pipe_rules(t_sh *sh, t_tree *left)
 {
-	t_token *token;
-	t_tree *new_node;
+	t_token	*token;
+	t_tree	*new_node;
 
 	//ft_putendl("step9-1-1");
 	new_node = NULL;
@@ -47,17 +47,21 @@ static t_tree *pipe_rules(t_sh *sh, t_tree *left)
 	return (new_node);
 }
 
-static t_tree *cmd_with_op_rules(t_sh *sh)
+static t_tree	*cmd_with_op_rules(t_sh *sh)
 {
-	t_tree *left;
-	t_tree *tmp;
+	t_tree	*left;
+	t_tree	*tmp;
 
 	//ft_putendl("step4");
-	if ((!(left = cmd_rules(sh)) && sh->current_token->type != CHEVF && sh->current_token->type != DCHEVF && sh->current_token->type != CHEVB && sh->current_token->type != DCHEVB) || left == (void*)-1)
+	if ((!(left = cmd_rules(sh)) && sh->current_token->type != CHEVF &&
+		sh->current_token->type != DCHEVF && sh->current_token->type != CHEVB \
+		&& sh->current_token->type != DCHEVB) || left == (void*)-1)
 		return (left);
 	//ft_putendl(((t_token *)left->tokens)->value);
 	//ft_putendl("step9");
-	while ((left || (sh->current_token->type == CHEVF || sh->current_token->type == DCHEVF || sh->current_token->type == CHEVB || sh->current_token->type == DCHEVB)) && left != (void*)-1)
+	while ((left || (sh->current_token->type == CHEVF || \
+		sh->current_token->type == DCHEVF || sh->current_token->type == CHEVB \
+		|| sh->current_token->type == DCHEVB)) && left != (void*)-1)
 	{
 		// ft_putendl("step9-0");
 		//		ft_putendl(sh->current_token->value);
@@ -79,11 +83,11 @@ static t_tree *cmd_with_op_rules(t_sh *sh)
 	return (left);
 }
 
-static t_tree *condition_operators_rules(t_sh *sh)
+static t_tree	*condition_operators_rules(t_sh *sh)
 {
-	t_tree *left;
-	t_tree *right;
-	t_token *token;
+	t_tree	*left;
+	t_tree	*right;
+	t_token	*token;
 
 	if (!(left = cmd_with_op_rules(sh)) || left == (void*)-1)
 		return (left);
@@ -102,11 +106,11 @@ static t_tree *condition_operators_rules(t_sh *sh)
 	return (left);
 }
 
-t_tree *commands_line_rules(t_sh *sh)
+t_tree			*commands_line_rules(t_sh *sh)
 {
-	t_tree *left;
-	t_tree *right;
-	t_token *token;
+	t_tree	*left;
+	t_tree	*right;
+	t_token	*token;
 
 	//ft_putendl("step1");
 	//ft_putendl(sh->current_token->value);

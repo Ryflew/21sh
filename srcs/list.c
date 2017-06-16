@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:35:32 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/07 04:43:51 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/15 23:12:54 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ char	del_all_env(t_env **list)
 	return (1);
 }
 
-
-char		**list_to_tabstr(t_list *list)
+char	**list_to_tabstr(t_list *list)
 {
 	t_list		*tmp;
 	char		**args;

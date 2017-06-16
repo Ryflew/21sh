@@ -36,11 +36,11 @@ char	is_binary(char *path)
 	return (0);
 }
 
-char *clear_quot(char *str)
+char	*clear_quot(char *str)
 {
-	int i;
-	int count;
-	char *out;
+	int		i;
+	int		count;
+	char	*out;
 
 	i = -1;
 	count = 0;

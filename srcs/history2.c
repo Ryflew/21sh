@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 20:56:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/04 18:43:15 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/15 22:25:01 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <fcntl.h>
 #include "21sh.h"
 
-void	add_line(t_sh *shell, char *toadd)
+void		add_line(t_sh *shell, char *toadd)
 {
 	int		i;
 	char	**new;
@@ -29,7 +29,8 @@ void	add_line(t_sh *shell, char *toadd)
 		shell->history[1] = NULL;
 		return ;
 	}
-	if (!(new = (char**)malloc(sizeof(char*) * (ft_counttab(shell->history) + 2))))
+	if (!(new = (char**)malloc(sizeof(char*) * \
+		(ft_counttab(shell->history) + 2))))
 		errexit("\n21sh", "Malloc failed.\n");
 	i = -1;
 	new[0] = ft_strdup(toadd);
@@ -40,7 +41,7 @@ void	add_line(t_sh *shell, char *toadd)
 	shell->history = new;
 }
 
-static char **convert_history(char *str, int count)
+static char	**convert_history(char *str, int count)
 {
 	int		i;
 	int		j;
@@ -88,7 +89,7 @@ static void	get_history(t_sh *shell, off_t size, char *home)
 	shell->history = convert_history(history, count);
 }
 
-void	load_history(t_sh *shell, t_env *env)
+void		load_history(t_sh *shell, t_env *env)
 {
 	char		*home;
 	struct stat	buff;
@@ -103,7 +104,7 @@ void	load_history(t_sh *shell, t_env *env)
 	free(home);
 }
 
-void	save_history(t_sh *shell)
+void		save_history(t_sh *shell)
 {
 	int		i;
 	int		fd;
