@@ -86,15 +86,8 @@ void	env_command2(char **av, t_env **cpy)
 			add_new_var(&av, cpy);
 		else
 		{
-			// --- LANCER LE BINAIRE ---
-			// if (!get_path(av, *cpy))
-			// {
-			// 	if (!find_env(*cpy, "HOME"))
-			// 		errexit("cd", "HOME not set.");
-			// 	else
-			// 		errexit(*av, "No such file or directory.");
-			// }
-			// break ;
+			get_shell()->save_env = get_shell()->env;
+			get_shell()->env = cpy_env(*cpy);
 		}
 		av++;
 	}
@@ -108,6 +101,7 @@ char	env_command(char **av, t_env *env)
 		print_env(env);
 	else
 	{
+
 		cpy = cpy_env(env);
 		env_command2(av, &cpy);
 		del_all_env(&cpy);

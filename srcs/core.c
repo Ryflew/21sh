@@ -30,11 +30,7 @@ char		exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 	if (!node->cmds || (ret = go_builtins(node->cmds, env, shell)) == 1)
 	{
 		if ((ret = get_path(node, *env, shell, 1)))
-		{
-			ft_putstr(node->cmds[0]);
-			ft_putendl(": Command not found.");
 			ret = -1;
-		}
 	}
 	return (ret);
 }
@@ -47,11 +43,7 @@ char		exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell)
 	if (node->cmds && (ret = is_writable_builtins(node->cmds[0])))
 	{
 		if ((ret = get_path(node, *env, shell, 1)))
-		{
-			ft_putstr(node->cmds[0]);
-			ft_putendl(": Command not found.");
 			ret = -1;
-		}
 	}
 	else
 		run_builtins(node, env, shell);
@@ -81,6 +73,8 @@ static char	browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 
 static char	check_cmd(char *cmd, t_sh *shell, t_tree *node)
 {
+	char	ret;
+
 	if (!cmd || !cmd[0])
 		return (-1);
 	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") ||
@@ -88,12 +82,14 @@ static char	check_cmd(char *cmd, t_sh *shell, t_tree *node)
 		!ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "unsetenv") ||
 		!ft_strcmp(cmd, "hash"))
 		return (0);
-	if (get_path(node, shell->env, shell, 0) == 1)
+	if ((ret = get_path(node, shell->env, shell, 0)) == 1)
 	{
 		ft_putstr(cmd);
 		ft_putendl(": Command not found.");
 		return (-1);
 	}
+	else if (ret == 2)
+		return (-1);
 	return (0);
 }
 
@@ -139,4 +135,10 @@ void		go_core(char *command, t_sh *shell)
 	if (!cmd_validity(commands_tree, shell))
 		browse_tree(commands_tree, shell, NULL, 1);
 	ft_clear_list(&shell->lexer->lexems, (void*)&clear_lexems);
+	if (shell->save_env)
+	{
+		del_all_env(&(shell->env));
+		shell->env = shell->save_env;
+		shell->save_env = NULL;
+	}
 }

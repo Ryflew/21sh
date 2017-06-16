@@ -127,6 +127,7 @@ typedef struct		s_term_pos
 typedef	struct		s_sh
 {
 	t_env			*env;
+	t_env			*save_env;
 	t_env			*hash;
 
 	t_lexer			*lexer;
@@ -206,7 +207,7 @@ char				add_char(char *command, int *j, t_sh *shell, char c);
 char				check_alpha(char *str);
 char				go_to_c(char **str, char c);
 char				cd_path_validity(char *path);
-char				is_absolute(t_tree *node, t_env *env, t_sh *shell);
+char				is_absolute(t_tree *node, t_env *env, t_sh *shell, char exec);
 char				is_binary(char *path);
 char				only_space(char *str);
 char				del_all_env(t_env **list);

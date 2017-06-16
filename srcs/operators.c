@@ -14,9 +14,10 @@ char		**manage_dchevb(t_tree *node)
 
 	line = NULL;
 	pipe(fd);
+	ft_putstr("heredoc> ");
 	while (gnl(0, &line) && ft_strcmp(line, node->right->cmds[0]))
 	{
-//		ft_putendl(line);
+		ft_putstr("heredoc> ");
 		ft_fputendl(line, fd[1]);
 		free(line);
 	}
@@ -204,11 +205,7 @@ static char	manage_and(t_env **env, t_sh *shell, t_tree *node, char right_side)
 				manage_pipe(env, shell, node->right, right_side);
 		}
 		else if (get_path(node->left, *env, shell, 0))
-		{
-			ft_putstr(node->left->cmds[0]);
-			ft_putendl(": Command not found.");
 			return (-1);
-		}
 		else
 		{
 			if (!(ret = manage_pipe(env, shell, node->left, 0)))
@@ -241,8 +238,6 @@ static char	manage_or(t_env **env, t_sh *shell, t_tree *node, char right_side)
 		}
 		else if (get_path(node->left, *env, shell, 0))
 		{
-			ft_putstr(node->left->cmds[0]);
-			ft_putendl(": Command not found.");
 			shell->fd_in = -1;
 			return (-1);
 			//manage_pipe(env, shell, node->right, right_side);

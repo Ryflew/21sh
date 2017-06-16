@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/15 02:55:01 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/17 01:17:06 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	stop_binary(int sig)
 {
 	if (g_father != -1 && g_father != 0 && sig == SIGINT)
 	{
-		kill(g_father, sig);
+		kill(g_father, 4);
 		g_father = -1;
 		// if (tcsetattr(0, TCSADRAIN, &(get_shell()->our)) == -1)
 		// {
@@ -153,7 +153,7 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 			ft_exiterror("fork failure !", -1);
 		else if (!g_father)
 		{
-			// signal(SIGTSTP, SIG_DFL);
+			signal(SIGTSTP, SIG_DFL);
 			envi = conv_env(env);
 			if ((cmds = child(node, shell, fd, ret)))
 				execve(path, cmds, envi);
@@ -220,7 +220,7 @@ char	current_binary(t_tree *node, t_env *env, t_sh *shell)
 	while (node->cmds[++i])
 		tab[i] = ft_strdup(node->cmds[i]);
 	tab[i] = NULL;
-	i = is_absolute(node, env, shell);
+	i = is_absolute(node, env, shell, 1);
 	ft_strdelpp(&node->cmds);
 	return (i);
 }

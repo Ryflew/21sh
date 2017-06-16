@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/15 23:16:29 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/17 01:28:37 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	shell->lexer = lexer;
 	shell->fd_in = -1;
 	shell->hash = NULL;
+	shell->save_env = NULL;
 }
 
 int			main(int ac, char **av, char **termenv)

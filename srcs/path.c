@@ -79,8 +79,8 @@ char		get_path(t_tree *node, t_env *env, t_sh *shell, char exec)
 
 	if (check_in_hashtab(node, env, shell, exec))
 		return (0);
-	if (is_absolute(node, env, shell) && exec)
-		return (1);
+	if (is_absolute(node, env, shell, exec))
+		return (2);
 	if (!(content = find_env(env, "PATH")))
 		return (1);
 	fuck_norme(&tmp, &content, node);
@@ -100,7 +100,7 @@ char		get_path(t_tree *node, t_env *env, t_sh *shell, char exec)
 	return (1);
 }
 
-char		is_absolute(t_tree *node, t_env *env, t_sh *shell)
+char		is_absolute(t_tree *node, t_env *env, t_sh *shell, char exec)
 {
 	t_stat	file;
 
@@ -109,7 +109,8 @@ char		is_absolute(t_tree *node, t_env *env, t_sh *shell)
 		if (!lstat(*node->cmds, &file) && S_ISREG(file.st_mode) && \
 			is_binary(*node->cmds) && !access(*node->cmds, R_OK | X_OK))
 		{
-			run_binary(ft_strdup(*node->cmds), node, env, shell);
+			if (exec)
+				run_binary(ft_strdup(*node->cmds), node, env, shell);
 			return (1);
 		}
 		else if (access(*node->cmds, F_OK) == -1)
@@ -125,6 +126,9 @@ char		is_absolute(t_tree *node, t_env *env, t_sh *shell)
 	}
 	else if (**node->cmds && **node->cmds == '.' && *(*node->cmds + 1) && \
 		*(*node->cmds + 1) == '/')
-		return (current_binary(node, env, shell));
+	{
+		if (exec)
+			return (current_binary(node, env, shell));
+	}
 	return (0);
 }

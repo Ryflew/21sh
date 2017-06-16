@@ -2,9 +2,7 @@
 ----------- TODO --------------
 
 - Lancer les binaires depuis le builtin env
-- Check les (void)X pour les virer
 - Norme
-- Revoir le parsing avec un fd avant ou apres
 - Segfault guillemet, ex : eee"ddd"
 - ; ne marche pas
 
@@ -15,7 +13,4 @@
 
 ------------ BUG --------------
 
-- pipe | pipe
-- cat << auteur -> affichage des caracteres et delete des caracteres quand on lit stdin
 - ls dffd 2>& > fail
-- /bin/werw => 2 retour d'erreur
