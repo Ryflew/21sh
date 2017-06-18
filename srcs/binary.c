@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/17 01:17:06 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/18 16:07:01 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@ pid_t	child_pid(void)
 
 char	stop_binary(int sig)
 {
-	if (g_father != -1 && g_father != 0 && sig == SIGINT)
+	if (g_father == 0)
+		exit(EXIT_SUCCESS);
+	if (g_father != -1 && sig == SIGINT)
 	{
-		kill(g_father, 4);
+		kill(g_father, sig);
 		g_father = -1;
 		// if (tcsetattr(0, TCSADRAIN, &(get_shell()->our)) == -1)
 		// {

@@ -57,8 +57,58 @@ static t_token	*find_token(t_lexer *lexer)
 	return (token);
 }
 
+static void		manage_quote(t_lexer *lexer)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	buff[ft_strlen(lexer->line) + 1];
+	char	*tmp;
+
+	if (lexer->string_operator || (!(lexer->line + 1) && (*lexer->line == '\'' || *lexer->line == '\"' || *lexer->line == '`')))
+		return ;
+	i = -1;
+	while (lexer->line[++i] && lexer->line[i] != '\'' && lexer->line[i] != '"' \
+		&& lexer->line[i] != '`' && lexer->line[i] != ' ')
+		;
+	if (!lexer->line[i] || lexer->line[i] == ' ')
+		return ;
+	// prend le premier quot pour le mettre au debut
+	k = -1;
+	buff[++k] = lexer->line[i];
+	j = -1;
+	while (lexer->line[++j])
+	{
+		if (j == i)
+			continue ;
+		buff[++k] = lexer->line[j];
+	}
+	buff[++k] = '\0';
+	// met le quot a la fin
+	tmp = ft_strdup(buff);
+	ft_bzero(buff, ft_strlen(lexer->line) + 1);
+	i = 1;
+	j = -1;
+	k = -1;
+	buff[++k] = tmp[++j];
+	while (tmp[++j] && (tmp[j] != ' ' || i == 1))
+	{
+		if (tmp[j] != tmp[0])
+			buff[++k] = tmp[j];
+		else
+			i = i == 0 ? 1 : 0;
+	}
+	buff[++k] = tmp[0];
+	while (tmp[j])
+		buff[++k] = tmp[j++];
+	buff[++k] = '\0';
+	// free(lexer->line); // LEAKS !
+	lexer->line = ft_strdup(buff);
+}
+
 static void		get_next_token2(t_lexer *lexer, t_token **token)
 {
+	manage_quote(lexer);
 	if (*lexer->line && !lexer->string_operator && \
 		!is_string_op(*lexer->line))
 		*token = find_token(lexer);
@@ -74,7 +124,7 @@ static void		get_next_token2(t_lexer *lexer, t_token **token)
 	else
 		*token = lex_str(lexer);
 }
-
+//"pwd "
 static t_token	*get_next_token(t_lexer *lexer)
 {
 	t_token *token;
