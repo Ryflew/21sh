@@ -128,11 +128,10 @@ t_tree			*commands_line_rules(t_sh *sh)
 	// ft_putendl("step10");
 	while (sh->current_token && sh->current_token->type == SCL)
 	{
+		token = sh->current_token;
 		while (sh->current_token && sh->current_token->type == SCL)
 			eat(sh, SCL);
 		// ft_putendl("step11");
-		token = sh->current_token;
-		eat(sh, SCL);
 		if (sh->current_token && (right = condition_operators_rules(sh)))
 			left = create_node(left, token, NULL, right);
 	}

@@ -7,7 +7,7 @@ t_tree	*basic_red(t_sh *sh, e_token type, t_tree *left)
 
 	// if (!left)
 	// 	ft_putendl("step0");
-	if (left && !left->right && left->token && left->token->type != SCL)
+	if (!left || (!left->right && left->token && left->token->type != SCL))
 	{
 		// parse_error(sh);
 		return ((void*)-1);
@@ -39,7 +39,7 @@ t_tree	*adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 
 	// ft_putendl("adv_red_forward");
 	new_node = NULL;
-	if (left && !left->right && left->token && left->token->type != SCL)
+	if (!left || (!left->right && left->token && left->token->type != SCL))
 	{
 		// parse_error(sh);
 		return ((void*)-1);
@@ -111,7 +111,7 @@ t_tree	*redirection_with_fd(t_sh *sh, t_tree *left)
 	t_token	*token;
 
 	new_node = NULL;
-	if (!left->right && left->token && left->token->type != SCL)
+	if (!left || (!left->right && left->token && left->token->type != SCL))
 	{
 		// parse_error(sh);
 		return ((void*)-1);
@@ -123,23 +123,23 @@ t_tree	*redirection_with_fd(t_sh *sh, t_tree *left)
 		return ((void*)-1);
 	//return (create_node(NULL, token, NULL, NULL));
 	// FD '>' WORD
-	if ((new_node = basic_red(sh, CHEVF, left)))
+	if ((new_node = basic_red(sh, CHEVF, left)) && new_node != (void*)-1)
 		new_node->from_fd = ft_atoi(token->value);
 	// FD '>&' WORD
-	else if ((new_node = adv_red_forward(sh, FRED, left)))
+	else if ((new_node = adv_red_forward(sh, FRED, left)) && new_node != (void*)-1)
 		new_node->from_fd = ft_atoi(token->value);
 	// FD '>>' WORD
-	else if ((new_node = basic_red(sh, DCHEVF, left)))
+	else if ((new_node = basic_red(sh, DCHEVF, left)) && new_node != (void*)-1)
 		new_node->from_fd = ft_atoi(token->value);
 	// FD '<' WORD
-	else if ((new_node = basic_red(sh, CHEVB, left)))
+	else if ((new_node = basic_red(sh, CHEVB, left)) && new_node != (void*)-1)
 		new_node->to_fd = ft_atoi(token->value);
 	// // FD '<&' WORD
 	// // FD '<&' FD
 	// else if ((new_node = adv_red_backward(sh, BRED, left)))
 	// new_node->to_fd = ft_atoi(token->value);
 	// FD '<<' WORD
-	else if ((new_node = basic_red(sh, DCHEVB, left)))
+	else if ((new_node = basic_red(sh, DCHEVB, left)) && new_node != (void*)-1)
 		new_node->to_fd = ft_atoi(token->value);
 	return (new_node);
 }

@@ -94,8 +94,11 @@ char	**child(t_tree *node, t_sh *shell, int *fd, int fd_file)
 
 int		open_file(t_tree *node, t_sh *shell, int *fd)
 {
+	int	ret;
+
+	ret = 0;
 	if (shell->fd_in != -1)
-		return (pipe(fd));
+		ret = pipe(fd);
 	if (node->token && node->token->type == CHEVB)
 		return (open_chevb(node));
 	else if (node->token && (node->token->type == CHEVF || \
@@ -104,7 +107,7 @@ int		open_file(t_tree *node, t_sh *shell, int *fd)
 	else if (node->token && node->token->type == DCHEVF)
 		return (open_dchevf(node));
 	else
-		return (0);
+		return (ret);
 }
 
 int		father(t_sh *shell, int *fd)

@@ -4,7 +4,7 @@
 - Lancer les binaires depuis le builtin env
 - Norme
 - Segfault guillemet, ex : eee"ddd"
-- ; ne marche pas
+- pipe compliqué
 
 ---------- BONUS --------------
 
@@ -13,4 +13,5 @@
 
 ------------ BUG --------------
 
-- ls dffd 2>& > fail
+ls ; ls | grep i | tr i I > ok
+ls ; ls > i | tr i I
