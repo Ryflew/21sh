@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/09 19:58:47 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/19 22:02:18 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
 	shell->j = -1;
-	//return (ft_strdup("ls ; ls | grep i > o"));
+	// return (ft_strdup("\"'\""));
 	while (1)
 	{
 		buff = 0;

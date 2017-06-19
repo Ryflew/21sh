@@ -1,9 +1,8 @@
 
 ----------- TODO --------------
 
-- Lancer les binaires depuis le builtin env
+- Lancer les binaires depuis le builtin env (lexer)
 - Norme
-- Segfault guillemet, ex : eee"ddd"
 - pipe compliqué
 
 ---------- BONUS --------------

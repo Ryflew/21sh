@@ -26,7 +26,7 @@ t_token	*new_token(t_lexer *lexer, e_token token_type, char *value)
 	{
 		if (!lexer->string_operator)
 			lexer->string_operator = *value;
-		else
+		else if (*value == lexer->string_operator)
 			lexer->string_operator = 0;
 	}
 	if (token_type == FRED)//|| token_type == BRED)
