@@ -3,18 +3,6 @@
 #include <stdlib.h>
 #include "21sh.h"
 
-static void	init_setenv(char ***av, t_env **env, char *tmp)
-{
-	if (!(*av = (char**)malloc(sizeof(char*) * 4)))
-		exit(EXIT_FAILURE);
-	(*av)[0] = ft_strdup("setenv");
-	(*av)[1] = ft_strdup("OLDPWD");
-	(*av)[2] = ft_strdup(tmp);
-	(*av)[3] = NULL;
-	set_env(*av, env);
-	ft_strdelpp(av);
-}
-
 static void	change_path(char *path, t_env *env, t_sh *shell, t_cd *opt)
 {
 	char	**av;
@@ -42,19 +30,7 @@ static void	change_path(char *path, t_env *env, t_sh *shell, t_cd *opt)
 	ft_strdelpp(&av);
 }
 
-static void	print_cd_error(char *tmp, char *path)
-{
-	t_stat	file;
-
-	if (!lstat(tmp, &file) && S_ISREG(file.st_mode))
-		errexit(path, "Not a directory.");
-	else if (access(tmp, F_OK) == -1)
-		errexit("cd", "No such file or directory.");
-	else
-		errexit(tmp, "Permission denied.");
-}
-
-static void	cd_current_dir(char *path, t_env *env, t_sh *shell, t_cd *opt)
+void		cd_current_dir(char *path, t_env *env, t_sh *shell, t_cd *opt)
 {
 	char	*cwd;
 	char	*tmp;
@@ -78,24 +54,6 @@ static void	cd_current_dir(char *path, t_env *env, t_sh *shell, t_cd *opt)
 	}
 	else
 		print_cd_error(path, path);
-}
-
-static void	cd_tilde(char *str, t_env *env, t_sh *shell, t_cd *opt)
-{
-	char	*tmp;
-	char	*tmp2;
-
-	if (!(tmp = find_env(env, "HOME")))
-	{
-		errexit("cd", "HOME not set.");
-		return ;
-	}
-	if (!str)
-		tmp2 = ft_strdup(tmp);
-	else
-		tmp2 = ft_strjoin(tmp, str + 1);
-	cd_current_dir(tmp2, env, shell, opt);
-	free(tmp2);
 }
 
 static void	get_cd_opt(char ***av, t_cd *opt)

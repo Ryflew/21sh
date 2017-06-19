@@ -20,18 +20,23 @@ FILES = add_char.c \
 				arrows.c \
 				base_converter.c \
 				binary.c \
+				binary2.c \
 				cd.c \
 				cd2.c \
+				cd3.c \
 				check_brackets.c \
 				completion.c \
 				completion2.c \
+				completion3.c \
 				copy_data.c \
 				core.c \
+				core2.c \
 				cursor.c \
 				delete_char.c \
 				echo.c \
 				env.c \
 				env_utils.c \
+				env_utils2.c \
 				exit.c \
 				ft_putcharint.c \
 				get_line.c \
@@ -39,6 +44,7 @@ FILES = add_char.c \
 				history.c \
 				history2.c \
 				history_search.c \
+				history_search2.c \
 				init_termcap.c \
 				list.c \
 				maj_arrows.c \
@@ -53,8 +59,10 @@ FILES = add_char.c \
 				termcap.c \
 				unsetenv.c \
 				utils.c \
+				utils2.c \
 				operators.c \
 				path.c \
+				path2.c \
 				builtins.c \
 				lex_string.c \
 				parse_cmds.c \

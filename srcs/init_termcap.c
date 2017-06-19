@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/20 02:29:29 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/15 22:25:40 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/20 00:49:31 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,22 @@ void		init_termcap(t_sh *shell, t_env *env)
 	ioctl(0, TIOCGWINSZ, &w);
 	shell->pos.max_window.x = w.ws_col;
 	shell->pos.max_window.y = w.ws_row - 1;
+}
+
+void		set_old_term(t_sh *shell)
+{
+	if (tcsetattr(0, TCSADRAIN, &(shell->old)) == -1)
+	{
+		errexit("21sh", "Impossible de set l'ancien terminal");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void		set_our_term(t_sh *shell)
+{
+	if (tcsetattr(0, TCSADRAIN, &(shell->our)) == -1)
+	{
+		errexit("21sh", "Impossible de set le nouveau terminal");
+		exit(EXIT_FAILURE);
+	}
 }

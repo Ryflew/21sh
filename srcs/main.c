@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/17 01:28:37 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/20 00:55:23 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,20 @@
 
 static t_sh	g_sh;
 
+static void	init_shell(t_sh *shell, t_lexer *lexer)
+{
+	shell->ref_pos = -1;
+	shell->saved = NULL;
+	shell->history_pos = -1;
+	shell->history_mem = NULL;
+	lexer->string_operator = 0;
+	lexer->red = 0;
+	shell->lexer = lexer;
+	shell->fd_in = -1;
+	shell->hash = NULL;
+	shell->save_env = NULL;
+}
+
 static void	get_current_path(t_env *env)
 {
 	char	*cwd;
@@ -27,41 +41,12 @@ static void	get_current_path(t_env *env)
 	g_sh.prompt = get_with_tilde(cwd, env);
 }
 
-t_sh	*get_shell(void)
+t_sh		*get_shell(void)
 {
 	return (&g_sh);
 }
 
-void	print_prompt(e_state state, char *op)
-{
-	if (state == BASIC_SHELL)
-	{
-		ft_putstr("[21sh:");
-		ft_putstr(g_sh.prompt);
-		ft_putstr("] $> ");
-	}
-	else
-	{
-		ft_putchar('\n');
-		if (op[ft_strlen(op) - 1] == '\'')
-			ft_putstr("quote> ");
-		else if (op[ft_strlen(op) - 1] == '"')
-			ft_putstr("dquote> ");
-		else if (op[ft_strlen(op) - 1] == '`')
-			ft_putstr("bquote> ");
-		else if (op[ft_strlen(op) - 1] == '(')
-			ft_putstr("par> ");
-		else if (op[ft_strlen(op) - 1] == '{')
-			ft_putstr("aco> ");
-		else if (op[ft_strlen(op) - 1] == '[')
-			ft_putstr("cro> ");
-		else if (op[ft_strlen(op) - 1] == '|')
-			ft_putstr("pipe> ");
-	}
-	get_cursor(&g_sh);
-}
-
-void	sig_hand(int sig)
+void		sig_hand(int sig)
 {
 	if (!stop_binary(sig))
 	{
@@ -79,48 +64,6 @@ void	sig_hand(int sig)
 		ft_putstr("\n");
 		print_prompt(BASIC_SHELL, NULL);
 	}
-}
-
-char	*remove_useless_space(char *str, int i, int j, int have_space)
-{
-	char	buff[ft_strlen(str)];
-	char	c;
-
-	c = 0;
-	while (str[++i])
-	{
-		if (c)
-			buff[++j] = str[i];
-		else if (!ft_isblank(str[i]))
-		{
-			if (have_space && j != -1)
-				buff[++j] = ' ';
-			have_space = 0;
-			buff[++j] = str[i];
-		}
-		else if (!c && ft_isblank(str[i]))
-			have_space = 1;
-		if (!c && (str[i] == '\'' || str[i] == '"' || str[i] == '`'))
-			c = str[i];
-		else if (c == str[i])
-			c = '\0';
-	}
-	buff[++j] = '\0';
-	return (ft_strdup(buff));
-}
-
-static void	init_shell(t_sh *shell, t_lexer *lexer)
-{
-	shell->ref_pos = -1;
-	shell->saved = NULL;
-	shell->history_pos = -1;
-	shell->history_mem = NULL;
-	lexer->string_operator = 0;
-	lexer->red = 0;
-	shell->lexer = lexer;
-	shell->fd_in = -1;
-	shell->hash = NULL;
-	shell->save_env = NULL;
 }
 
 int			main(int ac, char **av, char **termenv)

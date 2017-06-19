@@ -10,28 +10,7 @@ static void	env_usage(char invalid)
 	ft_fputendl("           [utility [argument ...]]", 2);
 }
 
-t_env	*cpy_env(t_env *env)
-{
-	t_env	*elem;
-	t_env	*first;
-
-	first = NULL;
-	if (env)
-	{
-		elem = new_env(env->all);
-		first = elem;
-		env = env->next;
-	}
-	while (env)
-	{
-		elem->next = new_env(env->all);
-		elem = elem->next;
-		env = env->next;
-	}
-	return (first);
-}
-
-void	add_new_var(char ***av, t_env **env)
+void		add_new_var(char ***av, t_env **env)
 {
 	char	**new_av;
 	int		i;
@@ -52,7 +31,7 @@ void	add_new_var(char ***av, t_env **env)
 	ft_strdelpp(&new_av);
 }
 
-void	u_opt(char ***av, t_env **env)
+void		u_opt(char ***av, t_env **env)
 {
 	char	**out;
 
@@ -70,7 +49,7 @@ void	u_opt(char ***av, t_env **env)
 	}
 }
 
-void	env_command2(char **av, t_env **cpy)
+void		env_command2(char **av, t_env **cpy)
 {
 	while (*av)
 	{
@@ -93,7 +72,7 @@ void	env_command2(char **av, t_env **cpy)
 	}
 }
 
-char	env_command(char **av, t_env *env)
+char		env_command(char **av, t_env *env)
 {
 	t_env *cpy;
 
@@ -101,7 +80,6 @@ char	env_command(char **av, t_env *env)
 		print_env(env);
 	else
 	{
-
 		cpy = cpy_env(env);
 		env_command2(av, &cpy);
 		del_all_env(&cpy);

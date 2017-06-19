@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/19 22:02:18 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/06/20 00:45:15 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	arrows(t_sh *shell, unsigned long c)
 			(shell->pos.cursor.y = shell->pos.last.y));
 }
 
-static void maj_arrows(t_sh *shell, unsigned long c)
+static void	maj_arrows(t_sh *shell, unsigned long c)
 {
 	if (c == MAJ_LEFT)
 		maj_left_arrow(shell);
@@ -87,7 +87,7 @@ static char	get_line2(t_sh *shell, unsigned long buff)
 	return (1);
 }
 
-char	*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
+char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
 	shell->j = -1;
