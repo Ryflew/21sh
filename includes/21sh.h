@@ -134,6 +134,7 @@ typedef	struct		s_sh
 	t_lexer			*lexer;
 	t_token			*current_token;
 	int				fd_in;
+	int				fd_out;
 	int				right_side;
 
 	char			*prompt;
