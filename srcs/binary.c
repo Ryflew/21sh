@@ -76,8 +76,9 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 	{
 		if ((g_father = fork()) == -1)
 			ft_exiterror("fork failure !", -1);
-		else if (!g_father && (node->cmds || node->token->type == CHEVB || \
-			node->token->type == DCHEVB))
+		//else if (!g_father && (node->cmds || node->token->type == CHEVB || \
+		//	node->token->type == DCHEVB))
+		else if (!g_father)
 		{
 			envi = conv_env(*env);
 			if ((cmds = child(node, shell, fd, ret)))

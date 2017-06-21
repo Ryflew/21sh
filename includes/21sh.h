@@ -108,6 +108,7 @@ typedef struct		s_tree
 	struct s_tree	*right;
 	struct s_tree	*parent;
 	t_list			*tokens;
+	char			**tmp_env;
 }					t_tree;
 
 typedef struct		s_pos
