@@ -11,27 +11,27 @@ static void	child2(t_tree *node, char ***cmds)
 	*cmds = node->cmds;
 }
 
-char		**child(t_tree *node, t_sh *shell, int *fd, int fd_file)
+char		**child(t_tree *node, t_sh *shell, int *fd)
 {
 	char	**cmds;
 	char	**envi;
 
 	cmds = NULL;
-	if (node->token && node->token->type == DCHEVB)
+	if (node->token && node->parent->token->type == DCHEVB)
 		cmds = manage_dchevb(node);
-	else if (node->token && node->token->type == CHEVB)
+	else if (node->token && node->parent->token->type == CHEVB)
 	{
 		envi = conv_env(shell->env);
-		cmds = manage_chevb(node, fd_file, envi);
+		cmds = manage_chevb(node, shell->fd_in, envi);
 		if (envi)
 			ft_strdelpp(&envi);
 	}
-	else if (node->token && node->token->type == DCHEVF)
-		cmds = manage_dchevf(node, fd_file);
-	else if (node->token && node->token->type == CHEVF)
-		cmds = manage_chevf(node, fd_file);
-	else if (node->token && node->token->type == FRED)
-		cmds = manage_fred(node, fd_file);
+	else if (node->token && node->parent->token->type == DCHEVF)
+		cmds = manage_dchevf(node, shell->fd_out);
+	else if (node->token && node->parent->token->type == CHEVF)
+		cmds = manage_chevf(node, shell->fd_out);
+	else if (node->token && node->parent->token->type == FRED)
+		cmds = manage_fred(node, shell->fd_out);
 	else if (shell->fd_in != -1)
 		cmds = run_with_pipe(node, shell, fd);
 	else
@@ -62,18 +62,21 @@ char		**run_with_pipe(t_tree *node, t_sh *shell, int *fd)
 		dup2(fd[1], node->from_fd);
 	dup2(shell->fd_in, 0);
 	if (!shell->right_side)
-		dup2(fd[1], 1);
+	{
+		if (shell->fd_out )
+			dup2(fd[1], shell->fd_out);
+		else
+			dup2(fd[1], 1);
+	}
 	close(fd[0]);
 	return (node->cmds);
 }
 
-int			open_file(t_tree *node, t_sh *shell, int *fd)
+int			open_file(t_tree *node)
 {
 	int	ret;
 
 	ret = 0;
-	if (shell->fd_in != -1)
-		ret = pipe(fd);
 	if (node->token && node->token->type == CHEVB)
 		return (open_chevb(node));
 	else if (node->token && (node->token->type == CHEVF || \
@@ -83,4 +86,15 @@ int			open_file(t_tree *node, t_sh *shell, int *fd)
 		return (open_dchevf(node));
 	else
 		return (ret);
+}
+
+int			get_fd(t_sh *shell, int *fd)
+{
+	int	ret;
+
+	ret = 0;
+	if (shell->fd_in != -1)
+		if ((ret = pipe(fd)) == -1)
+			ft_putstr("pipe failure !\n");
+	return (ret);
 }

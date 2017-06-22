@@ -42,7 +42,6 @@ typedef enum
 	CHEVF,
 	DCHEVF,
 	FRED,
-	BRED,
 	AND,
 	OR,
 	SCL,
@@ -171,7 +170,7 @@ int					is_string_op(int c);
 int					ft_putcharint(int c);
 int					get_current_pos_in_command(t_sh *shell);
 int					base_converter(int nb, int frombase, int tobase);
-int					open_file(t_tree *node, t_sh *shell, int *fd);
+int					open_file(t_tree *node);
 int					check_hist_occur(t_sh *shell, char *str);
 void				copy_data(t_sh *shell, unsigned long c, int current);
 void				clean_selected(t_sh *shell);
@@ -247,7 +246,7 @@ char				*find_match_binary(t_sh *shell, char *tosearch);
 char				*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op);
 char				**conv_env(t_env *env);
 char				**split_quot_cmd(char *cmd);
-char				**child(t_tree *node, t_sh *shell, int *fd, int fd_file);
+char				**child(t_tree *node, t_sh *shell, int *fd);
 char				**run_with_pipe(t_tree *node, t_sh *shell, int *fd);
 t_env				*new_env(char *str);
 t_env				*cpy_env(t_env *env);
@@ -261,7 +260,7 @@ t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *rig
 char				eat(t_sh *sh, e_token token);
 t_token				*text_rules(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
-char				operators(t_tree *node, t_env **env, t_sh *shell, char right_side);
+char				operators(t_tree *node, t_env **env, t_sh *shell);
 char				exec_cmds(t_tree *node, t_env **env, t_sh *shell);
 char				run_binary(char *path, t_tree *node, t_env *env, t_sh *shell);
 char				get_path(t_tree *node, t_env *env, t_sh *shell, char exec);
@@ -287,5 +286,6 @@ char				parse_error(t_sh *sh);
 char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
 char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
 pid_t				child_pid();
+int					get_fd(t_sh *shell, int *fd);
 
 #endif

@@ -37,20 +37,20 @@ int		father(t_sh *shell, int *fd)
 
 char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 {
-	int		ret;
 	int		fd[2];
 	char	**envi;
 	char	**cmds;
+	int		ret;
 
 	set_old_term(shell);
-	if ((ret = open_file(node, shell, fd)) != -1)
+	if ((ret = get_fd(shell, fd)) != -1)
 	{
 		if ((g_father = fork()) == -1)
 			ft_exiterror("fork failure !", -1);
 		else if (!g_father)
 		{
 			envi = conv_env(env);
-			if ((cmds = child(node, shell, fd, ret)))
+			if ((cmds = child(node, shell, fd)))
 				execve(path, cmds, envi);
 			if (envi)
 				ft_strdelpp(&envi);
@@ -72,7 +72,7 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 	char	**cmds;
 
 	set_old_term(shell);
-	if ((ret = open_file(node, shell, fd)) != -1)
+	if ((ret = get_fd(shell, fd)) != -1)
 	{
 		if ((g_father = fork()) == -1)
 			ft_exiterror("fork failure !", -1);
@@ -81,7 +81,7 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 		else if (!g_father)
 		{
 			envi = conv_env(*env);
-			if ((cmds = child(node, shell, fd, ret)))
+			if ((cmds = child(node, shell, fd)))
 				go_builtins(cmds, env, shell);
 			if (envi)
 				ft_strdelpp(&envi);

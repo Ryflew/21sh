@@ -1,11 +1,11 @@
 #include "21sh.h"
 #include <fcntl.h>
 
-static char	manage_pipe(t_env **env, t_sh *shell, t_tree *node, char right_side)
+/*static char	manage_pipe(t_env **env, t_sh *shell, t_tree *node, char right_side)
 {
 	shell->right_side = right_side;
 	return (exec_cmds_with_op(node, env, shell));
-}
+}*/
 
 char		**manage_dchevb(t_tree *node)
 {
@@ -192,7 +192,7 @@ char		**manage_fred(t_tree *node, int fd_file)
 	}
 }
 
-static char	manage_and(t_env **env, t_sh *shell, t_tree *node, char right_side)
+/*static char	manage_and(t_env **env, t_sh *shell, t_tree *node, char right_side)
 {
 	int ret;
 
@@ -258,34 +258,40 @@ static char	manage_or(t_env **env, t_sh *shell, t_tree *node, char right_side)
 			return (exec_cmds(node->right, env, shell));
 	}
 	return (ret);
-}
+}*/
 
-char		operators(t_tree *node, t_env **env, t_sh *shell, char right_side)
+char		operators(t_tree *node, t_env **env, t_sh *shell)
 {
 	int	ret;
 
 	ret = 0;
+	(void)env;
 	if (node->token->type == PIPE)
 	{
 		if (shell->fd_in == -1)
 			shell->fd_in = 0;
-		if (!node->left->token && (ret = manage_pipe(env, shell, node->left, 0)) == -1)
-			return (-1);
-		if (!node->right->token)
-			ret = manage_pipe(env, shell, node->right, right_side);
-		return (ret);
+		//if (!node->left->token && (ret = manage_pipe(env, shell, node->left, 0)) == -1)
+			//return (-1);
+		//if (!node->right->token)
+			//ret = manage_pipe(env, shell, node->right, right_side);
+		//return (ret);
 	}
-	else if (node->token->type == AND)
-		return (manage_and(env, shell, node, right_side));
-	else if (node->token->type == OR)
-		return (manage_or(env, shell, node, right_side));
-	else if ((node->token->type == CHEVB || node->token->type == DCHEVB || node->token->type == CHEVF || node->token->type == DCHEVF || node->token->type == FRED))
+	//else if (node->token->type == AND)
+	//	return (manage_and(env, shell, node, right_side));
+	//else if (node->token->type == OR)
+	//	return (manage_or(env, shell, node, right_side));
+	else if (node->token->type == CHEVB || node->token->type == DCHEVB)
 	{
-		if (node->left)
+		/*if (node->left)
 			node->cmds = node->left->cmds;
 		else
 			node->cmds = NULL;
-		return (exec_cmds_with_op(node, env, shell));
+		return (exec_cmds_with_op(node, env, shell));*/
+		if ((shell->fd_in = open_file(node->right)) == -1)
+			return (-1);
 	}
+	else if (node->token->type == CHEVF || node->token->type == DCHEVF || node->token->type == FRED)
+		if ((shell->fd_out = open_file(node->right)) == -1)
+			return (-1);
 	return (0);
 }

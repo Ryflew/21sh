@@ -6,23 +6,29 @@
 
 static char	browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 {
+	char	ret;
+
 	node->parent = parent;
-	if (node->left)
-	{
-		if ((browse_tree(node->left, shell, node, 0)) == -1)
-			return (-1);
-	}
-	if (node->right)
-	{
-		if ((browse_tree(node->right, shell, node, r_side)) == -1)
-			return (-1);
-	}
+	ret = 0;
 	if (node->token && ((node->left && node->left->cmds) || \
 		(node->right && node->right->cmds)))
-		return (operators(node, &(shell->env), shell, r_side));
-	if (node->cmds && (!node->parent || node->parent->token->type == SCL))
-		return (exec_cmds(node, &(shell->env), shell));
-	return (0);
+	{
+		if ((operators(node, &(shell->env), shell)) == -1)
+			return (-1);
+	}
+	//else if (node->cmds && (!node->parent || node->parent->token->type == SCL))
+	else if (node->cmds && node->parent->token->type >= CHEVB && node->parent->token->type <= FRED)
+	{
+		if (node->parent->token->type == PIPE)
+			shell->right_side = r_side;
+		if ((exec_cmds(node, &(shell->env), shell)) == -1)
+			return (-1);
+	}
+	if (node->left && (ret = browse_tree(node->left, shell, node, 0)) == -1)
+			return (-1);
+	if (node->right && (node->token->type != OR || !ret) && (node->token->type != AND || ret) && (ret = browse_tree(node->right, shell, node, r_side)) == -1)
+			return (-1);
+	return (ret);
 }
 
 static char	check_cmd(char *cmd, t_sh *shell, t_tree *node)
