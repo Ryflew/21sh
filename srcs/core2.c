@@ -4,7 +4,12 @@ char		exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 {
 	char	ret;
 
-	if (!node->cmds || (ret = go_builtins(node->cmds, env, shell)) == 1)
+
+	if ((ret = is_writable_builtins(node->cmds[0])) != 1)
+	{
+		run_builtins(node, env, shell);
+	}
+	else if ((ret = go_builtins(node->cmds, env, shell)) == 1)
 	{
 		if ((ret = get_path(node, *env, shell, 1)))
 			ret = -1;
@@ -12,12 +17,12 @@ char		exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 	return (ret);
 }
 
-char		exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell)
+/*char		exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell)
 {
 	char	ret;
 
 	ret = 0;
-	if (node->cmds && (ret = is_writable_builtins(node->cmds[0])))
+	if (node->cmds && (ret = is_writable_builtins(node->cmds[0])) == 1)
 	{
 		if ((ret = get_path(node, *env, shell, 1)))
 			ret = -1;
@@ -25,7 +30,7 @@ char		exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell)
 	else
 		run_builtins(node, env, shell);
 	return (ret);
-}
+}*/
 
 void		add_to_history(t_sh *shell, char *command)
 {

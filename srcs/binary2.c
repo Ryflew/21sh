@@ -2,14 +2,14 @@
 #include <signal.h>
 #include "21sh.h"
 
-static void	child2(t_tree *node, char ***cmds)
+/*static void	child2(t_tree *node, char ***cmds)
 {
 	if (node->from_fd != -1 && node->to_fd != -1)
 		dup2(node->from_fd, node->to_fd);
 	else if (node->to_fd != -1)
 		dup2(1, node->to_fd);
 	*cmds = node->cmds;
-}
+}*/
 
 char		**child(t_tree *node, t_sh *shell, int *fd)
 {
@@ -22,20 +22,22 @@ char		**child(t_tree *node, t_sh *shell, int *fd)
 	else if (node->token && node->parent->token->type == CHEVB)
 	{
 		envi = conv_env(shell->env);
-		cmds = manage_chevb(node, shell->fd_in, envi);
+		cmds = manage_chevb(node, shell->fd[0], envi);
 		if (envi)
 			ft_strdelpp(&envi);
 	}
 	else if (node->token && node->parent->token->type == DCHEVF)
-		cmds = manage_dchevf(node, shell->fd_out);
+		cmds = manage_dchevf(node, shell->fd[1]);
 	else if (node->token && node->parent->token->type == CHEVF)
-		cmds = manage_chevf(node, shell->fd_out);
+		cmds = manage_chevf(node, shell->fd[1]);
 	else if (node->token && node->parent->token->type == FRED)
-		cmds = manage_fred(node, shell->fd_out);
-	else if (shell->fd_in != -1)
-		cmds = run_with_pipe(node, shell, fd);
+		cmds = manage_fred(node, shell->fd[1]);
 	else
-		child2(node, &cmds);
+		cmds = node->cmds;
+	if (shell->FD_PIPE != -1)
+		cmds = run_with_pipe(node, shell, fd);
+	//else
+	//	child2(node, &cmds);
 	return (cmds);
 }
 
@@ -58,13 +60,14 @@ char		stop_binary(int sig)
 
 char		**run_with_pipe(t_tree *node, t_sh *shell, int *fd)
 {
-	if (node->from_fd != -1 && node->to_fd != -1)
-		dup2(fd[1], node->from_fd);
-	dup2(shell->fd_in, 0);
+	//if (node->from_fd != -1 && node->to_fd != -1)
+	//	dup2(node->from_fd, node->to_fd);		
+	//	dup2(fd[1], node->from_fd);
+	dup2(shell->FD_PIPE, 0);
 	if (!shell->right_side)
 	{
-		if (shell->fd_out )
-			dup2(fd[1], shell->fd_out);
+		if (shell->FD_OUT != -1)
+			dup2(fd[1], shell->FD_OUT);
 		else
 			dup2(fd[1], 1);
 	}
@@ -93,7 +96,7 @@ int			get_fd(t_sh *shell, int *fd)
 	int	ret;
 
 	ret = 0;
-	if (shell->fd_in != -1)
+	if (shell->FD_PIPE != -1)
 		if ((ret = pipe(fd)) == -1)
 			ft_putstr("pipe failure !\n");
 	return (ret);

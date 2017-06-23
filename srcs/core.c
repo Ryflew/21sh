@@ -7,19 +7,26 @@
 static char	browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 {
 	char	ret;
+	int		fd[3];
 
+	FD_IN = shell->FD_IN;
+	FD_OUT = shell->FD_OUT;
+	FD_PIPE = shell->FD_PIPE;
 	node->parent = parent;
 	ret = 0;
 	if (node->token && ((node->left && node->left->cmds) || \
 		(node->right && node->right->cmds)))
 	{
-		if ((operators(node, &(shell->env), shell)) == -1)
+		if ((operators(node, fd)) == -1)
 			return (-1);
+		shell->FD_IN = FD_IN;
+		shell->FD_OUT = FD_OUT;
+		shell->FD_PIPE = FD_PIPE;
 	}
 	//else if (node->cmds && (!node->parent || node->parent->token->type == SCL))
-	else if (node->cmds && node->parent->token->type >= CHEVB && node->parent->token->type <= FRED)
+	else if (node->cmds && (!node->parent || (node->parent->token->type >= CHEVB && node->parent->token->type <= FRED)))
 	{
-		if (node->parent->token->type == PIPE)
+		if (node->parent && node->parent->token->type == PIPE)
 			shell->right_side = r_side;
 		if ((exec_cmds(node, &(shell->env), shell)) == -1)
 			return (-1);

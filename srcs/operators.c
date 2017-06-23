@@ -22,28 +22,21 @@ char		**manage_dchevb(t_tree *node)
 		free(line);
 	}
 	free(line);
-	if (node->to_fd != -1)
-		dup2(fd[0], node->to_fd);
+	close(fd[1]);
+	if (node->left)
+		dup2(fd[0], 0);
 	else
 	{
-		close(fd[1]);
-		if (node->left)
-			dup2(fd[0], 0);
-		else
+		while (gnl(fd[0], &line))
 		{
-			while (gnl(fd[0], &line))
-			{
+			if (node->to_fd != -1)
+				ft_fputendl(line, node->to_fd);
+			else
 				ft_putendl(line);
-				free(line);
-			}
 			free(line);
 		}
+		free(line);
 	}
-	close(fd[1]);
-	if (node->from_fd != -1 && node->to_fd != -1)
-		dup2(node->from_fd, node->to_fd);
-	else if (node->to_fd != -1)
-		dup2(1, node->to_fd);
 	if (node->left)
 		return (node->left->cmds);
 	else
@@ -107,10 +100,10 @@ char		**manage_dchevf(t_tree *node, int fd_file)
 		dup2(fd_file, node->from_fd);
 	else
 		dup2(fd_file, 1);
-	if (node->from_fd != -1 && node->to_fd != -1)
-		dup2(node->from_fd, node->to_fd);
-	else if (node->to_fd != -1)
-		dup2(1, node->to_fd);
+	//if (node->from_fd != -1 && node->to_fd != -1)
+	//	dup2(node->from_fd, node->to_fd);
+	//else if (node->to_fd != -1)
+	//	dup2(1, node->to_fd);
 	close(fd_file);
 	return (node->left->cmds);
 }
@@ -134,10 +127,10 @@ char		**manage_chevf(t_tree *node, int fd_file)
 		dup2(fd_file, node->from_fd);
 	else
 		dup2(fd_file, 1);
-	if (node->from_fd != -1 && node->to_fd != -1)
-		dup2(node->from_fd, node->to_fd);
-	else if (node->to_fd != -1)
-		dup2(1, node->to_fd);
+	//if (node->from_fd != -1 && node->to_fd != -1)
+	//	dup2(node->from_fd, node->to_fd);
+	//else if (node->to_fd != -1)
+	//	dup2(1, node->to_fd);
 	close(fd_file);
 	return (node->left->cmds);
 }
@@ -185,7 +178,7 @@ char		**manage_fred(t_tree *node, int fd_file)
 			dup2(fd_file, 1);
 			dup2(fd_file, 2);
 		}
-		else if (node->to_fd == -1)
+		else if (node->from_fd != -1)
 			dup2(fd_file, node->from_fd); // TODO test valid fd
 		close(fd_file);
 		return (node->left->cmds);
@@ -260,16 +253,15 @@ static char	manage_or(t_env **env, t_sh *shell, t_tree *node, char right_side)
 	return (ret);
 }*/
 
-char		operators(t_tree *node, t_env **env, t_sh *shell)
+char		operators(t_tree *node, int *fd)
 {
 	int	ret;
 
 	ret = 0;
-	(void)env;
 	if (node->token->type == PIPE)
 	{
-		if (shell->fd_in == -1)
-			shell->fd_in = 0;
+		if (FD_PIPE == -1)
+			FD_PIPE = 0;
 		//if (!node->left->token && (ret = manage_pipe(env, shell, node->left, 0)) == -1)
 			//return (-1);
 		//if (!node->right->token)
@@ -287,11 +279,11 @@ char		operators(t_tree *node, t_env **env, t_sh *shell)
 		else
 			node->cmds = NULL;
 		return (exec_cmds_with_op(node, env, shell));*/
-		if ((shell->fd_in = open_file(node->right)) == -1)
+		if ((FD_IN = open_file(node->right)) == -1)
 			return (-1);
 	}
 	else if (node->token->type == CHEVF || node->token->type == DCHEVF || node->token->type == FRED)
-		if ((shell->fd_out = open_file(node->right)) == -1)
+		if ((FD_OUT = open_file(node->right)) == -1)
 			return (-1);
 	return (0);
 }

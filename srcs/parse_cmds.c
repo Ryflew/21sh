@@ -44,6 +44,15 @@ static char	aggregation_rules(t_sh *sh, int *fd)
 		eat(sh, FD);
 		return (1);
 	}
+	else if (sh->current_token->type == FD && sh->lexer->lexems->next && \
+		((t_token*)sh->lexer->lexems->next->data)->type == FRED)
+	{
+		fd[0] = ft_atoi(sh->current_token->value);
+		eat(sh, FRED);
+		fd[1] = -1;
+		eat(sh, FD);
+		return (1);
+	}
 	return (0);
 }
 

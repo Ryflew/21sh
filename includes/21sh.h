@@ -25,6 +25,9 @@
 # define ENTER 10
 # define TAB 9
 # define EOT 4
+# define FD_IN fd[0]
+# define FD_OUT fd[1]
+# define FD_PIPE fd[2]
 
 
 typedef struct termios	t_termios;
@@ -132,8 +135,9 @@ typedef	struct		s_sh
 
 	t_lexer			*lexer;
 	t_token			*current_token;
-	int				fd_in;
-	int				fd_out;
+	//int				fd_in;
+	//int				fd_out;
+	int				fd[3];
 	int				right_side;
 
 	char			*prompt;
@@ -260,7 +264,7 @@ t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *rig
 char				eat(t_sh *sh, e_token token);
 t_token				*text_rules(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
-char				operators(t_tree *node, t_env **env, t_sh *shell);
+char				operators(t_tree *node, int *fd);
 char				exec_cmds(t_tree *node, t_env **env, t_sh *shell);
 char				run_binary(char *path, t_tree *node, t_env *env, t_sh *shell);
 char				get_path(t_tree *node, t_env *env, t_sh *shell, char exec);
