@@ -92,8 +92,7 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 	print_prompt(*state, op);
 	shell->j = -1;
 	//return (ft_strdup("ls | yolo 2> ok"));
-//	return (ft_strdup("ls | grep i > ok"));
-	//return (ft_strdup("ls"));
+	//return (ft_strdup("cat < auteur"));
 	while (1)
 	{
 		buff = 0;

@@ -24,16 +24,24 @@ static char	browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 		shell->FD_PIPE = FD_PIPE;
 	}
 	//else if (node->cmds && (!node->parent || node->parent->token->type == SCL))
-	else if (node->cmds && (!node->parent || (node->parent->token->type >= CHEVB && node->parent->token->type <= FRED)))
+	else if (node->cmds)
 	{
 		if (node->parent && node->parent->token->type == PIPE)
 			shell->right_side = r_side;
 		if ((exec_cmds(node, &(shell->env), shell)) == -1)
 			return (-1);
 	}
-	if (node->left && (ret = browse_tree(node->left, shell, node, 0)) == -1)
+	if (node->left)
+	{
+		if (node->token->type == PIPE)
+		{
+			if ((ret = browse_tree(node->left, shell, node, 0)) == -1)
+				return (-1);
+		}
+		else if ((ret = browse_tree(node->left, shell, node, r_side)) == -1)
 			return (-1);
-	if (node->right && (node->token->type != OR || !ret) && (node->token->type != AND || ret) && (ret = browse_tree(node->right, shell, node, r_side)) == -1)
+	}
+	if (node->right	&& node->token && (node->token->type < CHEVB || node->token->type > FRED) && (node->token->type != OR || !ret) && (node->token->type != AND || ret) && (ret = browse_tree(node->right, shell, node, r_side)) == -1)
 			return (-1);
 	return (ret);
 }
@@ -93,6 +101,9 @@ void		go_core(char *command, t_sh *shell)
 	shell->lexer->line = command;
 	get_lexems(shell);
 	shell->current_token = shell->lexer->lexems->data;
+	shell->FD_IN = -1;
+	shell->FD_OUT = -1;
+	shell->FD_PIPE = -1;
 	if ((commands_tree = commands_line_rules(shell)) == (void*)-1)
 	{
 		parse_error(shell);

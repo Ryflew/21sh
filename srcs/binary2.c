@@ -11,34 +11,29 @@
 	*cmds = node->cmds;
 }*/
 
-char		**child(t_tree *node, t_sh *shell, int *fd)
+void	child(t_tree *node, t_sh *shell, int *fd)
 {
-	char	**cmds;
 	char	**envi;
 
-	cmds = NULL;
 	if (node->token && node->parent->token->type == DCHEVB)
-		cmds = manage_dchevb(node);
-	else if (node->token && node->parent->token->type == CHEVB)
+		manage_dchevb(node);
+	else if (node->parent && node->parent->token->type == CHEVB)
 	{
 		envi = conv_env(shell->env);
-		cmds = manage_chevb(node, shell->fd[0], envi);
+		manage_chevb(node, shell->FD_IN, envi);
 		if (envi)
 			ft_strdelpp(&envi);
 	}
-	else if (node->token && node->parent->token->type == DCHEVF)
-		cmds = manage_dchevf(node, shell->fd[1]);
-	else if (node->token && node->parent->token->type == CHEVF)
-		cmds = manage_chevf(node, shell->fd[1]);
-	else if (node->token && node->parent->token->type == FRED)
-		cmds = manage_fred(node, shell->fd[1]);
-	else
-		cmds = node->cmds;
+	else if (node->parent && node->parent->token->type == DCHEVF)
+		manage_dchevf(node, shell->FD_OUT);
+	else if (node->parent && node->parent->token->type == CHEVF)
+		manage_chevf(node, shell->FD_OUT);
+	else if (node->parent && node->parent->token->type == FRED)
+		manage_fred(node, shell->FD_OUT);
 	if (shell->FD_PIPE != -1)
-		cmds = run_with_pipe(node, shell, fd);
+		run_with_pipe(shell, fd);
 	//else
 	//	child2(node, &cmds);
-	return (cmds);
 }
 
 char		stop_binary(int sig)
@@ -58,21 +53,18 @@ char		stop_binary(int sig)
 	return (0);
 }
 
-char		**run_with_pipe(t_tree *node, t_sh *shell, int *fd)
+void		run_with_pipe(t_sh *shell, int *fd)
 {
 	//if (node->from_fd != -1 && node->to_fd != -1)
 	//	dup2(node->from_fd, node->to_fd);		
 	//	dup2(fd[1], node->from_fd);
-	dup2(shell->FD_PIPE, 0);
+	close(fd[0]);	
+	if (shell->FD_PIPE)
+		dup2(shell->FD_PIPE, 0);
 	if (!shell->right_side)
-	{
-		if (shell->FD_OUT != -1)
-			dup2(fd[1], shell->FD_OUT);
-		else
-			dup2(fd[1], 1);
-	}
-	close(fd[0]);
-	return (node->cmds);
+		dup2(fd[1], 1);
+	else if (shell->FD_OUT != -1)
+		dup2(shell->FD_OUT, 1);
 }
 
 int			open_file(t_tree *node)

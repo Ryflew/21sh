@@ -27,9 +27,6 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	lexer->string_operator = 0;
 	lexer->red = 0;
 	shell->lexer = lexer;
-	shell->FD_IN = -1;
-	shell->FD_OUT = -1;
-	shell->FD_PIPE = -1;
 	shell->hash = NULL;
 	shell->save_env = NULL;
 }
