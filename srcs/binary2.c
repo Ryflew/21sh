@@ -13,24 +13,15 @@
 
 void	child(t_tree *node, t_sh *shell, int *fd)
 {
-	char	**envi;
-
 	if (node->token && node->parent->token->type == DCHEVB)
-		manage_dchevb(node);
+		manage_dchevb(node, node->cmds[0]);
 	else if (node->parent && node->parent->token->type == CHEVB)
-	{
-		envi = conv_env(shell->env);
-		manage_chevb(node, shell->FD_IN, envi);
-		if (envi)
-			ft_strdelpp(&envi);
-	}
-	else if (node->parent && node->parent->token->type == DCHEVF)
-		manage_dchevf(node, shell->FD_OUT);
-	else if (node->parent && node->parent->token->type == CHEVF)
+		manage_chevb(node, shell->fd_in);
+	else if (node->parent && (node->parent->token->type == CHEVF || node->parent->token->type == DCHEVF))
 		manage_chevf(node, shell->FD_OUT);
 	else if (node->parent && node->parent->token->type == FRED)
 		manage_fred(node, shell->FD_OUT);
-	if (shell->FD_PIPE != -1)
+	if (shell->fd_pipe != -1)
 		run_with_pipe(shell, fd);
 	//else
 	//	child2(node, &cmds);
@@ -58,13 +49,11 @@ void		run_with_pipe(t_sh *shell, int *fd)
 	//if (node->from_fd != -1 && node->to_fd != -1)
 	//	dup2(node->from_fd, node->to_fd);		
 	//	dup2(fd[1], node->from_fd);
-	close(fd[0]);	
-	if (shell->FD_PIPE)
-		dup2(shell->FD_PIPE, 0);
+	close(fd[0]);
+	if (shell->fd_pipe)
+		dup2(shell->fd_pipe, 0);
 	if (!shell->right_side)
 		dup2(fd[1], 1);
-	else if (shell->FD_OUT != -1)
-		dup2(shell->FD_OUT, 1);
 }
 
 int			open_file(t_tree *node)
@@ -88,7 +77,7 @@ int			get_fd(t_sh *shell, int *fd)
 	int	ret;
 
 	ret = 0;
-	if (shell->FD_PIPE != -1)
+	if (shell->fd_pipe != -1)
 		if ((ret = pipe(fd)) == -1)
 			ft_putstr("pipe failure !\n");
 	return (ret);

@@ -7,21 +7,21 @@
 static char	browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 {
 	char	ret;
-	int		fd[3];
+	//t_fd	fd;
 
-	FD_IN = shell->FD_IN;
-	FD_OUT = shell->FD_OUT;
-	FD_PIPE = shell->FD_PIPE;
+	//FD_IN = shell->FD_IN;
+	//FD_OUT = shell->FD_OUT;
+	//fd_pipe = shell->fd_pipe;
 	node->parent = parent;
 	ret = 0;
 	if (node->token && ((node->left && node->left->cmds) || \
 		(node->right && node->right->cmds)))
 	{
-		if ((operators(node, fd)) == -1)
+		if ((operators(node, shell, fd)) == -1)
 			return (-1);
-		shell->FD_IN = FD_IN;
-		shell->FD_OUT = FD_OUT;
-		shell->FD_PIPE = FD_PIPE;
+//		shell->FD_IN = FD_IN;
+//		shell->FD_OUT = FD_OUT;
+	//	shell->fd_pipe = fd_pipe;
 	}
 	//else if (node->cmds && (!node->parent || node->parent->token->type == SCL))
 	else if (node->cmds)
@@ -101,9 +101,9 @@ void		go_core(char *command, t_sh *shell)
 	shell->lexer->line = command;
 	get_lexems(shell);
 	shell->current_token = shell->lexer->lexems->data;
-	shell->FD_IN = -1;
-	shell->FD_OUT = -1;
-	shell->FD_PIPE = -1;
+	shell->fd_in = NULL;
+	shell->fds_out = NULL;
+	shell->fd_pipe = -1;
 	if ((commands_tree = commands_line_rules(shell)) == (void*)-1)
 	{
 		parse_error(shell);

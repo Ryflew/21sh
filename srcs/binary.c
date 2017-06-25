@@ -40,6 +40,7 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 	int		pipe[2];
 	char	**envi;
 	int		ret;
+	t_list	*tmp;
 
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe)) != -1)
@@ -49,9 +50,15 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 		else if (!g_father)
 		{
 			envi = conv_env(env);
-			if (node->from_fd != -1 && node->to_fd != -1)
-				dup2(node->from_fd, node->to_fd);
 			child(node, shell, pipe);
+			tmp = shell->fds_out;
+			while (tmp && (int)(tmp->data) != -1 && node->parent && (node->parent->token->type != PIPE || shell->right_side))
+			{
+				dup2(tmp->data, 1);
+				tmp = tmp->next;
+			}
+			if (node->from_fd != -1 && node->to_fd != -1)
+				dup2(node->to_fd, node->from_fd);
 			if (node->cmds)
 				execve(path, node->cmds, envi);
 			if (envi)
@@ -71,6 +78,7 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 	int		ret;
 	int		pipe[2];
 	char	**envi;
+	t_list	*tmp;	
 
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe)) != -1)
@@ -82,9 +90,15 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 		else if (!g_father)
 		{
 			envi = conv_env(*env);
-			if (node->from_fd != -1 && node->to_fd != -1)
-				dup2(node->from_fd, node->to_fd);
 			child(node, shell, pipe);
+			tmp = shell->fds_out;
+			while (tmp && (int)(tmp->data) != -1 && node->parent && (node->parent->token->type != PIPE || shell->right_side))
+			{
+				dup2(tmp->data, 1);
+				tmp = tmp->next;
+			}
+			if (node->from_fd != -1 && node->to_fd != -1)
+				dup2(node->to_fd, node->from_fd);
 			if (node->cmds)
 				go_builtins(node->cmds, env, shell);
 			if (envi)
