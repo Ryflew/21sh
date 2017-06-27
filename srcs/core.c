@@ -58,7 +58,7 @@ static char	browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 	return (ret);
 }
 
-static char	check_cmd(char *cmd, t_sh *shell, t_tree *node)
+/*static char	check_cmd(char *cmd, t_sh *shell, t_tree *node)
 {
 	char	ret;
 
@@ -97,7 +97,7 @@ static char	cmd_validity(t_tree *node, t_sh *shell)
 	if (node->cmds)
 		return (check_cmd(node->cmds[0], shell, node));
 	return (0);
-}
+}*/
 
 void		clear_lexems(t_token *token)
 {
@@ -121,8 +121,8 @@ void		go_core(char *command, t_sh *shell)
 		ft_clear_list(&shell->lexer->lexems, (void*)&clear_lexems);
 		return ;
 	}
-	if (!cmd_validity(commands_tree, shell))
-		browse_tree(commands_tree, shell, NULL, 1);
+//	if (!cmd_validity(commands_tree, shell))
+	browse_tree(commands_tree, shell, NULL, 1);
 	ft_clear_list(&shell->lexer->lexems, (void*)&clear_lexems);
 	if (shell->save_env)
 	{

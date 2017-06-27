@@ -12,8 +12,15 @@ char		exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 	else if (!(ret = is_builtins(node->cmds)))
 		ret = go_builtins(node->cmds, env, shell);
 	else
-		if ((ret = get_path(node, *env, shell, 1)))
+	{
+		if ((ret = get_path(node, *env, shell, 1)) == -1)
 			ret = -1;
+		else if (ret)
+		{
+			ft_fputstr("21sh: command not found: ", 2);
+			ft_fputendl(node->cmds[0], 2);
+		}
+	}
 	return (ret);
 }
 
