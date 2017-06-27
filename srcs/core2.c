@@ -9,11 +9,11 @@ char		exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 	{
 		run_builtins(node, env, shell);
 	}
-	else if ((ret = go_builtins(node->cmds, env, shell)) == 1)
-	{
+	else if (!(ret = is_builtins(node->cmds)))
+		ret = go_builtins(node->cmds, env, shell);
+	else
 		if ((ret = get_path(node, *env, shell, 1)))
 			ret = -1;
-	}
 	return (ret);
 }
 

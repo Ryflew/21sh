@@ -40,7 +40,7 @@ static char	browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 		//	shell->fds_out = begin_list;
 		//}
 		//else
-			if ((exec_cmds(node, &(shell->env), shell)) == -1)
+			if ((ret = exec_cmds(node, &(shell->env), shell)) == -1)
 					return (-1);
 	}
 	if (node->left)
@@ -53,7 +53,7 @@ static char	browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 		else if ((ret = browse_tree(node->left, shell, node, r_side)) == -1)
 			return (-1);
 	}
-	if (node->right	&& node->token && (node->token->type < CHEVB || node->token->type > FRED) && (node->token->type != OR || !ret) && (node->token->type != AND || ret) && (ret = browse_tree(node->right, shell, node, r_side)) == -1)
+	if (node->right	&& node->token && (node->token->type < CHEVB || node->token->type > FRED) && (node->token->type != OR || ret) && (node->token->type != AND || !ret) && (ret = browse_tree(node->right, shell, node, r_side)) == -1)
 			return (-1);
 	return (ret);
 }

@@ -41,9 +41,7 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 	char	**envi;
 	int		ret;
 	t_list	*tmp;
-	t_fd	*fd1;
-	//t_fd	*fd2;
-	int		tmp_fd;
+	t_fd	*fd;
 	
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe)) != -1)
@@ -57,46 +55,29 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 			tmp = shell->fds_out;
 			while (tmp && node->parent && (node->parent->token->type != PIPE || shell->right_side))
 			{
-			//if (shell->fds_out && node->parent && (node->parent->token->type != PIPE || shell->right_side))
-			//{
-				fd1 = tmp->data;
-				ft_putstr("fd1 = ");
-				ft_putnbr(fd1->file);
-				ft_putendl("");
-				ft_putstr("from1 = ");
-				ft_putnbr(fd1->from);
-				ft_putendl("");	
-				/*if (tmp->next)
+				fd = tmp->data;
+				if (fd->type != FRED || fd->from != -1)
+					dup2(fd->file, fd->from);
+				else
 				{
-					fd2 = tmp->next->data;
-					ft_putstr("fd2 = ");
-					ft_putnbr(fd2->file);
-					ft_putendl("");
-					ft_putstr("from2 = ");
-					ft_putnbr(fd2->from);
-					ft_putendl("");
-					if (fd1->from == fd2->from)
+					if (fd->file == -2)
 					{
-					ft_putstr("equal\n");						
-						dup2(fd1->file, fd2->file);
+						// TODO test valid fd
+						if (fd->from != -1)
+							close(fd->from);
+						else
+							close(1);
+						ft_free_tab(node->cmds);
+						node->cmds = NULL;
 					}
-					else
+					else if (fd->from == -1 && fd->to == -1)
 					{
-						ft_putstr("from1 = ");
-					ft_putnbr(fd2->from);
-					ft_putendl("");
-					ft_putstr("not equal\n");					
-						dup2(fd1->file, fd1->from);
+						dup2(fd->file, 1);
+						dup2(fd->file, 2);
 					}
 				}
-				else
-				{*/
-					ft_putstr("else\n");
-					close(fd1->file);
-					tmp_fd = dup(fd1->from);		
-					dup2(tmp_fd, fd1->from);
-				//}
-				tmp = tmp->next;
+				close(fd->file);
+				tmp = tmp->next;								
 			}
 			if (node->from_fd != -1 && node->to_fd != -1)
 				dup2(node->to_fd, node->from_fd);
@@ -106,8 +87,6 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 				ft_strdelpp(&envi);
 			exit(EXIT_SUCCESS);
 		}
-//				tmp = tmp->next;
-//			}
 		else
 			ret = father(shell, pipe);
 	}

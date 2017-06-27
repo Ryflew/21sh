@@ -19,8 +19,8 @@ void	child(t_tree *node, t_sh *shell, int *fd)
 		manage_chevb(shell->fd_in);
 //	else if (node->parent && (node->parent->token->type == CHEVF || node->parent->token->type == DCHEVF))
 //		manage_chevf(shell->fds_out);
-	else if (node->parent && node->parent->token->type == FRED)
-		manage_fred(node, shell->fds_out);
+//	else if (node->parent && node->parent->token->type == FRED)
+//		manage_fred(node, shell->fds_out);
 	if (shell->fd_pipe != -1)
 		run_with_pipe(shell, fd);
 	//else

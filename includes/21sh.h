@@ -128,6 +128,7 @@ typedef struct		s_fd
 	int				file;
 	int				from;
 	int				to;
+	e_token			type;
 }					t_fd;
 
 typedef	struct		s_sh

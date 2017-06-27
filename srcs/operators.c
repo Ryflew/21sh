@@ -32,10 +32,11 @@ void	manage_dchevb(t_tree *node, char *cmd, t_list *fds_out)
 		if (fds_out)
 		{
 			tmp = fds_out;
+			//call function of binairy
 			while (tmp)
 			{
 				fd = tmp->data;
-				dup2(fd->file, 1);
+				dup2(fd->file, fd->from);
 				tmp = tmp->next;
 			}
 		}
@@ -134,7 +135,7 @@ int			open_chevf(t_tree *node)
 	}
 }*/
 
-void		manage_fred(t_tree *node, t_list *fds_out)
+/*void		manage_fred(t_tree *node, t_list *fds_out)
 {
 	t_list	*tmp;
 	t_fd	*fd;
@@ -153,13 +154,13 @@ void		manage_fred(t_tree *node, t_list *fds_out)
 			ft_free_tab(node->cmds);
 			node->cmds = NULL;
 		}
-	/*else if (node->from_fd != -1 && node->to_fd != -1)
+	else if (node->from_fd != -1 && node->to_fd != -1)
 	{
 		if (node->from_fd)
 			dup2(node->from_fd, node->to_fd);
 		else
 			dup2(1, node->to_fd);
-	}*/
+	}
 		else
 		{
 			if (fd->from == -1 && fd->to == -1)
@@ -173,7 +174,7 @@ void		manage_fred(t_tree *node, t_list *fds_out)
 			close(fd->file);
 		}
 	}
-}
+}*/
 
 /*static char	manage_and(t_env **env, t_sh *shell, t_tree *node, char right_side)
 {
@@ -286,6 +287,7 @@ char		operators(t_tree *node, t_sh *shell)
 			return (-1);
 		shell->fd_in.to = node->to_fd;
 		shell->fd_in.from = -1;
+		shell->fd_in.type = node->token->type;		
 	}
 	else if (node->token->type == DCHEVB && !node->left)
 		manage_dchevb(node, node->right->cmds[0], shell->fds_out);
@@ -303,6 +305,7 @@ char		operators(t_tree *node, t_sh *shell)
 		else
 			fd->from = node->from_fd;
 		fd->to = -1;
+		fd->type = node->token->type;
 		ft_node_push_front(&shell->fds_out, fd);
 	}
 	return (0);
