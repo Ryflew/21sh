@@ -24,12 +24,12 @@ int		father(t_sh *shell, int *fd)
 	int ret;
 
 	waitpid(g_father, &ret, 0);
-	if (shell->FD_PIPE != -1)
+	if (shell->fd_pipe != -1)
 	{
 		close(fd[1]);
-		shell->FD_PIPE = fd[0];
+		shell->fd_pipe = fd[0];
 		if (shell->right_side)
-			shell->FD_PIPE = -1;
+			shell->fd_pipe = -1;
 	}
 	g_father = -1;
 	return (ret);
@@ -41,7 +41,10 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 	char	**envi;
 	int		ret;
 	t_list	*tmp;
-
+	t_fd	*fd1;
+	//t_fd	*fd2;
+	int		tmp_fd;
+	
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe)) != -1)
 	{
@@ -52,9 +55,47 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 			envi = conv_env(env);
 			child(node, shell, pipe);
 			tmp = shell->fds_out;
-			while (tmp && (int)(tmp->data) != -1 && node->parent && (node->parent->token->type != PIPE || shell->right_side))
+			while (tmp && node->parent && (node->parent->token->type != PIPE || shell->right_side))
 			{
-				dup2(tmp->data, 1);
+			//if (shell->fds_out && node->parent && (node->parent->token->type != PIPE || shell->right_side))
+			//{
+				fd1 = tmp->data;
+				ft_putstr("fd1 = ");
+				ft_putnbr(fd1->file);
+				ft_putendl("");
+				ft_putstr("from1 = ");
+				ft_putnbr(fd1->from);
+				ft_putendl("");	
+				/*if (tmp->next)
+				{
+					fd2 = tmp->next->data;
+					ft_putstr("fd2 = ");
+					ft_putnbr(fd2->file);
+					ft_putendl("");
+					ft_putstr("from2 = ");
+					ft_putnbr(fd2->from);
+					ft_putendl("");
+					if (fd1->from == fd2->from)
+					{
+					ft_putstr("equal\n");						
+						dup2(fd1->file, fd2->file);
+					}
+					else
+					{
+						ft_putstr("from1 = ");
+					ft_putnbr(fd2->from);
+					ft_putendl("");
+					ft_putstr("not equal\n");					
+						dup2(fd1->file, fd1->from);
+					}
+				}
+				else
+				{*/
+					ft_putstr("else\n");
+					close(fd1->file);
+					tmp_fd = dup(fd1->from);		
+					dup2(tmp_fd, fd1->from);
+				//}
 				tmp = tmp->next;
 			}
 			if (node->from_fd != -1 && node->to_fd != -1)
@@ -65,6 +106,8 @@ char	run_binary(char *path, t_tree *node, t_env *env, t_sh *shell)
 				ft_strdelpp(&envi);
 			exit(EXIT_SUCCESS);
 		}
+//				tmp = tmp->next;
+//			}
 		else
 			ret = father(shell, pipe);
 	}
@@ -78,7 +121,8 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 	int		ret;
 	int		pipe[2];
 	char	**envi;
-	t_list	*tmp;	
+	t_list	*tmp;
+	t_fd	*fd;
 
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe)) != -1)
@@ -92,9 +136,10 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 			envi = conv_env(*env);
 			child(node, shell, pipe);
 			tmp = shell->fds_out;
-			while (tmp && (int)(tmp->data) != -1 && node->parent && (node->parent->token->type != PIPE || shell->right_side))
+			while (tmp && node->parent && (node->parent->token->type != PIPE || shell->right_side))
 			{
-				dup2(tmp->data, 1);
+				fd = tmp->data;
+				dup2(fd->file, 1);
 				tmp = tmp->next;
 			}
 			if (node->from_fd != -1 && node->to_fd != -1)

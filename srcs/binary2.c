@@ -14,13 +14,13 @@
 void	child(t_tree *node, t_sh *shell, int *fd)
 {
 	if (node->token && node->parent->token->type == DCHEVB)
-		manage_dchevb(node, node->cmds[0]);
+		manage_dchevb(node, node->cmds[0], shell->fds_out);
 	else if (node->parent && node->parent->token->type == CHEVB)
-		manage_chevb(node, shell->fd_in);
-	else if (node->parent && (node->parent->token->type == CHEVF || node->parent->token->type == DCHEVF))
-		manage_chevf(node, shell->FD_OUT);
+		manage_chevb(shell->fd_in);
+//	else if (node->parent && (node->parent->token->type == CHEVF || node->parent->token->type == DCHEVF))
+//		manage_chevf(shell->fds_out);
 	else if (node->parent && node->parent->token->type == FRED)
-		manage_fred(node, shell->FD_OUT);
+		manage_fred(node, shell->fds_out);
 	if (shell->fd_pipe != -1)
 		run_with_pipe(shell, fd);
 	//else
@@ -64,7 +64,7 @@ int			open_file(t_tree *node)
 	if (node->token && node->token->type == CHEVB)
 		return (open_chevb(node));
 	else if (node->token && (node->token->type == CHEVF || \
-		(node->token->type == FRED && ft_strcmp(node->right->cmds[0], "-"))))
+		node->token->type == FRED))
 		return (open_chevf(node));
 	else if (node->token && node->token->type == DCHEVF)
 		return (open_dchevf(node));

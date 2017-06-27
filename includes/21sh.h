@@ -25,9 +25,6 @@
 # define ENTER 10
 # define TAB 9
 # define EOT 4
-# define FD_IN fd[0]
-# define FD_PIPE fd[1]
-
 
 typedef struct termios	t_termios;
 typedef struct dirent	t_dirent;
@@ -270,18 +267,17 @@ t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *rig
 char				eat(t_sh *sh, e_token token);
 t_token				*text_rules(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
-char				operators(t_tree *node, t_env *env, int *fd);
+char				operators(t_tree *node, t_sh *shell);
 char				exec_cmds(t_tree *node, t_env **env, t_sh *shell);
 char				run_binary(char *path, t_tree *node, t_env *env, t_sh *shell);
 char				get_path(t_tree *node, t_env *env, t_sh *shell, char exec);
 char				is_builtins(char **cmd);
 char				is_writable_builtins(char *cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
-void				manage_dchevb(t_tree *node, char *cmd);
-void				manage_chevb(t_tree *node, int fd_file);
-void				manage_dchevf(t_tree *node, int fd_file);
-void				manage_chevf(t_tree *node, int fd_file);
-void				manage_fred(t_tree *node, int fd_file);
+void				manage_dchevb(t_tree *node, char *cmd, t_list *fds_out);
+void				manage_chevb(t_fd fd);
+void				manage_chevf(t_list	*fds_out);
+void				manage_fred(t_tree *node, t_list *fds_out);
 int					open_dchevf(t_tree *node);
 int					open_chevb(t_tree *node);
 int					open_chevf(t_tree *node);

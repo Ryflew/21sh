@@ -7,33 +7,45 @@
 	return (exec_cmds_with_op(node, env, shell));
 }*/
 
-void	manage_dchevb(t_tree *node, char *cmd)
+void	manage_dchevb(t_tree *node, char *cmd, t_list *fds_out)
 {
-	int		fd[2];
+	int		fd_pipe[2];
 	char	*line;
+	t_list	*tmp;
+	t_fd	*fd;
 
 	line = NULL;
-	pipe(fd);
+	pipe(fd_pipe);
 	ft_putstr("heredoc> ");
 	while (gnl(0, &line) && ft_strcmp(line, cmd))
 	{
 		ft_putstr("heredoc> ");
-		ft_fputendl(line, fd[1]);
+		ft_fputendl(line, fd_pipe[1]);
 		free(line);
 	}
 	free(line);
-	close(fd[1]);
+	close(fd_pipe[1]);
 	if (node->cmds)
-		dup2(fd[0], 0);
+		dup2(fd_pipe[0], 0);
 	else
 	{
-		while (gnl(fd[0], &line))
+		if (fds_out)
+		{
+			tmp = fds_out;
+			while (tmp)
+			{
+				fd = tmp->data;
+				dup2(fd->file, 1);
+				tmp = tmp->next;
+			}
+		}
+		while (gnl(fd_pipe[0], &line))
 		{
 			if (node->to_fd != -1)
 				ft_fputendl(line, node->to_fd);
 			else
 				ft_putendl(line);
-			free(line);
+			free(line);			
 		}
 		free(line);
 	}
@@ -51,10 +63,10 @@ int			open_chevb(t_tree *node)
 	return (fd_file);
 }
 
-void		manage_chevb(t_tree *node, t_fd *fd)
+void		manage_chevb(t_fd fd)
 {	
-	if (fd->to != -1)
-		dup2(fd->to, 0);
+	if (fd.to != -1)
+		dup2(fd.to, 0);
 	else
 		dup2(fd.file, 0);
 	close(fd.file);
@@ -86,18 +98,23 @@ int			open_chevf(t_tree *node)
 	return (fd_file);
 }
 
-void	manage_chevf(t_tree *node, int fd_file)
-{
-	if (node->from_fd != -1)
-		dup2(fd_file, node->from_fd);
-	else
-		dup2(fd_file, 1);
-	//if (node->from_fd != -1 && node->to_fd != -1)
-	//	dup2(node->from_fd, node->to_fd);
-	//else if (node->to_fd != -1)
-	//	dup2(1, node->to_fd);
-	close(fd_file);
-}
+// void	manage_chevf(t_list	*fds_out)
+// {
+// 	t_list	*tmp;
+// 	t_fd	*fd;
+
+// 	tmp = fds_out;
+// 	while (tmp)
+// 	{
+// 		fd = tmp->data;
+		
+// 	}
+// 	//if (node->from_fd != -1 && node->to_fd != -1)
+// 	//	dup2(node->from_fd, node->to_fd);
+// 	//else if (node->to_fd != -1)
+// 	//	dup2(1, node->to_fd);
+// 	close(fd->file);
+// }
 
 /*static void	manage_bred(t_tree *node)
 {
@@ -117,18 +134,25 @@ void	manage_chevf(t_tree *node, int fd_file)
 	}
 }*/
 
-void		manage_fred(t_tree *node, int fd_file)
+void		manage_fred(t_tree *node, t_list *fds_out)
 {
-	if (!ft_strcmp(node->cmds[0], "-"))
+	t_list	*tmp;
+	t_fd	*fd;
+
+	tmp = fds_out;
+	while (tmp)
 	{
-		// TODO test valid fd
-		if (node->from_fd != -1)
-			close(node->from_fd);
-		else
-			close(1);
-		ft_free_tab(node->cmds);
-		node->cmds = NULL;
-	}
+		fd = tmp->data;
+		if (fd->file == -2)
+		{
+			// TODO test valid fd
+			if (fd->from != -1)
+				close(fd->from);
+			else
+				close(1);
+			ft_free_tab(node->cmds);
+			node->cmds = NULL;
+		}
 	/*else if (node->from_fd != -1 && node->to_fd != -1)
 	{
 		if (node->from_fd)
@@ -136,16 +160,18 @@ void		manage_fred(t_tree *node, int fd_file)
 		else
 			dup2(1, node->to_fd);
 	}*/
-	else
-	{
-		if (node->from_fd == -1 && node->to_fd == -1)
+		else
 		{
-			dup2(fd_file, 1);
-			dup2(fd_file, 2);
+			if (fd->from == -1 && fd->to == -1)
+			{
+				dup2(fd->file, 1);
+				dup2(fd->file, 2);
+				ft_putendl("FUCK");
+			}
+			else if (node->from_fd != -1)
+				dup2(fd->file, fd->from); // TODO test valid fd
+			close(fd->file);
 		}
-		else if (node->from_fd != -1)
-			dup2(fd_file, node->from_fd); // TODO test valid fd
-		close(fd_file);
 	}
 }
 
@@ -217,11 +243,12 @@ static char	manage_or(t_env **env, t_sh *shell, t_tree *node, char right_side)
 	return (ret);
 }*/
 
-char		operators(t_tree *node, t_sh *shell, t_fd *fd)
+char		operators(t_tree *node, t_sh *shell)
 {
 	int		ret;
 	char	**new_cmd;
 	char	**envi;
+	t_fd	*fd;
 
 	ret = 0;
 	if (node->token->type == PIPE)
@@ -255,20 +282,28 @@ char		operators(t_tree *node, t_sh *shell, t_fd *fd)
 			execve(new_cmd[0], new_cmd, envi);
 			ft_strdelpp(&envi);
 		}
-		else if ((fd->file = open_file(node)) == -1)
+		else if ((shell->fd_in.file = open_file(node)) == -1)
 			return (-1);
-		fd->to = node->to_fd;
-		shell->fd_in = fd;
+		shell->fd_in.to = node->to_fd;
+		shell->fd_in.from = -1;
 	}
 	else if (node->token->type == DCHEVB && !node->left)
-		manage_dchevb(node, node->right->cmds[0]);
+		manage_dchevb(node, node->right->cmds[0], shell->fds_out);
 	else if (node->token->type == CHEVF || node->token->type == DCHEVF || node->token->type == FRED)
 	{
-		if ((fd->file = open_file(node)) == -1)
-			return (-1);
-		fd->from = node->from_fd;
-		fd->to = node->to_fd;
-		ft_node_push_front(shell->fds_out, fd);
+		if (!(fd = (t_fd*)malloc(sizeof(t_fd))))
+			exit(-1);
+		if (node->token->type == FRED && !ft_strcmp(node->right->cmds[0], "-"))
+			fd->file = -2;
+		else
+			if ((fd->file = open_file(node)) == -1)
+				return (-1);
+		if (node->token->type != FRED)
+			fd->from = (node->from_fd == -1) ? 1 : node->from_fd;
+		else
+			fd->from = node->from_fd;
+		fd->to = -1;
+		ft_node_push_front(&shell->fds_out, fd);
 	}
 	return (0);
 }

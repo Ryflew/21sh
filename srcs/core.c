@@ -7,7 +7,7 @@
 static char	browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 {
 	char	ret;
-	//t_fd	fd;
+	//t_list	*begin_list;
 
 	//FD_IN = shell->FD_IN;
 	//FD_OUT = shell->FD_OUT;
@@ -17,7 +17,7 @@ static char	browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 	if (node->token && ((node->left && node->left->cmds) || \
 		(node->right && node->right->cmds)))
 	{
-		if ((operators(node, shell, fd)) == -1)
+		if ((operators(node, shell)) == -1)
 			return (-1);
 //		shell->FD_IN = FD_IN;
 //		shell->FD_OUT = FD_OUT;
@@ -28,8 +28,20 @@ static char	browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 	{
 		if (node->parent && node->parent->token->type == PIPE)
 			shell->right_side = r_side;
-		if ((exec_cmds(node, &(shell->env), shell)) == -1)
-			return (-1);
+		//if (shell->fds_out)
+		//{
+			//begin_list = shell->fds_out;
+			//while (shell->fds_out)
+			//{
+			//	if ((exec_cmds(node, &(shell->env), shell)) == -1)
+			//		return (-1);
+			//	shell->fds_out = shell->fds_out->next;
+			//}
+		//	shell->fds_out = begin_list;
+		//}
+		//else
+			if ((exec_cmds(node, &(shell->env), shell)) == -1)
+					return (-1);
 	}
 	if (node->left)
 	{
@@ -101,7 +113,6 @@ void		go_core(char *command, t_sh *shell)
 	shell->lexer->line = command;
 	get_lexems(shell);
 	shell->current_token = shell->lexer->lexems->data;
-	shell->fd_in = NULL;
 	shell->fds_out = NULL;
 	shell->fd_pipe = -1;
 	if ((commands_tree = commands_line_rules(shell)) == (void*)-1)
