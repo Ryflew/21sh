@@ -80,7 +80,10 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell)
 				tmp = tmp->next;								
 			}
 			if (node->from_fd != -1 && node->to_fd != -1)
+			{
 				dup2(node->to_fd, node->from_fd);
+				close(node->to_fd);
+			}
 			if (node->cmds)
 			{
 				if ((path = get_path(node, env, shell)))
@@ -154,7 +157,10 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 				tmp = tmp->next;								
 			}
 			if (node->from_fd != -1 && node->to_fd != -1)
+			{
 				dup2(node->to_fd, node->from_fd);
+				close(node->to_fd);
+			}
 			if (node->cmds)
 				go_builtins(node->cmds, env, shell);
 			if (envi)

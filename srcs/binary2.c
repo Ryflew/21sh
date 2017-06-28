@@ -2,29 +2,14 @@
 #include <signal.h>
 #include "21sh.h"
 
-/*static void	child2(t_tree *node, char ***cmds)
-{
-	if (node->from_fd != -1 && node->to_fd != -1)
-		dup2(node->from_fd, node->to_fd);
-	else if (node->to_fd != -1)
-		dup2(1, node->to_fd);
-	*cmds = node->cmds;
-}*/
-
 void	child(t_tree *node, t_sh *shell, int *fd)
 {
 	if (node->token && node->parent->token->type == DCHEVB)
 		manage_dchevb(node, node->cmds[0], shell->fds_out);
 	else if (node->parent && node->parent->token->type == CHEVB)
 		manage_chevb(shell->fd_in);
-//	else if (node->parent && (node->parent->token->type == CHEVF || node->parent->token->type == DCHEVF))
-//		manage_chevf(shell->fds_out);
-//	else if (node->parent && node->parent->token->type == FRED)
-//		manage_fred(node, shell->fds_out);
 	if (shell->fd_pipe != -1)
 		run_with_pipe(shell, fd);
-	//else
-	//	child2(node, &cmds);
 }
 
 char		stop_binary(int sig)
@@ -46,14 +31,16 @@ char		stop_binary(int sig)
 
 void		run_with_pipe(t_sh *shell, int *fd)
 {
-	//if (node->from_fd != -1 && node->to_fd != -1)
-	//	dup2(node->from_fd, node->to_fd);		
-	//	dup2(fd[1], node->from_fd);
-	close(fd[0]);
-	if (shell->fd_pipe)
+	if (shell->fd_pipe != 0)
+	{
 		dup2(shell->fd_pipe, 0);
+		close(shell->fd_pipe);
+	}
 	if (!shell->right_side)
+	{
 		dup2(fd[1], 1);
+		close(fd[1]);
+	}		
 }
 
 int			open_file(t_tree *node)
