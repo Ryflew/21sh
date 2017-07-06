@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/20 00:55:23 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/07/06 21:58:31 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	shell->lexer = lexer;
 	shell->hash = NULL;
 	shell->save_env = NULL;
+	shell->have_write_error = 0;
 }
 
 static void	get_current_path(t_env *env)

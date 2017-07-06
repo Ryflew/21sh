@@ -31,7 +31,9 @@ char		*get_path(t_tree *node, t_env *env, t_sh *shell)
 
 	if (node->cmds && (content = check_in_hashtab(node, shell)))
 		return (content);
-	if (!is_absolute(node, env, shell))
+	if ((content = is_absolute(node, env, shell)))
+		return (ft_strdup(content));
+	if (*(node->cmds[0]) == '/')
 		return (NULL);
 	if (!(content = find_env(env, "PATH")))
 		return (NULL);
@@ -87,5 +89,5 @@ char		*is_absolute(t_tree *node, t_env *env, t_sh *shell)
 		//if (exec)
 			return (current_binary(node, env, shell));
 	}
-	return ((void*)1);
+	return (NULL);
 }

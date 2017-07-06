@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/19 23:22:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/07/06 22:00:11 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell)
 					if (envi)
 						ft_strdelpp(&envi);
 				}
-				else
+				else if (!shell->have_write_error)
 				{
 					ft_fputstr("21sh: command not found: ", 2);
 					ft_fputendl(node->cmds[0], 2);
@@ -154,7 +154,7 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 					}
 				}
 				close(fd->file);
-				tmp = tmp->next;								
+				tmp = tmp->next;
 			}
 			if (node->from_fd != -1 && node->to_fd != -1)
 			{
@@ -182,6 +182,8 @@ char	*current_binary(t_tree *node, t_env *env, t_sh *shell)
 	char	**tab;
 	char	buff[4097];
 
+	// (void)shell;
+	// (void)env;
 	str = ft_strsub(*node->cmds, 2, ft_strlen(*node->cmds) - 2);
 	i = -1;
 	while (node->cmds[++i])
@@ -196,7 +198,9 @@ char	*current_binary(t_tree *node, t_env *env, t_sh *shell)
 	while (node->cmds[++i])
 		tab[i] = ft_strdup(node->cmds[i]);
 	tab[i] = NULL;
-	str = is_absolute(node, env, shell);
 	ft_strdelpp(&node->cmds);
-	return (str);
+	node->cmds = tab;
+	// str = is_absolute(node, env, shell);
+	// return ((void*)1);
+	return (is_absolute(node, env, shell));
 }

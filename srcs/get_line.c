@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/20 00:45:15 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/07/06 21:58:52 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,9 @@ static char	get_line2(t_sh *shell, unsigned long buff)
 char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
+	shell->have_write_error = 0;
 	shell->j = -1;
-	//return (ft_strdup("ls | yolo 2> ok"));
+	// return (ft_strdup("./zsh"));
 	//return (ft_strdup("false || echo o"));
 	while (1)
 	{

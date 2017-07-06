@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 21:18:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/06 20:52:38 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/07/06 22:21:56 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,12 @@ static void	override_env(char **av, t_env **env)
 static char	setenv_name(char **av)
 {
 	char	*tmp;
-	int		i;
 
-	i = 0;
 	tmp = *(av + 1);
-	if (ft_strchr(tmp, '='))
-		i = ft_strchr(tmp, '=') - tmp;
-	else
-		i = ft_strlen(*(av + 1));
-	while (--i >= 0)
+	if (*tmp >= '0' && *tmp <= '9')
 	{
-		if (*(tmp + i) >= '0' && *(tmp + i) <= '9')
-		{
-			errexit("setenv", "Variable name must begin with a letter.");
-			return (1);
-		}
+		errexit("setenv", "Variable name must begin with a letter.");
+		return (1);
 	}
 	return (0);
 }
@@ -93,8 +84,8 @@ void		set_env(char **av, t_env **env)
 		print_env(*env);
 	else if (!(find_env(*env, *av)))
 	{
-		if (check_alpha(*av))
-			return ;
+		// if (check_alpha(*av))
+			// return ;
 		while (*env && (*env)->next)
 			*env = (*env)->next;
 		tmp = get_tmp(av);
