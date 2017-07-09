@@ -33,12 +33,13 @@ void		run_with_pipe(t_sh *shell, int *fd)
 {
 	if (shell->fd_pipe != 0)
 	{
+	//	ft_fputendl("pipe 0", 2);
 		dup2(shell->fd_pipe, 0);
 		close(shell->fd_pipe);
 	}
 	if (fd[1] != 1 && !shell->right_side)
 	{
-		close(fd[0]);
+	//	ft_fputendl("pipe 1", 2);
 		dup2(fd[1], 1);
 		close(fd[1]);
 	}		
