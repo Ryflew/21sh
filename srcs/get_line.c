@@ -91,8 +91,8 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
 	shell->j = -1;
-	//return (ft_strdup("ls | yolo 2> ok"));
-	//return (ft_strdup("false || echo o"));
+	//return (ft_strdup("/usr/bin/base64 /dev/urandom | head -c 1000"));
+	//return (ft_strdup("> yolo"));
 	while (1)
 	{
 		buff = 0;

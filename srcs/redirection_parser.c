@@ -7,7 +7,7 @@ t_tree	*basic_red(t_sh *sh, e_token type, t_tree *left)
 
 	// if (!left)
 	// 	ft_putendl("step0");
-	if (!left || (!left->right && left->token && left->token->type != SCL))
+	if (left && !left->right && left->token && left->token->type != SCL)
 	{
 		// parse_error(sh);
 		return ((void*)-1);
@@ -39,7 +39,7 @@ t_tree	*adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 
 	// ft_putendl("adv_red_forward");
 	new_node = NULL;
-	if (!left || (!left->right && left->token && left->token->type != SCL))
+	if (left && !left->right && left->token && left->token->type != SCL)
 	{
 		// parse_error(sh);
 		return ((void*)-1);
@@ -111,7 +111,7 @@ t_tree	*redirection_with_fd(t_sh *sh, t_tree *left)
 	t_token	*token;
 
 	new_node = NULL;
-	if (!left || (!left->right && left->token && left->token->type != SCL))
+	if (left && !left->right && left->token && left->token->type != SCL)
 	{
 		// parse_error(sh);
 		return ((void*)-1);

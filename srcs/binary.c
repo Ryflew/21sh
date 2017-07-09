@@ -47,14 +47,19 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell)
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe)) != -1)
 	{
+				//ft_putendl("before");		
 		if ((g_father = fork()) == -1)
 			ft_exiterror("fork failure !", -1);
 		else if (!g_father)
 		{
+				//ft_fputendl("sun", 2);					
+			ret = EXIT_SUCCESS;
 			child(node, shell, pipe);
+				//ft_fputendl("problemes", 2);					
 			tmp = shell->fds_out;
 			while (tmp && node->parent && (node->parent->token->type != PIPE || shell->right_side))
 			{
+				//ft_fputendl("fds_out", 2);
 				fd = tmp->data;
 				if (fd->type != FRED || fd->from != -1)
 					dup2(fd->file, fd->from);
@@ -81,6 +86,7 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell)
 			}
 			if (node->from_fd != -1 && node->to_fd != -1)
 			{
+				//ft_fputendl("from to", 2);				
 				dup2(node->to_fd, node->from_fd);
 				close(node->to_fd);
 			}
@@ -89,7 +95,12 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell)
 				if ((path = get_path(node, env, shell)))
 				{
 					envi = conv_env(env);
-					execve(path, node->cmds, envi);
+					for (int i = 0; envi[i]; i++)
+					{
+						ft_fputendl(envi[i], 2);
+					}
+					//ft_fputendl("exec", 2);									
+					ret = execve(path, node->cmds, envi);
 					free(path);
 					if (envi)
 						ft_strdelpp(&envi);
@@ -98,13 +109,16 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell)
 				{
 					ft_fputstr("21sh: command not found: ", 2);
 					ft_fputendl(node->cmds[0], 2);
-					exit(EXIT_FAILURE);
+					ret = EXIT_FAILURE;
 				}
 			}
-			exit(EXIT_SUCCESS);
+			return (ret);//exit(EXIT_SUCCESS);
 		}
 		else
+		{
+				ft_putendl("sun");					
 			ret = father(shell, pipe);
+		}
 	}
 	set_our_term(shell);
 	return (WEXITSTATUS(ret));

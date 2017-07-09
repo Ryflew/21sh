@@ -106,8 +106,8 @@ int			open_chevf(t_tree *node)
 char		operators(t_tree *node, t_sh *shell)
 {
 	int		ret;
-	char	**new_cmd;
-	char	**envi;
+	//char	**new_cmd;
+	//char	**envi;
 	t_fd	*fd;
 
 	ret = 0;
@@ -118,7 +118,7 @@ char		operators(t_tree *node, t_sh *shell)
 	}
 	else if (node->token->type == CHEVB)
 	{
-		if (!node->left && node->to_fd == -1)
+		/*if (!node->left && node->to_fd == -1)
 		{
 			envi = conv_env(shell->env);
 			new_cmd = (char**)malloc(sizeof(char*) * 3);
@@ -128,14 +128,15 @@ char		operators(t_tree *node, t_sh *shell)
 			execve(new_cmd[0], new_cmd, envi);
 			ft_strdelpp(&envi);
 		}
-		else if ((shell->fd_in.file = open_file(node)) == -1)
+		else */
+		if ((shell->fd_in.file = open_file(node)) == -1)
 			return (-1);
 		shell->fd_in.to = node->to_fd;
 		shell->fd_in.from = -1;
 		shell->fd_in.type = node->token->type;		
 	}
-	else if (node->token->type == DCHEVB && !node->left)
-		manage_dchevb(node, node->right->cmds[0], shell->fds_out);
+	//else if (node->token->type == DCHEVB && !node->left)
+	//	manage_dchevb(node, node->right->cmds[0], shell->fds_out);
 	else if (node->token->type == CHEVF || node->token->type == DCHEVF || node->token->type == FRED)
 	{
 		if (!(fd = (t_fd*)malloc(sizeof(t_fd))))
