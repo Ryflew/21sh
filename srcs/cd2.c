@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:54:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/20 00:06:02 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/07/09 17:05:44 by bdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	treat_current2(t_cd *opt, char *tmp, char **new_prompt)
 {
 	char	buff[4097];
 
-	if (opt->is_P && !access(tmp, R_OK | R_OK))
+	if (opt->is_p && !access(tmp, R_OK | R_OK))
 	{
 		chdir(tmp);
 		ft_strdel(new_prompt);

@@ -59,13 +59,13 @@ void		cd_current_dir(char *path, t_env *env, t_sh *shell, t_cd *opt)
 static void	get_cd_opt(char ***av, t_cd *opt)
 {
 	opt->is_oldpwd = 0;
-	opt->is_P = 0;
-	opt->is_L = 0;
+	opt->is_p = 0;
+	opt->is_l = 0;
 	while (**av && ***av == '-')
 	{
 		opt->is_oldpwd = !(*(**av + 1)) ? 1 : opt->is_oldpwd;
-		opt->is_P = *(**av + 1) == 'P' ? 1 : opt->is_P;
-		opt->is_L = *(**av + 1) == 'L' ? 1 : opt->is_L;
+		opt->is_p = *(**av + 1) == 'P' ? 1 : opt->is_p;
+		opt->is_l = *(**av + 1) == 'L' ? 1 : opt->is_l;
 		++*av;
 	}
 }

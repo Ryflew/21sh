@@ -68,6 +68,7 @@ FILES = add_char.c \
 				parse_cmds.c \
 				parse_text.c \
 				create.c \
+				open_file.c
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 

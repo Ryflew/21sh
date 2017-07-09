@@ -6,7 +6,7 @@
 /*   By: bdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/13 19:47:25 by bdurst            #+#    #+#             */
-/*   Updated: 2017/01/06 14:41:17 by bdurst           ###   ########.fr       */
+/*   Updated: 2017/07/09 17:02:06 by bdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ void				ft_perror(const char *str, int status);
 void				ft_exiterror(const char *str, int status);
 int					ft_strfind(const char *s, int start, int c);
 char				ft_strcont(char *s1, char *s2);
-size_t			ft_counttab(char **tabu);
+size_t				ft_counttab(char **tabu);
 
 #endif

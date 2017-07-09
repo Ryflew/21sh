@@ -23,9 +23,9 @@ int		father(t_sh *shell, int *fd)
 {
 	int ret;
 
+	close(fd[1]);
 	waitpid(g_father, &ret, 0);
 	ret = 0;
-	close(fd[1]);
 	if (shell->fd_pipe != -1)
 	{
 		shell->fd_pipe = fd[0];

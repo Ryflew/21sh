@@ -20,24 +20,3 @@ char		**ftp_list_to_tabstr(t_list *list)
 	}
 	return (args);
 }
-
-/*t_list		*ftp_tabstr_to_list(char **args)
-{
-	t_list	*list;
-	t_arg	*arg;
-	int		i;
-
-	i = -1;
-	list = NULL;
-	while (args[++i])
-	{
-		if (!(arg = (t_arg*)malloc(sizeof(t_arg))))
-			ftp_error(NULL, "ERROR: Malloc failure !", 0);
-		if (args[i][ft_strlen(args[i]) - 1] == '/')
-			args[i][ft_strlen(args[i]) - 1] = 0;
-		arg->str = ft_strtrim(args[i]);
-		arg->base = 1;
-		ft_node_push_back(&list, arg);
-	}
-	return (list);
-}*/

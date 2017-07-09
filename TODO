@@ -3,6 +3,8 @@
 
 - Norme
 - completion avec ./
+- base64 /dev/urandom | heac -c 1000
+- << op
 
 ---------- BONUS --------------
 

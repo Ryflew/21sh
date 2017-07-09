@@ -9,13 +9,6 @@ static int	is_operator(int c, int c2)
 	return (0);
 }
 
-int			is_string_op(int c)
-{
-	if (c == '\'' || c == '"' || c == '`')
-		return (1);
-	return (0);
-}
-
 t_token		*lex_str(t_lexer *lexer)
 {
 	int		i;
@@ -23,7 +16,6 @@ t_token		*lex_str(t_lexer *lexer)
 
 	i = 0;
 	token = NULL;
-	//ft_putendl("STR");
 	while ((lexer->line)[i] && (lexer->line)[i] != lexer->string_operator)
 		++i;
 	token = new_token(lexer, TEXT, ft_strsub(lexer->line, 0, i));
@@ -59,10 +51,9 @@ t_token		*lex_number(t_lexer *lexer)
 		(string_op && (lexer->line)[i]))
 		lex_number2(lexer, i, &type, &string_op);
 	if (lexer->red || (type == NUM && (lexer->line)[i] && \
-		((lexer->line)[i] == '<' || (lexer->line)[i] == '>')))// && (lexer->line)[i + 1] == '&'))
+		((lexer->line)[i] == '<' || (lexer->line)[i] == '>')))
 		type = FD;
 	token = new_token(lexer, type, clear_quot(ft_strsub(lexer->line, 0, i)));
-	//token->value = clear_quot(token->value);
 	return (token);
 }
 
@@ -75,7 +66,6 @@ t_token		*lex_word(t_lexer *lexer)
 	string_op = 0;
 	i = 0;
 	token = NULL;
-	//ft_putendl("WORD");
 	while (((lexer->line)[i] && !is_operator((lexer->line)[i], \
 		(lexer->line)[i + 1]) && !ft_isblank((lexer->line)[i])) || \
 		(string_op && (lexer->line)[i]))
@@ -91,6 +81,5 @@ t_token		*lex_word(t_lexer *lexer)
 	}
 	token = new_token(lexer, WORD, clear_quot(remove_useless_space(\
 		ft_strsub(lexer->line, 0, i), -1, -1, 0)));
-	//token->value = clear_quot(token->value);
 	return (token);
 }

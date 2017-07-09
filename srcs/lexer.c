@@ -1,8 +1,14 @@
 #include "21sh.h"
 
+int			is_string_op(int c)
+{
+	if (c == '\'' || c == '"' || c == '`')
+		return (1);
+	return (0);
+}
+
 static void		skip_whitespace(t_lexer *lexer)
 {
-	//ft_putendl("blank");
 	while (*lexer->line && ft_isblank(*lexer->line))
 		++lexer->line;
 }
@@ -40,8 +46,6 @@ static t_token	*find_token(t_lexer *lexer)
 		token = new_token(lexer, DCHEVB, "<<");
 	else if (*lexer->line == '>' && *(lexer->line + 1) == '&')
 		token = new_token(lexer, FRED, ">&");
-	//else if (*lexer->line == '<' && *(lexer->line + 1) == '&')
-	//	token = new_token(lexer, BRED, "<&");
 	else if (*lexer->line == '>')
 		token = new_token(lexer, CHEVF, ">");
 	else if (*lexer->line == '<')
@@ -73,7 +77,6 @@ static void		manage_quote(t_lexer *lexer)
 		;
 	if (!lexer->line[i] || lexer->line[i] == ' ')
 		return ;
-	// prend le premier quot pour le mettre au debut
 	k = -1;
 	buff[++k] = lexer->line[i];
 	j = -1;
@@ -84,7 +87,6 @@ static void		manage_quote(t_lexer *lexer)
 		buff[++k] = lexer->line[j];
 	}
 	buff[++k] = '\0';
-	// met le quot a la fin
 	tmp = ft_strdup(buff);
 	ft_bzero(buff, ft_strlen(lexer->line) + 1);
 	i = 1;
@@ -102,7 +104,6 @@ static void		manage_quote(t_lexer *lexer)
 	while (tmp[j])
 		buff[++k] = tmp[j++];
 	buff[++k] = '\0';
-	// free(lexer->line); // LEAKS !
 	lexer->line = ft_strdup(buff);
 }
 
@@ -124,7 +125,7 @@ static void		get_next_token2(t_lexer *lexer, t_token **token)
 	else
 		*token = lex_str(lexer);
 }
-//"pwd "
+
 static t_token	*get_next_token(t_lexer *lexer)
 {
 	t_token *token;
@@ -133,10 +134,6 @@ static t_token	*get_next_token(t_lexer *lexer)
 	while (*lexer->line)
 	{
 		token = NULL;
-		//ft_putendl(lexer->line);
-		//ft_putstr("|");
-		//ft_putchar(*lexer->line);
-		//ft_putstr("|\n");
 		if (ft_isblank(*lexer->line) && !lexer->string_operator)
 		{
 			skip_whitespace(lexer);
@@ -144,7 +141,6 @@ static t_token	*get_next_token(t_lexer *lexer)
 		}
 		else
 			get_next_token2(lexer, &token);
-		//ft_putendl(lexer->line);
 		if (token)
 			return (token);
 	}

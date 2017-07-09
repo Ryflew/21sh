@@ -30,8 +30,7 @@ typedef struct termios	t_termios;
 typedef struct dirent	t_dirent;
 typedef struct stat		t_stat;
 
-
-typedef enum
+typedef enum e_token
 {
 	NONE,
 	ENDOF,
@@ -57,15 +56,15 @@ typedef enum
 	RBKT,
 	LBRC,
 	RBRC
-} e_token;
+}	e_token;
 
-typedef enum
+typedef enum	e_state
 {
 	BASIC_SHELL,
 	ADVANCE_SHELL,
 	BRACKET_ERROR,
-	COMMAND_RUN,	
-} e_state;
+	COMMAND_RUN,
+}	e_state;
 
 typedef struct		s_env
 {
@@ -77,8 +76,8 @@ typedef struct		s_env
 
 typedef struct		s_cd
 {
-	char			is_P;
-	char			is_L;
+	char			is_p;
+	char			is_l;
 	char			is_oldpwd;
 }					t_cd;
 
@@ -165,16 +164,13 @@ typedef	struct		s_sh
 	char			have_write_error;
 }					t_sh;
 
-/* -------------- Builtins --------------- */
-
 void				cd(char **av, t_env *env, t_sh *shell);
-void				change_prompt(char *path, t_env *env, char **new_prompt, t_cd *opt);
+void				change_prompt(char *path, t_env *env, char **new_prompt,
+					t_cd *opt);
 void				echo_builtin(char **av, t_env *env);
 void				set_env(char **av, t_env **env);
 void				unset_env(char **av, t_env **env);
 void				exit_command(char **av, t_sh *shell);
-
-/* --------------- Others ---------------- */
 
 int					is_string_op(int c);
 int					ft_putcharint(int c);
@@ -208,7 +204,8 @@ void				delete_char(char *command, int *j, t_sh *shell);
 void				get_cursor(t_sh *shell);
 void				hash_tab(char **av, t_sh *shell);
 void				print_prompt(e_state state, char *op);
-void				treat_second_prompt(char *string, char **op, e_state *state);
+void				treat_second_prompt(char *string, char **op,
+					e_state *state);
 void				go_core(char *command, t_sh *shell);
 void				manage_redirection(t_tree **tree);
 void				load_history(t_sh *shell, t_env *env);
@@ -222,7 +219,8 @@ void				get_tree_rec(t_tree **tree, char *left, char *right);
 void				cd_tilde(char *str, t_env *env, t_sh *shell, t_cd *opt);
 void				print_cd_error(char *tmp, char *path);
 void				init_setenv(char ***av, t_env **env, char *tmp);
-void				cd_current_dir(char *path, t_env *env, t_sh *shell, t_cd *opt);
+void				cd_current_dir(char *path, t_env *env, t_sh *shell,
+					t_cd *opt);
 void				clear_to_bot(t_sh *shell);
 void				print_history2(t_sh *shell, t_sh *bis_sh);
 char				add_char(char *command, int *j, t_sh *shell, char c);
@@ -236,7 +234,8 @@ char				del_all_env(t_env **list);
 char				check_path(char *command, char *path);
 char				env_command(char **av, t_env *env);
 char				check_new_open(char *str, char *op, int *j);
-char				shell_loop2(char **command, char **last, e_state *state, char **op);
+char				shell_loop2(char **command, char **last, e_state *state,
+					char **op);
 char				stop_binary(int sig);
 char				check_new_open(char *str, char *op, int *j);
 char				check_quot(char *str, char *op, int *i, int *j);
@@ -250,10 +249,12 @@ char				*find_builtins(char *part);
 char				*check_dir_content(char *part, char *path);
 char				*check_quot_brackets(char *str, e_state *state);
 char				*get_with_tilde(char *path, t_env *env);
-char				*remove_useless_space(char *str, int i, int j, int have_space);
+char				*remove_useless_space(char *str, int i, int j,
+					int have_space);
 char				*find_env(t_env *env, char *name);
 char				*find_match_binary(t_sh *shell, char *tosearch);
-char				*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op);
+char				*get_line(t_sh *shell, unsigned long buff, e_state *state,
+					char *op);
 char				**conv_env(t_env *env);
 char				**split_quot_cmd(char *cmd);
 void				child(t_tree *node, t_sh *shell, int *fd);
@@ -264,9 +265,10 @@ t_env				*get_env(char **env);
 t_sh				*get_shell();
 t_tree				*commands_line_rules(t_sh *sh);
 int					is_string_op(int c);
-void 				get_lexems(t_sh *sh);
+void				get_lexems(t_sh *sh);
 t_tree				*redirection_rules(t_sh *sh, t_tree *left);
-t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *right);
+t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens,
+					t_tree *right);
 char				eat(t_sh *sh, e_token token);
 t_token				*text_rules(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
@@ -277,13 +279,10 @@ char				*get_path(t_tree *node, t_env *env, t_sh *shell);
 char				is_builtins(char **cmd);
 char				is_writable_builtins(char *cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
-void				manage_dchevb(t_tree *node, char *cmd, t_list *fds_out);
+void				manage_dchevb(t_tree *node, char *cmd);
 void				manage_chevb(t_fd fd);
 void				manage_chevf(t_list	*fds_out);
 void				manage_fred(t_tree *node, t_list *fds_out);
-int					open_dchevf(t_tree *node);
-int					open_chevb(t_tree *node);
-int					open_chevf(t_tree *node);
 char				*current_binary(t_tree *node, t_env *env, t_sh *shell);
 t_token				*lex_str(t_lexer *lexer);
 t_token				*lex_number(t_lexer *lexer);
@@ -296,5 +295,6 @@ char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
 char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
 pid_t				child_pid();
 int					get_fd(t_sh *shell, int *fd);
+char				browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side);
 
 #endif
