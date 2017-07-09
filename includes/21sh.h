@@ -161,6 +161,8 @@ typedef	struct		s_sh
 
 	int				ref_pos;
 	char			*saved;
+
+	char			have_write_error;
 }					t_sh;
 
 /* -------------- Builtins --------------- */
