@@ -6,6 +6,7 @@
 - base64 /dev/urandom | heac -c 1000
 - << op
 - valeur de retour des programes ? avec echo $?
+- Segfault cat << op, ctrl + d
 
 ---------- BONUS --------------
 
