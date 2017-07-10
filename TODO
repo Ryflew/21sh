@@ -2,9 +2,10 @@
 ----------- TODO --------------
 
 - Norme
-- completion avec ./
+- Leaks
 - base64 /dev/urandom | heac -c 1000
 - << op
+- valeur de retour des programes ? avec echo $?
 
 ---------- BONUS --------------
 

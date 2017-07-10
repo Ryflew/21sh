@@ -76,4 +76,5 @@ void		go_core(char *command, t_sh *shell)
 		shell->env = shell->save_env;
 		shell->save_env = NULL;
 	}
+	del_command_tree(commands_tree);
 }

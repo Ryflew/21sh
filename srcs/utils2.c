@@ -25,6 +25,7 @@ char	*remove_useless_space(char *str, int i, int j, int have_space)
 			c = '\0';
 	}
 	buff[++j] = '\0';
+	free(str);
 	return (ft_strdup(buff));
 }
 

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/07/06 22:00:11 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/07/10 03:33:48 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		father(t_sh *shell, int *fd)
 	return (ret);
 }
 
-char	run_binary(t_tree *node, t_env *env, t_sh *shell)
+char	run_binary(t_tree *node, t_env *env, t_sh *shell) // leaks ici pour basile, surement avec les pipes/dup/close
 {
 	int		pipe[2];
 	char	**envi;
@@ -101,7 +101,7 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell)
 					//if (pipe[1] != 1)
 					//	close(pipe[1]);
 					envi = conv_env(env);
-		//			ft_fputendl("start exec", 2);									
+					// ft_fputendl("start exec", 2);									
 					ret = execve(path, node->cmds, envi);
 		//			ft_fputendl("end exec", 2);									
 					free(path);

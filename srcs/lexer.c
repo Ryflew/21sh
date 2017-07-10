@@ -61,13 +61,39 @@ static t_token	*find_token(t_lexer *lexer)
 	return (token);
 }
 
+static void		manage_quote2(t_lexer *lexer, char *tmp)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	buff[ft_strlen(lexer->line) + 1];
+
+	i = 1;
+	j = -1;
+	k = -1;
+	ft_bzero(buff, ft_strlen(lexer->line) + 1);
+	buff[++k] = tmp[++j];
+	while (tmp[++j] && (tmp[j] != ' ' || i == 1))
+	{
+		if (tmp[j] != tmp[0])
+			buff[++k] = tmp[j];
+		else
+			i = i == 0 ? 1 : 0;
+	}
+	buff[++k] = tmp[0];
+	while (tmp[j])
+		buff[++k] = tmp[j++];
+	buff[++k] = '\0';
+	lexer->line = ft_strdup(buff);
+	free(tmp);
+}
+
 static void		manage_quote(t_lexer *lexer)
 {
 	int		i;
 	int		j;
 	int		k;
 	char	buff[ft_strlen(lexer->line) + 1];
-	char	*tmp;
 
 	if (lexer->string_operator || (!(lexer->line + 1) && (*lexer->line == '\'' || *lexer->line == '\"' || *lexer->line == '`')))
 		return ;
@@ -87,24 +113,7 @@ static void		manage_quote(t_lexer *lexer)
 		buff[++k] = lexer->line[j];
 	}
 	buff[++k] = '\0';
-	tmp = ft_strdup(buff);
-	ft_bzero(buff, ft_strlen(lexer->line) + 1);
-	i = 1;
-	j = -1;
-	k = -1;
-	buff[++k] = tmp[++j];
-	while (tmp[++j] && (tmp[j] != ' ' || i == 1))
-	{
-		if (tmp[j] != tmp[0])
-			buff[++k] = tmp[j];
-		else
-			i = i == 0 ? 1 : 0;
-	}
-	buff[++k] = tmp[0];
-	while (tmp[j])
-		buff[++k] = tmp[j++];
-	buff[++k] = '\0';
-	lexer->line = ft_strdup(buff);
+	manage_quote2(lexer, ft_strdup(buff));
 }
 
 static void		get_next_token2(t_lexer *lexer, t_token **token)

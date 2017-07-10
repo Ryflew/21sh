@@ -23,3 +23,22 @@ char	*find_match_binary(t_sh *shell, char *tosearch)
 	ft_strdelpp(&tmp);
 	return (NULL);
 }
+
+void	current_completion(char **str)
+{
+	char	*cwd;
+	char	*tmp;
+	char	buff[4097];
+
+	if ((cwd = getcwd(buff, 4097)))
+	{
+		tmp = *str;
+		*str = ft_strjoin(cwd, *str + 1);
+		free(tmp);
+	}
+	else
+	{
+		free(*str);
+		*str = NULL;
+	}
+}

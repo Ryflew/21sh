@@ -104,7 +104,7 @@ typedef struct		s_tree
 	struct s_tree	*left;
 	struct s_tree	*right;
 	struct s_tree	*parent;
-	t_list			*tokens;
+	// t_list			*tokens;
 	char			**tmp_env;
 }					t_tree;
 
@@ -197,6 +197,7 @@ void				search_mode(t_sh *shell);
 void				save_history(t_sh *shell);
 void				browse_history(t_sh *shell, unsigned long arrow);
 void				add_line(t_sh *shell, char *toadd);
+void				clear_lexems(t_token *token);
 void				move_to(int x, int y);
 void				past_data(t_sh *shell);
 void				tild_to_home(char **str, t_env *env);
@@ -215,9 +216,11 @@ void				del_env(t_env *todel);
 void				go_completion(t_sh *shell);
 void				clear_line(t_sh *shell);
 void				add_to_history(t_sh *shell, char *command);
+void				current_completion(char **str);
 void				get_tree_rec(t_tree **tree, char *left, char *right);
 void				cd_tilde(char *str, t_env *env, t_sh *shell, t_cd *opt);
 void				print_cd_error(char *tmp, char *path);
+void				del_command_tree(t_tree *tree);
 void				init_setenv(char ***av, t_env **env, char *tmp);
 void				cd_current_dir(char *path, t_env *env, t_sh *shell,
 					t_cd *opt);

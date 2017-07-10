@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:35:32 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/15 23:12:54 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/07/10 07:33:50 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,28 @@ char	**list_to_tabstr(t_list *list)
 		tmp = tmp->next;
 	}
 	return (args);
+}
+
+void	del_command_tree(t_tree *tree)
+{
+	if (tree->left)
+		del_command_tree(tree->left);
+	else if (tree->right)
+		del_command_tree(tree->right);
+	if (tree->cmds)
+		ft_strdelpp(&(tree->cmds));
+	if (tree->token && tree->token->value)
+	{
+		free(tree->token->value);
+		free(tree->token);
+	}
+	if (tree->left)
+		free(tree->left);
+	if (tree->right)
+		free(tree->right);
+	if (tree->parent)
+		free(tree->parent);
+	if (tree->tmp_env)
+		ft_strdelpp(&(tree->tmp_env));
+	free(tree);
 }

@@ -91,13 +91,13 @@ void		go_completion(t_sh *shell)
 	char	*tmp;
 	char	*name;
 
-	if (shell->j == -1)
-		return ;
 	shell->command[shell->j + 1] = '\0';
 	if (!(tmp = get_start_str(shell)))
 		return ;
 	if (*tmp == '~')
 		tild_to_home(&tmp, shell->env);
+	if (*tmp == '.' && *(tmp + 1) && *(tmp + 1) == '/')
+		current_completion(&tmp);
 	if (!tmp)
 		return ;
 	if (ft_strchr(shell->command, ' ') || *tmp == '/')
