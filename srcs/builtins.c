@@ -1,10 +1,29 @@
 #include "21sh.h"
 
+char	go_builtins2(char **cmd, t_sh *shell)
+{
+	if (!ft_strcmp(cmd[0], "help"))
+		help_command(cmd);
+	else if (!ft_strcmp(cmd[0], "false"))
+	{
+		shell->return_value = 1;
+		return (1);
+	}
+	else
+		return (1);
+	return (0);
+}
+
 char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 {
 	if (!ft_strcmp(cmd[0], "echo"))
+	{
 		echo_builtin(cmd, *env);
-	else if (!ft_strcmp(cmd[0], "cd"))
+		shell->return_value = 0;
+		return (0);
+	}
+	shell->return_value = 0;
+	if (!ft_strcmp(cmd[0], "cd"))
 		cd(cmd, *env, shell);
 	else if (!ft_strcmp(cmd[0], "setenv"))
 		set_env(cmd, env);
@@ -18,10 +37,8 @@ char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 		hash_tab(cmd, shell);
 	else if (!ft_strcmp(cmd[0], "true"))
 		return (0);
-	else if (!ft_strcmp(cmd[0], "false"))
-		return (1);
 	else
-		return (1);
+		return (go_builtins2(cmd, shell));
 	return (0);
 }
 
@@ -49,6 +66,8 @@ char	is_builtins(char **cmd)
 	else if (!ft_strcmp(cmd[0], "true"))
 		return (0);
 	else if (!ft_strcmp(cmd[0], "false"))
+		return (0);
+	else if (!ft_strcmp(cmd[0], "help"))
 		return (0);
 	else
 		return (is_writable_builtins(cmd[0]));

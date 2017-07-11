@@ -68,6 +68,8 @@ void		go_core(char *command, t_sh *shell)
 		ft_clear_list(&shell->lexer->lexems, (void*)&clear_lexems);
 		return ;
 	}
+	if (find_env(shell->env, "PATH"))
+		try_add_hashtab(commands_tree, shell);
 	browse_tree(commands_tree, shell, NULL, 1);
 	ft_clear_list(&shell->lexer->lexems, (void*)&clear_lexems);
 	if (shell->save_env)

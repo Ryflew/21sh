@@ -2,22 +2,22 @@
 
 void		get_hash_opt(char ***hash, char *r_opt, char *p_opt, char *d_opt)
 {
-	*r_opt = 0;
-	*p_opt = 0;
-	*d_opt = 0;
+	char *tmp;
+
 	while (**hash && ***hash == '-')
 	{
-		while (*(++(**hash)))
+		tmp = **hash;
+		while (*(++tmp))
 		{
-			if (***hash != 'r' && ***hash != 'p' && ***hash != 'd')
+			if (*tmp != 'r' && *tmp != 'p' && *tmp != 'd')
 			{
 				ft_putstr("hash: illegal option -- ");
 				ft_putchar(***hash);
 				ft_putchar('\n');
 			}
-			*r_opt = ***hash == 'r' ? 1 : *r_opt;
-			*p_opt = ***hash == 'p' ? 1 : *p_opt;
-			*d_opt = ***hash == 'd' ? 1 : *d_opt;
+			*r_opt = *tmp == 'r' ? 1 : *r_opt;
+			*p_opt = *tmp == 'p' ? 1 : *p_opt;
+			*d_opt = *tmp == 'd' ? 1 : *d_opt;
 		}
 		++(*hash);
 	}
@@ -90,6 +90,9 @@ void		hash_tab(char **av, t_sh *shell)
 			print_env(shell->hash);
 		return ;
 	}
+	r_opt = 0;
+	p_opt = 0;
+	d_opt = 0;
 	get_hash_opt(&av, &r_opt, &p_opt, &d_opt);
 	if (d_opt && !*(av + 1))
 		del_hash_line(*av, shell);

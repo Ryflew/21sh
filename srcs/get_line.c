@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/07/10 12:24:53 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/07/11 10:31:47 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,7 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 	shell->have_write_error = 0;
 	shell->j = -1;
 	//return (ft_strdup("/usr/bin/base64 /dev/urandom | head -c 1000"));
-	// static char bite = 0;
-	// if (++bite == 1)
-		// return (ft_strdup("<< op"));
-	// else
-	// {
-	// 	sleep(15);
-	// 	exit(0);
-	// }
+		// return (ft_strdup("hash -d ee"));
 	while (1)
 	{
 		buff = 0;

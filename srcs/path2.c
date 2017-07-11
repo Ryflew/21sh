@@ -4,28 +4,24 @@
 #include <unistd.h>
 #include "21sh.h"
 
-static char	check_path_end(char **tmp, DIR **dir)
+static char	check_path_end(char **tmp, DIR **dir, char out)
 {
 	free(*tmp);
 	closedir(*dir);
-	return (1);
+	return (out);
 }
 
-static char	check_path2(t_dirent *ent, char *tmp)
+static char	check_path2(char *tmp)
 {
 	t_stat		file;
 
 	if (!stat(tmp, &file) && S_ISREG(file.st_mode) && is_binary(tmp) &&
 		!access(tmp, R_OK | X_OK))
-	{
-		if (!is_in_hashtab(tmp, get_shell()->hash))
-			add_hash_line(ent->d_name, tmp, get_shell());
 		return (1);
-	}
 	else if (access(tmp, R_OK | X_OK) == -1)
 	{
 		errexit(tmp, "Permission denied.");
-		return (1);
+		return (2);
 	}
 	return (0);
 }
@@ -35,6 +31,7 @@ char		check_path(char *command, char *path)
 	DIR			*dir;
 	t_dirent	*ent;
 	char		*tmp;
+	char		out;
 
 	if (!(dir = opendir(path)))
 		return (0);
@@ -43,8 +40,8 @@ char		check_path(char *command, char *path)
 		if (!ft_strcmp(ent->d_name, command))
 		{
 			tmp = ft_strstrjoin(path, "/", ent->d_name);
-			if (check_path2(ent, tmp))
-				return (check_path_end(&tmp, &dir));
+			if ((out = check_path2(tmp)))
+				return (check_path_end(&tmp, &dir, out));
 			free(tmp);
 		}
 	}

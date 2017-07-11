@@ -26,6 +26,15 @@
 # define TAB 9
 # define EOT 4
 
+# define C_RESET	"\x1B[0m"
+# define C_ITA		"\x1B[3m"
+# define C_RED		"\x1B[31m"
+# define C_GREEN	"\x1B[32m"
+# define C_BROWN	"\x1B[33m"
+# define C_BLUE		"\x1B[34m"
+# define C_MAGENTA	"\x1B[35m"
+# define C_CYAN		"\x1B[36m"
+
 typedef struct termios	t_termios;
 typedef struct dirent	t_dirent;
 typedef struct stat		t_stat;
@@ -104,7 +113,6 @@ typedef struct		s_tree
 	struct s_tree	*left;
 	struct s_tree	*right;
 	struct s_tree	*parent;
-	// t_list			*tokens;
 	char			**tmp_env;
 }					t_tree;
 
@@ -162,6 +170,7 @@ typedef	struct		s_sh
 	char			*saved;
 
 	char			have_write_error;
+	int				return_value;
 }					t_sh;
 
 void				cd(char **av, t_env *env, t_sh *shell);
@@ -191,6 +200,13 @@ void				maj_up_arrow(t_sh *shell);
 void				maj_down_arrow(t_sh *shell);
 void				maj_left_arrow(t_sh *shell);
 void				maj_right_arrow(t_sh *shell);
+void				help_command(char **cmd);
+void			 	first_step(char *name);
+void 				help_cd(void);
+void				help_echo(void);
+void				help_env(void);
+void				help_hash(void);
+void				help_setenv(void);
 void				sig_hand(int sig);
 void				do_termcap(char *key);
 void				search_mode(t_sh *shell);
@@ -221,6 +237,7 @@ void				get_tree_rec(t_tree **tree, char *left, char *right);
 void				cd_tilde(char *str, t_env *env, t_sh *shell, t_cd *opt);
 void				print_cd_error(char *tmp, char *path);
 void				del_command_tree(t_tree *tree);
+void		 		try_add_hashtab(t_tree *node, t_sh *shell);
 void				init_setenv(char ***av, t_env **env, char *tmp);
 void				cd_current_dir(char *path, t_env *env, t_sh *shell,
 					t_cd *opt);
@@ -282,7 +299,7 @@ char				*get_path(t_tree *node, t_env *env, t_sh *shell);
 char				is_builtins(char **cmd);
 char				is_writable_builtins(char *cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
-void				manage_dchevb(t_tree *node, char *cmd);
+void				manage_dchevb(t_tree *node, char *cmd, char none);
 void				manage_chevb(t_fd fd);
 void				manage_chevf(t_list	*fds_out);
 void				manage_fred(t_tree *node, t_list *fds_out);

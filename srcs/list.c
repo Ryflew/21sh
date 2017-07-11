@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:35:32 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/07/10 12:24:49 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/07/11 10:13:25 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,5 @@ void	del_command_tree(t_tree *tree)
 		free(tree->token->value);
 		free(tree->token);
 	}
-	if (tree->tmp_env)
-		ft_strdelpp(&(tree->tmp_env));
 	free(tree);
 }

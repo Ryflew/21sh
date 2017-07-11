@@ -4,16 +4,25 @@
 - Norme
 - Leaks
 - base64 /dev/urandom | heac -c 1000
-- << op
-- valeur de retour des programes ? avec echo $?
-- Segfault cat << op, ctrl + d
+- top | grep 21sh (ptaitre le meme prb que base64)
+- Parsing de l'env, ex: [ env -i env PATH="eee" /usr/bin/env ] ou [ env ls ] (genre gérer avec un path absolu)
+- virer le debug ("redirection >" etc..)
+- Bug avec : "mkdir test ; cd test ; ls -a ; ls | cat | wc -c > fifi ; cat fifi" (c'est le dernier ; le prb, le cat ecoute sur l'entré std)
 
 ---------- BONUS --------------
 
-- Usage / help commands
 - Unset + Export
+- Command history
+- Resize de la fenetre
 
 ------------ BUG --------------
 
 ls ; ls | grep i | tr i I > ok
 ls ; ls > i | tr i I
+
+--- Bonus Slider A Dire En soutenance ---
+
+- && et ||
+- Commande help
+- Tous les builtins sont a la norme POSIX
+- 

@@ -40,7 +40,10 @@ FILES = add_char.c \
 				exit.c \
 				ft_putcharint.c \
 				get_line.c \
+				help.c \
+				help2.c \
 				hash_tab.c \
+				hash_tab2.c \
 				history.c \
 				history2.c \
 				history_search.c \

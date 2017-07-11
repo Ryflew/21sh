@@ -1,13 +1,15 @@
 #include "21sh.h"
 #include <fcntl.h>
 
-void		manage_dchevb(t_tree *node, char *cmd)
+void		manage_dchevb(t_tree *node, char *cmd, char none)
 {
 	int		fd_pipe[2];
 	char	*line;
 
 	line = NULL;
 	pipe(fd_pipe);
+	if (!none)
+		set_old_term(get_shell());
 	ft_putstr("heredoc> ");
 	while (gnl(0, &line) && ft_strcmp(line, cmd))
 	{
@@ -15,6 +17,8 @@ void		manage_dchevb(t_tree *node, char *cmd)
 		ft_fputendl(line, fd_pipe[1]);
 		free(line);
 	}
+	if (!none)
+		set_our_term(get_shell());
 	free(line);
 	close(fd_pipe[1]);
 	if (node->cmds)
@@ -44,7 +48,7 @@ static char	manage_chev(t_tree *node, t_sh *shell)
 	t_fd	*fd;
 
 	if (node->token->type == DCHEVB && !node->left)
-		manage_dchevb(node, node->right->cmds[0]);
+		manage_dchevb(node, node->right->cmds[0], 0);
 	else if (node->token->type == CHEVF || node->token->type == DCHEVF
 			|| node->token->type == FRED)
 	{

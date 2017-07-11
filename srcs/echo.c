@@ -4,7 +4,9 @@ static char	echo_env(char *str, t_env *env)
 {
 	char	*tmp;
 
-	if ((tmp = find_env(env, str + 1)))
+	if (*(str + 1) == '?')
+		ft_putnbr(get_shell()->return_value);
+	else if ((tmp = find_env(env, str + 1)))
 		ft_putstr(tmp);
 	return (1);
 }

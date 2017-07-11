@@ -28,7 +28,9 @@ char		*get_path(t_tree *node, t_env *env, t_sh *shell)
 	char	*content;
 	char	**tmp;
 	int		i;
+	char	v;
 
+	content = NULL;
 	if (node->cmds && (content = check_in_hashtab(node, shell)))
 		return (content);
 	if ((content = is_absolute(node, env, shell)))
@@ -41,7 +43,7 @@ char		*get_path(t_tree *node, t_env *env, t_sh *shell)
 	i = -1;
 	while (tmp[++i])
 	{
-		if (check_path(content, tmp[i]))
+		if ((v = check_path(content, tmp[i])) == 1)
 		{
 			//if (exec)
 				//run_binary(ft_strstrjoin(tmp[i], "/", content), \
@@ -50,6 +52,8 @@ char		*get_path(t_tree *node, t_env *env, t_sh *shell)
 			ft_strdelpp(&tmp);
 			return (content);
 		}
+		else if (v == 2)
+			break ;
 	}
 	ft_strdelpp(&tmp);
 	return (NULL);

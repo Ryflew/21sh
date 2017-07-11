@@ -5,7 +5,7 @@
 void	child(t_tree *node, t_sh *shell, int *fd)
 {
 	if (node->parent && node->parent->token->type == DCHEVB)
-		manage_dchevb(node, node->parent->right->cmds[0]);
+		manage_dchevb(node, node->parent->right->cmds[0], 1);
 	else if (node->parent && node->parent->token->type == CHEVB)
 		manage_chevb(shell->fd_in);
 	if (shell->fd_pipe != -1)

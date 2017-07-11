@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/07/10 03:33:48 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/07/11 03:58:46 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int		father(t_sh *shell, int *fd)
 
 	close(fd[1]);
 	waitpid(g_father, &ret, 0);
-	ret = 0;
 	if (shell->fd_pipe != -1)
 	{
 		shell->fd_pipe = fd[0];
@@ -84,7 +83,7 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell) // leaks ici pour basile,
 					}
 				}
 				close(fd->file);
-				tmp = tmp->next;								
+				tmp = tmp->next;
 			}
 			if (node->from_fd != -1 && node->to_fd != -1)
 			{
@@ -101,9 +100,9 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell) // leaks ici pour basile,
 					//if (pipe[1] != 1)
 					//	close(pipe[1]);
 					envi = conv_env(env);
-					// ft_fputendl("start exec", 2);									
+					// ft_fputendl("start exec", 2);
 					ret = execve(path, node->cmds, envi);
-		//			ft_fputendl("end exec", 2);									
+		//			ft_fputendl("end exec", 2);
 					free(path);
 					if (envi)
 						ft_strdelpp(&envi);
@@ -113,14 +112,19 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell) // leaks ici pour basile,
 					ft_fputstr("21sh: command not found: ", 2);
 					ft_fputendl(node->cmds[0], 2);
 					ret = EXIT_FAILURE;
+					exit(127);
 				}
+				else
+					exit(1);
 			}
-			return (ret);//exit(EXIT_SUCCESS);
+			exit(0);
+			//return (ret);
 		}
 		else
 		{
-		//		ft_putendl("father");					
+		//		ft_putendl("father");
 			ret = father(shell, pipe);
+			shell->return_value = WEXITSTATUS(ret);
 		}
 	}
 	set_our_term(shell);
@@ -186,6 +190,7 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 		}
 		else
 			ret = father(shell, pipe);
+			shell->return_value = WEXITSTATUS(ret);
 	}
 	set_our_term(shell);
 	return (WEXITSTATUS(ret));
@@ -199,8 +204,6 @@ char	*current_binary(t_tree *node, t_env *env, t_sh *shell)
 	char	**tab;
 	char	buff[4097];
 
-	// (void)shell;
-	// (void)env;
 	str = ft_strsub(*node->cmds, 2, ft_strlen(*node->cmds) - 2);
 	i = -1;
 	while (node->cmds[++i])

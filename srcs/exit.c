@@ -4,6 +4,7 @@
 void		errexit(char *content, char *reason)
 {
 	get_shell()->have_write_error = 1;
+	get_shell()->return_value = 1;
 	ft_fputstr(content, 2);
 	ft_fputstr(": ", 2);
 	ft_fputendl(reason, 2);
