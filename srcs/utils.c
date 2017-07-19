@@ -36,7 +36,7 @@ char	is_binary(char *path)
 	return (0);
 }
 
-char	*clear_quot(char *str)
+char	*clear_quot(char *str, char string_op)
 {
 	int		i;
 	int		count;
@@ -45,14 +45,14 @@ char	*clear_quot(char *str)
 	i = -1;
 	count = 0;
 	while (str[++i])
-		if (str[i] != '"' && str[i] != '\'' && str[i] != '`')
+		if (str[i] != string_op)
 			++count;
 	if (!(out = (char *)malloc(sizeof(char) * (count + 1))))
 		exit(EXIT_FAILURE);
 	i = -1;
 	count = -1;
 	while (str[++i])
-		if (str[i] != '"' && str[i] != '\'' && str[i] != '`')
+		if (str[i] != string_op)
 			out[++count] = str[i];
 	out[++count] = '\0';
 	free(str);

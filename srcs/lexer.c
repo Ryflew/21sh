@@ -7,12 +7,6 @@ int			is_string_op(int c)
 	return (0);
 }
 
-static void		skip_whitespace(t_lexer *lexer)
-{
-	while (*lexer->line && ft_isblank(*lexer->line))
-		++lexer->line;
-}
-
 static void		find_token2(t_lexer *lexer, t_token **token)
 {
 	if (*lexer->line == '(')
@@ -88,6 +82,16 @@ static void		manage_quote2(t_lexer *lexer, char *tmp)
 	free(tmp);
 }
 
+void		manage_string_op(t_lexer *lexer)
+{
+	if (!lexer->string_operator)
+		lexer->string_operator = *lexer->line;
+	else if (*lexer->line == lexer->string_operator)
+		lexer->string_operator = 0;
+	if (*lexer->line != '`')
+		++lexer->line;
+}
+
 static void		manage_quote(t_lexer *lexer)
 {
 	int		i;
@@ -119,20 +123,20 @@ static void		manage_quote(t_lexer *lexer)
 static void		get_next_token2(t_lexer *lexer, t_token **token)
 {
 	manage_quote(lexer);
-	if (*lexer->line && !lexer->string_operator && \
-		!is_string_op(*lexer->line))
-		*token = find_token(lexer);
-	else if (*lexer->line && (lexer->string_operator == *lexer->line || \
+	if (*lexer->line && (lexer->string_operator == *lexer->line || \
 		!lexer->string_operator) && *lexer->line == '\'')
-		*token = new_token(lexer, QT, "'");
+		manage_string_op(lexer);
 	else if (*lexer->line && (lexer->string_operator == *lexer->line || \
 		!lexer->string_operator) && *lexer->line == '"')
-		*token = new_token(lexer, DQT, "\"");
+		manage_string_op(lexer);
 	else if (*lexer->line && (lexer->string_operator == *lexer->line || \
 		!lexer->string_operator) && *lexer->line == '`')
+	{
+		manage_string_op(lexer);
 		*token = new_token(lexer, BQT, "`");
-	else
-		*token = lex_str(lexer);
+	}
+	else if (*lexer->line)
+		*token = find_token(lexer);
 }
 
 static t_token	*get_next_token(t_lexer *lexer)
@@ -145,7 +149,8 @@ static t_token	*get_next_token(t_lexer *lexer)
 		token = NULL;
 		if (ft_isblank(*lexer->line) && !lexer->string_operator)
 		{
-			skip_whitespace(lexer);
+			while (*lexer->line && ft_isblank(*lexer->line))
+				++lexer->line;
 			lexer->red = 0;
 		}
 		else

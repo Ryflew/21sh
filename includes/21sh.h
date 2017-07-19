@@ -54,7 +54,6 @@ typedef enum e_token
 	SCL,
 	NUM,
 	WORD,
-	TEXT,
 	FD,
 	QT,
 	DQT,
@@ -263,7 +262,7 @@ char				reg_or_dir(char *path);
 char				check_quot_brackets2(char *str, char *op, int i, int *j);
 void				add_hash_line(char *name, char *path, t_sh *shell);
 char				is_in_hashtab(char *path, t_env *env);
-char				*clear_quot(char *str);
+char				*clear_quot(char *str, char string_op);
 char				*get_start_str(t_sh *shell);
 char				*find_builtins(char *part);
 char				*check_dir_content(char *part, char *path);
@@ -316,5 +315,6 @@ char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
 pid_t				child_pid();
 int					get_fd(t_sh *shell, int *fd);
 char				browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side);
+void				manage_string_op(t_lexer *lexer);
 
 #endif

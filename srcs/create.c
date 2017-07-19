@@ -23,20 +23,13 @@ t_token	*new_token(t_lexer *lexer, e_token token_type, char *value)
 
 	if (!(token = (t_token *)malloc(sizeof(t_token))))
 		exit(-1);
-	if (is_string_op(*value))
-	{
-		if (!lexer->string_operator)
-			lexer->string_operator = *value;
-		else if (*value == lexer->string_operator)
-			lexer->string_operator = 0;
-	}
 	if (token_type == FRED)
 		lexer->red = 1;
 	else
 		lexer->red = 0;
 	lexer->line += ft_strlen(value);
 	token->type = token_type;
-	if (token_type != WORD && token_type != NUM && token_type != TEXT && \
+	if (token_type != WORD && token_type != NUM && \
 		token_type != FD)
 		value = ft_strdup(value);
 	token->value = value;

@@ -24,13 +24,19 @@ int		father(t_sh *shell, int *fd)
 	int ret;
 
 	close(fd[1]);
-	waitpid(g_father, &ret, 0);
 	if (shell->fd_pipe != -1)
 	{
 		shell->fd_pipe = fd[0];
 		if (shell->right_side)
+		{
+			waitpid(g_father, &ret, 0);
 			shell->fd_pipe = -1;
+		}
+		else
+			waitpid(g_father, &ret, WNOHANG);
 	}
+	else
+		waitpid(g_father, &ret, 0);
 	g_father = -1;
 	return (ret);
 }
@@ -47,20 +53,16 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell) // leaks ici pour basile,
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe)) != -1)
 	{
-		//ft_putendl("before");		
 		if ((g_father = fork()) == -1)
 			ft_exiterror("fork failure !", -1);
 		else if (!g_father)
 		{
 			close(pipe[0]);
-		//		ft_fputendl("sun", 2);					
 			ret = EXIT_SUCCESS;
 			child(node, shell, pipe);
-		//		ft_fputendl("problems", 2);					
 			tmp = shell->fds_out;
 			while (tmp && node->parent && (node->parent->token->type != PIPE || shell->right_side))
 			{
-		//		ft_fputendl("fds_out", 2);
 				fd = tmp->data;
 				if (fd->type != FRED || fd->from != -1)
 					dup2(fd->file, fd->from);
@@ -68,7 +70,6 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell) // leaks ici pour basile,
 				{
 					if (fd->file == -2)
 					{
-						// TODO test valid fd
 						if (fd->from != -1)
 							close(fd->from);
 						else
@@ -87,7 +88,6 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell) // leaks ici pour basile,
 			}
 			if (node->from_fd != -1 && node->to_fd != -1)
 			{
-		//		ft_fputendl("from to", 2);				
 				dup2(node->to_fd, node->from_fd);
 				close(node->to_fd);
 			}
@@ -95,14 +95,8 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell) // leaks ici pour basile,
 			{
 				if ((path = get_path(node, env, shell)))
 				{
-					//if (pipe[0] != 0)
-					//	close(pipe[0]);
-					//if (pipe[1] != 1)
-					//	close(pipe[1]);
 					envi = conv_env(env);
-					// ft_fputendl("start exec", 2);
 					ret = execve(path, node->cmds, envi);
-		//			ft_fputendl("end exec", 2);
 					free(path);
 					if (envi)
 						ft_strdelpp(&envi);
@@ -112,17 +106,14 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell) // leaks ici pour basile,
 					ft_fputstr("21sh: command not found: ", 2);
 					ft_fputendl(node->cmds[0], 2);
 					ret = EXIT_FAILURE;
-					exit(127);
 				}
 				else
-					exit(1);
+					ret = EXIT_FAILURE;
 			}
-			exit(0);
-			//return (ret);
+			exit(ret);
 		}
 		else
 		{
-		//		ft_putendl("father");
 			ret = father(shell, pipe);
 			shell->return_value = WEXITSTATUS(ret);
 		}

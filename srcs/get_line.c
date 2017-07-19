@@ -92,8 +92,7 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 	print_prompt(*state, op);
 	shell->have_write_error = 0;
 	shell->j = -1;
-	//return (ft_strdup("/usr/bin/base64 /dev/urandom | head -c 1000"));
-		// return (ft_strdup("hash -d ee"));
+	//return (ft_strdup("env env"));
 	while (1)
 	{
 		buff = 0;

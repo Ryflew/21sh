@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "string.h"
+#include "io.h"
 
 void	ft_strdelpp(char ***str)
 {
@@ -22,7 +23,7 @@ void	ft_strdelpp(char ***str)
 	while (tmp[++i])
 	{
 		ft_strdel(&(tmp[i]));
-		tmp[i] = NULL;
+//		tmp[i] = NULL;
 	}
 	free(*str);
 	*str = NULL;

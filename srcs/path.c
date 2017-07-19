@@ -7,11 +7,7 @@ static char	*check_in_hashtab(t_tree *node, t_sh *shell)
 	char	*content;
 
 	if ((content = find_env(shell->hash, node->cmds[0])))
-	{
-		//if (exec)
-		//run_binary(ft_strdup(content), node, env, shell);
 		return (ft_strdup(content));
-	}
 	return (NULL);
 }
 
@@ -45,9 +41,6 @@ char		*get_path(t_tree *node, t_env *env, t_sh *shell)
 	{
 		if ((v = check_path(content, tmp[i])) == 1)
 		{
-			//if (exec)
-				//run_binary(ft_strstrjoin(tmp[i], "/", content), \
-				//	node, env, shell);
 			content = ft_strstrjoin(tmp[i], "/", content);
 			ft_strdelpp(&tmp);
 			return (content);
@@ -65,11 +58,7 @@ static char	*is_absolute2(t_tree *node)
 
 	if (!lstat(*node->cmds, &file) && S_ISREG(file.st_mode) && \
 		is_binary(*node->cmds) && !access(*node->cmds, R_OK | X_OK))
-	{
-		//if (exec)
-			//run_binary(ft_strdup(*node->cmds), node, env, shell);
 		return (ft_strdup(*node->cmds));
-	}
 	else if (access(*node->cmds, F_OK) == -1)
 	{
 		errexit(*node->cmds, "No such file or directory.");
@@ -89,9 +78,6 @@ char		*is_absolute(t_tree *node, t_env *env, t_sh *shell)
 		return (is_absolute2(node));
 	else if (node->cmds && **node->cmds && **node->cmds == '.' && \
 		*(*node->cmds + 1) && *(*node->cmds + 1) == '/')
-	{
-		//if (exec)
 			return (current_binary(node, env, shell));
-	}
 	return (NULL);
 }

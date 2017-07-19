@@ -62,19 +62,13 @@ static void	cmd_without_delimiter_rules(t_sh *sh, t_tree **new_node)
 	t_list	*cmd_tokens;
 	t_token	*token;
 
-	//ft_putendl("step7");
 	cmd_tokens = NULL;
 	fd[0] = -1;
 	fd[1] = -1;
 	while ((token = text_rules(sh)) || (token != (void*)-1 && \
 		aggregation_rules(sh, fd)))
-	{
-		//ft_putendl("step8");
-		//ft_putendl(delimiter_token->value);
 		if (token)
 			ft_node_push_back(&cmd_tokens, token->value);
-		//	exit(1);
-	}
 	if (token == (void*)-1)
 		*new_node = (void*)-1;
 	if (cmd_tokens)
@@ -96,13 +90,10 @@ t_tree		*cmd_rules(t_sh *sh)
 	if (!sh->current_token)
 		return (NULL);
 	new_node = NULL;
-	//ft_putendl("step5");
 	if (is_delimiter_op(sh->current_token->type))
 	{
-		//ft_putendl("step6");
 		delimiter_token = sh->current_token;
 		eat(sh, sh->current_token->type);
-		//ft_putendl(sh->current_token->value);
 		new_node = commands_line_rules(sh);
 		eat(sh, delimiter_token->type + 1);
 	}

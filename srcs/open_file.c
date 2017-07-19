@@ -6,11 +6,7 @@ static int	open_chevb(t_tree *node)
 	int		fd_file;
 
 	if ((fd_file = open(node->right->cmds[0], O_RDONLY)) == -1)
-	{
 		errexit("No such file or directory", node->right->cmds[0]);
-		// ft_putstr("Open failure -> ");
-		// ft_putendl(node->right->cmds[0]);
-	}
 	return (fd_file);
 }
 
@@ -20,11 +16,7 @@ static int	open_dchevf(t_tree *node)
 
 	if ((fd_file = open(node->right->cmds[0], O_WRONLY | O_APPEND | \
 		O_CREAT, 0644)) == -1)
-	{
 		errexit("No such file or directory", node->right->cmds[0]);
-		// ft_putstr("Open failure -> ");
-		// ft_putendl(node->right->cmds[0]);
-	}
 	return (fd_file);
 }
 
@@ -34,11 +26,7 @@ static int	open_chevf(t_tree *node)
 
 	if ((fd_file = open(node->right->cmds[0], O_WRONLY | O_CREAT | \
 		O_TRUNC, 0644)) == -1)
-	{
 		errexit("No such file or directory", node->right->cmds[0]);
-		// ft_putstr("Open failure -> ");
-		// ft_putendl(node->right->cmds[0]);
-	}
 	return (fd_file);
 }
 

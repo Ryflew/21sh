@@ -65,13 +65,13 @@ char	**list_to_tabstr(t_list *list)
 	size = ft_list_size(list);
 	if (!(args = (char**)malloc(sizeof(char*) * (size + 1))))
 		ft_exiterror("ERROR: malloc failure\n", 0);
-	args[size] = NULL;
 	i = 0;
 	while (tmp)
 	{
 		args[i++] = ft_strdup((char*)tmp->data);
 		tmp = tmp->next;
 	}
+	args[i] = NULL;
 	return (args);
 }
 
@@ -83,6 +83,8 @@ void	del_command_tree(t_tree *tree)
 		del_command_tree(tree->right);
 	if (tree->cmds)
 		ft_strdelpp(&(tree->cmds));
+	if (tree->tmp_env)
+		free(tree->tmp_env);
 	if (tree->token && tree->token->value)
 	{
 		free(tree->token->value);

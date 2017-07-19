@@ -18,9 +18,17 @@ static char	manage_children(t_tree *node, t_sh *shell, char r_side, char ret)
 	}
 	if (node->right && node->token && (node->token->type < CHEVB ||
 	node->token->type > FRED) && (node->token->type != OR || ret) &&
-	(node->token->type != AND || !ret) &&
-	(ret = browse_tree(node->right, shell, node, r_side)) == -1)
-		return (-1);
+	(node->token->type != AND || !ret))
+	{
+		if (node->token->type == SCL)
+		{
+			shell->fds_out = NULL;
+			shell->fd_pipe = -1;
+			shell->right_side = 1;
+		}
+		if ((ret = browse_tree(node->right, shell, node, r_side)) == -1)
+			return (-1);
+	}
 	return (ret);
 }
 
@@ -68,15 +76,18 @@ void		go_core(char *command, t_sh *shell)
 		ft_clear_list(&shell->lexer->lexems, (void*)&clear_lexems);
 		return ;
 	}
-	if (find_env(shell->env, "PATH"))
-		try_add_hashtab(commands_tree, shell);
-	browse_tree(commands_tree, shell, NULL, 1);
 	ft_clear_list(&shell->lexer->lexems, (void*)&clear_lexems);
-	if (shell->save_env)
+	if (commands_tree)
 	{
-		del_all_env(&(shell->env));
-		shell->env = shell->save_env;
-		shell->save_env = NULL;
+		if (find_env(shell->env, "PATH"))
+			try_add_hashtab(commands_tree, shell);
+		browse_tree(commands_tree, shell, NULL, 1);
+		if (shell->save_env)
+		{
+			del_all_env(&(shell->env));
+			shell->env = shell->save_env;
+			shell->save_env = NULL;
+		}
+		del_command_tree(commands_tree);
 	}
-	del_command_tree(commands_tree);
 }
