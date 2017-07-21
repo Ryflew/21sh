@@ -11,48 +11,17 @@ char		parse_error(t_sh *sh)
 	return (-1);
 }
 
+void		*ret_parse_error(t_tree *node)
+{
+	del_command_tree(node);
+	return ((void*)-1);
+}
+
 static int	is_delimiter_op(e_token token)
 {
 	if (token == LPAR || token == RPAR || token == LBKT || token == RBKT || \
 		token == LBRC || token == RBRC)
 		return (1);
-	return (0);
-}
-
-static char	aggregation_rules(t_sh *sh, int *fd)
-{
-	if (!sh->current_token)
-		return (0);
-	if (sh->current_token->type == FD && sh->lexer->lexems->next && \
-		((t_token*)sh->lexer->lexems->next->data)->type == FRED && \
-		sh->lexer->lexems->next->next && \
-		((t_token*)sh->lexer->lexems->next->next->data)->type == FD)
-	{
-		fd[0] = ft_atoi(sh->current_token->value);
-		eat(sh, FD);
-		eat(sh, FRED);
-		fd[1] = ft_atoi(sh->current_token->value);
-		eat(sh, FD);
-		return (1);
-	}
-	else if (sh->current_token->type == FRED && sh->lexer->lexems->next && \
-		((t_token*)sh->lexer->lexems->next->data)->type == FD)
-	{
-		fd[0] = 1;
-		eat(sh, FRED);
-		fd[1] = ft_atoi(sh->current_token->value);
-		eat(sh, FD);
-		return (1);
-	}
-	else if (sh->current_token->type == FD && sh->lexer->lexems->next && \
-		((t_token*)sh->lexer->lexems->next->data)->type == FRED)
-	{
-		fd[0] = ft_atoi(sh->current_token->value);
-		eat(sh, FRED);
-		fd[1] = -1;
-		eat(sh, FD);
-		return (1);
-	}
 	return (0);
 }
 
@@ -68,7 +37,7 @@ static void	cmd_without_delimiter_rules(t_sh *sh, t_tree **new_node)
 	while ((token = text_rules(sh)) || (token != (void*)-1 && \
 		aggregation_rules(sh, fd)))
 		if (token)
-			ft_node_push_back(&cmd_tokens, token->value);
+			ft_node_push_back(&cmd_tokens, ft_strdup(token->value));
 	if (token == (void*)-1)
 		*new_node = (void*)-1;
 	if (cmd_tokens)

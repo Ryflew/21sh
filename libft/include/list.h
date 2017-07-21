@@ -37,5 +37,6 @@ void				ft_insertsort_list(t_list **bg_list, void *data,
 					int (*cmp)(void *right, void *left));
 void				ft_clear_list(t_list **list, void (*fct_free)(void *));
 int					ft_list_size(t_list *begin_list);
+void				ft_pop_node(t_list **node, void (*fct_free)(void *));
 
 #endif

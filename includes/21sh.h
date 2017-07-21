@@ -172,6 +172,8 @@ typedef	struct		s_sh
 	int				return_value;
 }					t_sh;
 
+extern pid_t		g_father;
+
 void				cd(char **av, t_env *env, t_sh *shell);
 void				change_prompt(char *path, t_env *env, char **new_prompt,
 					t_cd *opt);
@@ -306,15 +308,20 @@ char				*current_binary(t_tree *node, t_env *env, t_sh *shell);
 t_token				*lex_str(t_lexer *lexer);
 t_token				*lex_number(t_lexer *lexer);
 t_token				*lex_word(t_lexer *lexer);
-t_token				*new_token(t_lexer *lexer, e_token token_type, char *value);
 t_tree				*cmd_rules(t_sh *sh);
-t_token				*new_token(t_lexer *lexer, e_token token_type, char *value);
+t_token				*new_token(t_lexer *lexer, e_token token_type, char *val);
 char				parse_error(t_sh *sh);
 char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
 char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
 pid_t				child_pid();
 int					get_fd(t_sh *shell, int *fd);
-char				browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side);
+char				browse_tree(t_tree *node, t_sh *shell, t_tree *parent,
+					char r_side);
 void				manage_string_op(t_lexer *lexer);
+void				*ret_parse_error(t_tree *node);
+t_token	    		*find_token(t_lexer *lexer);
+char				**parse_env_cmds(t_sh *sh);
+char				aggregation_rules(t_sh *sh, int *fd);
+int					father(t_sh *shell, int *fd);
 
 #endif

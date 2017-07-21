@@ -79,16 +79,12 @@ void	del_command_tree(t_tree *tree)
 {
 	if (tree->left)
 		del_command_tree(tree->left);
-	else if (tree->right)
+	if (tree->right)
 		del_command_tree(tree->right);
 	if (tree->cmds)
-		ft_strdelpp(&(tree->cmds));
+		ft_strdelpp(&tree->cmds);
 	if (tree->tmp_env)
 		free(tree->tmp_env);
-	if (tree->token && tree->token->value)
-	{
-		free(tree->token->value);
-		free(tree->token);
-	}
 	free(tree);
+	tree = NULL;
 }

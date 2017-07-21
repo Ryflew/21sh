@@ -14,15 +14,12 @@ void	child(t_tree *node, t_sh *shell, int *fd)
 
 char	stop_binary(int sig)
 {
-	pid_t	child;
-
-	child = child_pid();
-	if (child == 0)
+	if (!g_father)
 		exit(EXIT_SUCCESS);
-	if (child != -1 && sig == SIGINT)
+	if (g_father != -1 && sig == SIGINT)
 	{
-		kill(child, sig);
-		child = -1;
+		kill(g_father, sig);
+		g_father = -1;
 		ft_putchar('\n');
 		return (1);
 	}

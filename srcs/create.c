@@ -13,7 +13,7 @@ t_tree	*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *rig)
 	new_node->to_fd = -1;
 	new_node->from_fd = -1;
 	new_node->tmp_env = NULL;
-	ft_clear_list(&tokens, free);
+	ft_clear_list(&tokens, &free);
 	return (new_node);
 }
 

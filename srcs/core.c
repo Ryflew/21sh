@@ -60,34 +60,47 @@ void		clear_lexems(t_token *token)
 	free(token);
 }
 
+static void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
+{
+	ft_clear_list(begin, (void*)&clear_lexems);
+	if (shell->save_env)
+	{
+		del_all_env(&(shell->env));
+		shell->env = shell->save_env;
+		shell->save_env = NULL;
+	}
+	if (commands_tree)
+	{
+		if (shell->fds_out)
+			ft_clear_list(&shell->fds_out, (&free));
+		del_command_tree(commands_tree);
+	}
+}
+
 void		go_core(char *command, t_sh *shell)
 {
 	t_tree	*commands_tree;
+	t_list	*begin;
 
 	add_to_history(shell, command);
+	shell->lexer->lexems = NULL;
 	shell->lexer->line = command;
 	get_lexems(shell);
+	begin = shell->lexer->lexems;
 	shell->current_token = shell->lexer->lexems->data;
 	shell->fds_out = NULL;
 	shell->fd_pipe = -1;
 	if ((commands_tree = commands_line_rules(shell)) == (void*)-1)
 	{
 		parse_error(shell);
-		ft_clear_list(&shell->lexer->lexems, (void*)&clear_lexems);
+		clear(shell, &begin, NULL);
 		return ;
 	}
-	ft_clear_list(&shell->lexer->lexems, (void*)&clear_lexems);
 	if (commands_tree)
 	{
 		if (find_env(shell->env, "PATH"))
 			try_add_hashtab(commands_tree, shell);
 		browse_tree(commands_tree, shell, NULL, 1);
-		if (shell->save_env)
-		{
-			del_all_env(&(shell->env));
-			shell->env = shell->save_env;
-			shell->save_env = NULL;
-		}
-		del_command_tree(commands_tree);
+		clear(shell, &begin, commands_tree);
 	}
 }

@@ -12,43 +12,79 @@
 
 #include "21sh.h"
 
-static pid_t	g_father = -1;
-
-pid_t	child_pid(void)
+static void	close_dup_fd(t_fd *fd, t_tree *node)
 {
-	return (g_father);
+	if (fd->file == -2)
+	{
+		if (fd->from != -1)
+			close(fd->from);
+		else
+			close(1);
+		ft_free_tab(node->cmds);
+		node->cmds = NULL;
+	}
+	else if (fd->from == -1 && fd->to == -1)
+	{
+		dup2(fd->file, 1);
+		dup2(fd->file, 2);
+	}
 }
 
-int		father(t_sh *shell, int *fd)
+void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe)
 {
-	int ret;
-
-	close(fd[1]);
-	if (shell->fd_pipe != -1)
+	t_fd	*fd;
+	t_list	*tmp;
+	
+	close(pipe[0]);
+	child(node, shell, pipe);
+	tmp = shell->fds_out;
+	while (tmp && node->parent && (node->parent->token->type != PIPE
+	|| shell->right_side))
 	{
-		shell->fd_pipe = fd[0];
-		if (shell->right_side)
-		{
-			waitpid(g_father, &ret, 0);
-			shell->fd_pipe = -1;
-		}
+		fd = tmp->data;
+		if (fd->type != FRED || fd->from != -1)
+			dup2(fd->file, fd->from);
 		else
-			waitpid(g_father, &ret, WNOHANG);
+			close_dup_fd(fd, node);
+		close(fd->file);
+		tmp = tmp->next;
+	}
+	if (node->from_fd != -1 && node->to_fd != -1)
+	{
+		dup2(node->to_fd, node->from_fd);
+		close(node->to_fd);
+	}
+}
+
+static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
+{
+	char	*path;
+	char	**envi;
+	int		ret;
+	
+	if ((path = get_path(node, env, shell)))
+	{
+		envi = conv_env(env);
+		ret = execve(path, node->cmds, envi);
+		free(path);
+		if (envi)
+			ft_strdelpp(&envi);
+	}
+	else if (!shell->have_write_error)
+	{
+		ft_fputstr("21sh: command not found: ", 2);
+		ft_fputendl(node->cmds[0], 2);
+		ret = EXIT_FAILURE;
 	}
 	else
-		waitpid(g_father, &ret, 0);
-	g_father = -1;
+		ret = EXIT_FAILURE;
 	return (ret);
 }
 
-char	run_binary(t_tree *node, t_env *env, t_sh *shell) // leaks ici pour basile, surement avec les pipes/dup/close
+char	run_binary(t_tree *node, t_env *env, t_sh *shell)
 {
 	int		pipe[2];
-	char	**envi;
 	int		ret;
-	t_list	*tmp;
-	t_fd	*fd;
-	char	*path;
 	
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe)) != -1)
@@ -57,66 +93,14 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell) // leaks ici pour basile,
 			ft_exiterror("fork failure !", -1);
 		else if (!g_father)
 		{
-			close(pipe[0]);
-			ret = EXIT_SUCCESS;
-			child(node, shell, pipe);
-			tmp = shell->fds_out;
-			while (tmp && node->parent && (node->parent->token->type != PIPE || shell->right_side))
-			{
-				fd = tmp->data;
-				if (fd->type != FRED || fd->from != -1)
-					dup2(fd->file, fd->from);
-				else
-				{
-					if (fd->file == -2)
-					{
-						if (fd->from != -1)
-							close(fd->from);
-						else
-							close(1);
-						ft_free_tab(node->cmds);
-						node->cmds = NULL;
-					}
-					else if (fd->from == -1 && fd->to == -1)
-					{
-						dup2(fd->file, 1);
-						dup2(fd->file, 2);
-					}
-				}
-				close(fd->file);
-				tmp = tmp->next;
-			}
-			if (node->from_fd != -1 && node->to_fd != -1)
-			{
-				dup2(node->to_fd, node->from_fd);
-				close(node->to_fd);
-			}
+			ret = EXIT_SUCCESS;			
+			manage_child_fd(shell, node, pipe);
 			if (node->cmds)
-			{
-				if ((path = get_path(node, env, shell)))
-				{
-					envi = conv_env(env);
-					ret = execve(path, node->cmds, envi);
-					free(path);
-					if (envi)
-						ft_strdelpp(&envi);
-				}
-				else if (!shell->have_write_error)
-				{
-					ft_fputstr("21sh: command not found: ", 2);
-					ft_fputendl(node->cmds[0], 2);
-					ret = EXIT_FAILURE;
-				}
-				else
-					ret = EXIT_FAILURE;
-			}
+				ret = execve_cmds(shell, node, env);
 			exit(ret);
 		}
 		else
-		{
 			ret = father(shell, pipe);
-			shell->return_value = WEXITSTATUS(ret);
-		}
 	}
 	set_our_term(shell);
 	return (WEXITSTATUS(ret));
@@ -126,92 +110,23 @@ char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
 {
 	int		ret;
 	int		pipe[2];
-	char	**envi;
-	t_list	*tmp;
-	t_fd	*fd;
 
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe)) != -1)
 	{
 		if ((g_father = fork()) == -1)
 			ft_exiterror("fork failure !", -1);
-		//else if (!g_father && (node->cmds || node->token->type == CHEVB || \
-		//	node->token->type == DCHEVB))
 		else if (!g_father)
 		{
-			envi = conv_env(*env);
-			child(node, shell, pipe);
-			tmp = shell->fds_out;
-			while (tmp && node->parent && (node->parent->token->type != PIPE || shell->right_side))
-			{
-				fd = tmp->data;
-				if (fd->type != FRED || fd->from != -1)
-					dup2(fd->file, fd->from);
-				else
-				{
-					if (fd->file == -2)
-					{
-						// TODO test valid fd
-						if (fd->from != -1)
-							close(fd->from);
-						else
-							close(1);
-						ft_free_tab(node->cmds);
-						node->cmds = NULL;
-					}
-					else if (fd->from == -1 && fd->to == -1)
-					{
-						dup2(fd->file, 1);
-						dup2(fd->file, 2);
-					}
-				}
-				close(fd->file);
-				tmp = tmp->next;
-			}
-			if (node->from_fd != -1 && node->to_fd != -1)
-			{
-				dup2(node->to_fd, node->from_fd);
-				close(node->to_fd);
-			}
+			ret = EXIT_SUCCESS;
+			manage_child_fd(shell, node, pipe);
 			if (node->cmds)
-				go_builtins(node->cmds, env, shell);
-			if (envi)
-				ft_strdelpp(&envi);
-			exit(EXIT_SUCCESS);
+				ret = go_builtins(node->cmds, env, shell);
+			exit(ret);
 		}
 		else
 			ret = father(shell, pipe);
-			shell->return_value = WEXITSTATUS(ret);
 	}
 	set_our_term(shell);
 	return (WEXITSTATUS(ret));
-}
-
-char	*current_binary(t_tree *node, t_env *env, t_sh *shell)
-{
-	int		i;
-	char	*str;
-	char	*cwd;
-	char	**tab;
-	char	buff[4097];
-
-	str = ft_strsub(*node->cmds, 2, ft_strlen(*node->cmds) - 2);
-	i = -1;
-	while (node->cmds[++i])
-		;
-	if (!(tab = (char**)malloc(sizeof(char*) * (i + 1))))
-		exit(EXIT_FAILURE);
-	if (!(cwd = getcwd(buff, 4097)))
-		return (0);
-	tab[0] = ft_strstrjoin(cwd, "/", str);
-	free(str);
-	i = 0;
-	while (node->cmds[++i])
-		tab[i] = ft_strdup(node->cmds[i]);
-	tab[i] = NULL;
-	ft_strdelpp(&node->cmds);
-	node->cmds = tab;
-	// str = is_absolute(node, env, shell);
-	// return ((void*)1);
-	return (is_absolute(node, env, shell));
 }

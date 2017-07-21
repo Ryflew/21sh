@@ -11,31 +11,16 @@ static char	*check_in_hashtab(t_tree *node, t_sh *shell)
 	return (NULL);
 }
 
-static void	fuck_norme(char ***tmp, char **content, t_tree *node)
+static char	*get_absolute_path(char *content, t_tree *node)
 {
-	*tmp = ft_strsplit(*content, ':');
-	*content = node->cmds[0];
-	if (ft_strrchr(*content, '/'))
-		*content = ft_strrchr(*content, '/') + 1;
-}
-
-char		*get_path(t_tree *node, t_env *env, t_sh *shell)
-{
-	char	*content;
 	char	**tmp;
 	int		i;
-	char	v;
+	char	v;	
 
-	content = NULL;
-	if (node->cmds && (content = check_in_hashtab(node, shell)))
-		return (content);
-	if ((content = is_absolute(node, env, shell)))
-		return (ft_strdup(content));
-	if (*(node->cmds[0]) == '/')
-		return (NULL);
-	if (!(content = find_env(env, "PATH")))
-		return (NULL);
-	fuck_norme(&tmp, &content, node);
+	tmp = ft_strsplit(content, ':');
+	content = node->cmds[0];
+	if (ft_strrchr(content, '/'))
+		content = ft_strrchr(content, '/') + 1;
 	i = -1;
 	while (tmp[++i])
 	{
@@ -50,6 +35,22 @@ char		*get_path(t_tree *node, t_env *env, t_sh *shell)
 	}
 	ft_strdelpp(&tmp);
 	return (NULL);
+}
+
+char		*get_path(t_tree *node, t_env *env, t_sh *shell)
+{
+	char	*content;
+
+	content = NULL;
+	if (node->cmds && (content = check_in_hashtab(node, shell)))
+		return (content);
+	if ((content = is_absolute(node, env, shell)))
+		return (ft_strdup(content));
+	if (*(node->cmds[0]) == '/')
+		return (NULL);
+	if (!(content = find_env(env, "PATH")))
+		return (NULL);
+	return (get_absolute_path(content, node));
 }
 
 static char	*is_absolute2(t_tree *node)
