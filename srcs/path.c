@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 #include <sys/stat.h>
 #include <dirent.h>
 
@@ -15,7 +15,7 @@ static char	*get_absolute_path(char *content, t_tree *node)
 {
 	char	**tmp;
 	int		i;
-	char	v;	
+	char	v;
 
 	tmp = ft_strsplit(content, ':');
 	content = node->cmds[0];
@@ -79,6 +79,6 @@ char		*is_absolute(t_tree *node, t_env *env, t_sh *shell)
 		return (is_absolute2(node));
 	else if (node->cmds && **node->cmds && **node->cmds == '.' && \
 		*(*node->cmds + 1) && *(*node->cmds + 1) == '/')
-			return (current_binary(node, env, shell));
+		return (current_binary(node, env, shell));
 	return (NULL);
 }

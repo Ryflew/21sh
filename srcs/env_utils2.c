@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 t_env		*cpy_env(t_env *env)
 {

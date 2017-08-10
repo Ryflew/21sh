@@ -6,12 +6,12 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 00:01:43 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/04 18:04:27 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:07:05 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "21sh.h"
+#include "tosh.h"
 
 static void	remove_char(t_sh *shell, int current, char *tmp, char rm_first)
 {

@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 static char	echo_env(char *str, t_env *env)
 {

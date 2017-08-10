@@ -1,8 +1,8 @@
 #include <sys/types.h>
 #include <dirent.h>
-#include <sys/stat.h> 
+#include <sys/stat.h>
 #include <unistd.h>
-#include "21sh.h"
+#include "tosh.h"
 
 static void	validity_path(char *cmd, t_sh *shell, int i)
 {
@@ -33,13 +33,13 @@ static void	validity_path(char *cmd, t_sh *shell, int i)
 	ft_strdelpp(&tab);
 }
 
-void 		try_add_hashtab(t_tree *node, t_sh *shell)
+void		try_add_hashtab(t_tree *node, t_sh *shell)
 {
 	if (node->left)
 		try_add_hashtab(node->left, shell);
 	if (node->right)
 	{
-		if (node->token->type != CHEVB && node->token->type != DCHEVB && 
+		if (node->token->type != CHEVB && node->token->type != DCHEVB &&
 			node->token->type != CHEVF && node->token->type != DCHEVF &&
 			node->token->type != FRED)
 			try_add_hashtab(node->right, shell);

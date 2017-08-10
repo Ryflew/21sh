@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "21sh.h"
+#include "tosh.h"
 
 static void	env_usage(char invalid)
 {
@@ -54,7 +54,12 @@ void		env_command2(char **av, t_env **cpy)
 	while (*av)
 	{
 		if (!ft_strcmp(*av, "-i") && del_all_env(cpy))
+		{
 			*cpy = NULL;
+			get_shell()->save_env = get_shell()->env;
+			get_shell()->env = cpy_env(*cpy);
+			print_env(get_shell()->env);
+		}
 		else if (!ft_strcmp(*av, "-u"))
 			u_opt(&av, cpy);
 		else if (**av == '-' && *(*av + 1))

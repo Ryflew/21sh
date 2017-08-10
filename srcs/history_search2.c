@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 void	clear_to_bot(t_sh *shell)
 {

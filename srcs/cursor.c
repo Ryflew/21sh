@@ -6,13 +6,13 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 23:14:28 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/04 18:43:10 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:07:02 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
-#include "21sh.h"
+#include "tosh.h"
 
 static int	get_number(char *str, int *i)
 {

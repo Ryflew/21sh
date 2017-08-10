@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 static void		manage_quote2(t_lexer *lexer, char *tmp)
 {
@@ -34,7 +34,8 @@ static void		manage_quote(t_lexer *lexer)
 	int		k;
 	char	buff[ft_strlen(lexer->line) + 1];
 
-	if (lexer->string_operator || (!(lexer->line + 1) && (*lexer->line == '\'' || *lexer->line == '\"' || *lexer->line == '`')))
+	if (lexer->string_operator || (!(lexer->line + 1) && (*lexer->line == '\'' \
+		|| *lexer->line == '\"' || *lexer->line == '`')))
 		return ;
 	i = -1;
 	while (lexer->line[++i] && lexer->line[i] != '\'' && lexer->line[i] != '"' \

@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 #include <fcntl.h>
 
 void		manage_dchevb(t_tree *node, char *cmd, char none)

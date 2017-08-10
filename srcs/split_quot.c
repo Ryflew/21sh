@@ -6,12 +6,12 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/04 23:11:41 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/16 02:55:50 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:06:13 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "21sh.h"
+#include "tosh.h"
 
 static int	count_quot(char *str, char c, int i, int nb)
 {

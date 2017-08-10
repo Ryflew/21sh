@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 00:51:22 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/15 22:23:23 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:06:49 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include "21sh.h"
+#include "tosh.h"
 
 void		clear_line(t_sh *shell)
 {

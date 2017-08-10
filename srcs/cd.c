@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <stdlib.h>
-#include "21sh.h"
+#include "tosh.h"
 
 static void	change_path(char *path, t_env *env, t_sh *shell, t_cd *opt)
 {

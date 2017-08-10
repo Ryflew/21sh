@@ -6,11 +6,11 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/29 20:51:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/04 18:04:26 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:06:32 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "tosh.h"
 
 void	maj_up_arrow(t_sh *shell)
 {

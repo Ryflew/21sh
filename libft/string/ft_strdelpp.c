@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/11 23:50:56 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/07/11 10:13:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:28:55 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ void	ft_strdelpp(char ***str)
 	tmp = *str;
 	i = -1;
 	while (tmp[++i])
-	{
 		ft_strdel(&(tmp[i]));
-//		tmp[i] = NULL;
-	}
 	free(*str);
 	*str = NULL;
 }

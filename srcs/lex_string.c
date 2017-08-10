@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 int			is_string_op(int c)
 {
@@ -60,9 +60,9 @@ t_token		*lex_word(t_lexer *lexer)
 	i = 0;
 	token = NULL;
 	while (((lexer->line)[i] && (lexer->string_operator && (lexer->line[i]) !=\
-	 	lexer->string_operator)) || (!lexer->string_operator && \
-		 !is_operator((lexer->line)[i], (lexer->line)[i + 1]) \
-		 && !ft_isblank((lexer->line)[i])))
+		lexer->string_operator)) || (!lexer->string_operator && \
+		!is_operator((lexer->line)[i], (lexer->line)[i + 1]) \
+		&& !ft_isblank((lexer->line)[i])))
 		++i;
 	token = new_token(lexer, WORD, clear_quot(remove_useless_space(\
 		ft_strsub(lexer->line, 0, i), -1, -1, 0), lexer->string_operator));

@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 t_tree	*basic_red(t_sh *sh, e_token type, t_tree *left)
 {
@@ -83,9 +83,9 @@ t_tree	*redirection_rules(t_sh *sh, t_tree *left)
 	else if ((new_node = basic_red(sh, DCHEVF, left)))
 		;
 	else if ((new_node = basic_red(sh, CHEVB, left)))
-		; 
+		;
 	else if ((new_node = basic_red(sh, DCHEVB, left)))
-		; 
+		;
 	else if (sh->current_token->type == FD)
 		new_node = redirection_with_fd(sh, left);
 	return (new_node);

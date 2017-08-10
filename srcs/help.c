@@ -1,6 +1,6 @@
-#include "21sh.h"
+#include "tosh.h"
 
-void 	first_step(char *name)
+void		first_step(char *name)
 {
 	ft_putchar('\n');
 	ft_putstr(C_RED);
@@ -21,7 +21,6 @@ static void	help_unsetenv(void)
 	ft_putstr(C_RESET);
 }
 
-
 static void	help_exit(void)
 {
 	first_step("exit");
@@ -30,7 +29,7 @@ static void	help_exit(void)
 	ft_putstr(C_RESET);
 }
 
-static void help_help(void)
+static void	help_help(void)
 {
 	first_step("help");
 	ft_putendl("\t- help cd.");

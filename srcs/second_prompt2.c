@@ -6,11 +6,11 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 02:57:40 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/04/02 03:40:53 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:06:17 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "tosh.h"
 
 char		check_new_open(char *str, char *op, int *j)
 {

@@ -1,11 +1,11 @@
-#include "21sh.h"
+#include "tosh.h"
 
-static char **create_tmp_env(t_sh *sh, int size, t_token *token)
+static char	**create_tmp_env(t_sh *sh, int size, t_token *token)
 {
 	char	**tmp_env;
 	int		i;
-    
-    if (!token)
+
+	if (!token)
 	{
 		sh->current_token = NULL;
 		return (NULL);
@@ -20,10 +20,10 @@ static char **create_tmp_env(t_sh *sh, int size, t_token *token)
 	--size;
 	while (i++ < size)
 	{
-		token = text_rules(sh);		
+		token = text_rules(sh);
 		tmp_env[i] = token->value;
 	}
-    return (tmp_env);
+	return (tmp_env);
 }
 
 char		**parse_env_cmds(t_sh *sh)
@@ -38,7 +38,9 @@ char		**parse_env_cmds(t_sh *sh)
 	tmp = tmp->next;
 	token = tmp->data;
 	size = 1;
-	while (tmp && (!ft_strcmp(token->value, "-i") || !ft_strcmp(token->value, "-u") || !ft_strcmp(token->value, "env") || ft_strchr(token->value, '=')))
+	while (tmp && (!ft_strcmp(token->value, "-i") ||\
+		!ft_strcmp(token->value, "-u") || !ft_strcmp(token->value, "env") ||\
+		ft_strchr(token->value, '=')))
 	{
 		++size;
 		tmp = tmp->next;

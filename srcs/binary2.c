@@ -1,6 +1,6 @@
 #include <sys/types.h>
 #include <signal.h>
-#include "21sh.h"
+#include "tosh.h"
 
 void	child(t_tree *node, t_sh *shell, int *fd)
 {

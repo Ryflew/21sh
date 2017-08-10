@@ -6,11 +6,11 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/07/11 03:58:46 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:07:22 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "tosh.h"
 
 static void	close_dup_fd(t_fd *fd, t_tree *node)
 {
@@ -34,7 +34,7 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe)
 {
 	t_fd	*fd;
 	t_list	*tmp;
-	
+
 	close(pipe[0]);
 	child(node, shell, pipe);
 	tmp = shell->fds_out;
@@ -61,7 +61,7 @@ static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
 	char	*path;
 	char	**envi;
 	int		ret;
-	
+
 	if ((path = get_path(node, env, shell)))
 	{
 		envi = conv_env(env);
@@ -81,11 +81,11 @@ static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
 	return (ret);
 }
 
-char	run_binary(t_tree *node, t_env *env, t_sh *shell)
+char		run_binary(t_tree *node, t_env *env, t_sh *shell)
 {
 	int		pipe[2];
 	int		ret;
-	
+
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe)) != -1)
 	{
@@ -93,7 +93,7 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell)
 			ft_exiterror("fork failure !", -1);
 		else if (!g_father)
 		{
-			ret = EXIT_SUCCESS;			
+			ret = EXIT_SUCCESS;
 			manage_child_fd(shell, node, pipe);
 			if (node->cmds)
 				ret = execve_cmds(shell, node, env);
@@ -106,7 +106,7 @@ char	run_binary(t_tree *node, t_env *env, t_sh *shell)
 	return (WEXITSTATUS(ret));
 }
 
-char	run_builtins(t_tree *node, t_env **env, t_sh *shell)
+char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 {
 	int		ret;
 	int		pipe[2];

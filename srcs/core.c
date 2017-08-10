@@ -1,10 +1,10 @@
-#include "21sh.h"
+#include "tosh.h"
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
-static char	manage_children(t_tree *node, t_sh *shell, char r_side, char ret)
+static char		manage_children(t_tree *node, t_sh *shell, char rig, char ret)
 {
 	if (node->left)
 	{
@@ -13,7 +13,7 @@ static char	manage_children(t_tree *node, t_sh *shell, char r_side, char ret)
 			if ((ret = browse_tree(node->left, shell, node, 0)) == -1)
 				return (-1);
 		}
-		else if ((ret = browse_tree(node->left, shell, node, r_side)) == -1)
+		else if ((ret = browse_tree(node->left, shell, node, rig)) == -1)
 			return (-1);
 	}
 	if (node->right && node->token && (node->token->type < CHEVB ||
@@ -26,13 +26,13 @@ static char	manage_children(t_tree *node, t_sh *shell, char r_side, char ret)
 			shell->fd_pipe = -1;
 			shell->right_side = 1;
 		}
-		if ((ret = browse_tree(node->right, shell, node, r_side)) == -1)
+		if ((ret = browse_tree(node->right, shell, node, rig)) == -1)
 			return (-1);
 	}
 	return (ret);
 }
 
-char		browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
+char			browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char rig)
 {
 	char	ret;
 
@@ -47,14 +47,14 @@ char		browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char r_side)
 	else if (node->cmds)
 	{
 		if (node->parent && node->parent->token->type == PIPE)
-			shell->right_side = r_side;
+			shell->right_side = rig;
 		if ((ret = exec_cmds(node, &(shell->env), shell)) == -1)
 			return (-1);
 	}
-	return (manage_children(node, shell, r_side, ret));
+	return (manage_children(node, shell, rig, ret));
 }
 
-void		clear_lexems(t_token *token)
+void			clear_lexems(t_token *token)
 {
 	free(token->value);
 	free(token);
@@ -65,7 +65,8 @@ static void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 	ft_clear_list(begin, (void*)&clear_lexems);
 	if (shell->save_env)
 	{
-		del_all_env(&(shell->env));
+		if (shell->env)
+			del_all_env(&(shell->env));
 		shell->env = shell->save_env;
 		shell->save_env = NULL;
 	}
@@ -77,7 +78,7 @@ static void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 	}
 }
 
-void		go_core(char *command, t_sh *shell)
+void			go_core(char *command, t_sh *shell)
 {
 	t_tree	*commands_tree;
 	t_list	*begin;

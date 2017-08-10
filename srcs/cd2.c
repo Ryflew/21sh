@@ -6,12 +6,12 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:54:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/07/09 17:05:44 by bdurst           ###   ########.fr       */
+/*   Updated: 2017/08/10 03:07:15 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "21sh.h"
+#include "tosh.h"
 
 static void	cd_dot_dot(char **new_prompt)
 {

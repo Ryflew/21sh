@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 #include <dirent.h>
 #include <sys/types.h>
 #include <sys/stat.h>

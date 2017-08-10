@@ -6,11 +6,11 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 22:35:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/04/02 02:18:51 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:07:21 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "tosh.h"
 
 static void	add_to_last(char *command, int *j, t_sh *shell, char c)
 {

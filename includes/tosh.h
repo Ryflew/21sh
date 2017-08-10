@@ -39,7 +39,7 @@ typedef struct termios	t_termios;
 typedef struct dirent	t_dirent;
 typedef struct stat		t_stat;
 
-typedef enum e_token
+enum	e_token
 {
 	NONE,
 	ENDOF,
@@ -64,15 +64,15 @@ typedef enum e_token
 	RBKT,
 	LBRC,
 	RBRC
-}	e_token;
+};
 
-typedef enum	e_state
+enum	e_state
 {
 	BASIC_SHELL,
 	ADVANCE_SHELL,
 	BRACKET_ERROR,
 	COMMAND_RUN,
-}	e_state;
+};
 
 typedef struct		s_env
 {
@@ -202,8 +202,8 @@ void				maj_down_arrow(t_sh *shell);
 void				maj_left_arrow(t_sh *shell);
 void				maj_right_arrow(t_sh *shell);
 void				help_command(char **cmd);
-void			 	first_step(char *name);
-void 				help_cd(void);
+void				first_step(char *name);
+void				help_cd(void);
 void				help_echo(void);
 void				help_env(void);
 void				help_hash(void);
@@ -238,7 +238,7 @@ void				get_tree_rec(t_tree **tree, char *left, char *right);
 void				cd_tilde(char *str, t_env *env, t_sh *shell, t_cd *opt);
 void				print_cd_error(char *tmp, char *path);
 void				del_command_tree(t_tree *tree);
-void		 		try_add_hashtab(t_tree *node, t_sh *shell);
+void				try_add_hashtab(t_tree *node, t_sh *shell);
 void				init_setenv(char ***av, t_env **env, char *tmp);
 void				cd_current_dir(char *path, t_env *env, t_sh *shell,
 					t_cd *opt);
@@ -319,7 +319,7 @@ char				browse_tree(t_tree *node, t_sh *shell, t_tree *parent,
 					char r_side);
 void				manage_string_op(t_lexer *lexer);
 void				*ret_parse_error(t_tree *node);
-t_token	    		*find_token(t_lexer *lexer);
+t_token				*find_token(t_lexer *lexer);
 char				**parse_env_cmds(t_sh *sh);
 char				aggregation_rules(t_sh *sh, int *fd);
 int					father(t_sh *shell, int *fd);

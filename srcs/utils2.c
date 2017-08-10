@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 char	*remove_useless_space(char *str, int i, int j, int have_space)
 {

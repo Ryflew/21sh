@@ -6,12 +6,12 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:35:32 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/07/11 10:13:25 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:06:35 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "21sh.h"
+#include "tosh.h"
 
 t_env	*new_env(char *str)
 {
@@ -43,6 +43,8 @@ char	del_all_env(t_env **list)
 {
 	t_env	*tmp;
 
+	if (!list)
+		return (1);
 	while (*list)
 	{
 		tmp = (*list)->next;

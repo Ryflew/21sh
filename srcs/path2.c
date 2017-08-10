@@ -2,7 +2,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "21sh.h"
+#include "tosh.h"
 
 static char	check_path_end(char **tmp, DIR **dir, char out)
 {

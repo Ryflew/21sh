@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 void		get_hash_opt(char ***hash, char *r_opt, char *p_opt, char *d_opt)
 {

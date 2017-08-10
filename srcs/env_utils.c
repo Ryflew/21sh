@@ -6,12 +6,12 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:20:57 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/05/04 20:01:14 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:06:46 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "21sh.h"
+#include "tosh.h"
 
 t_env	*get_env(char **env)
 {

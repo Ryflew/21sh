@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 t_tree	*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *rig)
 {

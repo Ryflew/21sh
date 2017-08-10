@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 char	exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 {

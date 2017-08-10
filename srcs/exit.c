@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "21sh.h"
+#include "tosh.h"
 
 void		errexit(char *content, char *reason)
 {

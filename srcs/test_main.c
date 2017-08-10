@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 void rec(t_tree *node)
 {

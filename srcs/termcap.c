@@ -6,12 +6,12 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 01:07:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/16 02:59:41 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:06:12 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <term.h>
-#include "21sh.h"
+#include "tosh.h"
 
 void	move_to(int x, int y)
 {

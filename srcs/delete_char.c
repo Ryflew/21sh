@@ -6,11 +6,11 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 00:15:57 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/04/02 02:41:09 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:07:00 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "tosh.h"
 
 static void	remove_last(char *command, int *j, t_sh *shell)
 {

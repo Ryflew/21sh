@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 static t_tree	*pipe_rules(t_sh *sh, t_tree *left)
 {
@@ -73,10 +73,10 @@ static t_tree	*condition_operators_rules(t_sh *sh)
 
 static t_tree	*parse_semicolons(t_sh *sh, t_tree *left)
 {
-	t_tree	*right;	
+	t_tree	*right;
 	char	**tmp_env;
-	t_token	*token;	
-	
+	t_token	*token;
+
 	while (sh->current_token && sh->current_token->type == SCL)
 	{
 		token = sh->current_token;

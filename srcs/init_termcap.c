@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/20 02:29:29 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/06/20 00:49:31 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:06:40 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <term.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
-#include "21sh.h"
+#include "tosh.h"
 
 static void	build_term(t_sh *shell)
 {

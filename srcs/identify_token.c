@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 void		manage_string_op(t_lexer *lexer)
 {
@@ -32,7 +32,7 @@ static void	find_token2(t_lexer *lexer, t_token **token)
 		*token = lex_word(lexer);
 }
 
-t_token	    *find_token(t_lexer *lexer)
+t_token		*find_token(t_lexer *lexer)
 {
 	t_token *token;
 

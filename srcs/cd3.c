@@ -1,7 +1,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "21sh.h"
+#include "tosh.h"
 
 char	*get_with_tilde(char *path, t_env *env)
 {

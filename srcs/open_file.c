@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 #include <fcntl.h>
 
 static int	open_chevb(t_tree *node)

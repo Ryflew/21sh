@@ -2,7 +2,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <unistd.h>
-#include "21sh.h"
+#include "tosh.h"
 
 static void	print_missing2(char **str, char **part, char *all)
 {

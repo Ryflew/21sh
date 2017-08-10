@@ -6,12 +6,12 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 21:18:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/07/06 22:21:56 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/08/10 03:06:16 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "21sh.h"
+#include "tosh.h"
 
 static void	override_env(char **av, t_env **env)
 {
@@ -84,8 +84,6 @@ void		set_env(char **av, t_env **env)
 		print_env(*env);
 	else if (!(find_env(*env, *av)))
 	{
-		// if (check_alpha(*av))
-			// return ;
 		while (*env && (*env)->next)
 			*env = (*env)->next;
 		tmp = get_tmp(av);
