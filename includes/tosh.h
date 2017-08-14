@@ -39,7 +39,7 @@ typedef struct termios	t_termios;
 typedef struct dirent	t_dirent;
 typedef struct stat		t_stat;
 
-enum	e_token
+typedef enum	e_token
 {
 	NONE,
 	ENDOF,
@@ -64,15 +64,15 @@ enum	e_token
 	RBKT,
 	LBRC,
 	RBRC
-};
+}				e_token;
 
-enum	e_state
+typedef enum	e_state
 {
 	BASIC_SHELL,
 	ADVANCE_SHELL,
 	BRACKET_ERROR,
 	COMMAND_RUN,
-};
+}				e_state;
 
 typedef struct		s_env
 {

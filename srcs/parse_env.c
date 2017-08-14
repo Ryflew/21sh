@@ -11,7 +11,10 @@ static char	**create_tmp_env(t_sh *sh, int size, t_token *token)
 		return (NULL);
 	}
 	else if (size == 1)
+	{
+		token = text_rules(sh);
 		return (NULL);
+	}
 	if (ft_strcmp(token->value, "env"))
 		++size;
 	tmp_env = (char**)malloc(sizeof(char*) * size);
@@ -44,6 +47,11 @@ char		**parse_env_cmds(t_sh *sh)
 	{
 		++size;
 		tmp = tmp->next;
+		if (tmp && !ft_strcmp(token->value, "-u"))
+		{
+			++size;
+			tmp = tmp->next;
+		}
 		if (tmp)
 			token = tmp->data;
 	}
