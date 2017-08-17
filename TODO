@@ -13,9 +13,7 @@
 ------------ BUG --------------
 
 - Parsing de l'env
-	-> env avec des options va pas dans la fonction env
-	-> 'env -u VAR binaire' ne marche pas, il considere 'VAR' comme la commande
-	-> tester le -i du coup mais c'est cense marcher
+	-> env -i env fonctionne pas
 
 --- Bonus Slider A Dire En soutenance ---
 
