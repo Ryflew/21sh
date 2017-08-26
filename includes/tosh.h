@@ -142,6 +142,7 @@ typedef	struct		s_sh
 	t_env			*env;
 	t_env			*save_env;
 	t_env			*hash;
+	t_env			*export;
 
 	t_lexer			*lexer;
 	t_token			*current_token;
@@ -179,9 +180,9 @@ void				change_prompt(char *path, t_env *env, char **new_prompt,
 					t_cd *opt);
 void				echo_builtin(char **av, t_env *env);
 void				set_env(char **av, t_env **env);
-void				unset_env(char **av, t_env **env);
+void				unset_env(char **av, t_env **env, t_env **export);
 void				exit_command(char **av, t_sh *shell);
-
+char				export(char **av, t_env *export);
 int					is_string_op(int c);
 int					ft_putcharint(int c);
 int					get_current_pos_in_command(t_sh *shell);

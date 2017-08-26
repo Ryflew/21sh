@@ -44,7 +44,7 @@ void		u_opt(char ***av, t_env **env)
 		out[0] = ft_strdup("unsetenv");
 		out[1] = ft_strdup(*++*av);
 		out[2] = NULL;
-		unset_env(out, env);
+		unset_env(out, env, NULL);
 		ft_strdelpp(&out);
 	}
 }

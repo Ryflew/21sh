@@ -28,7 +28,11 @@ char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 	else if (!ft_strcmp(cmd[0], "setenv"))
 		set_env(cmd, env);
 	else if (!ft_strcmp(cmd[0], "unsetenv"))
-		unset_env(cmd, env);
+		unset_env(cmd, env, NULL);
+	else if (!ft_strcmp(cmd[0], "unset"))
+		unset_env(cmd, env, &(shell->export));
+	else if (!ft_strcmp(cmd[0], "export"))
+		export(cmd, shell->export);
 	else if (!ft_strcmp(cmd[0], "env"))
 		env_command(cmd, *env);
 	else if (!ft_strcmp(cmd[0], "exit"))
@@ -58,6 +62,10 @@ char	is_builtins(char **cmd)
 	else if (!ft_strcmp(cmd[0], "setenv"))
 		return (0);
 	else if (!ft_strcmp(cmd[0], "unsetenv"))
+		return (0);
+	else if (!ft_strcmp(cmd[0], "unset"))
+		return (0);
+	else if (!ft_strcmp(cmd[0], "export"))
 		return (0);
 	else if (!ft_strcmp(cmd[0], "exit"))
 		return (0);

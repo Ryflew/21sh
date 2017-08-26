@@ -28,6 +28,7 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	lexer->red = 0;
 	shell->lexer = lexer;
 	shell->hash = NULL;
+	shell->export = NULL;
 	shell->save_env = NULL;
 	shell->have_write_error = 0;
 	shell->return_value = 0;

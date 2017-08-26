@@ -37,7 +37,7 @@ static void	del_hash_line(char *name, t_sh *shell)
 		out[0] = ft_strdup("unsetenv");
 		out[1] = ft_strdup(name);
 		out[2] = NULL;
-		unset_env(out, &(shell->hash));
+		unset_env(out, &(shell->hash), NULL);
 		ft_strdelpp(&out);
 	}
 	else

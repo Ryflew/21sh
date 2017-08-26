@@ -38,6 +38,7 @@ FILES = add_char.c \
 				env_utils.c \
 				env_utils2.c \
 				exit.c \
+				export.c \
 				ft_putcharint.c \
 				get_line.c \
 				help.c \
