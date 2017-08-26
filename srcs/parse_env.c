@@ -47,7 +47,7 @@ char		**parse_env_cmds(t_sh *sh)
 	{
 		++size;
 		tmp = tmp->next;
-		if (tmp && !ft_strcmp(token->value, "-u"))
+		if (tmp && (!ft_strcmp(token->value, "-u") || !ft_strcmp(token->value, "-i")))
 		{
 			++size;
 			tmp = tmp->next;
