@@ -1,12 +1,13 @@
 
 ----------- TODO --------------
 
+- Ajouter unset / export a la commande help
+- Remplacer les $VAR dans les lignes de commandes, (fonctionnelle mais pas avec des trucs en plus ex : cd $HOME/42)
 - Norme
 - Leaks
 
 ---------- BONUS --------------
 
-- Unset + Export
 - Command history
 - Resize de la fenetre
 
@@ -15,22 +16,22 @@
 - Parsing de l'env
 	-> env -i env fonctionne pas
 
+- 'env | grep HOME' fonctionne pas
+- (/!\ Bug WTF) Quand on lance le shell avec "env -u HOME ./21sh", et que de suite apres on fait
+	un "env", on a un segfault, je suis remonte jusqu'a la fonction "parse_semicolons", on le corrige si tu veux mais clairement
+	on peut le laisser a mon avis
+
 --- Bonus Slider A Dire En soutenance ---
 
 - && et ||
 - Commande help
 - Tous les builtins sont a la norme POSIX
-- 
-
-
-
-
-
+- Unset / Export
+- Command !history (A faire)
 
 
 --------- Unset/Export fonctionnement ----------
-- Unset :
-			-> comme unsetenv mais cherche dans env puis dans export, retire si il existe.
+- Si on tape VAR="FOO" en commande, on le set uniquement dans export.
 - Export :
-			-> Si "export VAR", alors creer uniquement dans export
-			-> Si " export VAR="FOO" " alors creer dans env et dans export
+			-> Si "export VAR", alors creer uniquement dans export sauf si il existe dans export, alors on le met dans les 2 
+				on l'ajoute a env

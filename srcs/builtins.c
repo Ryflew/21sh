@@ -32,7 +32,7 @@ char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 	else if (!ft_strcmp(cmd[0], "unset"))
 		unset_env(cmd, env, &(shell->export));
 	else if (!ft_strcmp(cmd[0], "export"))
-		export(cmd, shell->export);
+		export(cmd, &(shell->export));
 	else if (!ft_strcmp(cmd[0], "env"))
 		env_command(cmd, *env);
 	else if (!ft_strcmp(cmd[0], "exit"))

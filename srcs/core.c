@@ -78,6 +78,39 @@ static void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 	}
 }
 
+void	check_if_env_var(t_tree *tree)
+{
+	int 	i;
+	t_env	*cpy;
+	char	*ptr;
+	char	*tmp;
+
+	if (tree->left)
+		return (check_if_env_var(tree->left));
+	if (tree->right)
+		return (check_if_env_var(tree->right));
+	i = -1;
+	while (tree->cmds && tree->cmds[++i])
+	{
+		if (!(ptr = ft_strchr(tree->cmds[i], '$')) && \
+			!find_env(cpy, tree->cmds[i]))
+			continue ;
+		cpy = get_shell()->env;
+		while (cpy)
+		{
+			if (!ft_strcmp(cpy->var_name, ptr + 1))
+			{
+				tmp = ft_strsub(tree->cmds[i], 0, ptr - tree->cmds[i]);
+				free(tree->cmds[i]);
+				tree->cmds[i] = ft_strjoin(tmp, cpy->var_content);
+				free(tmp);
+				break ;
+			}
+			NEXT(cpy);
+		}
+	}
+}
+
 void			go_core(char *command, t_sh *shell)
 {
 	t_tree	*commands_tree;
@@ -97,6 +130,7 @@ void			go_core(char *command, t_sh *shell)
 		clear(shell, &begin, NULL);
 		return ;
 	}
+	check_if_env_var(commands_tree);
 	if (commands_tree)
 	{
 		if (find_env(shell->env, "PATH"))
