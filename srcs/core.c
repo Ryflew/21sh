@@ -130,12 +130,12 @@ void			go_core(char *command, t_sh *shell)
 		clear(shell, &begin, NULL);
 		return ;
 	}
-	check_if_env_var(commands_tree);
 	if (commands_tree)
 	{
+		check_if_env_var(commands_tree);		
 		if (find_env(shell->env, "PATH"))
 			try_add_hashtab(commands_tree, shell);
 		browse_tree(commands_tree, shell, NULL, 1);
-		clear(shell, &begin, commands_tree);
 	}
+	clear(shell, &begin, commands_tree);	
 }

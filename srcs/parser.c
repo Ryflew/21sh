@@ -106,7 +106,7 @@ t_tree			*commands_line_rules(t_sh *sh)
 	{
 		if (tmp_env)
 			free(tmp_env);
-			return (left);
+		return (left);
 	}
 	left->tmp_env = tmp_env;
 	return (parse_semicolons(sh, left));

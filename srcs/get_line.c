@@ -92,7 +92,7 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 	print_prompt(*state, op);
 	shell->have_write_error = 0;
 	shell->j = -1;
-	//return (ft_strdup("env ls"));
+	//return (ft_strdup("env -i ls"));
 	while (1)
 	{
 		buff = 0;

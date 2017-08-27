@@ -21,10 +21,10 @@ static char	**create_tmp_env(t_sh *sh, int size, t_token *token)
 	tmp_env[size - 1] = NULL;
 	i = 0;
 	--size;
-	while (i++ < size)
+	while (i < size)
 	{
 		token = text_rules(sh);
-		tmp_env[i] = token->value;
+		tmp_env[i++] = token->value;	
 	}
 	return (tmp_env);
 }
@@ -47,7 +47,7 @@ char		**parse_env_cmds(t_sh *sh)
 	{
 		++size;
 		tmp = tmp->next;
-		if (tmp && (!ft_strcmp(token->value, "-u") || !ft_strcmp(token->value, "-i")))
+		if (tmp && !ft_strcmp(token->value, "-u"))
 		{
 			++size;
 			tmp = tmp->next;
