@@ -26,7 +26,7 @@ t_env	*get_env(char **env)
 		elem = first;
 	}
 	while (++env && *env)
-	{
+	{	
 		elem->next = new_env(*env);
 		elem = elem->next;
 	}
@@ -49,7 +49,7 @@ char	*find_env(t_env *env, char *name)
 		if (!ft_strcmp(env->var_name, name))
 			return (env->var_content);
 		env = env->next;
-	}
+	}		
 	return (NULL);
 }
 

@@ -130,6 +130,7 @@ void			go_core(char *command, t_sh *shell)
 		clear(shell, &begin, NULL);
 		return ;
 	}
+	//ft_putendl("check_if_env_var");
 	if (commands_tree)
 	{
 		check_if_env_var(commands_tree);		
