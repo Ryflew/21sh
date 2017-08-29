@@ -16,9 +16,8 @@
 - (/!\ Bug WTF) Quand on lance le shell avec "env -u HOME ./21sh", et que de suite apres on fait
 	un "env", on a un segfault, je suis remonte jusqu'a la fonction "parse_semicolons", on le corrige si tu veux mais clairement
 	on peut le laisser a mon avis
--./21sh puis ls si ft_putendl dans core.c y'a un segfault sans le ft_putendl y'en a pas regarder env->var_name undefini
 
---- Bonus Slider A Dire En soutenance ---
+--- Bonus Slider A Dire En soutenance pour le 21 ---
 
 - && et ||
 - Commande help

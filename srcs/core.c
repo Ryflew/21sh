@@ -78,7 +78,7 @@ static void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 	}
 }
 
-void	check_if_env_var(t_tree *tree)
+void	check_if_env_var(t_tree *tree) // a finir et a deplacer
 {
 	int 	i;
 	t_env	*cpy;
@@ -90,6 +90,7 @@ void	check_if_env_var(t_tree *tree)
 	if (tree->right)
 		return (check_if_env_var(tree->right));
 	i = -1;
+	cpy = get_shell()->env;
 	while (tree->cmds && tree->cmds[++i])
 	{
 		if (!(ptr = ft_strchr(tree->cmds[i], '$')) && \
@@ -106,6 +107,7 @@ void	check_if_env_var(t_tree *tree)
 				free(tmp);
 				break ;
 			}
+			ft_putendl(tree->cmds[i]);
 			NEXT(cpy);
 		}
 	}
@@ -130,13 +132,12 @@ void			go_core(char *command, t_sh *shell)
 		clear(shell, &begin, NULL);
 		return ;
 	}
-	//ft_putendl("check_if_env_var");
 	if (commands_tree)
 	{
-		check_if_env_var(commands_tree);		
+		check_if_env_var(commands_tree);
 		if (find_env(shell->env, "PATH"))
 			try_add_hashtab(commands_tree, shell);
 		browse_tree(commands_tree, shell, NULL, 1);
 	}
-	clear(shell, &begin, commands_tree);	
+	clear(shell, &begin, commands_tree);
 }
