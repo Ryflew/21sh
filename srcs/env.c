@@ -24,8 +24,16 @@ void		add_new_var(char ***av, t_env **env)
 	if (!(new_av = (char**)malloc(sizeof(char*) * 4)))
 		exit(EXIT_FAILURE);
 	new_av[0] = ft_strdup("setenv");
-	new_av[1] = ft_strsub(**av, 0, ft_strchr(**av, '=') - **av);
-	new_av[2] = ft_strdup(ft_strchr(**av, '=') + 1);
+	if (ft_strchr(**av, '='))
+	{
+		new_av[1] = ft_strsub(**av, 0, ft_strchr(**av, '=') - **av);
+		new_av[2] = ft_strdup(ft_strchr(**av, '=') + 1);
+	}
+	else
+	{
+		new_av[1] = ft_strdup(**av);
+		new_av[2] = ft_strdup("\'\'");
+	}
 	new_av[3] = NULL;
 	set_env(new_av, env);
 	ft_strdelpp(&new_av);

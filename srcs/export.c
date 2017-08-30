@@ -18,14 +18,15 @@ void		add_new_export(char *str, t_env **export)
 
 char		export(char **av, t_env **export)
 {
-	if (!*++av)
+	if (!*(av + 1))
 		print_env(*export);
 	else
 	{
-		if (!ft_strchr(*av, '='))
-			add_new_export(*av, export);
+		if (!ft_strchr(*(av + 1), '=') && !find_env(*export, *(av + 1))) // la le segfault
+			add_new_export(*++av, export);
 		else
 		{
+			++av;
 			add_new_var(&av, &(get_shell()->env));
 			add_new_var(&av, export);
 		}

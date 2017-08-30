@@ -189,6 +189,7 @@ int					get_current_pos_in_command(t_sh *shell);
 int					base_converter(int nb, int frombase, int tobase);
 int					open_file(t_tree *node);
 int					check_hist_occur(t_sh *shell, char *str);
+void				check_if_env_var(t_tree *tree);
 void				copy_data(t_sh *shell, unsigned long c, int current);
 void				clean_selected(t_sh *shell);
 void				init_termcap(t_sh *shell, t_env *env);

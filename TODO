@@ -1,8 +1,9 @@
 
 ----------- TODO --------------
 
+- Unset / Export
+- Ajouter unset / Export et help a la completion
 - Ajouter unset / export a la commande help
-- Remplacer les $VAR dans les lignes de commandes, (fonctionnelle mais pas avec des trucs en plus ex : cd $HOME/42)
 - Norme
 - Leaks
 
@@ -16,6 +17,7 @@
 - (/!\ Bug WTF) Quand on lance le shell avec "env -u HOME ./21sh", et que de suite apres on fait
 	un "env", on a un segfault, je suis remonte jusqu'a la fonction "parse_semicolons", on le corrige si tu veux mais clairement
 	on peut le laisser a mon avis
+- segfault si on lance le shell et on tape 3 fois "export VAR"
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
