@@ -43,6 +43,8 @@ t_token		*find_token(t_lexer *lexer)
 		token = new_token(lexer, DCHEVB, "<<");
 	else if (*lexer->line == '>' && *(lexer->line + 1) == '&')
 		token = new_token(lexer, FRED, ">&");
+	else if (*lexer->line == '<' && *(lexer->line + 1) == '&')
+		token = new_token(lexer, BRED, "<&");
 	else if (*lexer->line == '>')
 		token = new_token(lexer, CHEVF, ">");
 	else if (*lexer->line == '<')

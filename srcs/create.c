@@ -23,7 +23,7 @@ t_token	*new_token(t_lexer *lexer, e_token token_type, char *value)
 
 	if (!(token = (t_token *)malloc(sizeof(t_token))))
 		exit(-1);
-	if (token_type == FRED)
+	if (token_type == FRED || token_type == BRED)
 		lexer->red = 1;
 	else
 		lexer->red = 0;

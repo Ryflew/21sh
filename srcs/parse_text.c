@@ -1,13 +1,20 @@
 #include "tosh.h"
 
-static char		fill_fd(t_sh *sh, int *fd, int fd0, int fd1)
+/*static char		fill_fd(t_sh *sh, int *fd, int fd0, int fd1)
 {
 	fd[0] = fd0;
+	if (fd0 != 1)
+		eat(sh, FD);
 	eat(sh, FRED);
-	fd[1] = fd1;
-	eat(sh, FD);
+	if (fd0 == 1)
+	{
+		fd[1] = ft_atoi(sh->current_token->value);
+		eat(sh, FD);		
+	}
+	else
+		fd[1] = fd1;
 	return (1);
-}
+}*/
 
 char			aggregation_rules(t_sh *sh, int *fd)
 {
@@ -27,10 +34,13 @@ char			aggregation_rules(t_sh *sh, int *fd)
 	}
 	else if (sh->current_token->type == FRED && sh->lexer->lexems->next && \
 		((t_token*)sh->lexer->lexems->next->data)->type == FD)
-		return (fill_fd(sh, fd, 1, ft_atoi(sh->current_token->value)));
-	else if (sh->current_token->type == FD && sh->lexer->lexems->next && \
-		((t_token*)sh->lexer->lexems->next->data)->type == FRED)
-		return (fill_fd(sh, fd, ft_atoi(sh->current_token->value), -1));
+	{
+		fd[0] = 1;		
+		eat(sh, FRED);
+		fd[1] = ft_atoi(sh->current_token->value);
+		eat(sh, FD);
+		return (1);
+	}
 	return (0);
 }
 

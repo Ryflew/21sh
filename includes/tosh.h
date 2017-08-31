@@ -49,6 +49,7 @@ typedef enum	e_token
 	CHEVF,
 	DCHEVF,
 	FRED,
+	BRED,
 	AND,
 	OR,
 	SCL,
