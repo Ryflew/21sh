@@ -16,32 +16,38 @@
 	return (1);
 }*/
 
-char			aggregation_rules(t_sh *sh, int *fd)
+t_fd	*aggregation_rules(t_sh *sh)
 {
+	t_fd	*fd;
+
+	if (!(fd = (t_fd*)malloc(sizeof(t_fd))))
+		ft_exiterror("Malloc failure in aggregation_rules !", 1);
 	if (!sh->current_token)
-		return (0);
+		return (NULL);
 	if (sh->current_token->type == FD && sh->lexer->lexems->next && \
 		((t_token*)sh->lexer->lexems->next->data)->type == FRED && \
 		sh->lexer->lexems->next->next && \
 		((t_token*)sh->lexer->lexems->next->next->data)->type == FD)
 	{
-		fd[0] = ft_atoi(sh->current_token->value);
+		fd->type = FRED;
+		fd->from = ft_atoi(sh->current_token->value);
 		eat(sh, FD);
 		eat(sh, FRED);
-		fd[1] = ft_atoi(sh->current_token->value);
+		fd->to = ft_atoi(sh->current_token->value);
 		eat(sh, FD);
-		return (1);
+		return (fd);
 	}
 	else if (sh->current_token->type == FRED && sh->lexer->lexems->next && \
 		((t_token*)sh->lexer->lexems->next->data)->type == FD)
 	{
-		fd[0] = 1;		
+		fd->type = FRED;		
+		fd->from = 1;	
 		eat(sh, FRED);
-		fd[1] = ft_atoi(sh->current_token->value);
+		fd->to = ft_atoi(sh->current_token->value);
 		eat(sh, FD);
-		return (1);
+		return (fd);
 	}
-	return (0);
+	return (NULL);
 }
 
 char			eat(t_sh *sh, e_token token)

@@ -91,12 +91,13 @@ void			go_core(char *command, t_sh *shell)
 	shell->current_token = shell->lexer->lexems->data;
 	shell->fds_out = NULL;
 	shell->fd_pipe = -1;
-	if ((commands_tree = commands_line_rules(shell)) == (void*)-1)
+	if ((commands_tree = commands_line_rules(shell, NULL)) == (void*)-1)
 	{
 		parse_error(shell);
 		clear(shell, &begin, NULL);
 		return ;
 	}
+	ft_putendl("after");
 	if (commands_tree)
 	{
 		check_if_env_var(commands_tree);
@@ -105,4 +106,5 @@ void			go_core(char *command, t_sh *shell)
 		browse_tree(commands_tree, shell, NULL, 1);
 	}
 	clear(shell, &begin, commands_tree);
+	//TO FO free aggregation
 }
