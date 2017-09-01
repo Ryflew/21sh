@@ -22,8 +22,11 @@ char		export(char **av, t_env **export)
 		print_env(*export);
 	else
 	{
-		if (!ft_strchr(*(av + 1), '=') && !find_env(*export, *(av + 1))) // la le segfault
-			add_new_export(*++av, export);
+		if (!ft_strchr(*(av + 1), '='))
+		{
+			if (!*export || !find_env(*export, *(av + 1))) // le bordel ici
+				add_new_export(*++av, export);
+		}
 		else
 		{
 			++av;

@@ -84,5 +84,11 @@ char	*find_builtins(char *part)
 		return (ft_strdup("unsetenv"));
 	else if (!ft_strncmp("hash", part, ft_strlen(part)))
 		return (ft_strdup("hash"));
+	else if (!ft_strncmp("help", part, ft_strlen(part)))
+		return (ft_strdup("help"));
+	else if (!ft_strncmp("unset", part, ft_strlen(part)))
+		return (ft_strdup("unset"));
+	else if (!ft_strncmp("export", part, ft_strlen(part)))
+		return (ft_strdup("export"));
 	return (NULL);
 }
