@@ -22,7 +22,10 @@ static char		manage_children(t_tree *node, t_sh *shell, char rig, char ret)
 	{
 		if (node->token->type == SCL)
 		{
-			shell->fds_out = NULL;
+			if (shell->fds_out)
+				ft_clear_list(&shell->fds_out, (&free));
+			shell->aggregations = shell->aggregations->next;			
+			shell->fds_out = (t_list*)shell->aggregations->data;
 			shell->fd_pipe = -1;
 			shell->right_side = 1;
 		}
@@ -72,8 +75,8 @@ static void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 	}
 	if (commands_tree)
 	{
-		if (shell->fds_out)
-			ft_clear_list(&shell->fds_out, (&free));
+		//if (shell->fds_out)
+		//	ft_clear_list(&shell->fds_out, (&free));
 		del_command_tree(commands_tree);
 	}
 }
@@ -81,22 +84,23 @@ static void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 void			go_core(char *command, t_sh *shell)
 {
 	t_tree	*commands_tree;
-	t_list	*begin;
+	t_list	*begin_lexems;
 
 	add_to_history(shell, command);
 	shell->lexer->lexems = NULL;
 	shell->lexer->line = command;
 	get_lexems(shell);
-	begin = shell->lexer->lexems;
+	begin_lexems = shell->lexer->lexems;
+	shell->aggregations = NULL;
 	shell->current_token = shell->lexer->lexems->data;
-	shell->fds_out = NULL;
 	shell->fd_pipe = -1;
 	if ((commands_tree = commands_line_rules(shell, NULL)) == (void*)-1)
 	{
 		parse_error(shell);
-		clear(shell, &begin, NULL);
+		clear(shell, &begin_lexems, NULL);
 		return ;
 	}
+	shell->fds_out = (t_list*)shell->aggregations->data;	
 	ft_putendl("after");
 	if (commands_tree)
 	{
@@ -105,6 +109,6 @@ void			go_core(char *command, t_sh *shell)
 			try_add_hashtab(commands_tree, shell);
 		browse_tree(commands_tree, shell, NULL, 1);
 	}
-	clear(shell, &begin, commands_tree);
+	clear(shell, &begin_lexems, commands_tree);
 	//TO FO free aggregation
 }

@@ -37,7 +37,7 @@ static t_tree	*cmd_with_op_rules(t_sh *sh, t_list **aggregation)
 	{
 		if ((tmp = pipe_rules(sh, left, aggregation)) && tmp != (void*)-1)
 			left = tmp;
-		else if ((tmp = redirection_rules(sh, left, aggregation)) && tmp != (void*)-1)
+		else if ((tmp = redirection_rules(sh, left)) && tmp != (void*)-1)
 			left = tmp;
 		if (!tmp)
 			return (left);

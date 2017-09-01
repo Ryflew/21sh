@@ -62,7 +62,10 @@ static char	manage_chev(t_tree *node, t_sh *shell)
 			fd->from = (node->from_fd == -1) ? 1 : node->from_fd;
 		else
 			fd->from = node->from_fd;
-		fd->to = -1;
+		if (node->to_fd)
+			fd->to = node->to_fd;
+		else
+			fd->to = -1;
 		fd->type = node->token->type;
 		ft_node_push_front(&shell->fds_out, fd);
 	}

@@ -32,15 +32,19 @@ static void	cmd_without_delimiter_rules(t_sh *sh, t_tree **new_node, t_list **ag
 	t_token	*token;
 
 	cmd_tokens = NULL;
+	fd = NULL;
 	while ((token = text_rules(sh)) || (token != (void*)-1 && \
 		(fd = aggregation_rules(sh))))
+	{
 		if (token)
 			ft_node_push_back(&cmd_tokens, ft_strdup(token->value));
+	}
 	if (token == (void*)-1)
 		*new_node = (void*)-1;
 	if (cmd_tokens)
 	{
-		ft_node_push_back(aggregation, fd);
+		if (fd)
+			ft_node_push_back(aggregation, fd);
 		*new_node = create_node(NULL, NULL, cmd_tokens, NULL);
 	}
 }
