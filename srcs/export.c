@@ -18,18 +18,18 @@ void		add_new_export(char *str, t_env **export)
 
 char		export(char **av, t_env **export)
 {
-	if (!*(av + 1))
+	if (!*++av)
 		print_env(*export);
 	else
 	{
-		if (!ft_strchr(*(av + 1), '='))
+		if (!ft_strchr(*av, '=') && (!*export || (*export && !find_env(*export, *av))))
 		{
-			if (!*export || !find_env(*export, *(av + 1))) // le bordel ici
-				add_new_export(*++av, export);
+			print_env(*export);
+			ft_putendl(*av);
+			add_new_export(*av, export);
 		}
 		else
 		{
-			++av;
 			add_new_var(&av, &(get_shell()->env));
 			add_new_var(&av, export);
 		}

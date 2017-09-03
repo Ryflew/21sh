@@ -43,6 +43,7 @@ FILES = add_char.c \
 				get_line.c \
 				help.c \
 				help2.c \
+				history_cmd.c \
 				hash_tab.c \
 				hash_tab2.c \
 				history.c \

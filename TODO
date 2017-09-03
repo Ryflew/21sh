@@ -2,7 +2,9 @@
 ----------- TODO --------------
 
 - Unset / Export
+- History
 - Ajouter unset / export a la commande help
+- Ajouter history a la commande help
 - aggregation de fichier <&
 - departager "2>&1" et "2>"
 - "ls 2>&6" si 6 n'est pas ouvert mettre une erreur
@@ -32,5 +34,13 @@
 - Command !history (A faire)
 
 
---------- Unset/Export fonctionnement ----------
-- Si on tape VAR="FOO" en commande, on le set uniquement dans export.
+
+
+
+------------ Fonctionnement history ----------------
+- 'history' liste tout l'historique numéroté. (FAIT)
+- 'history n' list tout l'historique jusqu'a n. (FAIT)
+- 'history !n' affiche la n ème ligne sur le term (FAIT)
+- 'history !-n' affiche la derniere ligne (plus recent) moins n (FAIT)
+- 'history !!' affiche la derniere commande utilise (== history !-1) (FAIT)
+- '!string' affiche la derniere commande qui commance par la string

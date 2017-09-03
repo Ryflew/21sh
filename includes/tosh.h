@@ -271,6 +271,7 @@ char				stop_binary(int sig);
 char				check_new_open(char *str, char *op, int *j);
 char				check_quot(char *str, char *op, int *i, int *j);
 char				reg_or_dir(char *path);
+void				history_cmd(char **av, t_sh *shell);
 char				check_quot_brackets2(char *str, char *op, int i, int *j);
 void				add_hash_line(char *name, char *path, t_sh *shell);
 char				is_in_hashtab(char *path, t_env *env);
