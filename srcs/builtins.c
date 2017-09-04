@@ -2,7 +2,13 @@
 
 char	go_builtins2(char **cmd, t_sh *shell)
 {
-	if (!ft_strcmp(cmd[0], "help"))
+	if (!ft_strcmp(cmd[0], "history"))
+		history_cmd(cmd, shell);
+	else if (!ft_strcmp(cmd[0], "hash"))
+		hash_tab(cmd, shell);
+	else if (!ft_strcmp(cmd[0], "exit"))
+		exit_command(cmd, shell);
+	else if (!ft_strcmp(cmd[0], "help"))
 		help_command(cmd);
 	else if (!ft_strcmp(cmd[0], "false"))
 	{
@@ -35,10 +41,6 @@ char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 		export(cmd, &(shell->export));
 	else if (!ft_strcmp(cmd[0], "env"))
 		env_command(cmd, *env);
-	else if (!ft_strcmp(cmd[0], "exit"))
-		exit_command(cmd, shell);
-	else if (!ft_strcmp(cmd[0], "hash"))
-		hash_tab(cmd, shell);
 	else if (!ft_strcmp(cmd[0], "true"))
 		return (0);
 	else
@@ -51,6 +53,8 @@ char	is_writable_builtins(char *cmd)
 	if (!ft_strcmp(cmd, "echo"))
 		return (0);
 	else if (!ft_strcmp(cmd, "env"))
+		return (0);
+	else if (!ft_strcmp(cmd, "history"))
 		return (0);
 	return (1);
 }

@@ -50,12 +50,13 @@ void		check_if_env_var(t_tree *tree)
 	if (tree->right)
 		return (check_if_env_var(tree->right));
 	i = -1;
-	cpy = get_shell()->env;
+	if (!(cpy = get_shell()->env))
+		return ;
 	while (tree->cmds && tree->cmds[++i])
 	{
-		if (!(ptr = ft_strchr(tree->cmds[i], '$')) && \
+		if (!(ptr = ft_strchr(tree->cmds[i], '$')) || \
 			!find_env(cpy, tree->cmds[i]))
 			continue ;
-			check_if_env_var2(tree, cpy, ptr, i);
+		check_if_env_var2(tree, cpy, ptr, i);
 	}
 }

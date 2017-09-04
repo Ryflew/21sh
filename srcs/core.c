@@ -80,6 +80,18 @@ static void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 	}
 }
 
+static char			is_term_env(t_tree *tree)
+{
+	if (!tree->left && !tree->right && tree->cmds && tree->cmds[0] && \
+		!tree->cmds[1] && ft_strchr(tree->cmds[0], '='))
+	{
+		add_new_var(&(tree->cmds), &(get_shell()->export));
+		return (1);
+	}
+	else
+		return (0);
+}
+
 void			go_core(char *command, t_sh *shell)
 {
 	t_tree	*commands_tree;
@@ -104,7 +116,8 @@ void			go_core(char *command, t_sh *shell)
 		check_if_env_var(commands_tree);
 		if (find_env(shell->env, "PATH"))
 			try_add_hashtab(commands_tree, shell);
-		browse_tree(commands_tree, shell, NULL, 1);
+		if (!is_term_env(commands_tree))
+			browse_tree(commands_tree, shell, NULL, 1);
 	}
 	clear(shell, &begin_lexems, commands_tree);
 	//TO FO free aggregation

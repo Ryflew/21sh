@@ -2,14 +2,14 @@
 ----------- TODO --------------
 
 - Unset / Export
-- Ajouter unset / Export et help a la completion
+- History
 - Ajouter unset / export a la commande help
 - Norme
 - Leaks
 
 ---------- BONUS --------------
 
-- Command history
+- Command history & !
 - Resize de la fenetre
 
 ------------ A TESTER ---------
@@ -21,7 +21,6 @@
 - (/!\ Bug WTF) Quand on lance le shell avec "env -u HOME ./21sh", et que de suite apres on fait
 	un "env", on a un segfault, je suis remonte jusqu'a la fonction "parse_semicolons", on le corrige si tu veux mais clairement
 	on peut le laisser a mon avis
-- segfault si on lance le shell et on tape 3 fois "export VAR"
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
@@ -32,8 +31,13 @@
 - Command !history (A faire)
 
 
---------- Unset/Export fonctionnement ----------
-- Si on tape VAR="FOO" en commande, on le set uniquement dans export.
-- Export :
-			-> Si "export VAR", alors creer uniquement dans export sauf si il existe dans export, alors on le met dans les 2 
-				on l'ajoute a env
+
+
+
+------------ Fonctionnement history ----------------
+- 'history' liste tout l'historique numéroté. (FAIT)
+- 'history n' list tout l'historique jusqu'a n. (FAIT)
+- 'history !n' affiche la n ème ligne sur le term (FAIT)
+- 'history !-n' affiche la derniere ligne (plus recent) moins n (FAIT)
+- 'history !!' affiche la derniere commande utilise (== history !-1) (FAIT)
+- '!string' affiche la derniere commande qui commance par la string
