@@ -92,7 +92,8 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 	print_prompt(*state, op);
 	shell->have_write_error = 0;
 	shell->j = -1;
-	//return (ft_strdup("ls"));
+	//return (ft_strdup("ls hh > o 2>&1"));
+	//return (ft_strdup("ls hh 2>&1 | tr o O"));
 	while (1)
 	{
 		buff = 0;

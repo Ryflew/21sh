@@ -58,14 +58,14 @@ t_tree	*redirection_with_fd(t_sh *sh, t_tree *left)
 		return (ret_parse_error(left));
 	if ((new_node = basic_red(sh, CHEVF, left)) && new_node != (void*)-1)
 		new_node->from_fd = ft_atoi(token->value);
-	else if ((new_node = adv_red_forward(sh, FRED, left))
+	else if (new_node != (void*)-1 && (new_node = adv_red_forward(sh, FRED, left))
 		&& new_node != (void*)-1)
 		new_node->from_fd = ft_atoi(token->value);
-	else if ((new_node = basic_red(sh, DCHEVF, left)) && new_node != (void*)-1)
+	else if (new_node != (void*)-1 && (new_node = basic_red(sh, DCHEVF, left)) && new_node != (void*)-1)
 		new_node->from_fd = ft_atoi(token->value);
-	else if ((new_node = basic_red(sh, CHEVB, left)) && new_node != (void*)-1)
+	else if (new_node != (void*)-1 && (new_node = basic_red(sh, CHEVB, left)) && new_node != (void*)-1)
 		new_node->to_fd = ft_atoi(token->value);
-	else if ((new_node = basic_red(sh, DCHEVB, left)) && new_node != (void*)-1)
+	else if (new_node != (void*)-1 && (new_node = basic_red(sh, DCHEVB, left)) && new_node != (void*)-1)
 		new_node->to_fd = ft_atoi(token->value);
 	return (new_node);
 }

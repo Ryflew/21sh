@@ -2,6 +2,20 @@
 #include <signal.h>
 #include "tosh.h"
 
+static void	run_with_pipe(t_sh *shell, int *fd)
+{
+	if (shell->fd_pipe != 0)
+	{
+		dup2(shell->fd_pipe, 0);
+		close(shell->fd_pipe);
+	}
+	if (fd[1] != 1 && !shell->right_side)
+	{		
+		dup2(fd[1], 1);
+		close(fd[1]);
+	}
+}
+
 void	child(t_tree *node, t_sh *shell, int *fd)
 {
 	if (node->parent && node->parent->token->type == DCHEVB)
@@ -24,20 +38,6 @@ char	stop_binary(int sig)
 		return (1);
 	}
 	return (0);
-}
-
-void	run_with_pipe(t_sh *shell, int *fd)
-{
-	if (shell->fd_pipe != 0)
-	{
-		dup2(shell->fd_pipe, 0);
-		close(shell->fd_pipe);
-	}
-	if (fd[1] != 1 && !shell->right_side)
-	{
-		dup2(fd[1], 1);
-		close(fd[1]);
-	}
 }
 
 int		get_fd(t_sh *shell, int *fd)

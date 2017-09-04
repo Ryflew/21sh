@@ -41,7 +41,7 @@ void		try_add_hashtab(t_tree *node, t_sh *shell)
 	{
 		if (node->token->type != CHEVB && node->token->type != DCHEVB &&
 			node->token->type != CHEVF && node->token->type != DCHEVF &&
-			node->token->type != FRED)
+			node->token->type != FRED && node->token->type != BRED)
 			try_add_hashtab(node->right, shell);
 	}
 	if (node->cmds && is_builtins(node->cmds))

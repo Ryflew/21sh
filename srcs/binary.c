@@ -11,19 +11,11 @@
 /* ************************************************************************** */
 
 #include "tosh.h"
+#include <fcntl.h>
 
-static void	close_dup_fd(t_fd *fd, t_tree *node)
+static void	close_dup_fd(t_fd *fd)
 {
-	if (fd->file == -2)
-	{
-		if (fd->from != -1)
-			close(fd->from);
-		else
-			close(1);
-		ft_free_tab(node->cmds);
-		node->cmds = NULL;
-	}
-	else if (fd->from == -1 && fd->to == -1)
+	if (fd->from == -1 && fd->to == -1)
 	{
 		dup2(fd->file, 1);
 		dup2(fd->file, 2);
@@ -34,7 +26,7 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe)
 {
 	t_fd	*fd;
 	t_list	*tmp;
-
+	
 	close(pipe[0]);
 	child(node, shell, pipe);
 	tmp = shell->fds_out;
@@ -42,17 +34,51 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe)
 	|| shell->right_side))
 	{
 		fd = tmp->data;
-		if (fd->type != FRED || fd->from != -1)
+		if ((fd->type != FRED || fd->from != -1))
 			dup2(fd->file, fd->from);
 		else
-			close_dup_fd(fd, node);
+			close_dup_fd(fd);
 		close(fd->file);
 		tmp = tmp->next;
 	}
-	if (node->from_fd != -1 && node->to_fd != -1)
+	tmp = node->aggregations;
+	while (tmp)
 	{
-		dup2(node->to_fd, node->from_fd);
-		close(node->to_fd);
+		fd = tmp->data;
+		if (fd->from != -1 && fd->to != -1)
+		{
+			if (fd->type == FRED)
+			{
+				if (fcntl(fd->to, F_GETFD) == -1)
+				{
+					ft_putstr("21sh: ");
+					ft_putnbr(fd->to);
+					ft_putendl(": Bad file descriptor");
+					ft_free_tab(node->cmds);
+					node->cmds = NULL;
+				}
+				dup2(fd->to, fd->from);
+				close(fd->to);
+			}
+			else
+			{
+				if (fcntl(fd->from, F_GETFD) == -1)
+				{
+					ft_putstr("21sh: ");
+					ft_putnbr(fd->from);
+					ft_putendl(" : Bad file descriptor");
+					ft_free_tab(node->cmds);
+					node->cmds = NULL;
+				}
+				dup2(fd->from, fd->to);
+				close(fd->from);
+			}
+		}
+		else if (fd->to == -2)
+			(fd->from != -1) ? close(fd->from) : close(1);
+		else if (fd->from == -2)
+			(fd->to != -1) ? close(fd->to) : close(0);
+		tmp = tmp->next;
 	}
 }
 
@@ -85,7 +111,7 @@ char		run_binary(t_tree *node, t_env *env, t_sh *shell)
 {
 	int		pipe[2];
 	int		ret;
-
+	
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe)) != -1)
 	{
@@ -119,7 +145,7 @@ char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 		else if (!g_father)
 		{
 			ret = EXIT_SUCCESS;
-			manage_child_fd(shell, node, pipe);
+			//manage_child_fd(shell, node, pipe);
 			if (node->cmds)
 				ret = go_builtins(node->cmds, env, shell);
 			exit(ret);

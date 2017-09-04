@@ -25,17 +25,21 @@ static int	is_delimiter_op(e_token token)
 	return (0);
 }
 
-static void	cmd_without_delimiter_rules(t_sh *sh, t_tree **new_node, t_list **aggregation)
+static void	cmd_without_delimiter_rules(t_sh *sh, t_tree **new_node)
 {
 	t_fd	*fd;
 	t_list	*cmd_tokens;
 	t_token	*token;
+	t_list	*aggregations;
 
 	cmd_tokens = NULL;
 	fd = NULL;
+	aggregations = NULL;
 	while ((token = text_rules(sh)) || (token != (void*)-1 && \
 		(fd = aggregation_rules(sh))))
 	{
+		if (fd)
+			ft_node_push_back(&aggregations, fd);
 		if (token)
 			ft_node_push_back(&cmd_tokens, ft_strdup(token->value));
 	}
@@ -43,13 +47,12 @@ static void	cmd_without_delimiter_rules(t_sh *sh, t_tree **new_node, t_list **ag
 		*new_node = (void*)-1;
 	if (cmd_tokens)
 	{
-		if (fd)
-			ft_node_push_back(aggregation, fd);
 		*new_node = create_node(NULL, NULL, cmd_tokens, NULL);
+		(*new_node)->aggregations = aggregations;
 	}
 }
 
-t_tree		*cmd_rules(t_sh *sh, t_list **aggregation)
+t_tree		*cmd_rules(t_sh *sh)
 {
 	t_token	*delimiter_token;
 	t_tree	*new_node;
@@ -61,10 +64,10 @@ t_tree		*cmd_rules(t_sh *sh, t_list **aggregation)
 	{
 		delimiter_token = sh->current_token;
 		eat(sh, sh->current_token->type);
-		new_node = commands_line_rules(sh, aggregation);
+		new_node = commands_line_rules(sh);
 		eat(sh, delimiter_token->type + 1);
 	}
 	else
-		cmd_without_delimiter_rules(sh, &new_node, aggregation);
+		cmd_without_delimiter_rules(sh, &new_node);
 	return (new_node);
 }

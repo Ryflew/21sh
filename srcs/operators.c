@@ -54,9 +54,10 @@ static char	manage_chev(t_tree *node, t_sh *shell)
 	{
 		if (!(fd = (t_fd*)malloc(sizeof(t_fd))))
 			exit(-1);
-		if (node->token->type == FRED && !ft_strcmp(node->right->cmds[0], "-"))
+		/*if (node->token->type == FRED && !ft_strcmp(node->right->cmds[0], "-"))
 			fd->file = -2;
-		else if ((fd->file = open_file(node)) == -1)
+		else */
+		if ((fd->file = open_file(node)) == -1)
 			return (-1);
 		if (node->token->type != FRED)
 			fd->from = (node->from_fd == -1) ? 1 : node->from_fd;

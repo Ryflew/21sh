@@ -17,15 +17,14 @@ static char		manage_children(t_tree *node, t_sh *shell, char rig, char ret)
 			return (-1);
 	}
 	if (node->right && node->token && (node->token->type < CHEVB ||
-	node->token->type > FRED) && (node->token->type != OR || ret) &&
+	node->token->type > BRED) && (node->token->type != OR || ret) &&
 	(node->token->type != AND || !ret))
 	{
 		if (node->token->type == SCL)
 		{
 			if (shell->fds_out)
 				ft_clear_list(&shell->fds_out, (&free));
-			shell->aggregations = shell->aggregations->next;			
-			shell->fds_out = (t_list*)shell->aggregations->data;
+			shell->fds_out = NULL;
 			shell->fd_pipe = -1;
 			shell->right_side = 1;
 		}
@@ -91,17 +90,15 @@ void			go_core(char *command, t_sh *shell)
 	shell->lexer->line = command;
 	get_lexems(shell);
 	begin_lexems = shell->lexer->lexems;
-	shell->aggregations = NULL;
 	shell->current_token = shell->lexer->lexems->data;
 	shell->fd_pipe = -1;
-	if ((commands_tree = commands_line_rules(shell, NULL)) == (void*)-1)
+	shell->fds_out = NULL;	
+	if ((commands_tree = commands_line_rules(shell)) == (void*)-1)
 	{
 		parse_error(shell);
 		clear(shell, &begin_lexems, NULL);
 		return ;
 	}
-	shell->fds_out = (t_list*)shell->aggregations->data;	
-	ft_putendl("after");
 	if (commands_tree)
 	{
 		check_if_env_var(commands_tree);

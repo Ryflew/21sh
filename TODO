@@ -4,9 +4,6 @@
 - Unset / Export
 - Ajouter unset / Export et help a la completion
 - Ajouter unset / export a la commande help
-- aggregation de fichier <&
-- departager "2>&1" et "2>"
-- "ls 2>&6" si 6 n'est pas ouvert mettre une erreur
 - Norme
 - Leaks
 
@@ -15,14 +12,16 @@
 - Command history
 - Resize de la fenetre
 
+------------ A TESTER ---------
+
+- aggregation de fichier <&
+
 ------------ BUG --------------
 
 - (/!\ Bug WTF) Quand on lance le shell avec "env -u HOME ./21sh", et que de suite apres on fait
 	un "env", on a un segfault, je suis remonte jusqu'a la fonction "parse_semicolons", on le corrige si tu veux mais clairement
 	on peut le laisser a mon avis
 - segfault si on lance le shell et on tape 3 fois "export VAR"
-- segfault "ls 2>&"
-- ls 2>&1 auteur (ca ne ls pas auteur)
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

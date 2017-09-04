@@ -114,6 +114,7 @@ typedef struct		s_tree
 	struct s_tree	*right;
 	struct s_tree	*parent;
 	char			**tmp_env;
+	t_list			*aggregations;
 }					t_tree;
 
 typedef struct		s_pos
@@ -138,11 +139,6 @@ typedef struct		s_fd
 	e_token			type;
 }					t_fd;
 
-typedef struct		s_aggregation
-{
-	t_list			*aggregation;
-}					t_aggregation;
-
 typedef	struct		s_sh
 {
 	t_env			*env;
@@ -152,7 +148,6 @@ typedef	struct		s_sh
 
 	t_lexer			*lexer;
 	t_token			*current_token;
-	t_list			*aggregations;
 	t_list			*fds_out;
 	t_fd			fd_in;
 	int				fd_pipe;
@@ -289,12 +284,11 @@ char				*get_line(t_sh *shell, unsigned long buff, e_state *state,
 char				**conv_env(t_env *env);
 char				**split_quot_cmd(char *cmd);
 void				child(t_tree *node, t_sh *shell, int *fd);
-void				run_with_pipe(t_sh *shell, int *fd);
 t_env				*new_env(char *str);
 t_env				*cpy_env(t_env *env);
 t_env				*get_env(char **env);
 t_sh				*get_shell();
-t_tree				*commands_line_rules(t_sh *sh, t_list **aggreg);
+t_tree				*commands_line_rules(t_sh *sh);
 int					is_string_op(int c);
 void				get_lexems(t_sh *sh);
 t_tree				*redirection_rules(t_sh *sh, t_tree *left);
@@ -318,7 +312,7 @@ char				*current_binary(t_tree *node, t_env *env, t_sh *shell);
 t_token				*lex_str(t_lexer *lexer);
 t_token				*lex_number(t_lexer *lexer);
 t_token				*lex_word(t_lexer *lexer);
-t_tree				*cmd_rules(t_sh *sh, t_list **aggregation);
+t_tree				*cmd_rules(t_sh *sh);
 t_token				*new_token(t_lexer *lexer, e_token token_type, char *val);
 char				parse_error(t_sh *sh);
 char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
