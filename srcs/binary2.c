@@ -2,9 +2,9 @@
 #include <signal.h>
 #include "tosh.h"
 
-static void	run_with_pipe(t_sh *shell, int *fd)
+static void	run_with_pipe(t_sh *shell, int *fd, t_tree *node)
 {
-	if (shell->fd_pipe != 0)
+	if (shell->fd_pipe != 0 && node->parent && node->parent->token->type != DCHEVB && node->parent->token->type != CHEVB)
 	{
 		dup2(shell->fd_pipe, 0);
 		close(shell->fd_pipe);
@@ -23,7 +23,7 @@ void	child(t_tree *node, t_sh *shell, int *fd)
 	else if (node->parent && node->parent->token->type == CHEVB)
 		manage_chevb(shell->fd_in);
 	if (shell->fd_pipe != -1)
-		run_with_pipe(shell, fd);
+		run_with_pipe(shell, fd, node);
 }
 
 char	stop_binary(int sig)

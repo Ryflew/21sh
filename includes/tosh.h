@@ -56,15 +56,14 @@ typedef enum	e_token
 	NUM,
 	WORD,
 	FD,
-	QT,
-	DQT,
 	BQT,
 	LPAR,
 	RPAR,
 	LBKT,
 	RBKT,
 	LBRC,
-	RBRC
+	RBRC,
+	CLOSE_FD
 }				e_token;
 
 typedef enum	e_state
@@ -96,6 +95,7 @@ typedef	struct		s_lexer
 	int				red;
 	char			string_operator;
 	t_list			*lexems;
+	char			bs;
 }					t_lexer;
 
 typedef	struct		s_token
@@ -266,7 +266,7 @@ char				stop_binary(int sig);
 char				check_new_open(char *str, char *op, int *j);
 char				check_quot(char *str, char *op, int *i, int *j);
 char				reg_or_dir(char *path);
-void				history_cmd(char **av, t_sh *shell);
+void                history_cmd(char **av, t_sh *shell);
 char				check_quot_brackets2(char *str, char *op, int i, int *j);
 void				add_hash_line(char *name, char *path, t_sh *shell);
 char				is_in_hashtab(char *path, t_env *env);
@@ -307,12 +307,9 @@ char				is_writable_builtins(char *cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
 void				manage_dchevb(t_tree *node, char *cmd, char none);
 void				manage_chevb(t_fd fd);
-void				manage_chevf(t_list	*fds_out);
-void				manage_fred(t_tree *node, t_list *fds_out);
 char				*current_binary(t_tree *node, t_env *env, t_sh *shell);
-t_token				*lex_str(t_lexer *lexer);
 t_token				*lex_number(t_lexer *lexer);
-t_token				*lex_word(t_lexer *lexer);
+t_token				*lex_word(t_lexer *lexer, t_token *last_token);
 t_tree				*cmd_rules(t_sh *sh);
 t_token				*new_token(t_lexer *lexer, e_token token_type, char *val);
 char				parse_error(t_sh *sh);
@@ -324,7 +321,7 @@ char				browse_tree(t_tree *node, t_sh *shell, t_tree *parent,
 					char r_side);
 void				manage_string_op(t_lexer *lexer);
 void				*ret_parse_error(t_tree *node);
-t_token				*find_token(t_lexer *lexer);
+t_token				*find_token(t_lexer *lexer, t_token *last_token);
 char				**parse_env_cmds(t_sh *sh);
 t_fd				*aggregation_rules(t_sh *sh);
 int					father(t_sh *shell, int *fd);

@@ -44,14 +44,14 @@ static char	bred_rules(t_sh *sh, t_fd *fd)
 	else if (sh->current_token->type == FD && sh->lexer->lexems->next && \
 		((t_token*)sh->lexer->lexems->next->data)->type == BRED && \
 		sh->lexer->lexems->next->next && \
-		((t_token*)sh->lexer->lexems->next->next->data)->type == WORD && !ft_strcmp(((t_token*)sh->lexer->lexems->next->next->data)->value, "-"))
+		((t_token*)sh->lexer->lexems->next->next->data)->type == CLOSE_FD)
 	{
 		fd->type = BRED;
 		fd->to = ft_atoi(sh->current_token->value);
 		eat(sh, FD);
 		eat(sh, BRED);
 		fd->from = -2;
-		eat(sh, WORD);
+		eat(sh, CLOSE_FD);
 		return (1);
 	}
 	return (0);
@@ -85,14 +85,14 @@ static char fred_rules(t_sh *sh, t_fd *fd)
 	else if (sh->current_token->type == FD && sh->lexer->lexems->next && \
 		((t_token*)sh->lexer->lexems->next->data)->type == FRED && \
 		sh->lexer->lexems->next->next && \
-		((t_token*)sh->lexer->lexems->next->next->data)->type == WORD && !ft_strcmp(((t_token*)sh->lexer->lexems->next->next->data)->value, "-"))
+		((t_token*)sh->lexer->lexems->next->next->data)->type == CLOSE_FD)
 	{
 		fd->type = FRED;
 		fd->from = ft_atoi(sh->current_token->value);
 		eat(sh, FD);
 		eat(sh, FRED);
 		fd->to = -2;
-		eat(sh, WORD);
+		eat(sh, CLOSE_FD);
 		return (1);
 	}
 	return (0);	
@@ -105,9 +105,15 @@ t_fd	*aggregation_rules(t_sh *sh)
 	if (!(fd = (t_fd*)malloc(sizeof(t_fd))))
 		ft_exiterror("Malloc failure in aggregation_rules !", 1);
 	if (!sh->current_token)
+	{
+		free(fd);
 		return (NULL);
+	}
 	if (!fred_rules(sh, fd) && !bred_rules(sh, fd))
+	{
+		free(fd);
 		return (NULL);
+	}
 	return (fd);
 }
 

@@ -1,6 +1,6 @@
 #include "tosh.h"
 
-static void		manage_quote2(t_lexer *lexer, char *tmp)
+/*static void		manage_quote2(t_lexer *lexer, char *tmp)
 {
 	int		i;
 	int		j;
@@ -54,28 +54,28 @@ static void		manage_quote(t_lexer *lexer)
 	}
 	buff[++k] = '\0';
 	manage_quote2(lexer, ft_strdup(buff));
-}
+}*/
 
-static void		get_next_token2(t_lexer *lexer, t_token **token)
+static void		get_next_token2(t_lexer *lexer, t_token **token, t_token *last_token)
 {
-	manage_quote(lexer);
+	//manage_quote(lexer);
 	if (*lexer->line && (lexer->string_operator == *lexer->line || \
-		!lexer->string_operator) && *lexer->line == '\'')
+		!lexer->string_operator) && *lexer->line == '\'' && !lexer->bs)
 		manage_string_op(lexer);
 	else if (*lexer->line && (lexer->string_operator == *lexer->line || \
-		!lexer->string_operator) && *lexer->line == '"')
+		!lexer->string_operator) && *lexer->line == '"' && !lexer->bs)
 		manage_string_op(lexer);
 	else if (*lexer->line && (lexer->string_operator == *lexer->line || \
-		!lexer->string_operator) && *lexer->line == '`')
+		!lexer->string_operator) && *lexer->line == '`' && !lexer->bs)
 	{
 		manage_string_op(lexer);
 		*token = new_token(lexer, BQT, "`");
 	}
 	else if (*lexer->line)
-		*token = find_token(lexer);
+		*token = find_token(lexer, last_token);
 }
 
-static t_token	*get_next_token(t_lexer *lexer)
+static t_token	*get_next_token(t_lexer *lexer, t_token *last_token)
 {
 	t_token *token;
 
@@ -85,12 +85,12 @@ static t_token	*get_next_token(t_lexer *lexer)
 		token = NULL;
 		if (ft_isblank(*lexer->line) && !lexer->string_operator)
 		{
-			while (*lexer->line && ft_isblank(*lexer->line))
-				++lexer->line;
-			lexer->red = 0;
+			if (!lexer->bs)
+				while (*lexer->line && ft_isblank(*lexer->line))
+					++lexer->line;
 		}
 		else
-			get_next_token2(lexer, &token);
+			get_next_token2(lexer, &token, last_token);
 		if (token)
 			return (token);
 	}
@@ -101,6 +101,7 @@ void			get_lexems(t_sh *sh)
 {
 	t_token *token;
 
-	while ((token = get_next_token(sh->lexer)))
+	token = NULL;
+	while ((token = get_next_token(sh->lexer, token)))
 		ft_node_push_back(&(sh->lexer->lexems), token);
 }

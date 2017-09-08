@@ -48,7 +48,7 @@ char			browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char rig)
 	}
 	else if (node->cmds)
 	{
-		if (node->parent && node->parent->token->type == PIPE)
+		if (node->parent && shell->fd_pipe != -1)
 			shell->right_side = rig;
 		if ((ret = exec_cmds(node, &(shell->env), shell)) == -1)
 			return (-1);
@@ -74,8 +74,8 @@ static void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 	}
 	if (commands_tree)
 	{
-		//if (shell->fds_out)
-		//	ft_clear_list(&shell->fds_out, (&free));
+		if (shell->fds_out)
+			ft_clear_list(&shell->fds_out, (&free));
 		del_command_tree(commands_tree);
 	}
 }
@@ -100,6 +100,7 @@ void			go_core(char *command, t_sh *shell)
 	add_to_history(shell, command);
 	shell->lexer->lexems = NULL;
 	shell->lexer->line = command;
+	shell->lexer->bs = 0;
 	get_lexems(shell);
 	begin_lexems = shell->lexer->lexems;
 	shell->current_token = shell->lexer->lexems->data;
@@ -120,5 +121,4 @@ void			go_core(char *command, t_sh *shell)
 			browse_tree(commands_tree, shell, NULL, 1);
 	}
 	clear(shell, &begin_lexems, commands_tree);
-	//TO FO free aggregation
 }

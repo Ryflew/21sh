@@ -16,7 +16,7 @@ static int	is_operator(int c, int c2)
 	return (0);
 }
 
-static void	lex_number2(t_lexer *lexer, int i, e_token *type, char *string_op)
+/*static void	lex_number2(t_lexer *lexer, int i, e_token *type, char *string_op)
 {
 	if (!ft_isdigit((lexer->line)[i]))
 		*type = WORD;
@@ -50,21 +50,93 @@ t_token		*lex_number(t_lexer *lexer)
 	token = new_token(lexer, type, clear_quot(ft_strsub(lexer->line, 0, i),\
 	lexer->string_operator));
 	return (token);
+}*/
+
+static char	*get_string(t_lexer *lexer, char const *s, size_t len)
+{
+	char			*strf;
+	size_t			i;
+	char			first_string_op;
+	size_t			new_len;
+	char			bs;
+
+	if (s)
+	{
+		first_string_op = lexer->string_operator;
+		i = 0;
+		new_len = 0;
+		bs = 0;
+		if (lexer->bs)
+			bs = 1;
+		while (i < len)
+		{
+			if ((s[i] != '\\' || (bs || lexer->string_operator == '\'')) && (s[i] != lexer->string_operator || (bs && lexer->string_operator != '\'')))
+				++new_len;
+			if (bs)
+				bs = 0;
+			else if (s[i] == '\\')
+				bs = 1;
+			if (s[i++] == lexer->string_operator)
+				if (s[i] && is_string_op(s[i]))
+					lexer->string_operator = s[i];
+		}
+		strf = (char*)malloc(sizeof(char) * (new_len + 1));
+		if (strf)
+		{
+			i = 0;
+			new_len = 0;
+			lexer->string_operator = first_string_op;
+			bs = 0;
+			if (lexer->bs)
+				bs = 1;
+			while (i < len)
+			{
+				if ((s[i] != '\\' || (bs || lexer->string_operator == '\'')) && (s[i] != lexer->string_operator || (bs && lexer->string_operator != '\'')))		
+					strf[new_len++] = s[i];
+				if (bs)
+					bs = 0;
+				else if (s[i] == '\\')
+					bs = 1;
+				if (s[i++] == lexer->string_operator)
+					if (s[i] && is_string_op(s[i]))
+						lexer->string_operator = s[i];
+			}
+			strf[new_len] = '\0';
+			return (strf);
+		}
+	}
+	return (NULL);
 }
 
-t_token		*lex_word(t_lexer *lexer)
+t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 {
 	int		i;
 	t_token	*token;
+	e_token	type;
+	char	bs;
 
 	i = 0;
 	token = NULL;
-	while (((lexer->line)[i] && (lexer->string_operator && (lexer->line[i]) !=\
-		lexer->string_operator)) || (!lexer->string_operator && \
-		!is_operator((lexer->line)[i], (lexer->line)[i + 1]) \
-		&& !ft_isblank((lexer->line)[i])))
+	type = NUM;
+	bs = lexer->bs;
+	while ((lexer->line)[i] && ((i && (lexer->line)[i - 1] == '\\') || bs ||
+		(!is_operator((lexer->line)[i], (lexer->line)[i + 1]) \
+		&& !ft_isblank((lexer->line)[i]))))
+	{
+		if (type != WORD && !ft_isdigit((lexer->line)[i]))
+			type = WORD;
+		if (is_string_op((lexer->line)[i]) && !lexer->string_operator)
+			lexer->string_operator = (lexer->line)[i];
+		if (bs)
+			bs = 0;
 		++i;
-	token = new_token(lexer, WORD, clear_quot(remove_useless_space(\
-		ft_strsub(lexer->line, 0, i), -1, -1, 0), lexer->string_operator));
+	}
+	if (type == NUM && (last_token->type == FRED || last_token->type == BRED || ((lexer->line)[i] && \
+	((lexer->line)[i] == '<' || (lexer->line)[i] == '>'))))
+		type = FD;
+	token = new_token(lexer, type, get_string(lexer, lexer->line, i));
+	lexer->line += i - ft_strlen(token->value);
+	lexer->string_operator = 0;
+	lexer->bs = 0;
 	return (token);
 }

@@ -85,6 +85,8 @@ void	del_command_tree(t_tree *tree)
 		del_command_tree(tree->right);
 	if (tree->cmds)
 		ft_strdelpp(&tree->cmds);
+	if (tree->aggregations)
+		ft_clear_list(&tree->aggregations, &free);
 	if (tree->tmp_env)
 		free(tree->tmp_env);
 	free(tree);

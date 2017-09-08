@@ -25,9 +25,7 @@ t_tree	*adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 {
 	t_token	*token_type;
 	t_token	*file_name;
-	t_tree	*new_node;
 
-	new_node = NULL;
 	if (left && !left->right && left->token && left->token->type != SCL)
 		return (ret_parse_error(left));
 	if (sh->current_token->type == type)
@@ -38,10 +36,10 @@ t_tree	*adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 			return (ret_parse_error(left));
 		if (!(file_name = text_rules(sh)))
 			return (ret_parse_error(left));
-		new_node = create_node(left, token_type, NULL, create_node(NULL, NULL,\
-			ft_create_node(ft_strdup(file_name->value)), NULL));
+		return (create_node(left, token_type, NULL, create_node(NULL, NULL,\
+			ft_create_node(ft_strdup(file_name->value)), NULL)));
 	}
-	return (new_node);
+	return (NULL);
 }
 
 t_tree	*redirection_with_fd(t_sh *sh, t_tree *left)

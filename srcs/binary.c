@@ -30,7 +30,7 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe)
 	close(pipe[0]);
 	child(node, shell, pipe);
 	tmp = shell->fds_out;
-	while (tmp && node->parent && (node->parent->token->type != PIPE
+	while (tmp && node->parent && (shell->fd_pipe == -1
 	|| shell->right_side))
 	{
 		fd = tmp->data;
@@ -145,7 +145,7 @@ char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 		else if (!g_father)
 		{
 			ret = EXIT_SUCCESS;
-			//manage_child_fd(shell, node, pipe);
+			manage_child_fd(shell, node, pipe);
 			if (node->cmds)
 				ret = go_builtins(node->cmds, env, shell);
 			exit(ret);

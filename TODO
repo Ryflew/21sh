@@ -21,6 +21,7 @@
 - (/!\ Bug WTF) Quand on lance le shell avec "env -u HOME ./21sh", et que de suite apres on fait
 	un "env", on a un segfault, je suis remonte jusqu'a la fonction "parse_semicolons", on le corrige si tu veux mais clairement
 	on peut le laisser a mon avis
+- echo "salut\"cava" -> ecrit dquote> alors que ca ne devrait pas compter le " echappé
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
@@ -29,9 +30,6 @@
 - Tous les builtins sont a la norme POSIX
 - Unset / Export
 - Command !history (A faire)
-
-
-
 
 
 ------------ Fonctionnement history ----------------
