@@ -154,6 +154,7 @@ typedef	struct		s_sh
 	int				right_side;
 
 	char			*prompt;
+	char			*toaddstr;
 	char			command[ARG_MAX];
 	char			*total_command;
 	char			*op;
@@ -240,6 +241,7 @@ void				clear_line(t_sh *shell);
 void				add_to_history(t_sh *shell, char *command);
 void				current_completion(char **str);
 void				get_tree_rec(t_tree **tree, char *left, char *right);
+int					history_excla(char *str, t_sh *shell);
 void				cd_tilde(char *str, t_env *env, t_sh *shell, t_cd *opt);
 void				print_cd_error(char *tmp, char *path);
 void				del_command_tree(t_tree *tree);

@@ -2,14 +2,12 @@
 ----------- TODO --------------
 
 - Unset / Export
-- History
 - Ajouter unset / export a la commande help
 - Norme
 - Leaks
 
 ---------- BONUS --------------
 
-- Command history & !
 - Resize de la fenetre
 
 ------------ A TESTER ---------
@@ -21,6 +19,8 @@
 - (/!\ Bug WTF) Quand on lance le shell avec "env -u HOME ./21sh", et que de suite apres on fait
 	un "env", on a un segfault, je suis remonte jusqu'a la fonction "parse_semicolons", on le corrige si tu veux mais clairement
 	on peut le laisser a mon avis
+- "hist" puis tab, './' est prompt.
+- "history" puis ctrl c, erreur malloc free
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
@@ -28,7 +28,7 @@
 - Commande help
 - Tous les builtins sont a la norme POSIX
 - Unset / Export
-- Command !history (A faire)
+- Command !history
 
 
 
@@ -40,4 +40,4 @@
 - 'history !n' affiche la n ème ligne sur le term (FAIT)
 - 'history !-n' affiche la derniere ligne (plus recent) moins n (FAIT)
 - 'history !!' affiche la derniere commande utilise (== history !-1) (FAIT)
-- '!string' affiche la derniere commande qui commance par la string
+- '!string' affiche la derniere commande qui commance par la string (FAIT)

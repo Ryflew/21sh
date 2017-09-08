@@ -32,6 +32,7 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	shell->save_env = NULL;
 	shell->have_write_error = 0;
 	shell->return_value = 0;
+	shell->toaddstr = NULL;
 }
 
 static void	get_current_path(t_env *env)

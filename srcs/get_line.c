@@ -87,11 +87,24 @@ static char	get_line2(t_sh *shell, unsigned long buff)
 	return (1);
 }
 
+void	add_all_char(t_sh *shell)
+{
+	int	i;
+
+	i = -1;
+	while (shell->toaddstr[++i])
+		add_char(shell->command, &(shell->j), shell, shell->toaddstr[i]);
+	free(shell->toaddstr);
+	shell->toaddstr = NULL;
+}
+
 char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 {
 	print_prompt(*state, op);
 	shell->have_write_error = 0;
 	shell->j = -1;
+	if (shell->toaddstr)
+		add_all_char(shell);
 	//return (ft_strdup("ls hh > o 2>&1"));
 	//return (ft_strdup("ls hh 2>&1 | tr o O"));
 	while (1)

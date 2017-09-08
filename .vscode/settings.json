@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "tosh.h": "c",
-        "list.h": "c"
+        "list.h": "c",
+        "limits": "c"
     }
 }
