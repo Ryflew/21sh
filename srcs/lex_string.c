@@ -1,17 +1,17 @@
 #include "tosh.h"
 
-int			is_string_op(int c)
+char			is_string_op(char c)
 {
 	if (c == '\'' || c == '"' || c == '`')
 		return (1);
 	return (0);
 }
 
-static int	is_operator(int c, int c2)
+static char	is_operator(char c, char c2)
 {
 	if (c == '>' || c == '<' || (c == '&' && c2 == '&') || c == '|' || \
 		c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || \
-		c == '}' || c == ';')
+		c == '}' || c == ';' || c == '*' || c == '?')
 		return (1);
 	return (0);
 }
@@ -121,7 +121,9 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 	bs = lexer->bs;
 	while ((lexer->line)[i] && ((i && (lexer->line)[i - 1] == '\\') || bs ||
 		(!is_operator((lexer->line)[i], (lexer->line)[i + 1]) \
-		&& !ft_isblank((lexer->line)[i]))))
+		&& !ft_isblank((lexer->line)[i]) && ((lexer->line)[i] != ',' || !lexer->brc || lexer->bkt))
+		|| ((lexer->line)[i] == ']' && !lexer->bkt) || ((lexer->line)[i] == '}' && !lexer->brc)
+		|| ((lexer->line)[i] == '{' && lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt)))
 	{
 		if (type != WORD && !ft_isdigit((lexer->line)[i]))
 			type = WORD;
@@ -134,6 +136,13 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 	if (type == NUM && (last_token->type == FRED || last_token->type == BRED || ((lexer->line)[i] && \
 	((lexer->line)[i] == '<' || (lexer->line)[i] == '>'))))
 		type = FD;
+	if (last_token && is_glob_token(last_token->type) && !lexer->blank)
+	{
+		if (lexer->bkt)
+			type = BKT_EXPR;
+		else
+			type = EXPR;
+	}
 	token = new_token(lexer, type, get_string(lexer, lexer->line, i));
 	lexer->line += i - ft_strlen(token->value);
 	lexer->string_operator = 0;

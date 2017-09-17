@@ -101,11 +101,19 @@ void			go_core(char *command, t_sh *shell)
 	shell->lexer->lexems = NULL;
 	shell->lexer->line = command;
 	shell->lexer->bs = 0;
+	shell->lexer->brc = 0;
+	shell->lexer->bkt = 0;
+	shell->lexer->blank = 0;
 	get_lexems(shell);
+	//begin_lexems = shell->lexer->lexems;
+	//shell->current_token = shell->lexer->lexems->data;
+	glob(shell);
 	begin_lexems = shell->lexer->lexems;
+	//shell->lexer->lexems = begin_lexems;
+	begin_lexems = shell->lexer->lexems;	
 	shell->current_token = shell->lexer->lexems->data;
 	shell->fd_pipe = -1;
-	shell->fds_out = NULL;	
+	shell->fds_out = NULL;
 	if ((commands_tree = commands_line_rules(shell)) == (void*)-1)
 	{
 		parse_error(shell);

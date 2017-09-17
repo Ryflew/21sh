@@ -56,14 +56,20 @@ typedef enum	e_token
 	NUM,
 	WORD,
 	FD,
+	CLOSE_FD,
 	BQT,
 	LPAR,
 	RPAR,
+	S_WILDCARD,
+	Q_WILDCARD,
+	E_WILDCARD,
 	LBKT,
 	RBKT,
 	LBRC,
 	RBRC,
-	CLOSE_FD
+	COM,
+	EXPR,
+	BKT_EXPR,
 }				e_token;
 
 typedef enum	e_state
@@ -96,6 +102,9 @@ typedef	struct		s_lexer
 	char			string_operator;
 	t_list			*lexems;
 	char			bs;
+	char			blank;
+	char			brc;
+	char			bkt;
 }					t_lexer;
 
 typedef	struct		s_token
@@ -186,7 +195,7 @@ void				set_env(char **av, t_env **env);
 void				unset_env(char **av, t_env **env, t_env **export);
 void				exit_command(char **av, t_sh *shell);
 char				export(char **av, t_env **export);
-int					is_string_op(int c);
+char				is_string_op(char c);
 int					ft_putcharint(int c);
 int					get_current_pos_in_command(t_sh *shell);
 int					base_converter(int nb, int frombase, int tobase);
@@ -292,7 +301,6 @@ t_env				*cpy_env(t_env *env);
 t_env				*get_env(char **env);
 t_sh				*get_shell();
 t_tree				*commands_line_rules(t_sh *sh);
-int					is_string_op(int c);
 void				get_lexems(t_sh *sh);
 t_tree				*redirection_rules(t_sh *sh, t_tree *left);
 t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens,
@@ -327,5 +335,12 @@ t_token				*find_token(t_lexer *lexer, t_token *last_token);
 char				**parse_env_cmds(t_sh *sh);
 t_fd				*aggregation_rules(t_sh *sh);
 int					father(t_sh *shell, int *fd);
+
+
+
+char   				is_glob_token(e_token type);
+void				glob(t_sh *sh);
+int					nmatch(char *s1, char *s2, t_list *lexems);
+
 
 #endif

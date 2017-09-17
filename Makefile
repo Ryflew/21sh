@@ -76,7 +76,9 @@ FILES = add_char.c \
 				open_file.c \
 				identify_token.c \
 				parse_env.c \
-				father.c
+				father.c \
+				globing.c \
+				nmatch.c
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 

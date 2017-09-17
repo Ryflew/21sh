@@ -22,6 +22,8 @@
 - echo "salut\"cava" -> ecrit dquote> alors que ca ne devrait pas compter le " echappé
 - "hist" puis tab, './' est prompt.
 - "history" puis ctrl c, erreur malloc free
+- "ls [" puis ca attend qu'on ferme le crochet donc je fais "]" et ca sort une erreur cest pas normal ^^
+- ls [!2aiT]* ca affiche ls [quitaiT]* en input
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
