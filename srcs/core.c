@@ -122,7 +122,6 @@ void			go_core(char *command, t_sh *shell)
 	t_tree	*commands_tree;
 	t_list	*begin_lexems;
 
-	add_to_history(shell, command);
 	shell->lexer->lexems = NULL;
 	shell->lexer->line = command;
 	shell->lexer->bs = 0;
@@ -130,6 +129,7 @@ void			go_core(char *command, t_sh *shell)
 	shell->lexer->bkt = 0;
 	shell->lexer->blank = 0;
 	get_lexems(shell);
+	add_to_history(shell, command);
 	//begin_lexems = shell->lexer->lexems;
 	//shell->current_token = shell->lexer->lexems->data;
 	glob(shell);

@@ -132,7 +132,7 @@ void		shell_loop(t_sh *shell)
 			free(command);
 			continue ;
 		}
-		if (check_history_excla(shell, &command)) // check les leaks avec ca
+		if (check_history_excla(shell, &command))
 		{
 			if (shell->op)
 				ft_strdel(&shell->op);

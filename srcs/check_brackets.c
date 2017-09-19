@@ -15,13 +15,11 @@
 
 char		check_quot_brackets2(char *str, char *op, int i, int *j)
 {
-	if (str[i] == '(' || str[i] == '{' || str[i] == '[')
+	if (str[i] == '(')
 		op[++*j] = str[i];
-	else if (*j > -1 && ((str[i] == ')' && op[*j] != '(') || \
-		(str[i] == '}' && op[*j] != '{') || (str[i] == ']' && op[*j] != '[')))
+	else if (*j > -1 && (str[i] == ')' && op[*j] != '('))
 		return (1);
-	else if (*j > -1 && ((str[i] == ')' && op[*j] == '(') || \
-		(str[i] == '}' && op[*j] == '{') || (str[i] == ']' && op[*j] == '[')))
+	else if (*j > -1 && ((str[i] == ')' && op[*j] == '(')))
 		op[(*j)--] = 0;
 	return (0);
 }

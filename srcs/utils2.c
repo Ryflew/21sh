@@ -48,10 +48,6 @@ void	print_prompt(e_state state, char *op)
 			ft_putstr("bquote> ");
 		else if (op[ft_strlen(op) - 1] == '(')
 			ft_putstr("par> ");
-		else if (op[ft_strlen(op) - 1] == '{')
-			ft_putstr("aco> ");
-		else if (op[ft_strlen(op) - 1] == '[')
-			ft_putstr("cro> ");
 		else if (op[ft_strlen(op) - 1] == '|')
 			ft_putstr("pipe> ");
 	}

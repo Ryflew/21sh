@@ -1,7 +1,6 @@
 
 ----------- TODO --------------
 
-- finir fix le bug !, et le finir
 - Unset / Export
 - Ajouter unset / export a la commande help
 - Norme
@@ -19,7 +18,6 @@
 ------------ BUG --------------
 
 <<<<<<< HEAD
-- "ls [" puis ca attend qu'on ferme le crochet donc je fais "]" et ca sort une erreur cest pas normal ^^
 - ls [!2aiT]* ca affiche ls [quitaiT]* en input (backslash)
 {
 	t_list  *lexems;
