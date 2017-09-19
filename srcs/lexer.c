@@ -83,17 +83,24 @@ static t_token	*get_next_token(t_lexer *lexer, t_token *last_token)
 	while (*lexer->line)
 	{
 		token = NULL;
-		if (ft_isblank(*lexer->line) && !lexer->string_operator)
+		if (ft_isblank(*lexer->line) && !lexer->string_operator && !lexer->bs)
 		{
-			if (!lexer->bs)
-				while (*lexer->line && ft_isblank(*lexer->line))
-					++lexer->line;
+			while (*lexer->line && ft_isblank(*lexer->line))
+				++lexer->line;
+			lexer->blank = 1;
+			if (last_token && (is_glob_token(last_token->type) || last_token->type == EXPR || last_token->type == BKT_EXPR || last_token->type == COM))
+				return (new_token(lexer, NONE, ""));
 		}
 		else
+		{
 			get_next_token2(lexer, &token, last_token);
+			lexer->blank = 0;
+		}
 		if (token)
 			return (token);
 	}
+	if (last_token && (is_glob_token(last_token->type) || last_token->type == EXPR || last_token->type == BKT_EXPR || last_token->type == COM))
+		return (new_token(lexer, NONE, ""));
 	return (token);
 }
 
@@ -104,4 +111,12 @@ void			get_lexems(t_sh *sh)
 	token = NULL;
 	while ((token = get_next_token(sh->lexer, token)))
 		ft_node_push_back(&(sh->lexer->lexems), token);
+	t_list *tmp = sh->lexer->lexems;
+	while (tmp)
+	{
+		ft_putnbr(((t_token*)(tmp->data))->type);
+		ft_putendl(" <-- type");
+		ft_putendl(((t_token*)(tmp->data))->value);
+		tmp = tmp->next;
+	}
 }

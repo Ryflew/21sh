@@ -24,7 +24,8 @@ t_token	*new_token(t_lexer *lexer, e_token token_type, char *value)
 
 	if (!(token = (t_token *)malloc(sizeof(t_token))))
 		exit(-1);
-	lexer->line += ft_strlen(value);
+	if (lexer)
+		lexer->line += ft_strlen(value);
 	token->type = token_type;
 	if (token_type != WORD && token_type != NUM && \
 		token_type != FD)

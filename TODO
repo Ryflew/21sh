@@ -17,6 +17,32 @@
 
 ------------ BUG --------------
 
+<<<<<<< HEAD
+- "ls [" puis ca attend qu'on ferme le crochet donc je fais "]" et ca sort une erreur cest pas normal ^^
+- ls [!2aiT]* ca affiche ls [quitaiT]* en input (backslash)
+{
+	t_list  *lexems;
+	t_token *token;
+	char	*line;
+
+    lexems = sh->lexer->lexems;
+    while (lexems)
+    {
+		token = (t_token*)lexems->data;
+		while (ft_isblank(*line) || *line == '\' || *line == '"' || *line '\''|| line == '`')
+			++line;
+        if (token->type == HIST)
+        {
+		}
+		else
+		{
+			line += ft_strlen(token->value);
+			lexems = lexems->next;
+		}
+    }
+}
+Manque les backslashs
+
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
 - && et ||

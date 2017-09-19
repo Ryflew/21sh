@@ -17,14 +17,6 @@ void		*ret_parse_error(t_tree *node)
 	return ((void*)-1);
 }
 
-static int	is_delimiter_op(e_token token)
-{
-	if (token == LPAR || token == RPAR || token == LBKT || token == RBKT || \
-		token == LBRC || token == RBRC)
-		return (1);
-	return (0);
-}
-
 static void	cmd_without_delimiter_rules(t_sh *sh, t_tree **new_node)
 {
 	t_fd	*fd;
@@ -54,18 +46,16 @@ static void	cmd_without_delimiter_rules(t_sh *sh, t_tree **new_node)
 
 t_tree		*cmd_rules(t_sh *sh)
 {
-	t_token	*delimiter_token;
 	t_tree	*new_node;
 
 	if (!sh->current_token)
 		return (NULL);
 	new_node = NULL;
-	if (is_delimiter_op(sh->current_token->type))
+	if (sh->current_token->type == LPAR)
 	{
-		delimiter_token = sh->current_token;
-		eat(sh, sh->current_token->type);
+		eat(sh, LPAR);
 		new_node = commands_line_rules(sh);
-		eat(sh, delimiter_token->type + 1);
+		eat(sh, RPAR);
 	}
 	else
 		cmd_without_delimiter_rules(sh, &new_node);
