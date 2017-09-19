@@ -1,11 +1,12 @@
 
 ----------- TODO --------------
 
-- Gérer le ~ avant le lexer.
+- finir fix le bug !, et le finir
 - Unset / Export
 - Ajouter unset / export a la commande help
 - Norme
 - Leaks
+- Pour chacun refaire tous les headers a son nom (libft etc compris !)
 
 ---------- BONUS --------------
 

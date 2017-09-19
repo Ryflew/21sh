@@ -36,13 +36,14 @@ static void	help_help(void)
 	ft_putendl("\t- help echo.");
 	ft_putendl("\t- help env.");
 	ft_putendl("\t- help hash.");
+	ft_putendl("\t- help history.");
 	ft_putendl("\t- help setenv.");
 	ft_putendl("\t- help unsetenv.");
 	ft_putendl("\t- help exit.\n");
 	ft_putstr(C_RESET);
 }
 
-void		help_command(char **cmd)
+void		help_command(char **cmd) // trop de ligne
 {
 	int		i;
 
@@ -67,6 +68,8 @@ void		help_command(char **cmd)
 				help_echo();
 			else if (!ft_strcmp(cmd[i], "hash"))
 				help_hash();
+			else if (!ft_strcmp(cmd[i], "history"))
+				help_history();
 		}
 	}
 }

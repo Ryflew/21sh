@@ -92,6 +92,31 @@ static char			is_term_env(t_tree *tree)
 		return (0);
 }
 
+void	check_if_home_tilde(t_tree *tree, char *home)
+{
+	int		i;
+	char	*ptr;
+	char	*tmp;
+	char	*tmp2;
+
+	if (tree->left)
+		return (check_if_env_var(tree->left));
+	if (tree->right)
+		return (check_if_env_var(tree->right));
+	i = -1;
+	while (tree->cmds && tree->cmds[++i])
+	{
+		if ((ptr = ft_strstr(tree->cmds[i], "~/")))
+		{
+			tmp = ft_strsub(tree->cmds[i], 0, ptr - tree->cmds[i]);
+			tmp2 = ft_strstrjoin(tmp, home, ptr + 1);
+			free(tmp);
+			free(tree->cmds[i]);
+			tree->cmds[i] = tmp2;
+		}
+	}
+}
+
 void			go_core(char *command, t_sh *shell)
 {
 	t_tree	*commands_tree;
@@ -123,6 +148,8 @@ void			go_core(char *command, t_sh *shell)
 	if (commands_tree)
 	{
 		check_if_env_var(commands_tree);
+		if (find_env(shell->env, "HOME"))
+			check_if_home_tilde(commands_tree, find_env(shell->env, "HOME"));
 		if (find_env(shell->env, "PATH"))
 			try_add_hashtab(commands_tree, shell);
 		if (!is_term_env(commands_tree))

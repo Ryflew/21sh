@@ -223,6 +223,7 @@ void				help_echo(void);
 void				help_env(void);
 void				help_hash(void);
 void				help_setenv(void);
+void				help_history(void);
 void				sig_hand(int sig);
 void				do_termcap(char *key);
 void				search_mode(t_sh *shell);

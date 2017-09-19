@@ -44,6 +44,7 @@ FILES = add_char.c \
 				get_line.c \
 				help.c \
 				help2.c \
+				help3.c \
 				history_cmd_opt.c \
 				history_cmd.c \
 				history_cmd2.c \

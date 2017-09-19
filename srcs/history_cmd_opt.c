@@ -98,7 +98,7 @@ void	hist_a(t_sh *shell, char *path)
 		i = 0;
 		return ;
 	}
-	if (!path || !*path || (fd = open(path, O_WRONLY | O_CREAT, S_IRWXU)) == -1)
+	if (!path || !*path || (fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU)) == -1)
 	{
 		errexit("history", "Unable to open file.");
 		return ;
