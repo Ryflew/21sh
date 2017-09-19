@@ -2,6 +2,7 @@
     "files.associations": {
         "tosh.h": "c",
         "list.h": "c",
-        "limits": "c"
+        "limits": "c",
+        "*.tcc": "c"
     }
 }

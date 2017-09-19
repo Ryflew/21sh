@@ -65,7 +65,7 @@ static char	**convert_history(char *str, int count)
 	return (out);
 }
 
-static void	get_history(t_sh *shell, off_t size, char *home)
+char **get_history(t_sh *shell, off_t size, char *home, char is_21sh_logs)
 {
 	int		i;
 	int		fd;
@@ -73,11 +73,11 @@ static void	get_history(t_sh *shell, off_t size, char *home)
 	char	history[size + 1];
 
 	if (!(fd = open(home, O_RDONLY)))
-		return ;
+		return (NULL);
 	if (read(fd, history, size) == -1)
 	{
 		close(fd);
-		return ;
+		return (NULL);
 	}
 	close(fd);
 	history[size] = '\0';
@@ -86,7 +86,11 @@ static void	get_history(t_sh *shell, off_t size, char *home)
 	while (history[++i])
 		if (history[i] == '\n')
 			++count;
-	shell->history = convert_history(history, count);
+	if (is_21sh_logs)
+		shell->history = convert_history(history, count);
+	else
+		return (convert_history(history, count));
+	return (NULL);
 }
 
 void		load_history(t_sh *shell, t_env *env)
@@ -98,7 +102,10 @@ void		load_history(t_sh *shell, t_env *env)
 		return ;
 	home = ft_strjoin(home, "/.21sh_history");
 	if (!stat(home, &buff))
-		get_history(shell, buff.st_size, home);
+	{
+		get_history(shell, buff.st_size, home, 1);
+		shell->hist_first = ft_counttab(shell->history);
+	}
 	else
 		shell->history = NULL;
 	free(home);

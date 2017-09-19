@@ -166,6 +166,7 @@ typedef	struct		s_sh
 	t_term_pos		pos;
 
 	char			**history;
+	int				hist_first;
 	char			*history_mem;
 	int				history_pos;
 
@@ -217,6 +218,7 @@ void				sig_hand(int sig);
 void				do_termcap(char *key);
 void				search_mode(t_sh *shell);
 void				save_history(t_sh *shell);
+void				hist_a(t_sh *shell, char *path);
 void				browse_history(t_sh *shell, unsigned long arrow);
 void				add_line(t_sh *shell, char *toadd);
 void				clear_lexems(t_token *token);
@@ -233,11 +235,14 @@ void				treat_second_prompt(char *string, char **op,
 void				go_core(char *command, t_sh *shell);
 void				manage_redirection(t_tree **tree);
 void				load_history(t_sh *shell, t_env *env);
+void				hist_w(t_sh *shell, char *path);
+void				hist_d(t_sh *shell, int nb);
 void				set_old_term(t_sh *shell);
 void				set_our_term(t_sh *shell);
 void				del_env(t_env *todel);
 void				go_completion(t_sh *shell);
 void				clear_line(t_sh *shell);
+void				hist_r(t_sh *shell, char *path);
 void				add_to_history(t_sh *shell, char *command);
 void				current_completion(char **str);
 void				get_tree_rec(t_tree **tree, char *left, char *right);
@@ -268,8 +273,10 @@ char				stop_binary(int sig);
 char				check_new_open(char *str, char *op, int *j);
 char				check_quot(char *str, char *op, int *i, int *j);
 char				reg_or_dir(char *path);
-void                history_cmd(char **av, t_sh *shell);
+void				history_cmd(char **av, t_sh *shell);
+void				treat_history_cmd(t_tree *tree);
 char				check_quot_brackets2(char *str, char *op, int i, int *j);
+int					get_history_size(t_sh *shell);
 void				add_hash_line(char *name, char *path, t_sh *shell);
 char				is_in_hashtab(char *path, t_env *env);
 char				*clear_quot(char *str, char string_op);
@@ -285,6 +292,7 @@ char				*find_match_binary(t_sh *shell, char *tosearch);
 char				*get_line(t_sh *shell, unsigned long buff, e_state *state,
 					char *op);
 char				**conv_env(t_env *env);
+char				**get_history(t_sh *shell, off_t size, char *home, char is_21sh_logs);
 char				**split_quot_cmd(char *cmd);
 void				child(t_tree *node, t_sh *shell, int *fd);
 t_env				*new_env(char *str);

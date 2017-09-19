@@ -37,13 +37,16 @@ FILES = add_char.c \
 				env.c \
 				env_utils.c \
 				env_utils2.c \
+				exclamation_point.c \
 				exit.c \
 				export.c \
 				ft_putcharint.c \
 				get_line.c \
 				help.c \
 				help2.c \
+				history_cmd_opt.c \
 				history_cmd.c \
+				history_cmd2.c \
 				hash_tab.c \
 				hash_tab2.c \
 				history.c \

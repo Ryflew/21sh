@@ -90,5 +90,7 @@ char	*find_builtins(char *part)
 		return (ft_strdup("unset"));
 	else if (!ft_strncmp("export", part, ft_strlen(part)))
 		return (ft_strdup("export"));
+	else if (!ft_strncmp("history", part, ft_strlen(part)))
+		return (ft_strdup("history"));
 	return (NULL);
 }

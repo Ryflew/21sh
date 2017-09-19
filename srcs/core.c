@@ -118,7 +118,10 @@ void			go_core(char *command, t_sh *shell)
 		if (find_env(shell->env, "PATH"))
 			try_add_hashtab(commands_tree, shell);
 		if (!is_term_env(commands_tree))
+		{
+			treat_history_cmd(commands_tree);
 			browse_tree(commands_tree, shell, NULL, 1);
+		}
 	}
 	clear(shell, &begin_lexems, commands_tree);
 }

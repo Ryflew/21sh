@@ -1,6 +1,7 @@
 
 ----------- TODO --------------
 
+- Gérer le ~ avant le lexer.
 - Unset / Export
 - Ajouter unset / export a la commande help
 - Norme
