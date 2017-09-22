@@ -70,6 +70,7 @@ typedef enum	e_token
 	COM,
 	EXPR,
 	BKT_EXPR,
+	HIST
 }				e_token;
 
 typedef enum	e_state
