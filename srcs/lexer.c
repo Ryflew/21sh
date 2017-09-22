@@ -67,7 +67,6 @@ static char	*replace_var(t_sh *sh, char *command)
 	i = -1;
 	sh->lexer->bs = 0;
 	sh->lexer->string_operator = 0;
-	ft_putendl("replace_var");
 	while (command[++i])
 	{
 		if (command[i] == '\\' && !sh->lexer->string_operator)
@@ -84,20 +83,12 @@ static char	*replace_var(t_sh *sh, char *command)
 		else if (command[i] == '$' && !sh->lexer->bs && !sh->lexer->string_operator && ft_isalnum(command[i + 1]))
 		{
 			left = ft_strsub(command, 0, i);
-			ft_putendl(left);
 			j = i;
 			while (command[++j] && ft_isalnum(command[j]))
 				;
-			var = ft_strsub(command, i + 1, j - i);
-			ft_putendl(var);			
+			var = ft_strsub(command, i + 1, j - i - 1);
 			to_free = var;
 			var = find_env(sh->env, var);
-			if (var)
-			{
-				ft_putstr("||");
-				ft_putstr(var);
-				ft_putendl("||");
-			}
 			if (to_free)
 				free(to_free);
 			to_free = command;
@@ -113,7 +104,6 @@ static char	*replace_var(t_sh *sh, char *command)
 				i += ft_strlen(var);
 		}
 	}
-	ft_putendl(command);
 	return (command);
 }
 

@@ -155,6 +155,7 @@ char			eat(t_sh *sh, e_token token)
 t_token			*text_rules(t_sh *sh)
 {
 	t_token *token;
+	char	*to_free;
 
 	if (!sh->current_token)
 		return (NULL);
@@ -163,7 +164,13 @@ t_token			*text_rules(t_sh *sh)
 		eat(sh, WORD);
 	else if (sh->current_token->type == NUM)
 		eat(sh, NUM);
-	//else
+	else if (token->type == TILD)
+	{
+		token->type = WORD;
+		to_free = token->value;
+		token->value = ft_strdup(find_env(sh->env, "HOME"));
+		free(to_free);
+	}
 	//	token = str_rules(sh);
 	return (token);
 }

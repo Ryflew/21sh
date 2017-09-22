@@ -90,7 +90,7 @@ t_token		*find_token(t_lexer *lexer, t_token *last_token)
 			token = new_token(lexer, OR, "||");
 		else if (*lexer->line == '|')
 			token = new_token(lexer, PIPE, "|");
-		else if (*lexer->line == '\\')
+		else if (*lexer->line == '\\' && lexer->string_operator != '\'')
 		{
 			lexer->bs = 1;
 			++lexer->line;
