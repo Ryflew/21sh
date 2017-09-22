@@ -6,6 +6,7 @@
 - Norme
 - Leaks
 - Pour chacun refaire tous les headers a son nom (libft etc compris !)
+- replace token tild dans parse_text
 
 ---------- BONUS --------------
 
@@ -18,6 +19,7 @@
 
 ------------ BUG --------------
 
+- find_env dans replace_var
 <<<<<<< HEAD
 - ls [!2aiT]* ca affiche ls [quitaiT]* en input (backslash)
 {

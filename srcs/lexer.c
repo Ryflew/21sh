@@ -93,7 +93,11 @@ static char	*replace_var(t_sh *sh, char *command)
 			to_free = var;
 			var = find_env(sh->env, var);
 			if (var)
-				ft_putendl(var);
+			{
+				ft_putstr("||");
+				ft_putstr(var);
+				ft_putendl("||");
+			}
 			if (to_free)
 				free(to_free);
 			to_free = command;
