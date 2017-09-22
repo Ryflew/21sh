@@ -55,6 +55,8 @@ static void	find_token2(t_lexer *lexer, t_token **token, t_token *last_token)
 		*token = new_token(lexer, SCL, ";");
 	else if (*lexer->line == '*')
 		*token = new_token(lexer, S_WILDCARD, "*");
+	else if (*lexer->line == '!')
+		*token = new_token(lexer, HIST, "!");
 	else if (*lexer->line == '?')
 		*token = new_token(lexer, Q_WILDCARD, "?");
 	else if (*lexer->line == '-' && last_token && (last_token->type == FRED || last_token->type == BRED))
