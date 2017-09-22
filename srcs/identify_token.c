@@ -51,14 +51,16 @@ static void	find_token2(t_lexer *lexer, t_token **token, t_token *last_token)
 	}
 	else if (*lexer->line == ',' && lexer->brc && !lexer->bkt)
 		*token = new_token(lexer, COM, ",");
-	else if (*lexer->line == ';')
-		*token = new_token(lexer, SCL, ";");
 	else if (*lexer->line == '*')
 		*token = new_token(lexer, S_WILDCARD, "*");
-	else if (*lexer->line == '!')
-		*token = new_token(lexer, HIST, "!");
 	else if (*lexer->line == '?')
 		*token = new_token(lexer, Q_WILDCARD, "?");
+	else if (*lexer->line == '!')
+		*token = new_token(lexer, HIST, "!");
+	else if (*lexer->line == ';')
+		*token = new_token(lexer, SCL, ";");
+	else if (*lexer->line == '~' && lexer->blank && (ft_isblank(*lexer->line + 1) || (*lexer->line + 1) == 0))
+		*token = new_token(lexer, TILD, "~");
 	else if (*lexer->line == '-' && last_token && (last_token->type == FRED || last_token->type == BRED))
 		*token = new_token(lexer, CLOSE_FD, "-");
 }

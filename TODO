@@ -14,6 +14,7 @@
 ------------ A TESTER ---------
 
 - aggregation de fichier <&
+- Testez l'existence et le fonctionnement du heredoc "<<", avec ses options et cas particuliers.
 
 ------------ BUG --------------
 

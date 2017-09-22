@@ -105,7 +105,7 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 	shell->j = -1;
 	if (shell->toaddstr)
 		add_all_char(shell);
-	//return (ft_strdup("ls hh > o 2>&1"));
+	//return (ft_strdup("echo $var"));
 	while (1)
 	{
 		buff = 0;

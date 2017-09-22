@@ -132,7 +132,7 @@ char			eat(t_sh *sh, e_token token)
 	return (0);
 }
 
-static t_token	*str_rules(t_sh *sh)
+/*static t_token	*str_rules(t_sh *sh)
 {
 	t_token *old_token;
 	t_token *token;
@@ -150,7 +150,7 @@ static t_token	*str_rules(t_sh *sh)
 			return ((void*)-1);
 	}
 	return (token);
-}
+}*/
 
 t_token			*text_rules(t_sh *sh)
 {
@@ -163,7 +163,7 @@ t_token			*text_rules(t_sh *sh)
 		eat(sh, WORD);
 	else if (sh->current_token->type == NUM)
 		eat(sh, NUM);
-	else
-		token = str_rules(sh);
+	//else
+	//	token = str_rules(sh);
 	return (token);
 }
