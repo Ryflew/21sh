@@ -152,6 +152,43 @@ char			eat(t_sh *sh, e_token token)
 	return (token);
 }*/
 
+t_token			*parse_bqt(t_sh *sh)
+{
+	t_tree	*tmp_tree;
+	t_env	*true_env;
+
+	if ((tmp_tree = commands_line_rules(sh)) == (void*)-1)
+		return ((void*)-1);
+	else if (tmp_tree)
+	{
+		true_env = sh->env;
+		check_if_env_var(tmp_tree);
+		if (find_env(s->env, "HOME"))
+			check_if_home_tilde(tmp_tree, find_env(sh->env, "HOME"));
+		if (find_env(sh->env, "PATH"))
+			try_add_hashtab(tmp_tree, shell);
+		if (!is_term_env(tmp_tree))
+		{
+			treat_history_cmd(tmp_tree);
+			browse_tree(tmp_tree, shell, NULL, 1);
+		}
+		if (true_env)
+		{
+			if (sh->env)
+				del_all_env(&(sh->env));
+			sh->env = true_env;
+		}
+		if (commands_tree)
+		{
+			if (shell->fds_out)
+				ft_clear_list(&shell->fds_out, (&free));
+			shell->fds_out = NULL;
+			shell->fd_pipe = -1;
+			del_command_tree(commands_tree);
+		}
+	}
+}
+
 t_token			*text_rules(t_sh *sh)
 {
 	t_token *token;
@@ -171,6 +208,15 @@ t_token			*text_rules(t_sh *sh)
 		token->value = ft_strdup(find_env(sh->env, "HOME"));
 		free(to_free);
 	}
-	//	token = str_rules(sh);
+	else if (token->type == BQT)
+	{
+		eat(sh, BQT);
+		token = parse_bqt(sh);
+		eat(sh, WORD);
+		if (eat(sh, BQT) == -1)
+			return ((void*)-1);
+	}
+	else if (token->type == EBQT)
+		return (NULL);
 	return (token);
 }
