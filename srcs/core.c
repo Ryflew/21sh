@@ -135,7 +135,7 @@ char	*get_excla(t_sh *shell, char *start, char *line, int *value)
 	return (NULL);
 }
 
-void			check_hist_exla2(t_sh *shell, char *line, int value)
+char		check_hist_exla2(t_sh *shell, char *line, int value)
 {
 	t_list  *lexems;
 	t_token *token;
@@ -147,7 +147,7 @@ void			check_hist_exla2(t_sh *shell, char *line, int value)
 	while (lexems)
 	{
 		token = (t_token*)lexems->data;
-		while (ft_isblank(*line) || *line == '\\' || *line == '"' || *line == '\''|| line == '`')
+		while (ft_isblank(*line) || *line == '\\' || *line == '"' || *line == '\''|| *line == '`')
 			++line;
 		if (token->type == HIST)
 		{
@@ -170,7 +170,7 @@ void			check_hist_exla2(t_sh *shell, char *line, int value)
 	}
 	if (value > 0)
 	{
-		shell->toaddstr = new;
+		shell->toaddstr = start;
 		return (0);
 	}
 	return (1);
