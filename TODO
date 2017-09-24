@@ -24,21 +24,21 @@
 	t_token *token;
 	char	*line;
 
-    lexems = sh->lexer->lexems;
-    while (lexems)
-    {
+	lex= sh->lexer->lexems;
+	while (lexems)
+	{
 		token = (t_token*)lexems->data;
 		while (ft_isblank(*line) || *line == '\' || *line == '"' || *line '\''|| line == '`')
 			++line;
-        if (token->type == HIST)
-        {
+		if (token->type == HIST)
+		{
 		}
 		else
 		{
 			line += ft_strlen(token->value);
 			lexems = lexems->next;
 		}
-    }
+	}
 }
 Manque les backslashs
 

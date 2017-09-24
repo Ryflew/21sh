@@ -117,6 +117,65 @@ void	check_if_home_tilde(t_tree *tree, char *home)
 	}
 }
 
+char	*get_excla(t_sh *shell, char *start, char *line, int *value)
+{
+	char	*new;
+	int		i;
+
+	i = history_excla(line + 1, shell);
+	if (shell->toaddstr)
+	{
+		*value = (line - start) + ft_strlen(shell->toaddstr);
+		start = ft_strsub(start, 0, line - start);
+		new = ft_strstrjoin(start, shell->toaddstr, line + i);
+		free(start);
+		ft_strdel(&(shell->toaddstr));
+		return (new);
+	}
+	return (NULL);
+}
+
+void			check_hist_exla2(t_sh *shell, char *line, int value)
+{
+	t_list  *lexems;
+	t_token *token;
+	char	*tmp;
+	char	*start;
+
+	start = line;
+	lexems = shell->lexer->lexems;
+	while (lexems)
+	{
+		token = (t_token*)lexems->data;
+		while (ft_isblank(*line) || *line == '\\' || *line == '"' || *line == '\''|| line == '`')
+			++line;
+		if (token->type == HIST)
+		{
+			tmp = start;
+			start = get_excla(shell, start, line, &value);
+			if (!start)
+			{
+				start = tmp;
+				NEXT(lexems);
+				continue ;
+			}
+			ft_strdel(&tmp);
+			line = start + value;
+		}
+		else
+		{
+			line += ft_strlen(token->value);
+			NEXT(lexems);
+		}
+	}
+	if (value > 0)
+	{
+		shell->toaddstr = new;
+		return (0);
+	}
+	return (1);
+}
+
 void			go_core(char *command, t_sh *shell)
 {
 	t_tree	*commands_tree;
@@ -129,6 +188,8 @@ void			go_core(char *command, t_sh *shell)
 	shell->lexer->bkt = 0;
 	shell->lexer->blank = 0;
 	get_lexems(shell);
+	if (!check_hist_exla2(shell, ft_strdup(command), 0))
+		return ;
 	add_to_history(shell, command);
 	//begin_lexems = shell->lexer->lexems;
 	//shell->current_token = shell->lexer->lexems->data;

@@ -132,7 +132,7 @@ void		shell_loop(t_sh *shell)
 			free(command);
 			continue ;
 		}
-		if (check_history_excla(shell, &command))
+		/*if (check_history_excla(shell, &command))
 		{
 			if (shell->op)
 				ft_strdel(&shell->op);
@@ -141,7 +141,7 @@ void		shell_loop(t_sh *shell)
 			shell->state = BASIC_SHELL;
 			ft_putchar('\n');
 			continue ;
-		}
+		}*/
 		treat_command(shell, command);
 	}
 }
