@@ -152,7 +152,7 @@ char			eat(t_sh *sh, e_token token)
 	return (token);
 }*/
 
-t_token			*parse_bqt(t_sh *sh)
+/*t_token			*parse_bqt(t_sh *sh)
 {
 	t_tree	*tmp_tree;
 	t_env	*true_env;
@@ -163,14 +163,14 @@ t_token			*parse_bqt(t_sh *sh)
 	{
 		true_env = sh->env;
 		check_if_env_var(tmp_tree);
-		if (find_env(s->env, "HOME"))
+		if (find_env(sh->env, "HOME"))
 			check_if_home_tilde(tmp_tree, find_env(sh->env, "HOME"));
 		if (find_env(sh->env, "PATH"))
-			try_add_hashtab(tmp_tree, shell);
+			try_add_hashtab(tmp_tree, sh);
 		if (!is_term_env(tmp_tree))
 		{
 			treat_history_cmd(tmp_tree);
-			browse_tree(tmp_tree, shell, NULL, 1);
+			browse_tree(tmp_tree, sh, NULL, 1);
 		}
 		if (true_env)
 		{
@@ -178,16 +178,16 @@ t_token			*parse_bqt(t_sh *sh)
 				del_all_env(&(sh->env));
 			sh->env = true_env;
 		}
-		if (commands_tree)
+		if (tmp_tree)
 		{
-			if (shell->fds_out)
-				ft_clear_list(&shell->fds_out, (&free));
-			shell->fds_out = NULL;
-			shell->fd_pipe = -1;
-			del_command_tree(commands_tree);
+			if (sh->fds_out)
+				ft_clear_list(&sh->fds_out, (&free));
+			sh->fds_out = NULL;
+			sh->fd_pipe = -1;
+			del_command_tree(tmp_tree);
 		}
 	}
-}
+}*/
 
 t_token			*text_rules(t_sh *sh)
 {
@@ -208,15 +208,15 @@ t_token			*text_rules(t_sh *sh)
 		token->value = ft_strdup(find_env(sh->env, "HOME"));
 		free(to_free);
 	}
-	else if (token->type == BQT)
+	/*else if (token->type == BQT)
 	{
 		eat(sh, BQT);
 		token = parse_bqt(sh);
 		eat(sh, WORD);
 		if (eat(sh, BQT) == -1)
 			return ((void*)-1);
-	}
-	else if (token->type == EBQT)
-		return (NULL);
+	}*/
+	//else if (token->type == EBQT)
+	//	return (NULL);
 	return (token);
 }
