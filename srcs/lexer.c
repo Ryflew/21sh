@@ -56,9 +56,59 @@ static void		manage_quote(t_lexer *lexer)
 	manage_quote2(lexer, ft_strdup(buff));
 }*/
 
+static char	*replace_var(t_sh *sh, char *command)
+{
+	int		i;
+	int		j;
+	char	*left;
+	char	*var;
+	char	*to_free;
+
+	i = -1;
+	sh->lexer->bs = 0;
+	sh->lexer->string_operator = 0;
+	while (command[++i])
+	{
+		if (command[i] == '\\' && !sh->lexer->string_operator)
+			sh->lexer->bs = 1;
+		else if (sh->lexer->bs)
+			sh->lexer->bs = 0;
+		else if (command[i] == '\'' && !sh->lexer->bs)
+		{
+			if (!sh->lexer->string_operator)
+				sh->lexer->string_operator = '\'';
+			else
+				sh->lexer->string_operator = 0;
+		}
+		else if (command[i] == '$' && !sh->lexer->bs && !sh->lexer->string_operator && ft_isalnum(command[i + 1]))
+		{
+			left = ft_strsub(command, 0, i);
+			j = i;
+			while (command[++j] && ft_isalnum(command[j]))
+				;
+			var = ft_strsub(command, i + 1, j - i - 1);
+			to_free = var;
+			var = find_env(sh->env, var);
+			if (to_free)
+				free(to_free);
+			to_free = command;
+			if (var)
+				command = ft_strstrjoin(left, var, command + j);
+			else
+				command = ft_strjoin(left, command + j);
+			if (to_free)
+				free(to_free);
+			if (left)
+				free(left);
+			if (var)
+				i += ft_strlen(var);
+		}
+	}
+	return (command);
+}
+
 static void		get_next_token2(t_lexer *lexer, t_token **token, t_token *last_token)
 {
-	//manage_quote(lexer);
 	if (*lexer->line && (lexer->string_operator == *lexer->line || \
 		!lexer->string_operator) && *lexer->line == '\'' && !lexer->bs)
 		manage_string_op(lexer);
@@ -104,19 +154,31 @@ static t_token	*get_next_token(t_lexer *lexer, t_token *last_token)
 	return (token);
 }
 
+void			init_lexer(t_lexer *lexer, char *command)
+{
+	lexer->lexems = NULL;
+	lexer->bs = 0;
+	lexer->line = command;
+	lexer->brc = 0;
+	lexer->bkt = 0;
+	lexer->blank = 0;
+}
+
 void			get_lexems(t_sh *sh)
 {
 	t_token *token;
 
+	sh->total_command = replace_var(sh, sh->total_command);
+	init_lexer(sh->lexer, sh->total_command);
 	token = NULL;
 	while ((token = get_next_token(sh->lexer, token)))
 		ft_node_push_back(&(sh->lexer->lexems), token);
-	t_list *tmp = sh->lexer->lexems;
+	/*t_list *tmp = sh->lexer->lexems;
 	while (tmp)
 	{
 		ft_putnbr(((t_token*)(tmp->data))->type);
 		ft_putendl(" <-- type");
 		ft_putendl(((t_token*)(tmp->data))->value);
 		tmp = tmp->next;
-	}
+	}*/
 }

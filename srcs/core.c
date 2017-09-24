@@ -181,22 +181,12 @@ void			go_core(char *command, t_sh *shell)
 	t_tree	*commands_tree;
 	t_list	*begin_lexems;
 
-	shell->lexer->lexems = NULL;
-	shell->lexer->line = command;
-	shell->lexer->bs = 0;
-	shell->lexer->brc = 0;
-	shell->lexer->bkt = 0;
-	shell->lexer->blank = 0;
 	get_lexems(shell);
 	if (!check_hist_exla2(shell, ft_strdup(command), 0))
 		return ;
 	add_to_history(shell, command);
-	//begin_lexems = shell->lexer->lexems;
-	//shell->current_token = shell->lexer->lexems->data;
 	glob(shell);
 	begin_lexems = shell->lexer->lexems;
-	//shell->lexer->lexems = begin_lexems;
-	begin_lexems = shell->lexer->lexems;	
 	shell->current_token = shell->lexer->lexems->data;
 	shell->fd_pipe = -1;
 	shell->fds_out = NULL;
