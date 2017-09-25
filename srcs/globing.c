@@ -11,7 +11,7 @@
     while (tmp)
     {
         token = (t_token*)tmp->data;
-        if (token->type == NONE || (token->type == EXPR && ft_strchr(token->value, '/')))
+        if (token->type == NONE || ((token->type == EXPR || token->type == TILD_EXPR) && ft_strchr(token->value, '/')))
             break;
         tmp = tmp->next;
     }
@@ -56,7 +56,7 @@ DIR		*open_dir(char *dir_name, t_token *token)
     DIR				*dir;
     char            *dir_path;
 
-    if (token->type != EXPR || token->value[0] != '/')
+    if ((token->type != EXPR && token->type != TILD_EXPR) || token->value[0] != '/')
         dir_path = ft_strjoin("./", dir_name);
     else
         dir_path = dir_name;
@@ -78,7 +78,7 @@ int		is_dir(char *dir_name, t_token *token)
 	struct stat statbuf;
     char        *dir_path;
     
-    if (token->type != EXPR || token->value[0] != '/')
+    if ((token->type != EXPR && token->type != TILD_EXPR) || token->value[0] != '/')
         dir_path = ft_strjoin("./", dir_name);
     else
         dir_path = dir_name;
@@ -102,7 +102,7 @@ char        is_end_path(t_list *lexems)
         token = (t_token*)lexems->data;
         if (token->type == NONE)
             return (0);
-        if (token->type == EXPR && ft_strchr(token->value, '/'))
+        if ((token->type == EXPR || token->type == TILD_EXPR) && ft_strchr(token->value, '/'))
             return (1);
         lexems = lexems->next;
     }
@@ -122,11 +122,11 @@ void        add_end_path(t_list *lexems, t_list ** new_lexems)
         token = (t_token*)lexems->data;
         if (token->type == NONE)
             break;
-        if (token->type == EXPR && ft_strchr(token->value, '/'))
+        if ((token->type == EXPR || token->type == TILD_EXPR) && ft_strchr(token->value, '/'))
             ++copy;
         if (copy)
         {
-            if (token->type == EXPR && ft_strchr(token->value, '/') && copy == 1)
+            if ((token->type == EXPR || token->type == TILD_EXPR) && ft_strchr(token->value, '/') && copy == 1)
             {
                 nw_token = (t_token*)(*new_lexems)->data;
                 to_free = nw_token->value;
@@ -180,7 +180,7 @@ void	    manage_wildcards(t_list *lexems)
             else
                 join = ft_strdup(ent->d_name);
 			if (ent->d_name[0] != '.' && (is_dir(join, token) || !is_end_path(lexems->next))
-			&& ((token->type != EXPR && nmatch(ent->d_name, NULL, lexems)) || (token->type == EXPR && ((dir_path[0] && nmatch(ent->d_name, token->value + find_last_directory(token->value) + 1, lexems)) || (!dir_path[0] && nmatch(ent->d_name, token->value, lexems))))))
+			&& (((token->type != EXPR && token->type != TILD_EXPR) && nmatch(ent->d_name, NULL, lexems)) || ((token->type == EXPR || token->type == TILD_EXPR) && ((dir_path[0] && nmatch(ent->d_name, token->value + find_last_directory(token->value) + 1, lexems)) || (!dir_path[0] && nmatch(ent->d_name, token->value, lexems))))))
 				fill_new_lexems(lexems, is_end_path(lexems->next), join);
 		}
 		closedir(dir);
@@ -197,11 +197,12 @@ void        search_expr(t_list **lexems)
     while (*lexems)
     {
         token = (t_token*)(*lexems)->data;
-        if (token->type == NONE)
+//        ft_putendl(token->value);
+        if (token->type == NONE) // segfault
             save = NULL;
         else
         {
-            if (!save && (is_glob_token(token->type) || token->type == EXPR))
+            if (!save && (is_glob_token(token->type) || (token->type == EXPR || token->type == TILD_EXPR)))
                 save = *lexems;
             if (token->type == S_WILDCARD || token->type == Q_WILDCARD || token->type == E_WILDCARD
             || token->type == LBKT || token->type == RBKT || token->type == LBRC)
@@ -257,7 +258,7 @@ void    get_expr_start(t_list *lexems, t_list **new_lexems, e_token type)
     while (lexems->prev)
     {
         token = (t_token*)lexems->prev->data;
-        if (is_glob_token(token->type) || token->type == EXPR)
+        if (is_glob_token(token->type) || (token->type == EXPR || token->type == TILD_EXPR))
             ft_node_push_front(new_lexems, new_token(NULL, token->type, token->value));            
         else
             break;
@@ -312,9 +313,14 @@ void    merge_expr(t_list *lexems)
     {
         token = (t_token*)lexems->data;
         next_token = (t_token*)lexems->next->data;
-        if (token->type == EXPR && (!lexems->prev || !is_glob_token(((t_token*)lexems->prev->data)->type)) && next_token->type == NONE)
-            token->type = WORD;
-        if ((token->type == EXPR || token->type == BKT_EXPR) && (next_token->type == EXPR || next_token->type == BKT_EXPR))
+        if ((token->type == EXPR || token->type == TILD_EXPR) && (!lexems->prev || !is_glob_token(((t_token*)lexems->prev->data)->type)) && next_token->type == NONE)
+        {
+            if (token->type == TILD_EXPR)
+                token->type = TILD;
+            else
+                token->type = WORD;
+        }
+        if ((token->type == EXPR || token->type == TILD_EXPR || token->type == BKT_EXPR) && (next_token->type == EXPR || next_token->type == TILD_EXPR || next_token->type == BKT_EXPR))
         {
             to_free = token->value;
             token->value = ft_strjoin(token->value, next_token->value);
@@ -338,7 +344,10 @@ void    merge_expr_to_word(t_list *lexems)
         next_token = (t_token*)lexems->next->data;
         if (next_token->type == NONE)
         {
-            token->type = WORD;
+            if (token->type == TILD_EXPR)
+               token->type = TILD;
+            else
+                token->type = WORD;
             ft_pop_node(&(lexems->next), (void*)&clear_lexems);
             break;
         }
@@ -364,7 +373,7 @@ void    clear_bad_expr(t_list *lexems)
     while (lexems)
     {
         token = (t_token*)lexems->data;
-        if (!save && (is_glob_token(token->type) || token->type == EXPR))
+        if (!save && (is_glob_token(token->type) || (token->type == EXPR || token->type == TILD_EXPR)))
             save = lexems;
         else if (token->type == NONE)
         {
@@ -415,6 +424,8 @@ void    replace_expr_by_word(t_list *lexems)
         {
             if (token->type == EXPR)
                 token->type = WORD;
+            else if (token->type == TILD_EXPR)
+                token->type = TILD;
             lexems = lexems->next;
         }
     }

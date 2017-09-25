@@ -152,7 +152,7 @@ char			eat(t_sh *sh, e_token token)
 	return (token);
 }*/
 
-/*t_token			*parse_bqt(t_sh *sh)
+t_token			*parse_bqt(t_sh *sh)
 {
 	t_tree	*tmp_tree;
 	t_env	*true_env;
@@ -163,15 +163,15 @@ char			eat(t_sh *sh, e_token token)
 	{
 		true_env = sh->env;
 		check_if_env_var(tmp_tree);
-		if (find_env(sh->env, "HOME"))
-			check_if_home_tilde(tmp_tree, find_env(sh->env, "HOME"));
+		/*if (find_env(sh->env, "HOME"))
+			check_if_home_tilde(tmp_tree, find_env(sh->env, "HOME"));*/
 		if (find_env(sh->env, "PATH"))
 			try_add_hashtab(tmp_tree, sh);
-		if (!is_term_env(tmp_tree))
+		/*if (!is_term_env(tmp_tree))
 		{
 			treat_history_cmd(tmp_tree);
 			browse_tree(tmp_tree, sh, NULL, 1);
-		}
+		}*/
 		if (true_env)
 		{
 			if (sh->env)
@@ -187,7 +187,8 @@ char			eat(t_sh *sh, e_token token)
 			del_command_tree(tmp_tree);
 		}
 	}
-}*/
+	return (NULL);
+}
 
 t_token			*text_rules(t_sh *sh)
 {
@@ -215,8 +216,8 @@ t_token			*text_rules(t_sh *sh)
 		eat(sh, WORD);
 		if (eat(sh, BQT) == -1)
 			return ((void*)-1);
-	}*/
-	//else if (token->type == EBQT)
-	//	return (NULL);
+	}
+	else if (token->type == EBQT)
+		return (NULL);*/
 	return (token);
 }

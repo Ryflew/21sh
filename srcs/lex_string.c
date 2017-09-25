@@ -144,10 +144,14 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 	if (type == NUM && (last_token->type == FRED || last_token->type == BRED || ((lexer->line)[i] && \
 	((lexer->line)[i] == '<' || (lexer->line)[i] == '>'))))
 		type = FD;
+	else if (*lexer->line == '~' && (lexer->blank || !last_token || last_token->type == LBRC || last_token->type == COM) && (ft_isblank(*(lexer->line + 1)) || !*(lexer->line + 1) || *(lexer->line + 1) == '/' || *(lexer->line + 1) == '}' || *(lexer->line + 1) == ',') && !st_op)
+		type = TILD;
 	if (last_token && is_glob_token(last_token->type) && !lexer->blank)
 	{
 		if (lexer->bkt)
 			type = BKT_EXPR;
+		else if (type == TILD)
+			type = TILD_EXPR;
 		else
 			type = EXPR;
 	}

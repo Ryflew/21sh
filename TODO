@@ -20,30 +20,7 @@
 ------------ BUG --------------
 
 - find_env dans replace_var
-<<<<<<< HEAD
-- ls [!2aiT]* ca affiche ls [quitaiT]* en input (backslash)
-{
-	t_list  *lexems;
-	t_token *token;
-	char	*line;
-
-	lex= sh->lexer->lexems;
-	while (lexems)
-	{
-		token = (t_token*)lexems->data;
-		while (ft_isblank(*line) || *line == '\' || *line == '"' || *line '\''|| line == '`')
-			++line;
-		if (token->type == HIST)
-		{
-		}
-		else
-		{
-			line += ft_strlen(token->value);
-			lexems = lexems->next;
-		}
-	}
-}
-Manque les backslashs
+- {a,b} multiple time get a segfault
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

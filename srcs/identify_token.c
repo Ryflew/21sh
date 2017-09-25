@@ -59,8 +59,6 @@ static void	find_token2(t_lexer *lexer, t_token **token, t_token *last_token)
 		*token = new_token(lexer, HIST, "!");
 	else if (*lexer->line == ';')
 		*token = new_token(lexer, SCL, ";");
-	else if (*lexer->line == '~' && lexer->blank && (ft_isblank(*lexer->line + 1) || (*lexer->line + 1) == 0))
-		*token = new_token(lexer, TILD, "~");
 	else if (*lexer->line == '-' && last_token && (last_token->type == FRED || last_token->type == BRED))
 		*token = new_token(lexer, CLOSE_FD, "-");
 }
@@ -101,7 +99,12 @@ t_token		*find_token(t_lexer *lexer, t_token *last_token)
 	}
 	if (*lexer->line && !(token))
 		token = lex_word(lexer, last_token);
-	if (token && is_glob_token(token->type) && !lexer->blank && last_token && (last_token->type == WORD || last_token->type == NUM))
-		last_token->type = EXPR;
+	if (token && is_glob_token(token->type) && !lexer->blank && last_token && (last_token->type == WORD || last_token->type == TILD || last_token->type == NUM))
+	{
+		if (last_token->type == TILD)
+			last_token->type = TILD_EXPR;
+		else
+			last_token->type = EXPR;
+	}
 	return (token);
 }
