@@ -132,7 +132,7 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 		if (type != WORD && !ft_isdigit((lexer->line)[i]))
 			type = WORD;
 		if (is_string_op((lexer->line)[i]) && !st_op)
-		st_op = (lexer->line)[i];
+			st_op = (lexer->line)[i];
 		else if ((lexer->line)[i] == st_op)
 			st_op = 0;
 		if ((lexer->line)[i] == '\\' && st_op != '\'' && !bs)

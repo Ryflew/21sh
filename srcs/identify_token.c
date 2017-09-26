@@ -68,7 +68,7 @@ t_token		*find_token(t_lexer *lexer, t_token *last_token)
 	t_token *token;
 
 	token = NULL;
-	if (!lexer->bs)
+	if (!lexer->bs && !lexer->string_operator)
 	{
 		if (*lexer->line == '>' && *(lexer->line + 1) == '>')
 			token = new_token(lexer, DCHEVF, ">>");

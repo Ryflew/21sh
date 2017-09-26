@@ -197,7 +197,7 @@ t_token			*text_rules(t_sh *sh)
 	if (!sh->current_token)
 		return (NULL);
 	token = sh->current_token;
-	if (token->type == WORD)
+	if (sh->current_token->type == WORD)
 		eat(sh, WORD);
 	else if (sh->current_token->type == NUM)
 		eat(sh, NUM);
@@ -211,5 +211,7 @@ t_token			*text_rules(t_sh *sh)
 	}
 	else if (token->type == EBQT)
 		return (NULL);*/
+	else
+		return (NULL);
 	return (token);
 }

@@ -22,7 +22,6 @@
 
 - boucle infini dans parse_cmds => cmd_without_delimiter_rules, quand on tape '!delamerde' (tu gère pas HIST c'st pour ca)
 - echo "!qqchose", ca doit marcher, la ca fait comme '!qqchose'
-- find_env dans replace_var
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

@@ -162,6 +162,7 @@ void			init_lexer(t_lexer *lexer, char *command)
 	lexer->brc = 0;
 	lexer->bkt = 0;
 	lexer->blank = 0;
+	lexer->string_operator = 0;
 }
 
 void			replace_tild(t_list *lexems, t_env *env)
@@ -172,13 +173,11 @@ void			replace_tild(t_list *lexems, t_env *env)
 	while (lexems)
 	{
 		token = (t_token*)lexems->data;
-		ft_putendl(token->value);
 		if (token->type == TILD)
 		{
 			token->type = WORD;
 			to_free = token->value;
 			token->value = ft_strjoin(find_env(env, "HOME"), token->value + 1);
-			ft_putendl(token->value);
 			free(to_free);
 		}
 		else if (token->type == TILD_EXPR)
@@ -186,7 +185,6 @@ void			replace_tild(t_list *lexems, t_env *env)
 			token->type = EXPR;
 			to_free = token->value;
 			token->value = ft_strjoin(find_env(env, "HOME"), token->value + 1);
-			ft_putendl(token->value);
 			free(to_free);
 		}
 		lexems = lexems->next;
