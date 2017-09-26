@@ -6,7 +6,7 @@
 - Norme
 - Leaks
 - Pour chacun refaire tous les headers a son nom (libft etc compris !)
-- replace token tild dans parse_text
+- si rien ne match message d'error
 
 ---------- BONUS --------------
 
@@ -18,9 +18,6 @@
 - Testez l'existence et le fonctionnement du heredoc "<<", avec ses options et cas particuliers.
 
 ------------ BUG --------------
-
-- find_env dans replace_var
-- {a,b} multiple time get a segfault
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

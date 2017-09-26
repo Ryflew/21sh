@@ -20,6 +20,8 @@ void	ft_pop_node(t_list **node, void (*fct_free)(void *))
 		if (fct_free)
 			(*fct_free)(tmp->data);
 		free(tmp);
+		if (tmp == *node)
+			*node = NULL;
 		tmp = NULL;
 	}
 }
