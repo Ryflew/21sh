@@ -24,20 +24,18 @@
 void    clear_old_expr(t_sh *sh, t_list **lexems)
 {
     t_token *token;
-    t_list  *tmp;
     
-    tmp = *lexems;
     while (*lexems)
     {
         token = (t_token*)(*lexems)->data;
         if (token->type == NONE)
         {
-            ft_pop_node(lexems, (void*)&clear_lexems);                
+            ft_pop_node(lexems, (void*)&clear_lexems);
             break;
         }
-        ft_pop_node(lexems, (void*)&clear_lexems);                
+        ft_pop_node(lexems, (void*)&clear_lexems);
     }
-    if (!tmp->prev)
+    if (!*lexems || !(*lexems)->prev)
         sh->lexer->lexems = *lexems;
 }
 
@@ -308,7 +306,7 @@ void    merge_expr(t_list *lexems)
     t_token *next_token;
     char    *to_free;
 
-    while (lexems->next)
+    while (lexems && lexems->next)
     {
         token = (t_token*)lexems->data;
         next_token = (t_token*)lexems->next->data;
@@ -434,7 +432,7 @@ void    glob(t_sh *sh)
         {
             manage_brc(lexems->next);
             clear_old_expr(sh, &lexems);
-            merge_expr(sh->lexer->lexems);  
+            merge_expr(sh->lexer->lexems);
         }
         else
             lexems = lexems->next;   
@@ -446,7 +444,7 @@ void    glob(t_sh *sh)
 		ft_putendl(" <=== type");
 		ft_putendl(((t_token*)(tmp->data))->value);
 		tmp = tmp->next;
-	}*/
+    }*/
     expr_loop(sh);
     replace_expr_by_word(sh->lexer->lexems);
 }

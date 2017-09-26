@@ -41,38 +41,40 @@ typedef struct stat		t_stat;
 
 typedef enum	e_token
 {
-	NONE,
-	ENDOF,
-	PIPE,
-	CHEVB,
-	DCHEVB,
-	CHEVF,
-	DCHEVF,
-	FRED,
-	BRED,
-	AND,
-	OR,
-	SCL,
-	NUM,
-	WORD,
-	FD,
-	CLOSE_FD,
-	BQT,
-	LPAR,
-	RPAR,
-	S_WILDCARD,
-	Q_WILDCARD,
-	E_WILDCARD,
-	LBKT,
-	RBKT,
-	LBRC,
-	RBRC,
-	COM,
-	EXPR,
-	BKT_EXPR,
-	HIST,
-	VAR,
-	TILD
+	NONE, // 0
+	ENDOF, // 1
+	PIPE, // 2
+	CHEVB, // 3
+	DCHEVB, // 4
+	CHEVF, // 5
+	DCHEVF, // 6
+	FRED, // 7
+	BRED, // 8
+	AND, // 9
+	OR, // 10
+	SCL, // 11
+	NUM, // 12
+	WORD, // 13
+	FD, // 14
+	CLOSE_FD, // 15
+	BQT, // 16
+	EBQT, // 17
+	LPAR, // 18
+	RPAR, // 19
+	S_WILDCARD, // 20
+	Q_WILDCARD, // 21
+	E_WILDCARD, // 22
+	LBKT, // 23
+	RBKT, // 24
+	LBRC, // 25
+	RBRC, // 26
+	COM, // 27
+	TILD_EXPR, // 28
+	EXPR, // 29
+	BKT_EXPR, // 30
+	HIST, // 31
+	VAR, // 32
+	TILD // 33
 }				e_token;
 
 typedef enum	e_state

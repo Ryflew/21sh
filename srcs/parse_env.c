@@ -36,7 +36,7 @@ char		**parse_env_cmds(t_sh *sh)
 	t_token	*token;
 
 	tmp = sh->lexer->lexems;
-	if (ft_strcmp(sh->current_token->value, "env") || !tmp->next)
+	if (!sh->current_token || ft_strcmp(sh->current_token->value, "env") || !tmp->next)
 		return (NULL);
 	tmp = tmp->next;
 	token = tmp->data;

@@ -138,7 +138,7 @@ static t_token	*get_next_token(t_lexer *lexer, t_token *last_token)
 			while (*lexer->line && ft_isblank(*lexer->line))
 				++lexer->line;
 			lexer->blank = 1;
-			if (last_token && (is_glob_token(last_token->type) || last_token->type == EXPR || last_token->type == BKT_EXPR || last_token->type == COM))
+			if (last_token && (is_glob_token(last_token->type) || last_token->type == EXPR || last_token->type == TILD_EXPR || last_token->type == BKT_EXPR || last_token->type == COM))
 				return (new_token(lexer, NONE, ""));
 		}
 		else
@@ -149,7 +149,7 @@ static t_token	*get_next_token(t_lexer *lexer, t_token *last_token)
 		if (token)
 			return (token);
 	}
-	if (last_token && (is_glob_token(last_token->type) || last_token->type == EXPR || last_token->type == BKT_EXPR || last_token->type == COM))
+	if (last_token && (is_glob_token(last_token->type) || last_token->type == EXPR || last_token->type == TILD_EXPR || last_token->type == BKT_EXPR || last_token->type == COM))
 		return (new_token(lexer, NONE, ""));
 	return (token);
 }
@@ -164,17 +164,48 @@ void			init_lexer(t_lexer *lexer, char *command)
 	lexer->blank = 0;
 }
 
+void			replace_tild(t_list *lexems, t_env *env)
+{
+	t_token *token;
+	char	*to_free;	
+
+	while (lexems)
+	{
+		token = (t_token*)lexems->data;
+		ft_putendl(token->value);
+		if (token->type == TILD)
+		{
+			token->type = WORD;
+			to_free = token->value;
+			token->value = ft_strjoin(find_env(env, "HOME"), token->value + 1);
+			ft_putendl(token->value);
+			free(to_free);
+		}
+		else if (token->type == TILD_EXPR)
+		{
+			token->type = EXPR;
+			to_free = token->value;
+			token->value = ft_strjoin(find_env(env, "HOME"), token->value + 1);
+			ft_putendl(token->value);
+			free(to_free);
+		}
+		lexems = lexems->next;
+	}
+}
+
 void			get_lexems(t_sh *sh)
 {
 	t_token *token;
 
 	sh->total_command = replace_var(sh, sh->total_command);
+	
 	init_lexer(sh->lexer, sh->total_command);
 	token = NULL;
 	while ((token = get_next_token(sh->lexer, token)))
 		ft_node_push_back(&(sh->lexer->lexems), token);
-	/*t_list *tmp = sh->lexer->lexems;
-	while (tmp)
+	replace_tild(sh->lexer->lexems, sh->env);
+//	t_list *tmp = sh->lexer->lexems;
+/*	while (tmp)
 	{
 		ft_putnbr(((t_token*)(tmp->data))->type);
 		ft_putendl(" <-- type");

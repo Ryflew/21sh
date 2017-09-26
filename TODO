@@ -7,7 +7,7 @@
 - Norme
 - Leaks
 - Pour chacun refaire tous les headers a son nom (libft etc compris !)
-- replace token tild dans parse_text
+- si rien ne match message d'error
 
 ---------- BONUS --------------
 

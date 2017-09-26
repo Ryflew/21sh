@@ -92,7 +92,7 @@ static char			is_term_env(t_tree *tree)
 		return (0);
 }
 
-void	check_if_home_tilde(t_tree *tree, char *home)
+/*void	check_if_home_tilde(t_tree *tree, char *home)
 {
 	int		i;
 	char	*ptr;
@@ -115,7 +115,7 @@ void	check_if_home_tilde(t_tree *tree, char *home)
 			tree->cmds[i] = tmp2;
 		}
 	}
-}
+}*/
 
 char	*get_excla(t_sh *shell, char *start, char *line, int *value)
 {
@@ -196,7 +196,10 @@ void			go_core(char *command, t_sh *shell)
 	add_to_history(shell, command);
 	glob(shell);
 	begin_lexems = shell->lexer->lexems;
-	shell->current_token = shell->lexer->lexems->data;
+	if (shell->lexer->lexems)
+		shell->current_token = shell->lexer->lexems->data;
+	else
+		shell->current_token = NULL;
 	shell->fd_pipe = -1;
 	shell->fds_out = NULL;
 	if ((commands_tree = commands_line_rules(shell)) == (void*)-1)
@@ -208,9 +211,9 @@ void			go_core(char *command, t_sh *shell)
 	if (commands_tree)
 	{
 		check_if_env_var(commands_tree);
-		if (find_env(shell->env, "HOME"))
+		/*if (find_env(shell->env, "HOME"))
 			check_if_home_tilde(commands_tree, find_env(shell->env, "HOME"));
-		if (find_env(shell->env, "PATH"))
+		if (find_env(shell->env, "PATH"))*/
 			try_add_hashtab(commands_tree, shell);
 		if (!is_term_env(commands_tree))
 		{
