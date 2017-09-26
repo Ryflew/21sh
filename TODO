@@ -1,6 +1,7 @@
 
 ----------- TODO --------------
 
+- ! a debug avec le debuggeur
 - Unset / Export
 - Ajouter unset / export a la commande help
 - Norme
@@ -19,31 +20,9 @@
 
 ------------ BUG --------------
 
+- boucle infini dans parse_cmds => cmd_without_delimiter_rules, quand on tape '!delamerde' (tu gère pas HIST c'st pour ca)
+- echo "!qqchose", ca doit marcher, la ca fait comme '!qqchose'
 - find_env dans replace_var
-<<<<<<< HEAD
-- ls [!2aiT]* ca affiche ls [quitaiT]* en input (backslash)
-{
-	t_list  *lexems;
-	t_token *token;
-	char	*line;
-
-	lex= sh->lexer->lexems;
-	while (lexems)
-	{
-		token = (t_token*)lexems->data;
-		while (ft_isblank(*line) || *line == '\' || *line == '"' || *line '\''|| line == '`')
-			++line;
-		if (token->type == HIST)
-		{
-		}
-		else
-		{
-			line += ft_strlen(token->value);
-			lexems = lexems->next;
-		}
-	}
-}
-Manque les backslashs
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

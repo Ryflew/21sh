@@ -127,7 +127,7 @@ char	*get_excla(t_sh *shell, char *start, char *line, int *value)
 	{
 		*value = (line - start) + ft_strlen(shell->toaddstr);
 		start = ft_strsub(start, 0, line - start);
-		new = ft_strstrjoin(start, shell->toaddstr, line + i);
+		new = ft_strstrjoin(start, shell->toaddstr, line + 1 + i);
 		free(start);
 		ft_strdel(&(shell->toaddstr));
 		return (new);
@@ -155,10 +155,15 @@ char		check_hist_exla2(t_sh *shell, char *line, int value)
 			start = get_excla(shell, start, line, &value);
 			if (!start)
 			{
-				start = tmp;
 				NEXT(lexems);
+				start = tmp;
+				++line;
 				continue ;
 			}
+			if (lexems->next)
+				lexems = lexems->next->next;
+			else
+				NEXT(lexems);
 			ft_strdel(&tmp);
 			line = start + value;
 		}
@@ -173,6 +178,7 @@ char		check_hist_exla2(t_sh *shell, char *line, int value)
 		shell->toaddstr = start;
 		return (0);
 	}
+	free(start);
 	return (1);
 }
 
@@ -183,7 +189,10 @@ void			go_core(char *command, t_sh *shell)
 
 	get_lexems(shell);
 	if (!check_hist_exla2(shell, ft_strdup(command), 0))
+	{
+		ft_clear_list(&(shell->lexer->lexems), (void*)&clear_lexems);
 		return ;
+	}
 	add_to_history(shell, command);
 	glob(shell);
 	begin_lexems = shell->lexer->lexems;

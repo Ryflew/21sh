@@ -33,6 +33,8 @@ static int	history_string(t_sh *shell, char *str)
 	int	len;
 	int	max;
 
+	if (!str || !*str)
+		return (0);
 	len = -1;
 	while (str[++len] && str[len] != ' ')
 		;
