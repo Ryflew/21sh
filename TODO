@@ -10,6 +10,7 @@
 - Leaks
 - Pour chacun refaire tous les headers a son nom (libft etc compris !)
 - Separer tosh.h en plein de headers
+- subshell bqt remplacer gnl pour split que sur les espace
 
 ---------- BONUS --------------
 
@@ -22,6 +23,7 @@
 
 - boucle infini dans parse_cmds => cmd_without_delimiter_rules, quand on tape '!delamerde' (tu gère pas HIST c'st pour ca)
 - echo "!qqchose", ca doit marcher, la ca fait comme '!qqchose'
+- VICTOR -> ls '\' je recois comme ligne de command ca dans mon lexer ls '' tu retires le \ avant cest pas normal ^^
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
