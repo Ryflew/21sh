@@ -2,6 +2,8 @@
 ----------- TODO --------------
 
 - ! a debug avec le debuggeur
+- Read
+- Read gérer si on fais $VAR avec read
 - Unset / Export
 - Ajouter unset / export a la commande help
 - Norme
@@ -10,8 +12,6 @@
 - Separer tosh.h en plein de headers
 
 ---------- BONUS --------------
-
-- Resize de la fenetre
 
 ------------ A TESTER ---------
 

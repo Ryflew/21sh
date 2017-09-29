@@ -60,7 +60,7 @@ static void	ctrl_d(t_sh *shell)
 		sig_hand(0);
 }
 
-static char	get_line2(t_sh *shell, unsigned long buff)
+static char	get_line2(t_sh *shell, unsigned long buff, e_state *state)
 {
 	if (shell->saved && shell->ref_pos > -1 && buff != CTRL_MAJ_LEFT && \
 		buff != CTRL_MAJ_RIGTH)
@@ -70,7 +70,7 @@ static char	get_line2(t_sh *shell, unsigned long buff)
 	else if (buff == UP_ARROW || buff == DOWN_ARROW || buff == LEFT_ARROW || \
 		buff == RIGHT_ARROW || buff == HOME || buff == END)
 		arrows(shell, buff);
-	else if (buff == CTRL_P && shell->saved)
+	else if (buff == CTRL_P && shell->saved && *state != READ_CMD)
 		past_data(shell);
 	else if (buff == MAJ_LEFT || buff == MAJ_RIGTH || buff == MAJ_UP || \
 		buff == MAJ_DOWN || buff == CTRL_MAJ_LEFT || buff == CTRL_MAJ_RIGTH)
@@ -78,9 +78,9 @@ static char	get_line2(t_sh *shell, unsigned long buff)
 	else if (buff == DELETE && shell->j > -1 && !(shell->pos.cursor.x == \
 		shell->pos.first.x && shell->pos.cursor.y == shell->pos.first.y))
 		delete_char(shell->command, &(shell->j), shell);
-	else if (buff == CTRL_R)
+	else if (buff == CTRL_R && *state != READ_CMD)
 		search_mode(shell);
-	else if (buff == TAB && shell->j != -1)
+	else if (buff == TAB && shell->j != -1 && *state != READ_CMD)
 		go_completion(shell);
 	else
 		return (0);
@@ -110,7 +110,7 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 		//return (ft_strdup("ls \"ok\""));
 		buff = 0;
 		read(0, &buff, sizeof(unsigned long));
-		if (get_line2(shell, buff))
+		if (get_line2(shell, buff, state))
 			;
 		else if (buff == ENTER)
 		{

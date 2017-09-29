@@ -6,6 +6,8 @@ char	go_builtins2(char **cmd, t_sh *shell)
 		history_cmd(cmd, shell);
 	else if (!ft_strcmp(cmd[0], "hash"))
 		hash_tab(cmd, shell);
+	else if (!ft_strcmp(cmd[0], "read"))
+		read_builtin(shell, cmd);
 	else if (!ft_strcmp(cmd[0], "exit"))
 		exit_command(cmd, shell);
 	else if (!ft_strcmp(cmd[0], "help"))
@@ -54,7 +56,7 @@ char	is_writable_builtins(char *cmd)
 		return (0);
 	else if (!ft_strcmp(cmd, "env"))
 		return (0);
-	else if (!ft_strcmp(cmd, "history"))
+	else if (!ft_strcmp(cmd, "history")) // ? sur que c'est dans is writable ?
 		return (0);
 	return (1);
 }
@@ -80,6 +82,8 @@ char	is_builtins(char **cmd)
 	else if (!ft_strcmp(cmd[0], "false"))
 		return (0);
 	else if (!ft_strcmp(cmd[0], "help"))
+		return (0);
+	else if (!ft_strcmp(cmd[0], "read"))
 		return (0);
 	else
 		return (is_writable_builtins(cmd[0]));

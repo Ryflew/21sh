@@ -84,6 +84,7 @@ typedef enum	e_state
 	ADVANCE_SHELL,
 	BRACKET_ERROR,
 	COMMAND_RUN,
+	READ_CMD
 }				e_state;
 
 typedef struct		s_env
@@ -163,6 +164,7 @@ typedef	struct		s_sh
 	t_env			*save_env;
 	t_env			*hash;
 	t_env			*export;
+	t_env			*shell_var;
 
 	t_lexer			*lexer;
 	t_token			*current_token;
@@ -259,6 +261,7 @@ void				hist_w(t_sh *shell, char *path);
 void				hist_d(t_sh *shell, int nb);
 void				set_old_term(t_sh *shell);
 void				set_our_term(t_sh *shell);
+void				read_builtin(t_sh *shell, char **av);
 void				del_env(t_env *todel);
 void				go_completion(t_sh *shell);
 void				clear_line(t_sh *shell);
@@ -346,6 +349,7 @@ char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
 char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
 pid_t				child_pid();
 int					get_fd(t_sh *shell, int *fd);
+int					get_next_line(const int fd, char **line);
 char				browse_tree(t_tree *node, t_sh *shell, t_tree *parent,
 					char r_side);
 void				manage_string_op(t_lexer *lexer);

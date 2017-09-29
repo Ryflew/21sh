@@ -92,5 +92,7 @@ char	*find_builtins(char *part)
 		return (ft_strdup("export"));
 	else if (!ft_strncmp("history", part, ft_strlen(part)))
 		return (ft_strdup("history"));
+	else if (!ft_strncmp("read", part, ft_strlen(part)))
+		return (ft_strdup("read"));
 	return (NULL);
 }

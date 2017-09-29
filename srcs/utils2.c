@@ -37,7 +37,7 @@ void	print_prompt(e_state state, char *op)
 		ft_putstr(get_shell()->prompt);
 		ft_putstr("] $> ");
 	}
-	else
+	else if (op)
 	{
 		ft_putchar('\n');
 		if (op[ft_strlen(op) - 1] == '\'')

@@ -42,6 +42,7 @@ FILES = add_char.c \
 				export.c \
 				ft_putcharint.c \
 				get_line.c \
+				get_next_line.c \
 				help.c \
 				help2.c \
 				help3.c \
@@ -59,6 +60,7 @@ FILES = add_char.c \
 				maj_arrows.c \
 				lexer.c \
 				parser.c \
+				read_builtin.c \
 				redirection_parser.c \
 				second_prompt.c \
 				second_prompt2.c \

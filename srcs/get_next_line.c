@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "tosh.h"
+#include "../libft/include/gnl.h"
 
 static char		*ft_strcdup(char *s, char c)
 {
