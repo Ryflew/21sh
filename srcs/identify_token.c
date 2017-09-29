@@ -4,10 +4,7 @@ void		manage_string_op(t_lexer *lexer)
 {
 	if (!lexer->string_operator)
 		lexer->string_operator = *lexer->line;
-	/*else if (*lexer->line == lexer->string_operator)
-		lexer->string_operator = 0;*/
-	if (*lexer->line != '`')
-		++lexer->line;
+	++lexer->line;
 }
 
 char    is_glob_token(e_token type)
@@ -61,6 +58,14 @@ static void	find_token2(t_lexer *lexer, t_token **token, t_token *last_token)
 		*token = new_token(lexer, SCL, ";");
 	else if (*lexer->line == '-' && last_token && (last_token->type == FRED || last_token->type == BRED))
 		*token = new_token(lexer, CLOSE_FD, "-");
+	else if (*lexer->line == '`')
+	{
+		if (!lexer->bqt)
+			*token = new_token(lexer, BQT, "`");
+		else
+			*token = new_token(lexer, EBQT, "`");			
+		lexer->bqt = !lexer->bqt;		
+	}
 }
 
 t_token		*find_token(t_lexer *lexer, t_token *last_token)

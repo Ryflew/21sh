@@ -21,7 +21,7 @@
         return (1);
 }*/
 
-void    clear_old_expr(t_sh *sh, t_list **lexems)
+void    clear_old_expr(t_sh *sh, t_list **lexems, char match)
 {
     t_token *token;
     
@@ -30,12 +30,18 @@ void    clear_old_expr(t_sh *sh, t_list **lexems)
         token = (t_token*)(*lexems)->data;
         if (token->type == NONE)
         {
-            ft_pop_node(lexems, (void*)&clear_lexems);
+            if (match)
+                ft_pop_node(lexems, (void*)&clear_lexems);
+            else
+                *lexems = (*lexems)->next;
             break;
         }
-        ft_pop_node(lexems, (void*)&clear_lexems);
+        if (match)
+            ft_pop_node(lexems, (void*)&clear_lexems);
+        else
+            *lexems = (*lexems)->next;
     }
-    if (!*lexems || !(*lexems)->prev)
+    if (match && (!*lexems || !(*lexems)->prev))
         sh->lexer->lexems = *lexems;
 }
 
@@ -107,7 +113,7 @@ char        is_end_path(t_list *lexems)
     return (0);
 }
 
-void        add_end_path(t_list *lexems, t_list ** new_lexems)
+void        add_end_path(t_list *lexems, t_list **new_lexems)
 {
     t_token *token;
     t_token *nw_token;
@@ -144,9 +150,10 @@ static void	fill_new_lexems(t_list *lexems, char end_path, char *join)
     t_list  *new_lexems;
 
     new_lexems = NULL;
+    ft_node_push_back(&new_lexems, new_token(NULL, SON, "")); 
     ft_node_push_back(&new_lexems, new_token(NULL, EXPR, join));
     if (end_path)
-        add_end_path(lexems->next, &new_lexems);
+        add_end_path(lexems->next, &new_lexems->next);
     ft_node_push_back(&new_lexems, new_token(NULL, NONE, ""));        
     tmp = lexems;
     while (tmp)
@@ -159,7 +166,30 @@ static void	fill_new_lexems(t_list *lexems, char end_path, char *join)
     free(join);
 }
 
-void	    manage_wildcards(t_list *lexems)
+void    merge_expr_to_word(t_list *lexems)
+{
+    t_token *token;
+    t_token *next_token;
+    char    *to_free;
+
+    while (lexems->next)
+    {
+        token = (t_token*)lexems->data;
+        next_token = (t_token*)lexems->next->data;
+        if (next_token->type == NONE)
+        {
+            token->type = WORD;
+            ft_pop_node(&(lexems->next), (void*)&clear_lexems);
+            break;
+        }
+        to_free = token->value;
+        token->value = ft_strjoin(token->value, next_token->value);
+        free(to_free);
+        ft_pop_node(&(lexems->next), (void*)&clear_lexems);
+    }
+}
+
+void	    manage_wildcards(t_list *lexems, char *match)
 {
 	DIR				*dir;
 	struct dirent	*ent;
@@ -179,50 +209,103 @@ void	    manage_wildcards(t_list *lexems)
                 join = ft_strdup(ent->d_name);
 			if (ent->d_name[0] != '.' && (is_dir(join, token) || !is_end_path(lexems->next))
 			&& ((token->type != EXPR && nmatch(ent->d_name, NULL, lexems)) || (token->type == EXPR && ((dir_path[0] && nmatch(ent->d_name, token->value + find_last_directory(token->value) + 1, lexems)) || (!dir_path[0] && nmatch(ent->d_name, token->value, lexems))))))
-				fill_new_lexems(lexems, is_end_path(lexems->next), join);
-		}
+            {
+                *match = 1;
+                fill_new_lexems(lexems, is_end_path(lexems->next), join);
+            }
+        }
 		closedir(dir);
 	}
 	free(dir_path);
 }
 
-void        search_expr(t_list **lexems)
+char        search_expr(t_list **lexems)
 {
-    t_token *token;
+    e_token type;
     t_list  *save;
+    char    son;
+    t_list  *save_son;
 
     save = NULL;
+    save_son = NULL;
+    son = 0;
     while (*lexems)
     {
-        token = (t_token*)(*lexems)->data;
-        if (token->type == NONE)
+        type = ((t_token*)((*lexems)->data))->type;
+        if (type == NONE)
+        {
             save = NULL;
+            save_son = NULL;
+        }
         else
         {
-            if (!save && (is_glob_token(token->type) || token->type == EXPR))
-                save = *lexems;
-            if (token->type == S_WILDCARD || token->type == Q_WILDCARD || token->type == E_WILDCARD
-            || token->type == LBKT || token->type == RBKT || token->type == LBRC)
+            if (type == SON)
             {
-                *lexems = save;
-                break;
+                save_son = *lexems;
+               //ft_pop_node(lexems, (void*)&clear_lexems);
+                son = 1;
+            }
+            else
+            {
+                if (!save && (is_glob_token(type) || type == EXPR))
+                    save = *lexems;
+                if (type == S_WILDCARD || type == Q_WILDCARD || type == E_WILDCARD
+                || type == LBKT || type == RBKT || type == LBRC)
+                {
+                    *lexems = save;
+                    if (save_son)
+                        ft_pop_node(&save_son, (void*)&clear_lexems);
+                    return (son);
+                }
             }
         }
-        *lexems = (*lexems)->next;
+       // if (type != SON)
+            *lexems = (*lexems)->next;       
     }
+    return (0);
 }
 
 void		expr_loop(t_sh *sh)
 {
     t_list	*lexems;
+    char    match;
+    char    son;
+    t_list  *save;
+    t_list  *tmp;
 
 	lexems = sh->lexer->lexems;
-    search_expr(&lexems);
+    son = search_expr(&lexems);
     while (lexems)
     {
-        manage_wildcards(lexems);
-        clear_old_expr(sh, &lexems);
-        search_expr(&lexems);
+        if (!son)
+            save = lexems;
+        match = 0;
+        manage_wildcards(lexems, &match);
+        if (son)
+            clear_old_expr(sh, &lexems, 1);
+        else
+           clear_old_expr(sh, &lexems, 0);
+        tmp = lexems;
+        //t_token *token = (t_token*)(tmp->data);
+        if (!(son = search_expr(&lexems)))
+        {
+            tmp = save;
+            clear_old_expr(sh, &tmp, 0);
+            //token = (t_token*)(tmp->data);
+          //  (void)token;
+            if (tmp && ((t_token*)(tmp->data))->type == SON)
+                clear_old_expr(sh, &save, 1);
+            else
+                merge_expr_to_word(save);
+            save = NULL;
+        }
+        //else if (lexems->prev && ((t_token*)(tmp->prev->data))->type == SON)
+          //  ft_pop_node(&lexems->prev, (void*)&clear_lexems);
+        /*else
+        {
+            //clear_old_expr(sh, &lexems, 0);
+            lexems = lexems->next;
+        }   */         
     }
 }
 
@@ -324,29 +407,6 @@ void    merge_expr(t_list *lexems)
     }
 }
 
-void    merge_expr_to_word(t_list *lexems)
-{
-    t_token *token;
-    t_token *next_token;
-    char    *to_free;
-
-    while (lexems->next)
-    {
-        token = (t_token*)lexems->data;
-        next_token = (t_token*)lexems->next->data;
-        if (next_token->type == NONE)
-        {
-            token->type = WORD;
-            ft_pop_node(&(lexems->next), (void*)&clear_lexems);
-            break;
-        }
-        to_free = token->value;
-        token->value = ft_strjoin(token->value, next_token->value);
-        free(to_free);
-        ft_pop_node(&(lexems->next), (void*)&clear_lexems);
-    }
-}
-
 void    clear_bad_expr(t_list *lexems)
 {
     t_token *token;
@@ -413,7 +473,10 @@ void    replace_expr_by_word(t_list *lexems)
         {
             if (token->type == EXPR)
                 token->type = WORD;
-            lexems = lexems->next;
+            if (token->type == SON)
+                ft_pop_node(&lexems, (void*)&clear_lexems);
+            else
+                lexems = lexems->next;
         }
     }
 }
@@ -431,7 +494,7 @@ void    glob(t_sh *sh)
         if (token->type == LBRC)
         {
             manage_brc(lexems->next);
-            clear_old_expr(sh, &lexems);
+            clear_old_expr(sh, &lexems, 1);
             merge_expr(sh->lexer->lexems);
         }
         else

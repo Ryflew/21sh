@@ -1,12 +1,12 @@
 #include "tosh.h"
 
-static t_tree	*cmd_with_op_rules(t_sh *sh)
+static t_tree	*cmd_with_op_rules(t_sh *sh, char **tmp_env)
 {
 	t_tree	*left;
 	t_tree	*tmp;
 
 	left = NULL;
-	if (!sh->current_token || (!(left = cmd_rules(sh)) && \
+	if (!sh->current_token || (!(left = cmd_rules(sh, tmp_env)) && \
 		sh->current_token->type != CHEVF && sh->current_token->type != DCHEVF\
 		&& sh->current_token->type != CHEVB && sh->current_token->type \
 		!= DCHEVB) || left == (void*)-1)
@@ -25,14 +25,14 @@ static t_tree	*cmd_with_op_rules(t_sh *sh)
 	return (left);
 }
 
-static t_tree	*pipe_rules(t_sh *sh)
+static t_tree	*pipe_rules(t_sh *sh, char **tmp_env)
 {
 	t_tree	*left;	
 	t_token	*token;
 	t_tree	*right;
 
 	left = NULL;
-	if (!sh->current_token || !(left = cmd_with_op_rules(sh)) || left == (void*)-1)
+	if (!sh->current_token || !(left = cmd_with_op_rules(sh, tmp_env)) || left == (void*)-1)
 		return (left);
 	while (sh->current_token && sh->current_token->type == PIPE)
 	{
@@ -40,7 +40,7 @@ static t_tree	*pipe_rules(t_sh *sh)
 			return (ret_parse_error(left));
 		token = sh->current_token;
 		eat(sh, PIPE);
-		if ((right = cmd_with_op_rules(sh)) && right != (void*)-1)
+		if ((right = cmd_with_op_rules(sh, tmp_env)) && right != (void*)-1)
 			left = create_node(left, token, NULL, right);
 		else
 			return (ret_parse_error(left));
@@ -48,13 +48,13 @@ static t_tree	*pipe_rules(t_sh *sh)
 	return (left);
 }
 
-static t_tree	*condition_operators_rules(t_sh *sh)
+static t_tree	*condition_operators_rules(t_sh *sh, char **tmp_env)
 {
 	t_tree	*left;
 	t_tree	*right;
 	t_token	*token;
 
-	if (!(left = pipe_rules(sh)) || left == (void*)-1)
+	if (!(left = pipe_rules(sh, tmp_env)) || left == (void*)-1)
 		return (left);
 	while (sh->current_token && (sh->current_token->type == OR
 	|| sh->current_token->type == AND))
@@ -64,7 +64,7 @@ static t_tree	*condition_operators_rules(t_sh *sh)
 			eat(sh, OR);
 		else if (token->type == AND)
 			eat(sh, AND);
-		if ((right = pipe_rules(sh)) != (void*)-1 && right)
+		if ((right = pipe_rules(sh, tmp_env)) != (void*)-1 && right)
 			left = create_node(left, token, NULL, right);
 		else
 			return (ret_parse_error(left));
@@ -84,7 +84,7 @@ static t_tree	*parse_semicolons(t_sh *sh, t_tree *left)
 		while (sh->current_token && sh->current_token->type == SCL)
 			eat(sh, SCL);
 		tmp_env = parse_env_cmds(sh);
-		if ((right = condition_operators_rules(sh)) && right != (void*)-1)
+		if ((right = condition_operators_rules(sh, tmp_env)) && right != (void*)-1)
 		{
 			right->tmp_env = tmp_env;
 			left = create_node(left, token, NULL, right);
@@ -103,7 +103,7 @@ t_tree			*commands_line_rules(t_sh *sh)
 	while (sh->current_token && sh->current_token->type == SCL)
 		eat(sh, SCL);
 	tmp_env = parse_env_cmds(sh);
-	if (!(left = condition_operators_rules(sh)) || left == (void*)-1)
+	if (!(left = condition_operators_rules(sh, tmp_env)) || left == (void*)-1)
 	{
 		if (tmp_env)
 			free(tmp_env);

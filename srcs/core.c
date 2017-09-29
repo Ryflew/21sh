@@ -18,7 +18,7 @@ static char		manage_children(t_tree *node, t_sh *shell, char rig, char ret)
 	}
 	if (node->right && node->token && (node->token->type < CHEVB ||
 	node->token->type > BRED) && (node->token->type != OR || ret) &&
-	(node->token->type != AND || !ret))
+	(node->token->type != AND || !ret || node->left->token->type == NONE))
 	{
 		if (node->token->type == SCL)
 		{
@@ -80,7 +80,7 @@ static void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 	}
 }
 
-static char			is_term_env(t_tree *tree)
+char			is_term_env(t_tree *tree)
 {
 	if (!tree->left && !tree->right && tree->cmds && tree->cmds[0] && \
 		!tree->cmds[1] && ft_strchr(tree->cmds[0], '='))
@@ -91,31 +91,6 @@ static char			is_term_env(t_tree *tree)
 	else
 		return (0);
 }
-
-/*void	check_if_home_tilde(t_tree *tree, char *home)
-{
-	int		i;
-	char	*ptr;
-	char	*tmp;
-	char	*tmp2;
-
-	if (tree->left)
-		return (check_if_env_var(tree->left));
-	if (tree->right)
-		return (check_if_env_var(tree->right));
-	i = -1;
-	while (tree->cmds && tree->cmds[++i])
-	{
-		if ((ptr = ft_strstr(tree->cmds[i], "~/")))
-		{
-			tmp = ft_strsub(tree->cmds[i], 0, ptr - tree->cmds[i]);
-			tmp2 = ft_strstrjoin(tmp, home, ptr + 1);
-			free(tmp);
-			free(tree->cmds[i]);
-			tree->cmds[i] = tmp2;
-		}
-	}
-}*/
 
 char	*get_excla(t_sh *shell, char *start, char *line, int *value)
 {
@@ -182,6 +157,21 @@ char		check_hist_exla2(t_sh *shell, char *line, int value)
 	return (1);
 }
 
+void			manage_tree(t_sh *sh, t_tree *commands_tree)
+{
+	check_if_env_var(commands_tree);
+	/*if (find_env(sh->env, "HOME"))
+		check_if_home_tilde(commands_tree, find_env(sh->env, "HOME"));
+	*/
+	if (find_env(sh->env, "PATH"))
+		try_add_hashtab(commands_tree, sh);
+	if (!is_term_env(commands_tree))
+	{
+		treat_history_cmd(commands_tree);
+		browse_tree(commands_tree, sh, NULL, 1);
+	}
+}
+
 void			go_core(char *command, t_sh *shell)
 {
 	t_tree	*commands_tree;
@@ -209,17 +199,6 @@ void			go_core(char *command, t_sh *shell)
 		return ;
 	}
 	if (commands_tree)
-	{
-		check_if_env_var(commands_tree);
-		/*if (find_env(shell->env, "HOME"))
-			check_if_home_tilde(commands_tree, find_env(shell->env, "HOME"));
-		if (find_env(shell->env, "PATH"))*/
-			try_add_hashtab(commands_tree, shell);
-		if (!is_term_env(commands_tree))
-		{
-			treat_history_cmd(commands_tree);
-			browse_tree(commands_tree, shell, NULL, 1);
-		}
-	}
+		manage_tree(shell, commands_tree);
 	clear(shell, &begin_lexems, commands_tree);
 }

@@ -1,61 +1,5 @@
 #include "tosh.h"
 
-/*static void		manage_quote2(t_lexer *lexer, char *tmp)
-{
-	int		i;
-	int		j;
-	int		k;
-	char	buff[ft_strlen(lexer->line) + 1];
-
-	i = 1;
-	j = -1;
-	k = -1;
-	ft_bzero(buff, ft_strlen(lexer->line) + 1);
-	buff[++k] = tmp[++j];
-	while (tmp[++j] && (tmp[j] != ' ' || i == 1))
-	{
-		if (tmp[j] != tmp[0])
-			buff[++k] = tmp[j];
-		else
-			i = i == 0 ? 1 : 0;
-	}
-	buff[++k] = tmp[0];
-	while (tmp[j])
-		buff[++k] = tmp[j++];
-	buff[++k] = '\0';
-	lexer->line = ft_strdup(buff);
-	free(tmp);
-}
-
-static void		manage_quote(t_lexer *lexer)
-{
-	int		i;
-	int		j;
-	int		k;
-	char	buff[ft_strlen(lexer->line) + 1];
-
-	if (lexer->string_operator || (!(lexer->line + 1) && (*lexer->line == '\'' \
-		|| *lexer->line == '\"' || *lexer->line == '`')))
-		return ;
-	i = -1;
-	while (lexer->line[++i] && lexer->line[i] != '\'' && lexer->line[i] != '"' \
-		&& lexer->line[i] != '`' && lexer->line[i] != ' ')
-		;
-	if (!lexer->line[i] || lexer->line[i] == ' ')
-		return ;
-	k = -1;
-	buff[++k] = lexer->line[i];
-	j = -1;
-	while (lexer->line[++j])
-	{
-		if (j == i)
-			continue ;
-		buff[++k] = lexer->line[j];
-	}
-	buff[++k] = '\0';
-	manage_quote2(lexer, ft_strdup(buff));
-}*/
-
 static char	*replace_var(t_sh *sh, char *command)
 {
 	int		i;
@@ -109,18 +53,11 @@ static char	*replace_var(t_sh *sh, char *command)
 
 static void		get_next_token2(t_lexer *lexer, t_token **token, t_token *last_token)
 {
-	if (*lexer->line && (lexer->string_operator == *lexer->line || \
-		!lexer->string_operator) && *lexer->line == '\'' && !lexer->bs)
+	if (*lexer->line && *lexer->line == '\'' && !lexer->bs)
 		manage_string_op(lexer);
 	else if (*lexer->line && (lexer->string_operator == *lexer->line || \
 		!lexer->string_operator) && *lexer->line == '"' && !lexer->bs)
 		manage_string_op(lexer);
-	else if (*lexer->line && (lexer->string_operator == *lexer->line || \
-		!lexer->string_operator) && *lexer->line == '`' && !lexer->bs)
-	{
-		manage_string_op(lexer);
-		*token = new_token(lexer, BQT, "`");
-	}
 	else if (*lexer->line)
 		*token = find_token(lexer, last_token);
 }
@@ -161,6 +98,7 @@ void			init_lexer(t_lexer *lexer, char *command)
 	lexer->line = command;
 	lexer->brc = 0;
 	lexer->bkt = 0;
+	lexer->bqt = 0;
 	lexer->blank = 0;
 	lexer->string_operator = 0;
 }
@@ -202,8 +140,8 @@ void			get_lexems(t_sh *sh)
 	while ((token = get_next_token(sh->lexer, token)))
 		ft_node_push_back(&(sh->lexer->lexems), token);
 	replace_tild(sh->lexer->lexems, sh->env);
-//	t_list *tmp = sh->lexer->lexems;
-/*	while (tmp)
+	/*t_list *tmp = sh->lexer->lexems;
+	while (tmp)
 	{
 		ft_putnbr(((t_token*)(tmp->data))->type);
 		ft_putendl(" <-- type");

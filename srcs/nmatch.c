@@ -52,7 +52,7 @@ int			nmatch(char *s1, char *s2, t_list *lexems)
 //		printf("6\n");
 		return (nmatch(s1 + 1, NULL, lexems->next));
 	}
-	if (((token->type != EXPR && token->type != TILD_EXPR) || token->type == TILD_EXPR))
+	if (token->type == EXPR && token->type != NONE)
 	{
 		if (!s2)
 			s2 = token->value;

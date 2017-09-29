@@ -91,6 +91,12 @@ static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
 	if ((path = get_path(node, env, shell)))
 	{
 		envi = conv_env(env);
+		if (shell->ssbqt)
+		{
+			close(shell->pipe_ss[0]);		
+			dup2(shell->pipe_ss[1], 1);
+			close(shell->pipe_ss[1]);	
+		}
 		ret = execve(path, node->cmds, envi);
 		free(path);
 		if (envi)

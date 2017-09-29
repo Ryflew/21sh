@@ -2,7 +2,7 @@
 
 char			is_string_op(char c)
 {
-	if (c == '\'' || c == '"' || c == '`')
+	if (c == '\'' || c == '"')
 		return (1);
 	return (0);
 }
@@ -11,7 +11,14 @@ static char	is_operator(char c, char c2)
 {
 	if (c == '>' || c == '<' || (c == '&' && c2 == '&') || c == '|' || \
 		c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || \
-		c == '}' || c == ';' || c == '*' || c == '?')
+		c == '}' || c == ';' || c == '*' || c == '?' || c == '`')
+		return (1);
+	return (0);
+}
+
+static char	is_spe_operator(char c)
+{
+	if (c == '`')
 		return (1);
 	return (0);
 }
@@ -127,7 +134,7 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 		(!is_operator((lexer->line)[i], (lexer->line)[i + 1]) \
 		&& !ft_isblank((lexer->line)[i]) && ((lexer->line)[i] != ',' || !lexer->brc || lexer->bkt))
 		|| ((lexer->line)[i] == ']' && !lexer->bkt) || ((lexer->line)[i] == '}' && !lexer->brc)
-		|| ((lexer->line)[i] == '{' && lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt) || st_op))
+		|| ((lexer->line)[i] == '{' && lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt) || (st_op && (!is_spe_operator((lexer->line)[i]) || st_op == '\''))))
 	{
 		if (type != WORD && !ft_isdigit((lexer->line)[i]))
 			type = WORD;

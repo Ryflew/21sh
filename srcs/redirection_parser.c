@@ -5,7 +5,7 @@ t_tree	*basic_red(t_sh *sh, e_token type, t_tree *left)
 	t_token	*token;
 	t_token	*file_name;
 
-	if (left && !left->right && left->token && left->token->type != SCL)
+	if (left && !left->right && left->token && left->token->type != SCL && left->token->type != NONE)
 		return (ret_parse_error(left));
 	if (sh->current_token->type == type)
 	{
@@ -26,7 +26,7 @@ t_tree	*adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 	t_token	*token_type;
 	t_token	*file_name;
 
-	if (left && !left->right && left->token && left->token->type != SCL)
+	if (left && !left->right && left->token && left->token->type != SCL && left->token->type != NONE)
 		return (ret_parse_error(left));
 	if (sh->current_token->type == type)
 	{
@@ -48,7 +48,7 @@ t_tree	*redirection_with_fd(t_sh *sh, t_tree *left)
 	t_token	*token;
 
 	new_node = NULL;
-	if (left && !left->right && left->token && left->token->type != SCL)
+	if (left && !left->right && left->token && left->token->type != SCL && left->token->type != NONE)
 		return (ret_parse_error(left));
 	token = sh->current_token;
 	eat(sh, FD);

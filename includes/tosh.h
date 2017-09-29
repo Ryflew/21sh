@@ -74,7 +74,8 @@ typedef enum	e_token
 	BKT_EXPR, // 30
 	HIST, // 31
 	VAR, // 32
-	TILD // 33
+	TILD, // 33
+	SON // 34
 }				e_token;
 
 typedef enum	e_state
@@ -110,6 +111,7 @@ typedef	struct		s_lexer
 	char			blank;
 	char			brc;
 	char			bkt;
+	char			bqt;
 }					t_lexer;
 
 typedef	struct		s_token
@@ -155,6 +157,8 @@ typedef struct		s_fd
 
 typedef	struct		s_sh
 {
+	int				pipe_ss[2];
+
 	t_env			*env;
 	t_env			*save_env;
 	t_env			*hash;
@@ -166,7 +170,8 @@ typedef	struct		s_sh
 	t_fd			fd_in;
 	int				fd_pipe;
 	int				right_side;
-
+	char			ssbqt;
+	
 	char			*prompt;
 	char			*toaddstr;
 	char			command[ARG_MAX];
@@ -334,7 +339,7 @@ void				manage_chevb(t_fd fd);
 char				*current_binary(t_tree *node, t_env *env, t_sh *shell);
 t_token				*lex_number(t_lexer *lexer);
 t_token				*lex_word(t_lexer *lexer, t_token *last_token);
-t_tree				*cmd_rules(t_sh *sh);
+t_tree				*cmd_rules(t_sh *sh, char **tmp_env);
 t_token				*new_token(t_lexer *lexer, e_token token_type, char *val);
 char				parse_error(t_sh *sh);
 char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
@@ -349,7 +354,8 @@ t_token				*find_token(t_lexer *lexer, t_token *last_token);
 char				**parse_env_cmds(t_sh *sh);
 t_fd				*aggregation_rules(t_sh *sh);
 int					father(t_sh *shell, int *fd);
-
+char				is_term_env(t_tree *tree);
+void				manage_tree(t_sh *sh, t_tree *commands_tree);
 
 
 char   				is_glob_token(e_token type);
