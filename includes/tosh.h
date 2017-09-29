@@ -350,17 +350,18 @@ char				browse_tree(t_tree *node, t_sh *shell, t_tree *parent,
 					char r_side);
 void				manage_string_op(t_lexer *lexer);
 void				*ret_parse_error(t_tree *node);
-t_token				*find_token(t_lexer *lexer, t_token *last_token);
+t_token				*identify_token(t_lexer *lexer, t_token *last_token);
 char				**parse_env_cmds(t_sh *sh);
 t_fd				*aggregation_rules(t_sh *sh);
 int					father(t_sh *shell, int *fd);
 char				is_term_env(t_tree *tree);
 void				manage_tree(t_sh *sh, t_tree *commands_tree);
 
+char				*get_word(char const *s, size_t len);
 
 char   				is_glob_token(e_token type);
 void				glob(t_sh *sh);
 int					nmatch(char *s1, char *s2, t_list *lexems);
-
+char	    		*replace_var(t_sh *sh, char *cmd);
 
 #endif

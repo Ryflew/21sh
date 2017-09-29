@@ -82,7 +82,9 @@ FILES = add_char.c \
 				parse_env.c \
 				father.c \
 				globing.c \
-				nmatch.c
+				nmatch.c \
+				replace.c \
+				get_word.c
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 
