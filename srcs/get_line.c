@@ -112,7 +112,7 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 		read(0, &buff, sizeof(unsigned long));
 		if (get_line2(shell, buff, state))
 			;
-		else if (buff == ENTER)
+		else if (buff == ENTER || (*state == READ_CMD && buff == (unsigned long)shell->read_delimiter))
 		{
 			move_to(shell->pos.last.x, shell->pos.last.y);
 			break ;
