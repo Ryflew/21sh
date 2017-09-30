@@ -1,6 +1,6 @@
 #include "tosh.h"
 
-static char	*add_var_in_cmdline(t_env *env, int *i, char *cmd)
+static char	*add_var_in_cmdline(t_env *env, t_env *sh_var, int *i, char *cmd)
 {
 	int		j;
 	char	*var;
@@ -13,7 +13,8 @@ static char	*add_var_in_cmdline(t_env *env, int *i, char *cmd)
 		;
 	var = ft_strsub(cmd, *i + 1, j - *i - 1);
 	to_free = var;
-	var = find_env(env, var);
+	if (!(var = find_env(env, var)))
+		var = find_env(sh_var, to_free);
 	if (to_free)
 		free(to_free);
 	to_free = cmd;
@@ -51,7 +52,7 @@ char	    *replace_var(t_sh *sh, char *cmd)
 		}
 		else if (cmd[i] == '$' && !bs
 				&& !st_op && ft_isalnum(cmd[i + 1]))
-			cmd = add_var_in_cmdline(sh->env, &i, cmd);
+			cmd = add_var_in_cmdline(sh->env, sh->shell_var, &i, cmd);
 	}
 	return (cmd);
 }

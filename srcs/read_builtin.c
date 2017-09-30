@@ -1,5 +1,41 @@
 #include "tosh.h"
 
+void	get_read_opt(char *opt, char ***av)
+{
+	int		i;
+
+	++(*av);
+	while (**av && ***av == '-')
+	{
+		i = 1;
+		while (*(**av + i))
+		{
+			if (*(**av + i) == 'a')
+				opt[0] = 1;
+			else if (*(**av + i) == 'd')
+				opt[1] = 1;
+			else if (*(**av + i) == 'e')
+				opt[2] = 1;
+			else if (*(**av + i) == 'n')
+				opt[3] = 1;
+			else if (*(**av + i) == 'p')
+				opt[4] = 1;
+			else if (*(**av + i) == 'r')
+				opt[5] = 1;
+			else if (*(**av + i) == 's')
+				opt[6] = 1;
+			else if (*(**av + i) == 't')
+				opt[7] = 1;
+			else if (*(**av + i) == 'u')
+				opt[8] = 1;
+			else
+				break ;
+			++i;
+		}
+		++(*av);
+	}
+}
+
 void	read_addvar(t_sh *shell, char *var_name, char *line)
 {
 	char	**av;
@@ -35,17 +71,18 @@ void	remove_backslash(char **str)
 	*str = ft_strdup(buff);
 }
 
-char	*read_line_echo(void)
+char	*read_line_echo(unsigned long deli)
 {
 	char			buff[4096];
 	int				i;
 	unsigned long	c;
 
+	deli = !deli ? ENTER : deli;
 	ft_bzero(buff, 4096);
 	i = -1;
 	while (read(0, &c, sizeof(unsigned long)) != -1 && i < 4096)
 	{
-		if (c == ENTER)
+		if (c == deli)
 			return (ft_strdup(buff));
 		else if (c >= 32 && c <= 126)
 			buff[++i] = c;
@@ -80,11 +117,14 @@ void	read_a(char *opt, char *var_name, t_sh *shell)
 	shell->total_command = NULL;
 	shell->state = READ_CMD;
 	if (opt[6])
-		line = read_line_echo();
+		line = read_line_echo(0);
 	else if (opt[2])
 		read_line_cano(shell);
 	else
+	{
 		line = get_line(shell, 0, &(shell->state), NULL);
+		ft_putchar('\n');
+	}
 	if (!line)
 		line = ft_strdup("");
 	remove_backslash(&line);
@@ -93,53 +133,55 @@ void	read_a(char *opt, char *var_name, t_sh *shell)
 	ft_strdel(&line);
 }
 
-void	get_read_opt(char *opt, char ***argv)
+void	read_d(char *opt, char *delimiter, t_sh *shell)
 {
-	char	**av;
-	int		i;
+	char	*var_name;
+	char	*line;
 
-	av = *argv + 1;
-	while (*av && **av == '-')
+	if (!delimiter || !*delimiter || !ft_isascii(*delimiter))
 	{
-		i = 1;
-		while (**av)
-		{
-			if (*(*av + i) == 'a')
-				opt[0] = 1;
-			else if (*(*av + i) == 'd')
-				opt[1] = 1;
-			else if (*(*av + i) == 'e')
-				opt[2] = 1;
-			else if (*(*av + i) == 'n')
-				opt[3] = 1;
-			else if (*(*av + i) == 'p')
-				opt[4] = 1;
-			else if (*(*av + i) == 'r')
-				opt[5] = 1;
-			else if (*(*av + i) == 's')
-				opt[6] = 1;
-			else if (*(*av + i) == 't')
-				opt[7] = 1;
-			else if (*(*av + i) == 'u')
-				opt[8] = 1;
-			else
-				break ;
-			++i;
-		}
-		++av;
+		errexit("read", "DELIM character missing.");
+		return ;
 	}
+	shell->read_delimiter = *delimiter;
+	var_name = ft_strdup("REPLY");
+	if (shell->op)
+		free(shell->op);
+	free(shell->total_command);
+	shell->op = NULL;
+	shell->total_command = NULL;
+	shell->state = READ_CMD;
+	line = NULL;
+	if (opt[6])
+		line = read_line_echo(*delimiter);
+	else if (opt[2])
+		read_line_cano(shell);
+	else
+	{
+		line = get_line(shell, 0, &(shell->state), NULL);
+		ft_putchar('\n');
+	}
+	if (!line)
+		line = ft_strdup("");
+	remove_backslash(&line);
+	read_addvar(shell, var_name, line);
+	ft_strdel(&var_name);
+	ft_strdel(&line);
+	shell->read_delimiter = 0;
 }
 
-void	read_builtin(t_sh *shell, char **av)
+void	read_builtin(t_sh *shell, char **argv)
 {
 	char	opt[9];
+	char	**av;
 
+	av = argv;
 	ft_bzero(opt, 9);
 	get_read_opt(opt, &av);
 	if (opt[0]) // fait !
 		read_a(opt, *av, shell);
 	else if (opt[1])
-		;//read_d();
+		read_d(opt, *av, shell);
 	else if (opt[3])
 		;//read_n();
 	else if (opt[4])

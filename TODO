@@ -21,6 +21,7 @@
 
 ------------ BUG --------------
 
+- read -s boucle infini
 - boucle infini dans parse_cmds => cmd_without_delimiter_rules, quand on tape '!delamerde' (tu gère pas HIST c'st pour ca)
 - echo "!qqchose", ca doit marcher, la ca fait comme '!qqchose'
 - VICTOR -> ls '\' je recois comme ligne de command ca dans mon lexer ls '' tu retires le \ avant cest pas normal ^^
