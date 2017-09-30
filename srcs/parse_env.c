@@ -15,7 +15,7 @@ static char	**create_tmp_env(t_sh *sh, int size, t_token *token)
 		token = text_rules(sh);
 		return (NULL);
 	}
-	if (ft_strcmp(token->value, "env"))
+	if (ft_strcmp(VAL, "env"))
 		++size;
 	tmp_env = (char**)malloc(sizeof(char*) * size);
 	tmp_env[size - 1] = NULL;
@@ -24,9 +24,15 @@ static char	**create_tmp_env(t_sh *sh, int size, t_token *token)
 	while (i < size)
 	{
 		token = text_rules(sh);
-		tmp_env[i++] = token->value;	
+		tmp_env[i++] = VAL;
 	}
 	return (tmp_env);
+}
+
+static t_list	*increase(t_list *tmp, int *size)
+{
+	++(*size);
+	return (tmp->next);
 }
 
 char		**parse_env_cmds(t_sh *sh)
@@ -36,22 +42,19 @@ char		**parse_env_cmds(t_sh *sh)
 	t_token	*token;
 
 	tmp = sh->lexer->lexems;
-	if (!sh->current_token || ft_strcmp(sh->current_token->value, "env") || !tmp->next || ((t_token*)(tmp->next->data))->type != WORD)
+	if (!sh->current_token || ft_strcmp( sh->current_token->value, "env")
+		|| !tmp->next || ((t_token*)(tmp->next->data))->type != WORD)
 		return (NULL);
 	tmp = tmp->next;
 	token = tmp->data;
 	size = 1;
-	while (tmp && (!ft_strcmp(token->value, "-i") ||\
-		!ft_strcmp(token->value, "-u") || !ft_strcmp(token->value, "env") ||\
-		ft_strchr(token->value, '=')))
+	while (tmp && (!ft_strcmp(VAL, "-i") || !ft_strcmp(VAL, "-u")
+		|| !ft_strcmp(VAL, "env") ||\
+		ft_strchr(VAL, '=')))
 	{
-		++size;
-		tmp = tmp->next;
-		if (tmp && !ft_strcmp(token->value, "-u"))
-		{
-			++size;
-			tmp = tmp->next;
-		}
+		tmp = increase(tmp, &size);
+		if (tmp && !ft_strcmp(VAL, "-u"))
+			tmp = increase(tmp, &size);
 		if (tmp)
 			token = tmp->data;
 	}

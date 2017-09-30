@@ -31,18 +31,18 @@ static void		replace_tild(t_list *lexems, t_env *env)
 	while (lexems)
 	{
 		token = (t_token*)lexems->data;
-		if (token->type == TILD)
+		if (TYPE == TILD)
 		{
-			token->type = WORD;
-			to_free = token->value;
-			token->value = ft_strjoin(find_env(env, "HOME"), token->value + 1);
+			TYPE = WORD;
+			to_free = VAL;
+			VAL = ft_strjoin(find_env(env, "HOME"), VAL + 1);
 			free(to_free);
 		}
-		else if (token->type == TILD_EXPR)
+		else if (TYPE == TILD_EXPR)
 		{
-			token->type = EXPR;
-			to_free = token->value;
-			token->value = ft_strjoin(find_env(env, "HOME"), token->value + 1);
+			TYPE = EXPR;
+			to_free = VAL;
+			VAL = ft_strjoin(find_env(env, "HOME"), VAL + 1);
 			free(to_free);
 		}
 		lexems = lexems->next;

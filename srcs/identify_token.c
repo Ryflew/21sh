@@ -113,7 +113,7 @@ t_token		*identify_token(t_lexer *lexer, t_token *last_token)
 		}*/
 	if (*lexer->line && !(token))
 		token = lex_word(lexer, last_token);
-	if (token && is_glob_token(token->type) && !lexer->blank && last_token && (last_token->type == WORD || last_token->type == TILD || last_token->type == NUM))
+	if (token && is_glob_token(TYPE) && !lexer->blank && last_token && (last_token->type == WORD || last_token->type == TILD || last_token->type == NUM))
 	{
 		if (last_token->type == TILD)
 			last_token->type = TILD_EXPR;

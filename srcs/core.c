@@ -8,7 +8,7 @@ static char		manage_children(t_tree *node, t_sh *shell, char rig, char ret)
 {
 	if (node->left)
 	{
-		if (node->token->type == PIPE)
+		if (node->TYPE == PIPE)
 		{
 			if ((ret = browse_tree(node->left, shell, node, 0)) == -1)
 				return (-1);
@@ -16,11 +16,11 @@ static char		manage_children(t_tree *node, t_sh *shell, char rig, char ret)
 		else if ((ret = browse_tree(node->left, shell, node, rig)) == -1)
 			return (-1);
 	}
-	if (node->right && node->token && (node->token->type < CHEVB ||
-	node->token->type > BRED) && (node->token->type != OR || ret) &&
-	(node->token->type != AND || !ret || node->left->token->type == NONE))
+	if (node->right && node->token && (node->TYPE < CHEVB ||
+	node->TYPE > BRED) && (node->TYPE != OR || ret) &&
+	(node->TYPE != AND || !ret || node->left->TYPE == NONE))
 	{
-		if (node->token->type == SCL)
+		if (node->TYPE == SCL)
 		{
 			if (shell->fds_out)
 				ft_clear_list(&shell->fds_out, (&free));
@@ -58,7 +58,7 @@ char			browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char rig)
 
 void			clear_lexems(t_token *token)
 {
-	free(token->value);
+	free(VAL);
 	free(token);
 }
 
@@ -124,7 +124,7 @@ char		check_hist_exla2(t_sh *shell, char *line, int value)
 		token = (t_token*)lexems->data;
 		while (ft_isblank(*line) || *line == '\\' || *line == '"' || *line == '\''|| *line == '`')
 			++line;
-		if (token->type == HIST)
+		if (TYPE == HIST)
 		{
 			tmp = start;
 			start = get_excla(shell, start, line, &value);
@@ -144,7 +144,7 @@ char		check_hist_exla2(t_sh *shell, char *line, int value)
 		}
 		else
 		{
-			line += ft_strlen(token->value);
+			line += ft_strlen(VAL);
 			NEXT(lexems);
 		}
 	}

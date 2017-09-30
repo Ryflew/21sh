@@ -35,12 +35,12 @@ int			open_file(t_tree *node)
 	int	ret;
 
 	ret = 0;
-	if (node->token && node->token->type == CHEVB)
+	if (node->token && node->TYPE == CHEVB)
 		return (open_chevb(node));
-	else if (node->token && (node->token->type == CHEVF || \
-		node->token->type == FRED))
+	else if (node->token && (node->TYPE == CHEVF || \
+		node->TYPE == FRED))
 		return (open_chevf(node));
-	else if (node->token && node->token->type == DCHEVF)
+	else if (node->token && node->TYPE == DCHEVF)
 		return (open_dchevf(node));
 	else
 		return (ret);

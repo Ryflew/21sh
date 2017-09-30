@@ -17,7 +17,7 @@ static char	*fill_word(char *strf, char const *s, size_t len)
 			string_op = s[i];
 		else if (s[i] == string_op && !bs)
 			string_op = 0;
-		else if (bs || (s[i] != string_op && s[i] != '\\'))
+		else if (bs || (s[i] != string_op && (s[i] != '\\' || string_op == '\'')))
 			strf[new_len++] = s[i];
 		if (s[i] == '\\' && string_op != '\'' && !bs)
 			bs = 1;
@@ -48,7 +48,7 @@ char	*get_word(char const *s, size_t len)
 			string_op = s[i];
 		else if (s[i] == string_op && !bs)
 			string_op = 0;
-		else if (bs || (s[i] != string_op && s[i] != '\\'))
+		else if (bs || (s[i] != string_op && (s[i] != '\\' || string_op == '\'')))
 			++new_len;
 		bs = (s[i] == '\\' && string_op != '\'' && !bs) ? 1 : 0;
 	}

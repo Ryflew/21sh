@@ -86,7 +86,14 @@ FILES = add_char.c \
 				globing.c \
 				nmatch.c \
 				replace.c \
-				get_word.c
+				get_word.c \
+				dir.c \
+				manage_wildcards.c \
+				replace_all_exprs.c \
+				manage_brc.c \
+				merge_expr.c \
+				subshell.c \
+				aggregation.c
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 

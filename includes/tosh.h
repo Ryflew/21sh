@@ -3,9 +3,12 @@
 
 # include <limits.h>
 # include <termios.h>
+# include <dirent.h>
 # include "../libft/libft.h"
 
 # define NEXT(elem) elem = elem->next
+# define VAL token->value
+# define TYPE token->type
 
 # define UP_ARROW 4283163
 # define DOWN_ARROW 4348699
@@ -361,11 +364,22 @@ int					father(t_sh *shell, int *fd);
 char				is_term_env(t_tree *tree);
 void				manage_tree(t_sh *sh, t_tree *commands_tree);
 
+char				subshell(t_sh *sh, e_token type);
+
 char				*get_word(char const *s, size_t len);
+
+char	    		*replace_var(t_sh *sh, char *cmd);
 
 char   				is_glob_token(e_token type);
 void				glob(t_sh *sh);
 int					nmatch(char *s1, char *s2, t_list *lexems);
-char	    		*replace_var(t_sh *sh, char *cmd);
+void				replace_all_exprs(t_sh *sh);
+void	  			manage_wildcards(t_list *lex, char *match);
+DIR					*open_dir(char *dir_name, t_token *token);
+int					is_dir(char *dir_name, t_token *token);
+void    			clear_old_expr(t_sh *sh, t_list **lexems, char match);
+void    			manage_brc(t_list *lexems);
+void				merge_expr_to_word(t_list *lexems);
+void    			merge_expr(t_list *lexems);
 
 #endif

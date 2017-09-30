@@ -4,7 +4,8 @@
 
 static void	run_with_pipe(t_sh *shell, int *fd, t_tree *node)
 {
-	if (shell->fd_pipe != 0 && node->parent && node->parent->token->type != DCHEVB && node->parent->token->type != CHEVB)
+	if (shell->fd_pipe != 0 && node->parent
+		&& node->parent->TYPE != DCHEVB && node->parent->TYPE != CHEVB)
 	{
 		dup2(shell->fd_pipe, 0);
 		close(shell->fd_pipe);
@@ -18,9 +19,9 @@ static void	run_with_pipe(t_sh *shell, int *fd, t_tree *node)
 
 void	child(t_tree *node, t_sh *shell, int *fd)
 {
-	if (node->parent && node->parent->token->type == DCHEVB)
+	if (node->parent && node->parent->TYPE == DCHEVB)
 		manage_dchevb(node, node->parent->right->cmds[0], 1);
-	else if (node->parent && node->parent->token->type == CHEVB)
+	else if (node->parent && node->parent->TYPE == CHEVB)
 		manage_chevb(shell->fd_in);
 	if (shell->fd_pipe != -1)
 		run_with_pipe(shell, fd, node);

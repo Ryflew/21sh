@@ -47,19 +47,19 @@ static char	manage_chev(t_tree *node, t_sh *shell)
 {
 	t_fd	*fd;
 
-	if (node->token->type == DCHEVB && !node->left)
+	if (node->TYPE == DCHEVB && !node->left)
 		manage_dchevb(node, node->right->cmds[0], 0);
-	else if (node->token->type == CHEVF || node->token->type == DCHEVF
-			|| node->token->type == FRED)
+	else if (node->TYPE == CHEVF || node->TYPE == DCHEVF
+			|| node->TYPE == FRED)
 	{
 		if (!(fd = (t_fd*)malloc(sizeof(t_fd))))
 			exit(-1);
-		/*if (node->token->type == FRED && !ft_strcmp(node->right->cmds[0], "-"))
+		/*if (node->TYPE == FRED && !ft_strcmp(node->right->cmds[0], "-"))
 			fd->file = -2;
 		else */
 		if ((fd->file = open_file(node)) == -1)
 			return (-1);
-		if (node->token->type != FRED)
+		if (node->TYPE != FRED)
 			fd->from = (node->from_fd == -1) ? 1 : node->from_fd;
 		else
 			fd->from = node->from_fd;
@@ -67,7 +67,7 @@ static char	manage_chev(t_tree *node, t_sh *shell)
 			fd->to = node->to_fd;
 		else
 			fd->to = -1;
-		fd->type = node->token->type;
+		fd->type = node->TYPE;
 		ft_node_push_front(&shell->fds_out, fd);
 	}
 	return (0);
@@ -78,18 +78,18 @@ char		operators(t_tree *node, t_sh *shell)
 	int		ret;
 
 	ret = 0;
-	if (node->token->type == PIPE)
+	if (node->TYPE == PIPE)
 	{
 		if (shell->fd_pipe == -1)
 			shell->fd_pipe = 0;
 	}
-	else if (node->token->type == CHEVB)
+	else if (node->TYPE == CHEVB)
 	{
 		if ((shell->fd_in.file = open_file(node)) == -1)
 			return (-1);
 		shell->fd_in.to = node->to_fd;
 		shell->fd_in.from = -1;
-		shell->fd_in.type = node->token->type;
+		shell->fd_in.type = node->TYPE;
 	}
 	else
 		return (manage_chev(node, shell));
