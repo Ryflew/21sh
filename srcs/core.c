@@ -1,84 +1,4 @@
 #include "tosh.h"
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-
-static char		manage_children(t_tree *node, t_sh *shell, char rig, char ret)
-{
-	if (node->left)
-	{
-		if (node->token->type == PIPE)
-		{
-			if ((ret = browse_tree(node->left, shell, node, 0)) == -1)
-				return (-1);
-		}
-		else if ((ret = browse_tree(node->left, shell, node, rig)) == -1)
-			return (-1);
-	}
-	if (node->right && node->token && (node->token->type < CHEVB ||
-	node->token->type > BRED) && (node->token->type != OR || ret) &&
-	(node->token->type != AND || !ret || node->left->token->type == NONE))
-	{
-		if (node->token->type == SCL)
-		{
-			if (shell->fds_out)
-				ft_clear_list(&shell->fds_out, (&free));
-			shell->fds_out = NULL;
-			shell->fd_pipe = -1;
-			shell->right_side = 1;
-		}
-		if ((ret = browse_tree(node->right, shell, node, rig)) == -1)
-			return (-1);
-	}
-	return (ret);
-}
-
-char			browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char rig)
-{
-	char	ret;
-
-	node->parent = parent;
-	ret = 0;
-	if (node->token && ((node->left && node->left->cmds) || \
-		(node->right && node->right->cmds)))
-	{
-		if ((operators(node, shell)) == -1)
-			return (-1);
-	}
-	else if (node->cmds)
-	{
-		if (node->parent && shell->fd_pipe != -1)
-			shell->right_side = rig;
-		if ((ret = exec_cmds(node, &(shell->env), shell)) == -1)
-			return (-1);
-	}
-	return (manage_children(node, shell, rig, ret));
-}
-
-void			clear_lexems(t_token *token)
-{
-	free(token->value);
-	free(token);
-}
-
-static void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
-{
-	ft_clear_list(begin, (void*)&clear_lexems);
-	if (shell->save_env)
-	{
-		if (shell->env)
-			del_all_env(&(shell->env));
-		shell->env = shell->save_env;
-		shell->save_env = NULL;
-	}
-	if (commands_tree)
-	{
-		if (shell->fds_out)
-			ft_clear_list(&shell->fds_out, (&free));
-		del_command_tree(commands_tree);
-	}
-}
 
 char			is_term_env(t_tree *tree)
 {
@@ -92,18 +12,114 @@ char			is_term_env(t_tree *tree)
 		return (0);
 }
 
+<<<<<<< HEAD
 void			manage_tree(t_sh *sh, t_tree *commands_tree)
 {
 	if (find_env(sh->env, "PATH"))
 		try_add_hashtab(commands_tree, sh);
 	if (!is_term_env(commands_tree))
+=======
+char	*get_excla(t_sh *shell, char *start, char *line, int *value)
+{
+	char	*new;
+	int		i;
+
+	i = history_excla(line + 1, shell);
+	if (shell->toaddstr)
 	{
-		treat_history_cmd(commands_tree);
-		browse_tree(commands_tree, sh, NULL, 1);
+		*value = (line - start) + ft_strlen(shell->toaddstr);
+		start = ft_strsub(start, 0, line - start);
+		new = ft_strstrjoin(start, shell->toaddstr, line + 1 + i);
+		free(start);
+		ft_strdel(&(shell->toaddstr));
+		return (new);
+	}
+	return (NULL);
+}
+
+char		check_hist_excla2(t_sh *shell, char *line, int value)
+{
+	t_list  *lexems;
+	t_token *token;
+	char	*tmp;
+	char	*start;
+
+	start = line;
+	lexems = shell->lexer->lexems;
+	while (lexems)
+	{
+		token = (t_token*)lexems->data;
+		while (ft_isblank(*line) || *line == '\\' || *line == '"' || *line == '\''|| *line == '`')
+			++line;
+		if (TYPE == HIST)
+		{
+			tmp = start;
+			start = get_excla(shell, start, line, &value);
+			if (shell->lexer->lexems == lexems)
+				shell->lexer->lexems = lexems->next;
+			ft_pop_node(&lexems, (void*)&clear_lexems);
+			if (!start)
+			{
+				start = tmp;
+				++line;
+				continue ;
+			}
+			if (lexems)
+				NEXT(lexems);
+			ft_strdel(&tmp);
+			line = start + value;
+		}
+		else
+		{
+			line += ft_strlen(VAL);
+			NEXT(lexems);
+		}
+	}
+	if (value > 0)
+	{
+		shell->toaddstr = start;
+		return (0);
+	}
+	free(start);
+	return (1);
+}
+
+void		clear_lexems(t_token *token)
+{
+	free(VAL);
+	free(token);
+}
+
+static void	clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
+{
+	ft_clear_list(begin, (void*)&clear_lexems);
+	if (shell->save_env)
+	{
+		if (shell->env)
+			del_all_env(&(shell->env));
+		shell->env = shell->save_env;
+		shell->save_env = NULL;
+	}
+	if (commands_tree)
+>>>>>>> d2a1c5acedf3c4fa1a1116705bbdd2f818174bda
+	{
+		if (shell->fds_out)
+			ft_clear_list(&shell->fds_out, (&free));
+		del_command_tree(commands_tree);
 	}
 }
 
-void			go_core(char *command, t_sh *shell)
+static void	init_shell(t_sh *shell)
+{
+	if (shell->lexer->lexems)
+		shell->current_token = shell->lexer->lexems->data;
+	else
+		shell->current_token = NULL;
+	shell->fd_pipe = -1;
+	shell->fds_out = NULL;
+}
+
+void		go_core(char *command, t_sh *shell)
 {
 	t_tree	*commands_tree;
 	t_list	*begin_lexems;
@@ -112,12 +128,7 @@ void			go_core(char *command, t_sh *shell)
 	get_lexems(shell);
 	glob(shell);
 	begin_lexems = shell->lexer->lexems;
-	if (shell->lexer->lexems)
-		shell->current_token = shell->lexer->lexems->data;
-	else
-		shell->current_token = NULL;
-	shell->fd_pipe = -1;
-	shell->fds_out = NULL;
+	init_shell(shell);
 	if ((commands_tree = commands_line_rules(shell)) == (void*)-1)
 	{
 		parse_error(shell);

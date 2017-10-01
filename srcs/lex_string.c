@@ -77,7 +77,7 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 			type = EXPR;
 	}
 	token = new_token(lexer, type, get_word(lexer->line, word_size));
-	lexer->line += word_size - ft_strlen(token->value);
+	lexer->line += word_size - ft_strlen(VAL);
 	//lexer->string_operator = 0;
 	//lexer->bs = 0;
 	return (token);

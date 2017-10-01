@@ -5,9 +5,9 @@ static char	*add_var_in_cmdline(t_env *env, t_env *sh_var, int *i, char *cmd)
 	int		j;
 	char	*var;
 	char	*to_free;
-	char	*left;
+	char	*lft;
 	
-	left = ft_strsub(cmd, 0, *i);
+	lft = ft_strsub(cmd, 0, *i);
 	j = *i;
 	while (cmd[++j] && ft_isalnum(cmd[j]))
 		;
@@ -18,11 +18,11 @@ static char	*add_var_in_cmdline(t_env *env, t_env *sh_var, int *i, char *cmd)
 	if (to_free)
 		free(to_free);
 	to_free = cmd;
-	cmd = (var) ? ft_strstrjoin(left, var, cmd + j) : ft_strjoin(left, cmd + j);
+	cmd = (var) ? ft_strstrjoin(lft, var, cmd + j) : ft_strjoin(lft, cmd + j);
 	if (to_free)
 		free(to_free);
-	if (left)
-		free(left);
+	if (lft)
+		free(lft);
 	if (var)
 		*i += ft_strlen(var);
 	return (cmd);

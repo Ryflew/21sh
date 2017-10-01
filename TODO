@@ -1,30 +1,42 @@
 
 ----------- TODO --------------
 
+<<<<<<< HEAD
 - ! a debug avec le debuggeur
 - Read
 - Help de read
+=======
+>>>>>>> d2a1c5acedf3c4fa1a1116705bbdd2f818174bda
 - Unset / Export
 - Ajouter unset / export a la commande help
 - Norme
 - Leaks
+<<<<<<< HEAD
 - Pour chacun refaire tous les headers a son nom (libft etc compris !)
 - Separer tosh.h en plein de headers (NOP !)
 - subshell bqt remplacer gnl pour split que sur les espace
+=======
+- Separer tosh.h en plein de headers
+- Testez le fonctionnement du heredoc "<<", avec ses options et cas particuliers.
+- revoir $var tild avec globing pour subshell
+>>>>>>> d2a1c5acedf3c4fa1a1116705bbdd2f818174bda
 
 ---------- BONUS --------------
 
 ------------ A TESTER ---------
 
 - aggregation de fichier <&
-- Testez l'existence et le fonctionnement du heredoc "<<", avec ses options et cas particuliers.
 
 ------------ BUG --------------
 
+<<<<<<< HEAD
 - boucle infini dans parse_cmds => cmd_without_delimiter_rules, quand on tape '!delamerde' (tu gère pas HIST c'st pour ca)
 - echo "!qqchose", ca doit marcher, la ca fait comme '!qqchose'
 - VICTOR -> ls '\' je recois comme ligne de command ca dans mon lexer ls '' tu retires le \ avant cest pas normal ^^
 - lance le shell puis remonte dans l' historique
+=======
+- boucle infini dans parse_cmds => cmd_without_delimiter_rules, quand on tape '!delamerde' (tu gère pas HIST c'est pour ca)
+>>>>>>> d2a1c5acedf3c4fa1a1116705bbdd2f818174bda
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

@@ -85,12 +85,14 @@ SRC_STRING =	ft_atoi.c \
 				ft_strnstr.c \
 				ft_strrchr.c \
 				ft_strsplit.c \
+				ft_strseparate.c \
 				ft_strstr.c \
 				ft_strsub.c \
 				ft_perror.c \
 				ft_strtrim.c \
 				ft_exiterror.c \
 				ft_strfind.c \
+				ft_strfind_by_end.c \
 				ft_strcont.c \
 				ft_counttab.c
 

@@ -8,12 +8,12 @@ static t_tree	*cmd_with_op_rules(t_sh *sh, char **tmp_env)
 	left = NULL;
 	if (!sh->current_token || (!(left = cmd_rules(sh, tmp_env)) && \
 		sh->current_token->type != CHEVF && sh->current_token->type != DCHEVF\
-		&& sh->current_token->type != CHEVB && sh->current_token->type \
+		&&  sh->current_token->type != CHEVB &&  sh->current_token->type \
 		!= DCHEVB) || left == (void*)-1)
 		return (left);
-	while ((left || (sh->current_token->type == CHEVF || \
-		sh->current_token->type == DCHEVF || sh->current_token->type == CHEVB \
-		|| sh->current_token->type == DCHEVB)) && left != (void*)-1)
+	while ((left || ( sh->current_token->type == CHEVF || \
+		 sh->current_token->type == DCHEVF || sh->current_token->type == CHEVB\
+		||  sh->current_token->type == DCHEVB)) && left != (void*)-1)
 	{
 		if ((tmp = redirection_rules(sh, left)) && tmp != (void*)-1)
 			left = tmp;
@@ -27,16 +27,17 @@ static t_tree	*cmd_with_op_rules(t_sh *sh, char **tmp_env)
 
 static t_tree	*pipe_rules(t_sh *sh, char **tmp_env)
 {
-	t_tree	*left;	
+	t_tree	*left;
 	t_token	*token;
 	t_tree	*right;
 
 	left = NULL;
-	if (!sh->current_token || !(left = cmd_with_op_rules(sh, tmp_env)) || left == (void*)-1)
+	if (!sh->current_token || !(left = cmd_with_op_rules(sh, tmp_env)) \
+		|| left == (void*)-1)
 		return (left);
-	while (sh->current_token && sh->current_token->type == PIPE)
+	while (sh->current_token &&  sh->current_token->type == PIPE)
 	{
-		if (!left->right && left->token && left->token->type != SCL)
+		if (!left->right && left->token && left->TYPE != SCL)
 			return (ret_parse_error(left));
 		token = sh->current_token;
 		eat(sh, PIPE);
@@ -56,13 +57,13 @@ static t_tree	*condition_operators_rules(t_sh *sh, char **tmp_env)
 
 	if (!(left = pipe_rules(sh, tmp_env)) || left == (void*)-1)
 		return (left);
-	while (sh->current_token && (sh->current_token->type == OR
-	|| sh->current_token->type == AND))
+	while (sh->current_token && ( sh->current_token->type == OR
+	||  sh->current_token->type == AND))
 	{
 		token = sh->current_token;
-		if (token->type == OR)
+		if (TYPE == OR)
 			eat(sh, OR);
-		else if (token->type == AND)
+		else if (TYPE == AND)
 			eat(sh, AND);
 		if ((right = pipe_rules(sh, tmp_env)) != (void*)-1 && right)
 			left = create_node(left, token, NULL, right);
@@ -78,13 +79,14 @@ static t_tree	*parse_semicolons(t_sh *sh, t_tree *left)
 	char	**tmp_env;
 	t_token	*token;
 
-	while (sh->current_token && sh->current_token->type == SCL)
+	while (sh->current_token &&  sh->current_token->type == SCL)
 	{
 		token = sh->current_token;
-		while (sh->current_token && sh->current_token->type == SCL)
+		while (sh->current_token &&  sh->current_token->type == SCL)
 			eat(sh, SCL);
 		tmp_env = parse_env_cmds(sh);
-		if ((right = condition_operators_rules(sh, tmp_env)) && right != (void*)-1)
+		if ((right = condition_operators_rules(sh, tmp_env))
+			&& right != (void*)-1)
 		{
 			right->tmp_env = tmp_env;
 			left = create_node(left, token, NULL, right);
@@ -100,7 +102,7 @@ t_tree			*commands_line_rules(t_sh *sh)
 	t_tree	*left;
 	char	**tmp_env;
 
-	while (sh->current_token && sh->current_token->type == SCL)
+	while (sh->current_token &&  sh->current_token->type == SCL)
 		eat(sh, SCL);
 	tmp_env = parse_env_cmds(sh);
 	if (!(left = condition_operators_rules(sh, tmp_env)) || left == (void*)-1)

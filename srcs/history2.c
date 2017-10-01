@@ -72,7 +72,7 @@ char **get_history(t_sh *shell, off_t size, char *home, char is_21sh_logs)
 	int		count;
 	char	history[size + 1];
 
-	if (!(fd = open(home, O_RDONLY)))
+	if ((fd = open(home, O_RDONLY)) == -1)
 		return (NULL);
 	if (read(fd, history, size) == -1)
 	{

@@ -11,75 +11,12 @@
 /* ************************************************************************** */
 
 #include "tosh.h"
-#include <fcntl.h>
 
-static void	close_dup_fd(t_fd *fd)
+static void	pipe_subshell(t_sh *shell)
 {
-	if (fd->from == -1 && fd->to == -1)
-	{
-		dup2(fd->file, 1);
-		dup2(fd->file, 2);
-	}
-}
-
-void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe)
-{
-	t_fd	*fd;
-	t_list	*tmp;
-	
-	close(pipe[0]);
-	child(node, shell, pipe);
-	tmp = shell->fds_out;
-	while (tmp && node->parent && (shell->fd_pipe == -1
-	|| shell->right_side))
-	{
-		fd = tmp->data;
-		if ((fd->type != FRED || fd->from != -1))
-			dup2(fd->file, fd->from);
-		else
-			close_dup_fd(fd);
-		close(fd->file);
-		tmp = tmp->next;
-	}
-	tmp = node->aggregations;
-	while (tmp)
-	{
-		fd = tmp->data;
-		if (fd->from != -1 && fd->to != -1)
-		{
-			if (fd->type == FRED)
-			{
-				if (fcntl(fd->to, F_GETFD) == -1)
-				{
-					ft_putstr("21sh: ");
-					ft_putnbr(fd->to);
-					ft_putendl(": Bad file descriptor");
-					ft_free_tab(node->cmds);
-					node->cmds = NULL;
-				}
-				dup2(fd->to, fd->from);
-				close(fd->to);
-			}
-			else
-			{
-				if (fcntl(fd->from, F_GETFD) == -1)
-				{
-					ft_putstr("21sh: ");
-					ft_putnbr(fd->from);
-					ft_putendl(" : Bad file descriptor");
-					ft_free_tab(node->cmds);
-					node->cmds = NULL;
-				}
-				dup2(fd->from, fd->to);
-				close(fd->from);
-			}
-		}
-		else if (fd->to == -2)
-			(fd->from != -1) ? close(fd->from) : close(1);
-		else if (fd->from == -2)
-			(fd->to != -1) ? close(fd->to) : close(0);
-		tmp = tmp->next;
-	}
+	close(shell->pipe_ss[0]);	
+	dup2(shell->pipe_ss[1], 1);
+	close(shell->pipe_ss[1]);
 }
 
 static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
@@ -92,11 +29,7 @@ static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
 	{
 		envi = conv_env(env);
 		if (shell->ssbqt)
-		{
-			close(shell->pipe_ss[0]);		
-			dup2(shell->pipe_ss[1], 1);
-			close(shell->pipe_ss[1]);	
-		}
+			pipe_subshell(shell);
 		ret = execve(path, node->cmds, envi);
 		free(path);
 		if (envi)
