@@ -3,13 +3,13 @@
 
 - ! a debug avec le debuggeur
 - Read
-- Read gérer si on fais $VAR avec read
+- Help de read
 - Unset / Export
 - Ajouter unset / export a la commande help
 - Norme
 - Leaks
 - Pour chacun refaire tous les headers a son nom (libft etc compris !)
-- Separer tosh.h en plein de headers
+- Separer tosh.h en plein de headers (NOP !)
 - subshell bqt remplacer gnl pour split que sur les espace
 
 ---------- BONUS --------------
@@ -21,10 +21,10 @@
 
 ------------ BUG --------------
 
-- read -s boucle infini
 - boucle infini dans parse_cmds => cmd_without_delimiter_rules, quand on tape '!delamerde' (tu gère pas HIST c'st pour ca)
 - echo "!qqchose", ca doit marcher, la ca fait comme '!qqchose'
 - VICTOR -> ls '\' je recois comme ligne de command ca dans mon lexer ls '' tu retires le \ avant cest pas normal ^^
+- lance le shell puis remonte dans l' historique
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

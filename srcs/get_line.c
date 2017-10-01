@@ -112,7 +112,8 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 		read(0, &buff, sizeof(unsigned long));
 		if (get_line2(shell, buff, state))
 			;
-		else if (buff == ENTER || (*state == READ_CMD && buff == (unsigned long)shell->read_delimiter))
+		else if (buff == ENTER || (*state == READ_CMD && (buff == \
+				(unsigned long)shell->read_delimiter || !(shell->read_nchar - 1))))
 		{
 			move_to(shell->pos.last.x, shell->pos.last.y);
 			break ;
@@ -120,6 +121,8 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 		else if (buff >= 32 && buff <= 126)
 			if (add_char(shell->command, &(shell->j), shell, (char)buff))
 				return (ft_strdup(""));
+		if (shell->read_nchar > 0)
+			--(shell->read_nchar);
 	}
 	shell->command[++(shell->j)] = '\0';
 	return (ft_strdup(shell->command));

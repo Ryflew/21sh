@@ -92,77 +92,8 @@ char			is_term_env(t_tree *tree)
 		return (0);
 }
 
-char	*get_excla(t_sh *shell, char *start, char *line, int *value)
-{
-	char	*new;
-	int		i;
-
-	i = history_excla(line + 1, shell);
-	if (shell->toaddstr)
-	{
-		*value = (line - start) + ft_strlen(shell->toaddstr);
-		start = ft_strsub(start, 0, line - start);
-		new = ft_strstrjoin(start, shell->toaddstr, line + 1 + i);
-		free(start);
-		ft_strdel(&(shell->toaddstr));
-		return (new);
-	}
-	return (NULL);
-}
-
-char		check_hist_exla2(t_sh *shell, char *line, int value)
-{
-	t_list  *lexems;
-	t_token *token;
-	char	*tmp;
-	char	*start;
-
-	start = line;
-	lexems = shell->lexer->lexems;
-	while (lexems)
-	{
-		token = (t_token*)lexems->data;
-		while (ft_isblank(*line) || *line == '\\' || *line == '"' || *line == '\''|| *line == '`')
-			++line;
-		if (token->type == HIST)
-		{
-			tmp = start;
-			start = get_excla(shell, start, line, &value);
-			if (!start)
-			{
-				NEXT(lexems);
-				start = tmp;
-				++line;
-				continue ;
-			}
-			if (lexems->next)
-				lexems = lexems->next->next;
-			else
-				NEXT(lexems);
-			ft_strdel(&tmp);
-			line = start + value;
-		}
-		else
-		{
-			line += ft_strlen(token->value);
-			NEXT(lexems);
-		}
-	}
-	if (value > 0)
-	{
-		shell->toaddstr = start;
-		return (0);
-	}
-	free(start);
-	return (1);
-}
-
 void			manage_tree(t_sh *sh, t_tree *commands_tree)
 {
-	check_if_env_var(commands_tree);
-	/*if (find_env(sh->env, "HOME"))
-		check_if_home_tilde(commands_tree, find_env(sh->env, "HOME"));
-	*/
 	if (find_env(sh->env, "PATH"))
 		try_add_hashtab(commands_tree, sh);
 	if (!is_term_env(commands_tree))
@@ -177,13 +108,8 @@ void			go_core(char *command, t_sh *shell)
 	t_tree	*commands_tree;
 	t_list	*begin_lexems;
 
-	get_lexems(shell);
-	if (!check_hist_exla2(shell, ft_strdup(command), 0))
-	{
-		ft_clear_list(&(shell->lexer->lexems), (void*)&clear_lexems);
-		return ;
-	}
 	add_to_history(shell, command);
+	get_lexems(shell);
 	glob(shell);
 	begin_lexems = shell->lexer->lexems;
 	if (shell->lexer->lexems)
