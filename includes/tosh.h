@@ -370,6 +370,7 @@ char				subshell(t_sh *sh, e_token type);
 char				*get_word(char const *s, size_t len);
 
 char	    		*replace_var(t_sh *sh, char *cmd);
+void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe);
 
 char   				is_glob_token(e_token type);
 void				glob(t_sh *sh);

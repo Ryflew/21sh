@@ -11,7 +11,7 @@ static void	run_with_pipe(t_sh *shell, int *fd, t_tree *node)
 		close(shell->fd_pipe);
 	}
 	if (fd[1] != 1 && !shell->right_side)
-	{		
+	{
 		dup2(fd[1], 1);
 		close(fd[1]);
 	}

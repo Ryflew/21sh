@@ -36,10 +36,7 @@ void		manage_chevb(t_fd fd)
 		close(fd.to);
 	}
 	else
-	{
 		dup2(fd.file, 0);
-		close(fd.file);
-	}
 	close(fd.file);
 }
 

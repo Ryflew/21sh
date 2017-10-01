@@ -9,10 +9,13 @@ int		father(t_sh *shell, int *fd)
 	close(fd[1]);
 	if (shell->fd_pipe != -1)
 	{
+		if (shell->fd_pipe)
+			close(shell->fd_pipe);
 		shell->fd_pipe = fd[0];
 		if (shell->right_side)
 		{
 			waitpid(g_father, &ret, 0);
+			close(fd[0]);
 			shell->fd_pipe = -1;
 		}
 		else

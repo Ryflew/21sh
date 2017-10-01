@@ -5,6 +5,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "tosh.h"
+
 char	cd_path_validity(char *path)
 {
 	DIR		*dir;
@@ -21,7 +23,7 @@ char	is_binary(char *path)
 	char	buff[300];
 	int		bytes;
 
-	if (!(fd = open(path, O_RDONLY)))
+	if ((fd = open(path, O_RDONLY)) == -1)
 		return (0);
 	if ((bytes = read(fd, buff, 299)) > 0)
 	{

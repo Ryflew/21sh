@@ -93,7 +93,9 @@ FILES = add_char.c \
 				manage_brc.c \
 				merge_expr.c \
 				subshell.c \
-				aggregation.c
+				aggregation.c \
+				manage_tree.c \
+				manage_child_fd.c
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 
