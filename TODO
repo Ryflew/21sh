@@ -1,30 +1,23 @@
 
 ----------- TODO --------------
 
-- ! a debug avec le debuggeur
-- Read
-- Read gérer si on fais $VAR avec read
 - Unset / Export
 - Ajouter unset / export a la commande help
 - Norme
 - Leaks
-- Pour chacun refaire tous les headers a son nom (libft etc compris !)
 - Separer tosh.h en plein de headers
-- BASILE norme core et binary
+- Testez le fonctionnement du heredoc "<<", avec ses options et cas particuliers.
+- revoir $var tild avec globing pour subshell
 
 ---------- BONUS --------------
 
 ------------ A TESTER ---------
 
 - aggregation de fichier <&
-- Testez le fonctionnement du heredoc "<<", avec ses options et cas particuliers.
 
 ------------ BUG --------------
 
-- read -s boucle infini
-- boucle infini dans parse_cmds => cmd_without_delimiter_rules, quand on tape '!delamerde' (tu gère pas HIST c'st pour ca)
-- echo "!qqchose", ca doit marcher, la ca fait comme '!qqchose'
-- */*.[ch]
+- boucle infini dans parse_cmds => cmd_without_delimiter_rules, quand on tape '!delamerde' (tu gère pas HIST c'est pour ca)
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

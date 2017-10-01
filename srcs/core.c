@@ -48,16 +48,16 @@ char		check_hist_excla2(t_sh *shell, char *line, int value)
 		{
 			tmp = start;
 			start = get_excla(shell, start, line, &value);
+			if (shell->lexer->lexems == lexems)
+				shell->lexer->lexems = lexems->next;
+			ft_pop_node(&lexems, (void*)&clear_lexems);
 			if (!start)
 			{
-				NEXT(lexems);
 				start = tmp;
 				++line;
 				continue ;
 			}
-			if (lexems->next)
-				lexems = lexems->next->next;
-			else
+			if (lexems)
 				NEXT(lexems);
 			ft_strdel(&tmp);
 			line = start + value;
