@@ -37,6 +37,7 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	shell->ssbqt = 0;
 	shell->shell_var = NULL;
 	shell->read_delimiter = 0;
+	shell->read_nchar = 0;
 }
 
 static void	get_current_path(t_env *env)

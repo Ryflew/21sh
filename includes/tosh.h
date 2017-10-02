@@ -204,6 +204,7 @@ typedef	struct		s_sh
 	char			have_write_error;
 	int				return_value;
 	char			read_delimiter;
+	int				read_nchar;
 }					t_sh;
 
 extern pid_t		g_father;

@@ -18,6 +18,8 @@ void	add_to_history(t_sh *shell, char *command)
 	int		i;
 	char	*tmp;
 
+	if (!command || !*command)
+		return ;
 	if (!ft_strcont(command, "\n"))
 		add_line(shell, command);
 	else
