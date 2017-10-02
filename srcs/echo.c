@@ -48,8 +48,11 @@ static void	backslash(char **str)
 		ft_putchar('\t');
 	else if (**str == 'v' && (++*str || !*str))
 		ft_putchar('\v');
-	else if (**str == '\\' && (++*str || !*str))
+	else if (**str == '\\')
+	{
 		ft_putchar('\\');
+		++*str;
+	}
 	else if (**str == '0')
 		echo_octal(str);
 }

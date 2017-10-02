@@ -58,7 +58,7 @@ void	remove_backslash(char **str)
 {
 	int 	i;
 	int		j;
-	char	buff[ft_strlen(*str) + 1];
+	char	buff[ft_strlen(*str) * 3 + 1];
 
 	buff[0] = 0;
 	i = -1;
@@ -135,7 +135,9 @@ void	read_a(char *opt, char *var_name, t_sh *shell)
 	}
 	if (!line)
 		line = ft_strdup("");
-	remove_backslash(&line);
+	if (!opt[5])
+		remove_backslash(&line);
+	ft_putendl(line);
 	read_addvar(shell, var_name, line);
 	ft_strdel(&var_name);
 	ft_strdel(&line);
@@ -169,7 +171,8 @@ void	read_d(char *opt, char *delimiter, t_sh *shell)
 	}
 	if (!line)
 		line = ft_strdup("");
-	remove_backslash(&line);
+	if (!opt[5])
+		remove_backslash(&line);
 	read_addvar(shell, "REPLY", line);
 	ft_strdel(&line);
 	shell->read_delimiter = 0;
@@ -203,7 +206,8 @@ void	read_n(char *opt, char *nb, t_sh *shell)
 	}
 	if (!line)
 		line = ft_strdup("");
-	remove_backslash(&line);
+	if (!opt[5])
+		remove_backslash(&line);
 	read_addvar(shell, "REPLY", line);
 	ft_strdel(&line);
 	shell->read_nchar = 0;
@@ -236,7 +240,8 @@ void	read_u(char *opt, char *str_fd, t_sh *shell)
 		line = read_line_cano(shell, fd);
 	if (!line)
 		line = ft_strdup("");
-	remove_backslash(&line);
+	if (!opt[5])
+		remove_backslash(&line);
 	read_addvar(shell, "REPLY", line);
 	ft_strdel(&line);
 }

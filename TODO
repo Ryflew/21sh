@@ -1,7 +1,5 @@
 ----------- TODO --------------
 
-- Read le -r a bien gerer
-
 - Unset / Export
 - Ajouter unset / export a la commande help
 - Norme
@@ -21,7 +19,7 @@
 ------------ BUG --------------
 
 - lance le shell puis remonte dans l' historique
-
+- echo "\\" ca attend une fermeture
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

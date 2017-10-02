@@ -105,9 +105,9 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 	shell->j = -1;
 	if (shell->toaddstr)
 		add_all_char(shell);
+	// return (ft_strdup("echo \" \\t \""));
 	while (1)
 	{
-		//return (ft_strdup("ls */*"));
 		buff = 0;
 		read(0, &buff, sizeof(unsigned long));
 		if (get_line2(shell, buff, state))
