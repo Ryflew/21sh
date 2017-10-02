@@ -1,12 +1,5 @@
 #include "tosh.h"
 
-/*void		manage_string_op(t_lexer *lexer)
-{
-	if (!lexer->string_operator)
-		lexer->string_operator = *lexer->line;
-	++lexer->line;
-}*/
-
 char    is_glob_token(e_token type)
 {
     if (type == S_WILDCARD || type == Q_WILDCARD || type == E_WILDCARD
@@ -14,6 +7,16 @@ char    is_glob_token(e_token type)
          return (1);
     return (0);
 }
+
+/*static void	lex_var(t_lexer *lexer, t_token **token, t_token *last_token)
+{
+	if (ft_isalnum(lexer->line[i + 1]) && (!last_token ||
+	last_token->type == AND || last_token->type == OR ||
+	last_token->type == SCL || last_token->type == BQT ||
+	last_token->type == LPAR || (last_token->type == WORD
+	&& ft_strcmp(token->value, "export"))))
+		*token = new_token(lexer, VAR_OP, "$");
+}*/
 
 static void	is_other_op(t_lexer *lexer, t_token **token, t_token *last_token)
 {
@@ -39,6 +42,8 @@ static void	is_other_op(t_lexer *lexer, t_token **token, t_token *last_token)
 		*token = (!lexer->bqt) ? new_token(lexer, BQT, "`") : new_token(lexer, EBQT, "`");
 		lexer->bqt = !lexer->bqt;		
 	}
+	else if (*lexer->line == '$' && ft_isalnum(*(lexer->line + 1)))
+		*token = new_token(lexer, VAR_OP, "$");
 }
 
 static void		is_limit_glob_op(t_lexer *lexer, t_token **token)
@@ -105,12 +110,6 @@ t_token		*identify_token(t_lexer *lexer, t_token *last_token)
 		is_limit_glob_op(lexer, &token);
 	if (!token)
 		is_other_op(lexer, &token, last_token);
-		/*else if (*lexer->line == '\\' && lexer->string_operator != '\'')
-		{
-			lexer->bs = 1;
-			++lexer->line;
-			return (NULL);
-		}*/
 	if (*lexer->line && !(token))
 		token = lex_word(lexer, last_token);
 	if (token && is_glob_token(TYPE) && !lexer->blank && last_token && (last_token->type == WORD || last_token->type == TILD || last_token->type == NUM))

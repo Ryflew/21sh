@@ -75,10 +75,12 @@ typedef enum	e_token
 	TILD_EXPR, // 28
 	EXPR, // 29
 	BKT_EXPR, // 30
-	HIST, // 31
-	VAR, // 32
-	TILD, // 33
-	SON // 34
+	END_EXPR, // 31
+	HIST, // 32
+	VAR_OP, // 33
+	VAR_WORD, // 34
+	TILD, // 35
+	SON // 36
 }				e_token;
 
 typedef enum	e_state
@@ -127,6 +129,7 @@ typedef	struct		s_token
 typedef struct		s_tree
 {
 	char			**cmds;
+	t_list			*cmd_tokens;
 	int				from_fd;
 	int				to_fd;
 	t_token			*token;
@@ -161,6 +164,7 @@ typedef struct		s_fd
 
 typedef	struct		s_sh
 {
+	t_list			*begin;
 	int				pipe_ss[2];
 
 	t_env			*env;
@@ -369,19 +373,24 @@ char				subshell(t_sh *sh, e_token type);
 
 char				*get_word(char const *s, size_t len);
 
-char	    		*replace_var(t_sh *sh, char *cmd);
+void	    		replace_var(t_token *token, t_env *env);
+void				replace_tild(t_token *token, t_env *env);
+
+char				manage_cmds(t_tree *node, t_sh *sh);
+
 void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe);
 
 char   				is_glob_token(e_token type);
-void				glob(t_sh *sh);
+void				glob(t_list **first_lexems);
 int					nmatch(char *s1, char *s2, t_list *lexems);
-void				replace_all_exprs(t_sh *sh);
+void				replace_all_exprs(t_list **first_lexems);
 void	  			manage_wildcards(t_list *lex, char *match);
 DIR					*open_dir(char *dir_name, t_token *token);
 int					is_dir(char *dir_name, t_token *token);
-void    			clear_old_expr(t_sh *sh, t_list **lexems, char match);
+void    			clear_old_expr(t_list **lexems, t_list **first_lexems, char match);
 void    			manage_brc(t_list *lexems);
 void				merge_expr_to_word(t_list *lexems);
 void    			merge_expr(t_list *lexems);
+
 
 #endif

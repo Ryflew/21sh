@@ -17,7 +17,7 @@ int			nmatch(char *s1, char *s2, t_list *lexems)
 //		printf("2\n");
 		return (nmatch(s1 + 1, NULL, lexems) + nmatch(s1, NULL, lexems->next));
 	}
-	if (*s1 == '\0' && (TYPE == NONE || (s2 && *s2 == '/')))
+	if (*s1 == '\0' && (TYPE == END_EXPR || (s2 && *s2 == '/')))
 	{
 //		printf("3\n");
 		return (1);
@@ -52,7 +52,7 @@ int			nmatch(char *s1, char *s2, t_list *lexems)
 //		printf("6\n");
 		return (nmatch(s1 + 1, NULL, lexems->next));
 	}
-	if (TYPE == EXPR && TYPE != NONE)
+	if (TYPE == EXPR && TYPE != END_EXPR)
 	{
 		if (!s2)
 			s2 = VAL;

@@ -7,7 +7,7 @@ static char is_end_path(t_list *lexems)
     while (lexems)
     {
         token = (t_token*)lexems->data;
-        if (TYPE == NONE)
+        if (TYPE == END_EXPR)
             return (0);
         if (TYPE == EXPR && ft_strchr(VAL, '/'))
             return (1);
@@ -34,7 +34,7 @@ static void add_end_path(t_list *lexems, t_list **new_lexems)
     while (lexems)
     {
         token = (t_token*)lexems->data;
-        if (TYPE == NONE)
+        if (TYPE == END_EXPR)
             break;
         if (TYPE == EXPR && ft_strchr(VAL, '/'))
             ++copy;
@@ -60,11 +60,11 @@ static char	fill_new_lexems(t_list *lexems, char end_path, char *join)
     ft_node_push_back(&new_lexems, new_token(NULL, EXPR, join));
     if (end_path)
         add_end_path(lexems->next, &new_lexems->next);
-    ft_node_push_back(&new_lexems, new_token(NULL, NONE, ""));
+    ft_node_push_back(&new_lexems, new_token(NULL, END_EXPR, ""));
     tmp = lexems;
     while (tmp)
     {
-        if (((t_token*)(tmp->data))->type == NONE)
+        if (((t_token*)(tmp->data))->type == END_EXPR)
             break;
         tmp = tmp->next;
     }

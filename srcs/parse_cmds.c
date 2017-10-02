@@ -32,7 +32,7 @@ static t_token	*get_cmds(t_sh *sh, t_list **aggregations, t_token **ss_empty,
 		if (token)
 		{
 			if (TYPE != NONE)
-				ft_node_push_back(cmd_tokens, ft_strdup(VAL));
+				ft_node_push_back(cmd_tokens, token);
 			else
 			{
 				if (*ss_empty)

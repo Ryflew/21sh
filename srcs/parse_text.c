@@ -53,6 +53,36 @@ t_token			*text_rules(t_sh *sh)
 		eat(sh, WORD);
 	else if (sh->current_token->type == NUM)
 		eat(sh, NUM);
+	else if (sh->current_token->type == END_EXPR)
+		eat(sh, END_EXPR);
+	else if (sh->current_token->type == S_WILDCARD)
+		eat(sh, S_WILDCARD);
+	else if (sh->current_token->type == Q_WILDCARD)
+		eat(sh, Q_WILDCARD);
+	else if (sh->current_token->type == E_WILDCARD)
+		eat(sh, E_WILDCARD);
+	else if (sh->current_token->type == LBKT)
+		eat(sh, LBKT);
+	else if (sh->current_token->type == RBKT)
+		eat(sh, RBKT);
+	else if (sh->current_token->type == LBRC)
+		eat(sh, LBRC);
+	else if (sh->current_token->type == RBRC)
+		eat(sh, RBRC);
+	else if (sh->current_token->type == COM)
+		eat(sh, COM);
+	else if (sh->current_token->type == EXPR)
+		eat(sh, EXPR);
+	else if (sh->current_token->type == BKT_EXPR)
+		eat(sh, BKT_EXPR);
+	else if (sh->current_token->type == TILD_EXPR)
+		eat(sh, TILD_EXPR);
+	else if (sh->current_token->type == TILD)
+		eat(sh, TILD);
+	else if (sh->current_token->type == VAR_OP)
+		eat(sh, VAR_OP);
+	else if (sh->current_token->type == VAR_WORD)
+		eat(sh, VAR_WORD);
 	else if (TYPE == BQT)
 		return (bqt_rule(sh));
 	else if (TYPE == LPAR)

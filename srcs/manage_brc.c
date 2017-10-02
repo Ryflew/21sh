@@ -8,7 +8,7 @@ static void get_rest_expr(t_list **lexems, t_list **new_lexems)
     while (*lexems)
     {
         token = (t_token*)(*lexems)->data;
-        if (TYPE == NONE)
+        if (TYPE == END_EXPR)
             break;
         ft_node_push_back(new_lexems, new_token(NULL, TYPE, VAL));
         *lexems = (*lexems)->next;
@@ -45,14 +45,14 @@ static char create_expr_from_brc(t_list *lexems, t_token *token,
     if (TYPE != RBRC)
         get_expr_start(lexems, nw_lexems, LBRC);
     tmp = lexems;
-    while (tmp && TYPE != RBRC && TYPE != NONE)
+    while (tmp && TYPE != RBRC && TYPE != END_EXPR)
     {
         tmp = tmp->next;
         token = (t_token*)tmp->data;
     }
-    if (tmp->next && TYPE != NONE)
+    if (tmp->next && TYPE != END_EXPR)
      get_rest_expr(&tmp, nw_lexems);
-    ft_node_push_back(nw_lexems, new_token(NULL, NONE, ""));
+    ft_node_push_back(nw_lexems, new_token(NULL, END_EXPR, ""));
     ft_add_list(tmp, *nw_lexems);
     token = (t_token*)lexems->data;
     if (TYPE == RBRC)
@@ -70,7 +70,7 @@ void        manage_brc(t_list *lexems)
     while (lexems)
     {
         token = (t_token*)lexems->data;
-        if (TYPE == NONE)
+        if (TYPE == END_EXPR)
             break;
         if (TYPE == COM || TYPE == RBRC)
         {

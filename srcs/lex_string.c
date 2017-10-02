@@ -23,7 +23,8 @@ static char	is_spe_operator(char c)
 	return (0);
 }
 
-int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op)
+int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
+								t_token *last_token)
 {
 	char	bs;
 	int		i;
@@ -31,11 +32,11 @@ int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op)
 	bs = 0;
 	*st_op = 0;
 	i = 0;
-	while ((lexer->line)[i] && (bs ||
+	while ((lexer->line)[i] && ((last_token && last_token->type == VAR_OP && ft_isalnum((lexer->line)[i])) || ((!last_token || last_token->type != VAR_OP) && (bs ||
 		(!is_operator((lexer->line)[i], (lexer->line)[i + 1]) \
 		&& !ft_isblank((lexer->line)[i]) && ((lexer->line)[i] != ',' || !lexer->brc || lexer->bkt))
 		|| ((lexer->line)[i] == ']' && !lexer->bkt) || ((lexer->line)[i] == '}' && !lexer->brc)
-		|| ((lexer->line)[i] == '{' && lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt) || (*st_op && (!is_spe_operator((lexer->line)[i]) || *st_op == '\''))))
+		|| ((lexer->line)[i] == '{' && lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt) || (*st_op && (!is_spe_operator((lexer->line)[i]) || *st_op == '\''))))))
 	{
 		if (*type != WORD && !ft_isdigit((lexer->line)[i]))
 			*type = WORD;
@@ -61,12 +62,14 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 
 	type = NUM;
 	token = NULL;
-	word_size = compute_word_size(lexer, &type, &st_op);
+	word_size = compute_word_size(lexer, &type, &st_op, last_token);
 	if (type == NUM && (last_token->type == FRED || last_token->type == BRED || ((lexer->line)[word_size] && \
 	((lexer->line)[word_size] == '<' || (lexer->line)[word_size] == '>'))))
 		type = FD;
 	else if (*lexer->line == '~' && (lexer->blank || !last_token || last_token->type == LBRC || last_token->type == COM) && (ft_isblank(*(lexer->line + 1)) || !*(lexer->line + 1) || *(lexer->line + 1) == '/' || *(lexer->line + 1) == '}' || *(lexer->line + 1) == ',') && !st_op)
 		type = TILD;
+	else if (last_token && last_token->type == VAR_OP)
+		type = VAR_WORD;
 	if (last_token && is_glob_token(last_token->type) && !lexer->blank)
 	{
 		if (lexer->bkt)
@@ -78,7 +81,5 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 	}
 	token = new_token(lexer, type, get_word(lexer->line, word_size));
 	lexer->line += word_size - ft_strlen(VAL);
-	//lexer->string_operator = 0;
-	//lexer->bs = 0;
 	return (token);
 }

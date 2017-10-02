@@ -35,17 +35,17 @@ char		browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char rig)
 
 	node->parent = parent;
 	ret = 0;
-	if (node->token && ((node->left && node->left->cmds) || \
-		(node->right && node->right->cmds)))
+	if (node->token && ((node->left && node->left->cmd_tokens) || \
+		(node->right && node->right->cmd_tokens)))
 	{
 		if ((operators(node, shell)) == -1)
 			return (-1);
 	}
-	else if (node->cmds)
+	else if (node->cmd_tokens)
 	{
 		if (node->parent && shell->fd_pipe != -1)
 			shell->right_side = rig;
-		if ((ret = exec_cmds(node, &(shell->env), shell)) == -1)
+		if ((ret = manage_cmds(node, shell)) == -1)
 			return (-1);
 	}
 	return (manage_children(node, shell, rig, ret));
@@ -53,12 +53,12 @@ char		browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char rig)
 
 void		manage_tree(t_sh *sh, t_tree *commands_tree)
 {
-	check_if_env_var(commands_tree);
-	if (find_env(sh->env, "PATH"))
-		try_add_hashtab(commands_tree, sh);
-	if (!is_term_env(commands_tree))
-	{
-		treat_history_cmd(commands_tree);
+	//check_if_env_var(commands_tree);
+	//if (find_env(sh->env, "PATH"))
+	//	try_add_hashtab(commands_tree, sh);
+//	if (!is_term_env(commands_tree))
+//	{
+//		treat_history_cmd(commands_tree);
 		browse_tree(commands_tree, sh, NULL, 1);
-	}
+//	}
 }

@@ -43,26 +43,26 @@ int		is_dir(char *dir_name, t_token *token)
 	return (S_ISDIR(statbuf.st_mode));
 }
 
-void    clear_old_expr(t_sh *sh, t_list **lexems, char match)
+void    clear_old_expr(t_list **lexems, t_list **first_lexems, char match)
 {
     t_token *token;
     
     while (*lexems)
     {
         token = (t_token*)(*lexems)->data;
-        if (TYPE == NONE)
+        if (TYPE == END_EXPR)
         {
             if (match)
-                ft_pop_node(lexems, (void*)&clear_lexems);
+                ft_pop_node(lexems,NULL);
             else
                 *lexems = (*lexems)->next;
             break;
         }
         if (match)
-            ft_pop_node(lexems, (void*)&clear_lexems);
+            ft_pop_node(lexems,NULL);
         else
             *lexems = (*lexems)->next;
     }
     if (match && (!*lexems || !(*lexems)->prev))
-        sh->lexer->lexems = *lexems;
+        *first_lexems = *lexems;
 }

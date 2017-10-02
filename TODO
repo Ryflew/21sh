@@ -1,4 +1,3 @@
-
 ----------- TODO --------------
 
 - Unset / Export
@@ -7,9 +6,11 @@
 - Leaks
 - Separer tosh.h en plein de headers
 - Testez le fonctionnement du heredoc "<<", avec ses options et cas particuliers.
-- revoir $var tild avec globing pour subshell
+- voir tout manage_tree dans browse_tree
 
 ---------- BONUS --------------
+
+- job control
 
 ------------ A TESTER ---------
 
@@ -17,7 +18,8 @@
 
 ------------ BUG --------------
 
-- boucle infini dans parse_cmds => cmd_without_delimiter_rules, quand on tape '!delamerde' (tu gère pas HIST c'est pour ca)
+- lance le shell puis remonte dans l' historique
+- echo "\\" ca attend une fermeture
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
@@ -25,4 +27,7 @@
 - Commande help
 - Tous les builtins sont a la norme POSIX
 - Unset / Export
-- Command !history
+- Command history
+- !
+- Command read
+- Globing

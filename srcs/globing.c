@@ -7,14 +7,14 @@ static void replace_expr_by_word(t_list *lexems)
     while (lexems)
     {
         token = (t_token*)lexems->data;
-        if (TYPE == NONE)
-            ft_pop_node(&lexems, (void*)&clear_lexems);
+        if (TYPE == END_EXPR)
+            ft_pop_node(&lexems, &free);
         else
         {
             if (TYPE == EXPR)
                 TYPE = WORD;
             if (TYPE == SON)
-                ft_pop_node(&lexems, (void*)&clear_lexems);
+                ft_pop_node(&lexems, &free);
             else
                 lexems = lexems->next;
         }
@@ -73,7 +73,7 @@ static void clear_bad_expr(t_list *lexems)
         token = (t_token*)lexems->data;
         if (!save && (is_glob_token(TYPE) || TYPE == EXPR))
             save = lexems;
-        else if (TYPE == NONE)
+        else if (TYPE == END_EXPR)
         {
             if (brc || bkt || pb)
                 merge_expr_to_word(save);
@@ -86,12 +86,12 @@ static void clear_bad_expr(t_list *lexems)
     }
 }
 
-void        glob(t_sh *sh)
+void        glob(t_list **first_lexems)
 {
     t_list  *lexems;
     t_token *token;
 
-    lexems = sh->lexer->lexems;
+    lexems = *first_lexems;
     clear_bad_expr(lexems);
     while (lexems)
     {
@@ -99,12 +99,12 @@ void        glob(t_sh *sh)
         if (TYPE == LBRC)
         {
             manage_brc(lexems->next);
-            clear_old_expr(sh, &lexems, 1);
-            merge_expr(sh->lexer->lexems);
+            clear_old_expr(&lexems, first_lexems, 1);
+            merge_expr(*first_lexems);
         }
         else
             lexems = lexems->next;   
     }
-    replace_all_exprs(sh);
-    replace_expr_by_word(sh->lexer->lexems);
+    replace_all_exprs(first_lexems);
+    replace_expr_by_word(*first_lexems);
 }

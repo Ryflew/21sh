@@ -50,7 +50,7 @@ char		check_hist_excla2(t_sh *shell, char *line, int value)
 			start = get_excla(shell, start, line, &value);
 			if (shell->lexer->lexems == lexems)
 				shell->lexer->lexems = lexems->next;
-			ft_pop_node(&lexems, (void*)&clear_lexems);
+			ft_pop_node(&lexems,NULL);
 			if (!start)
 			{
 				start = tmp;
@@ -114,7 +114,7 @@ static void	init_shell(t_sh *shell)
 void		go_core(char *command, t_sh *shell)
 {
 	t_tree	*commands_tree;
-	t_list	*begin_lexems;
+	//t_list	*begin_lexems;
 
 	get_lexems(shell);
 	if (!check_hist_excla2(shell, ft_strdup(command), 0))
@@ -123,16 +123,16 @@ void		go_core(char *command, t_sh *shell)
 		return ;
 	}
 	add_to_history(shell, command);
-	glob(shell);
-	begin_lexems = shell->lexer->lexems;
+	//glob(shell);
+	shell->begin = shell->lexer->lexems;
 	init_shell(shell);
 	if ((commands_tree = commands_line_rules(shell)) == (void*)-1)
 	{
 		parse_error(shell);
-		clear(shell, &begin_lexems, NULL);
+		clear(shell, &shell->begin, NULL);
 		return ;
 	}
 	if (commands_tree)
 		manage_tree(shell, commands_tree);
-	clear(shell, &begin_lexems, commands_tree);
+	clear(shell, &shell->begin, commands_tree);
 }

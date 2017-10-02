@@ -66,7 +66,7 @@ char	**list_to_tabstr(t_list *list)
 	tmp = list;
 	size = ft_list_size(list);
 	if (!(args = (char**)malloc(sizeof(char*) * (size + 1))))
-		ft_exiterror("ERROR: malloc failure\n", 0);
+		ft_exiterror("ERROR: malloc failure", 0);
 	i = 0;
 	while (tmp)
 	{
@@ -84,7 +84,7 @@ void	del_command_tree(t_tree *tree)
 	if (tree->right)
 		del_command_tree(tree->right);
 	if (tree->cmds)
-		ft_strdelpp(&tree->cmds);
+		free(tree->cmds);
 	if (tree->aggregations)
 		ft_clear_list(&tree->aggregations, &free);
 	if (tree->tmp_env)

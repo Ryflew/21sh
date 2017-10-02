@@ -20,7 +20,7 @@ static char     check_son_expr(t_list **lexems, t_list **save_son, t_list **save
         {
             *lexems = *save;
             if (*save_son)
-                ft_pop_node(save_son, (void*)&clear_lexems);
+                ft_pop_node(save_son,NULL);
             return (1);
         }
     }
@@ -40,7 +40,7 @@ static char     search_expr(t_list **lexems)
     while (*lexems)
     {
         type = ((t_token*)((*lexems)->data))->type;
-        if (type == NONE)
+        if (type == END_EXPR)
         {
             save = NULL;
             save_son = NULL;
@@ -53,27 +53,27 @@ static char     search_expr(t_list **lexems)
     return (0);
 }
 
-static t_list   *no_son_expr(t_sh *sh, t_list *save)
+static t_list   *no_son_expr(t_list **first_lexems, t_list *save)
 {
     t_list  *tmp;
 
     tmp = save;
-    clear_old_expr(sh, &tmp, 0);
+    clear_old_expr(&tmp, first_lexems, 0);
     if (tmp && ((t_token*)(tmp->data))->type == SON)
-        clear_old_expr(sh, &save, 1);
+        clear_old_expr(&save, first_lexems, 1);
     else
         merge_expr_to_word(save);
     return (NULL);
 }
 
-void            replace_all_exprs(t_sh *sh)
+void            replace_all_exprs(t_list **first_lexems)
 {
     t_list	*lexems;
     char    match;
     char    son;
     t_list  *save;
 
-	lexems = sh->lexer->lexems;
+	lexems = *first_lexems;
     son = search_expr(&lexems);
     while (lexems)
     {
@@ -82,10 +82,10 @@ void            replace_all_exprs(t_sh *sh)
         match = 0;
         manage_wildcards(lexems, &match);
         if (son)
-            clear_old_expr(sh, &lexems, 1);
+            clear_old_expr(&lexems, first_lexems, 1);
         else
-           clear_old_expr(sh, &lexems, 0);
+           clear_old_expr(&lexems, first_lexems, 0);
         if (!(son = search_expr(&lexems)))
-            save = no_son_expr(sh, save);
+            save = no_son_expr(first_lexems, save);
     }
 }
