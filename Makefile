@@ -61,6 +61,8 @@ FILES = add_char.c \
 				lexer.c \
 				parser.c \
 				read_builtin.c \
+				read_builtin2.c \
+				read_builtin3.c \
 				redirection_parser.c \
 				second_prompt.c \
 				second_prompt2.c \

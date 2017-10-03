@@ -1,5 +1,6 @@
 ----------- TODO --------------
 
+- commande help de read
 - Unset / Export
 - Ajouter unset / export a la commande help
 - Norme
@@ -19,7 +20,7 @@
 ------------ BUG --------------
 
 - lance le shell puis remonte dans l' historique
-- echo "\\" ca attend une fermeture
+- ls `\` segfault
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
