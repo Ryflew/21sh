@@ -3,12 +3,15 @@
 void	    replace_var(t_token *token, t_env *env)
 {
 	char	*to_free;
+	char	*var;
 
 	if (TYPE == VAR_WORD)
 	{
 		TYPE = WORD;
 		to_free = VAL;
-		VAL = ft_strdup(find_env(env, to_free));
+		if (!(var = find_env(env, to_free)))
+			var = "";
+  		VAL = ft_strdup(var);
 		free(to_free);
 	}
 }
