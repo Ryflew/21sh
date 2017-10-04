@@ -1,6 +1,5 @@
 ----------- TODO --------------
 
-- commande help de read
 - Unset / Export
 - Ajouter unset / export a la commande help
 - Norme
@@ -18,8 +17,6 @@
 - aggregation de fichier <&
 
 ------------ BUG --------------
-
-- lance le shell puis remonte dans l' historique
 - ls `\` segfault
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
