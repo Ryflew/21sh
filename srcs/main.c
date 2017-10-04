@@ -24,8 +24,6 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	shell->saved = NULL;
 	shell->history_pos = -1;
 	shell->history_mem = NULL;
-	//lexer->string_operator = 0;
-	lexer->red = 0;
 	shell->lexer = lexer;
 	shell->hash = NULL;
 	shell->export = NULL;

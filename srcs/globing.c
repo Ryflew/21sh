@@ -8,13 +8,13 @@ static void replace_expr_by_word(t_list *lexems)
     {
         token = (t_token*)lexems->data;
         if (TYPE == END_EXPR)
-            ft_pop_node(&lexems, &free);
+            ft_pop_node(&lexems,NULL);
         else
         {
             if (TYPE == EXPR)
                 TYPE = WORD;
             if (TYPE == SON)
-                ft_pop_node(&lexems, &free);
+                ft_pop_node(&lexems,NULL);
             else
                 lexems = lexems->next;
         }

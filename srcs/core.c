@@ -36,7 +36,7 @@ static void	clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 	}
 }
 
-static void	init_shell(t_sh *shell)
+void	init_shell_before_parser(t_sh *shell)
 {
 	if (shell->lexer->lexems)
 		shell->current_token = shell->lexer->lexems->data;
@@ -49,20 +49,21 @@ static void	init_shell(t_sh *shell)
 void		go_core(char *command, t_sh *shell)
 {
 	t_tree	*commands_tree;
-	//t_list	*begin_lexems;
+	t_list	*begin_lexems;
 
+	shell->lexer->line = shell->total_command;	
+	shell->lexer->her = 0;	
 	get_lexems(shell);
 	add_to_history(shell, command);
-	//glob(shell);
-	shell->begin = shell->lexer->lexems;
-	init_shell(shell);
+	begin_lexems = shell->lexer->lexems;
+	init_shell_before_parser(shell);
 	if ((commands_tree = commands_line_rules(shell)) == (void*)-1)
 	{
 		parse_error(shell);
-		clear(shell, &shell->begin, NULL);
+		clear(shell, &begin_lexems, NULL);
 		return ;
 	}
 	if (commands_tree)
 		manage_tree(shell, commands_tree);
-	clear(shell, &shell->begin, commands_tree);
+	clear(shell, &begin_lexems, commands_tree);
 }

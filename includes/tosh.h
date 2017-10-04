@@ -118,6 +118,7 @@ typedef	struct		s_lexer
 	char			brc;
 	char			bkt;
 	char			bqt;
+	char			her;
 }					t_lexer;
 
 typedef	struct		s_token
@@ -357,7 +358,7 @@ char				*get_path(t_tree *node, t_env *env, t_sh *shell);
 char				is_builtins(char **cmd);
 char				is_writable_builtins(char *cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
-void				manage_dchevb(t_tree *node, char *cmd, char none);
+char				manage_dchevb(t_sh *sh, char *cmd, t_tree *node, int *fd_pipe);
 void				manage_chevb(t_fd fd);
 char				*current_binary(t_tree *node, t_env *env, t_sh *shell);
 t_token				*lex_number(t_lexer *lexer);
@@ -368,7 +369,7 @@ char				parse_error(t_sh *sh);
 char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
 char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
 pid_t				child_pid();
-int					get_fd(t_sh *shell, int *fd);
+int					get_fd(t_sh *shell, int *fd, t_tree *node);
 int					get_next_line(const int fd, char **line);
 char				browse_tree(t_tree *node, t_sh *shell, t_tree *parent,
 					char r_side);
@@ -377,9 +378,12 @@ void				*ret_parse_error(t_tree *node);
 t_token				*identify_token(t_lexer *lexer, t_token *last_token);
 char				**parse_env_cmds(t_sh *sh);
 t_fd				*aggregation_rules(t_sh *sh);
-int					father(t_sh *shell, int *fd);
+int					father(t_sh *shell, int *fd, t_tree *node);
 char				is_term_env(t_tree *tree);
 void				manage_tree(t_sh *sh, t_tree *commands_tree);
+
+char				isnt_here_or_bqt(t_lexer *lexer);
+void				init_shell_before_parser(t_sh *shell);
 
 char				subshell(t_sh *sh, e_token type);
 
@@ -389,6 +393,7 @@ void	    		replace_var(t_token *token, t_env *env);
 void				replace_tild(t_token *token, t_env *env);
 
 char				manage_cmds(t_tree *node, t_sh *sh);
+char				**get_cmds(t_list **cmds_token, t_sh *sh);
 
 void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe);
 

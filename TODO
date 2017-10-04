@@ -17,6 +17,8 @@
 - aggregation de fichier <&
 
 ------------ BUG --------------
+
+- ls 2>9 | tr i I segfault
 - ls `\` segfault
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---

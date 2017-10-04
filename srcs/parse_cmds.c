@@ -17,7 +17,7 @@ void		*ret_parse_error(t_tree *node)
 	return ((void*)-1);
 }
 
-static t_token	*get_cmds(t_sh *sh, t_list **aggregations, t_token **ss_empty,
+static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, t_token **ss_empty,
 						t_list **cmd_tokens)
 {
 	t_token	*token;
@@ -44,36 +44,27 @@ static t_token	*get_cmds(t_sh *sh, t_list **aggregations, t_token **ss_empty,
 	return (token);
 }
 
-static void	cmd_without_delimiter_rules(t_sh *sh, t_tree **new_node,
-										char **tmp_env)
+t_tree		*cmd_rules(t_sh *sh, char **tmp_env)
 {
 	t_list	*cmd_tokens;
 	t_list	*aggregations;
 	t_token	*ss_empty;
+	t_tree	*new_node;
 
 	aggregations = NULL;
 	ss_empty = 0;
 	cmd_tokens = NULL;
-	if ((get_cmds(sh, &aggregations, &ss_empty, &cmd_tokens)) == (void*)-1)
-		*new_node = (void*)-1;
+	new_node = NULL;
+	if ((get_tokens_cmd(sh, &aggregations, &ss_empty, &cmd_tokens)) == (void*)-1)
+		new_node = (void*)-1;
 	else if (cmd_tokens)
 	{
 		if (ss_empty)
 			clear_lexems(ss_empty);
-		*new_node = create_node(NULL, NULL, cmd_tokens, NULL);
-		(*new_node)->aggregations = aggregations;
+		new_node = create_node(NULL, NULL, cmd_tokens, NULL);
+		new_node->aggregations = aggregations;
 	}
 	else if (ss_empty || tmp_env)
-		*new_node = create_node(NULL, ss_empty, NULL, NULL);
-}
-
-t_tree		*cmd_rules(t_sh *sh, char **tmp_env)
-{
-	t_tree	*new_node;
-
-	if (!sh->current_token)
-		return (NULL);
-	new_node = NULL;
-	cmd_without_delimiter_rules(sh, &new_node, tmp_env);
+		new_node = create_node(NULL, ss_empty, NULL, NULL);
 	return (new_node);
 }

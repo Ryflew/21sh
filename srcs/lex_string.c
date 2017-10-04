@@ -63,14 +63,14 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 	type = NUM;
 	token = NULL;
 	word_size = compute_word_size(lexer, &type, &st_op, last_token);
-	if (type == NUM && (last_token->type == FRED || last_token->type == BRED || ((lexer->line)[word_size] && \
+	if (type == NUM && ((last_token && (last_token->type == FRED || last_token->type == BRED)) || ((lexer->line)[word_size] && \
 	((lexer->line)[word_size] == '<' || (lexer->line)[word_size] == '>'))))
 		type = FD;
-	else if (*lexer->line == '~' && (lexer->blank || !last_token || last_token->type == LBRC || last_token->type == COM) && (ft_isblank(*(lexer->line + 1)) || !*(lexer->line + 1) || *(lexer->line + 1) == '/' || *(lexer->line + 1) == '}' || *(lexer->line + 1) == ',') && !st_op)
+	else if (isnt_here_or_bqt(lexer) && *lexer->line == '~' && (lexer->blank || !last_token || last_token->type == LBRC || last_token->type == COM) && (ft_isblank(*(lexer->line + 1)) || !*(lexer->line + 1) || *(lexer->line + 1) == '/' || *(lexer->line + 1) == '}' || *(lexer->line + 1) == ',') && !st_op)
 		type = TILD;
 	else if (last_token && last_token->type == VAR_OP)
 		type = VAR_WORD;
-	if (last_token && is_glob_token(last_token->type) && !lexer->blank)
+	if (isnt_here_or_bqt(lexer) && last_token && is_glob_token(last_token->type) && !lexer->blank)
 	{
 		if (lexer->bkt)
 			type = BKT_EXPR;

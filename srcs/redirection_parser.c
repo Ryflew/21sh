@@ -3,7 +3,6 @@
 t_tree	*basic_red(t_sh *sh, e_token type, t_tree *left)
 {
 	t_token	*token;
-	t_token	*file_name;
 
 	if (left && !left->right && left->token && left->TYPE != SCL && left->TYPE != NONE)
 		return (ret_parse_error(left));
@@ -13,10 +12,7 @@ t_tree	*basic_red(t_sh *sh, e_token type, t_tree *left)
 		eat(sh, type);
 		if (!sh->current_token)
 			return (ret_parse_error(left));
-		if (!(file_name = text_rules(sh)))
-			return (ret_parse_error(left));
-		return (create_node(left, token, NULL, create_node(NULL, NULL, \
-			ft_create_node(ft_strdup(file_name->value)), NULL)));
+		return (create_node(left, token, NULL, cmd_rules(sh, NULL)));
 	}
 	return (NULL);
 }
@@ -24,7 +20,6 @@ t_tree	*basic_red(t_sh *sh, e_token type, t_tree *left)
 t_tree	*adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 {
 	t_token	*token_type;
-	t_token	*file_name;
 
 	if (left && !left->right && left->token && left->TYPE != SCL && left->TYPE != NONE)
 		return (ret_parse_error(left));
@@ -34,10 +29,7 @@ t_tree	*adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 		eat(sh, type);
 		if (!sh->current_token)
 			return (ret_parse_error(left));
-		if (!(file_name = text_rules(sh)))
-			return (ret_parse_error(left));
-		return (create_node(left, token_type, NULL, create_node(NULL, NULL,\
-			ft_create_node(ft_strdup(file_name->value)), NULL)));
+		return (create_node(left, token_type, NULL, cmd_rules(sh, NULL)));
 	}
 	return (NULL);
 }

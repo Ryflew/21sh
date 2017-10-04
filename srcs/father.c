@@ -2,7 +2,7 @@
 
 pid_t	g_father = -1;
 
-int		father(t_sh *shell, int *fd)
+int		father(t_sh *shell, int *fd, t_tree *node)
 {
 	int ret;
 
@@ -23,6 +23,8 @@ int		father(t_sh *shell, int *fd)
 	}
 	else
 		waitpid(g_father, &ret, 0);
+	if (node && node->TYPE == DCHEVB)
+		close(fd[0]);
 	g_father = -1;
 	shell->return_value = WEXITSTATUS(ret);
 	return (ret);

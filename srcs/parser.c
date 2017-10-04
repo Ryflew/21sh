@@ -1,19 +1,30 @@
 #include "tosh.h"
 
+char			is_basic_red(t_sh *sh)
+{
+	t_token	*next_token;
+
+	next_token = NULL;
+	if (sh->lexer->lexems->next)
+		next_token = sh->lexer->lexems->next->data;
+	if (sh->current_token->type == CHEVF || sh->current_token->type == DCHEVF\
+	|| sh->current_token->type == CHEVB || sh->current_token->type \
+	== DCHEVB || (sh->current_token->type == FD && next_token &&
+		(next_token->type == DCHEVF || next_token->type == DCHEVF \
+		||  next_token->type == CHEVB || next_token->type == DCHEVB)))
+		return (1);
+	return (0);
+}
+
 static t_tree	*cmd_with_op_rules(t_sh *sh, char **tmp_env)
 {
 	t_tree	*left;
 	t_tree	*tmp;
 
 	left = NULL;
-	if (!sh->current_token || (!(left = cmd_rules(sh, tmp_env)) && \
-		sh->current_token->type != CHEVF && sh->current_token->type != DCHEVF\
-		&&  sh->current_token->type != CHEVB &&  sh->current_token->type \
-		!= DCHEVB) || left == (void*)-1)
+	if (!sh->current_token || (!(left = cmd_rules(sh, tmp_env)) && !is_basic_red(sh)) || left == (void*)-1)
 		return (left);
-	while ((left || ( sh->current_token->type == CHEVF || \
-		 sh->current_token->type == DCHEVF || sh->current_token->type == CHEVB\
-		||  sh->current_token->type == DCHEVB)) && left != (void*)-1)
+	while ((left || is_basic_red(sh)) && left != (void*)-1)
 	{
 		if ((tmp = redirection_rules(sh, left)) && tmp != (void*)-1)
 			left = tmp;
