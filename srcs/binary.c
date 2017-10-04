@@ -52,7 +52,7 @@ char		run_binary(t_tree *node, t_env *env, t_sh *shell)
 	int		ret;
 	
 	set_old_term(shell);
-	if ((ret = get_fd(shell, pipe)) != -1)
+	if ((ret = get_fd(shell, pipe, node->parent)) != -1)
 	{
 		if ((g_father = fork()) == -1)
 			ft_exiterror("fork failure !", -1);
@@ -65,7 +65,7 @@ char		run_binary(t_tree *node, t_env *env, t_sh *shell)
 			exit(ret);
 		}
 		else
-			ret = father(shell, pipe);
+			ret = father(shell, pipe, node->parent);
 	}
 	set_our_term(shell);
 	return (WEXITSTATUS(ret));
@@ -77,7 +77,7 @@ char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 	int		pipe[2];
 
 	set_old_term(shell);
-	if ((ret = get_fd(shell, pipe)) != -1)
+	if ((ret = get_fd(shell, pipe, node->parent)) != -1)
 	{
 		if ((g_father = fork()) == -1)
 			ft_exiterror("fork failure !", -1);
@@ -90,7 +90,7 @@ char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 			exit(ret);
 		}
 		else
-			ret = father(shell, pipe);
+			ret = father(shell, pipe, node->parent);
 	}
 	set_our_term(shell);
 	return (WEXITSTATUS(ret));

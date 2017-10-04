@@ -20,6 +20,7 @@
 
 - lance le shell puis remonte dans l' historique
 - echo "\\" ca attend une fermeture
+- ls 2>9 | tr i I
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

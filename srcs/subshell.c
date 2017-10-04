@@ -2,6 +2,10 @@
 
 static void manage_subshell(t_sh *sh, t_tree *sub_tree)
 {
+    sh->fd_pipe = -1;
+	sh->fds_out = NULL;
+    sh->lexer->her = 0;
+    sh->return_value = 0;
 	manage_tree(sh, sub_tree);
 	if (sub_tree)
 	{
@@ -83,18 +87,18 @@ char        subshell(t_sh *sh, e_token type)
 {
 	t_tree	*sub_tree;
 
-	if ((sub_tree = commands_line_rules(sh)) == (void*)-1)
+	if ((sub_tree = commands_line_rules(sh)) == (void*)-1 || !sub_tree)
 		return (0);
-	else if (sub_tree)
-	{
-		if (type == BQT)
-        {
-            sh->ssbqt = 1;
-            sh->pipe_ss[0] = 0;
-            get_fd(sh, sh->pipe_ss);
-        }
-        fork_subshell(sh, sub_tree);
-	}
+	if (type == BQT)
+    {
+        sh->ssbqt = 1;
+        sh->pipe_ss[0] = 0;
+        get_fd(sh, sh->pipe_ss, NULL);
+    }
+    fork_subshell(sh, sub_tree);
+    if (sh->fds_out)
+        ft_clear_list(&sh->fds_out, (&free));
+    del_command_tree(sub_tree);
 	if (type == BQT)
         return (add_new_tokens(sh));
     return (1);

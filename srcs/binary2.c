@@ -20,7 +20,7 @@ static void	run_with_pipe(t_sh *shell, int *fd, t_tree *node)
 void	child(t_tree *node, t_sh *shell, int *fd)
 {
 	if (node->parent && node->parent->TYPE == DCHEVB)
-		manage_dchevb(node, node->parent->right->cmds[0], 1);
+		manage_dchevb(shell, node->parent->right->cmds[0], node->parent, fd);
 	else if (node->parent && node->parent->TYPE == CHEVB)
 		manage_chevb(shell->fd_in);
 	if (shell->fd_pipe != -1)
@@ -41,12 +41,12 @@ char	stop_binary(int sig)
 	return (0);
 }
 
-int		get_fd(t_sh *shell, int *fd)
+int		get_fd(t_sh *shell, int *fd, t_tree *node)
 {
 	int	ret;
 
 	ret = 0;
-	if (shell->fd_pipe != -1 || (shell->ssbqt && !(shell->pipe_ss)[0]))
+	if (shell->fd_pipe != -1 || (shell->ssbqt && !(shell->pipe_ss)[0]) || (node && node->TYPE == DCHEVB))
 		if ((ret = pipe(fd)) == -1)
 			ft_putstr("pipe failure !\n");
 	return (ret);

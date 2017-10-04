@@ -50,17 +50,45 @@ char	**create_cmds_with_tokens(t_list *lexems)
 	{
 		token = (t_token*)lexems->data;
 		if (TYPE == WORD && i < nb_cmds)
-			cmds[i++] = token->value;
+			cmds[i++] = ft_strdup(token->value);
 		lexems = lexems->next;
 	}
 	return (cmds);
 }
 
-char	manage_cmds(t_tree *node, t_sh *sh)
+char	**get_cmds(t_list **cmd_tokens, t_sh *sh)
 {
 	t_list	*tmp;
 	t_token	*token;
 
+	tmp = *cmd_tokens;
+	while (tmp)
+	{
+		token = (t_token*)tmp->data;
+		if (TYPE == VAR_OP)
+		{
+			if (!sh->lexer->her)
+				ft_pop_node(&tmp, NULL);				
+			else
+			{
+				if (tmp == *cmd_tokens)
+					*cmd_tokens = tmp->next;
+				ft_pop_node(&tmp, (void*)&clear_lexems);
+			}
+			if (tmp)
+				replace_var(tmp->data, sh->env);
+		}
+		else if (TYPE == TILD)
+			replace_tild(token, sh->env);
+		tmp = tmp->next;
+	}
+	if (!sh->lexer->her)
+		glob(cmd_tokens);
+	return (create_cmds_with_tokens(*cmd_tokens));
+}
+
+char	manage_cmds(t_tree *node, t_sh *sh)
+{
 	/*ft_putendl("BEFORE");
 	ft_putendl("START-----------------------------------------");
 	t_list *tmp2 = sh->begin;
@@ -73,21 +101,6 @@ char	manage_cmds(t_tree *node, t_sh *sh)
 		tmp2 = tmp2->next;
 	}
 	ft_putendl("-----------------------------------------END");*/
-	tmp = node->cmd_tokens;
-	while (tmp)
-	{
-		token = (t_token*)tmp->data;
-		if (TYPE == VAR_OP)
-		{
-			ft_pop_node(&tmp, NULL);
-			if (tmp)
-				replace_var(tmp->data, sh->env);
-		}
-		else if (TYPE == TILD)
-			replace_tild(token, sh->env);
-		tmp = tmp->next;
-	}
-	glob(&node->cmd_tokens);
-	node->cmds = create_cmds_with_tokens(node->cmd_tokens);
+	node->cmds = get_cmds(&node->cmd_tokens, sh);
 	return (exec_cmds(node, &(sh->env), sh));
 }

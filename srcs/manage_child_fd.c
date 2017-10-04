@@ -17,7 +17,7 @@ static void        check_fd_is_good(t_tree *node, int left, int right)
         ft_fputstr("21sh: ", 2);
         ft_fputnbr(left, 2);
         ft_fputendl(": Bad file descriptor", 2);
-        ft_free_tab(node->cmds);
+        ft_strdelpp(&node->cmds);
         node->cmds = NULL;
     }
     else
@@ -51,8 +51,9 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe)
 {
 	t_fd	*fd;
 	t_list	*tmp;
-	
-	close(pipe[0]);
+    
+    if (!node->parent || node->parent->TYPE != DCHEVB)
+	    close(pipe[0]);
 	child(node, shell, pipe);
 	tmp = shell->fds_out;
 	while (tmp && node->parent && (shell->fd_pipe == -1
@@ -65,6 +66,6 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe)
 			close_dup_fd(fd);
 		close(fd->file);
 		tmp = tmp->next;
-	}
-	manage_aggregations(node);	
+    }
+    manage_aggregations(node);
 }

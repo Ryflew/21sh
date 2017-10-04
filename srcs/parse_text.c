@@ -2,7 +2,7 @@
 
 char			eat(t_sh *sh, e_token token)
 {
-	if ( sh->current_token->type == token)
+	if (sh->current_token->type == token)
 	{
 		sh->lexer->lexems = sh->lexer->lexems->next;
 		if (sh->lexer->lexems)

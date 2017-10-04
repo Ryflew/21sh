@@ -18,6 +18,17 @@ char    is_glob_token(e_token type)
 		*token = new_token(lexer, VAR_OP, "$");
 }*/
 
+static void	is_here_op(t_lexer *lexer, t_token **token)
+{
+	if (*lexer->line == '`')
+	{
+		*token = (!lexer->bqt) ? new_token(lexer, BQT, "`") : new_token(lexer, EBQT, "`");
+		lexer->bqt = !lexer->bqt;		
+	}
+	else if (*lexer->line == '$' && ft_isalnum(*(lexer->line + 1)))
+		*token = new_token(lexer, VAR_OP, "$");
+}
+
 static void	is_other_op(t_lexer *lexer, t_token **token, t_token *last_token)
 {
 	if (*lexer->line == ',' && lexer->brc && !lexer->bkt)
@@ -37,13 +48,6 @@ static void	is_other_op(t_lexer *lexer, t_token **token, t_token *last_token)
 	else if (*lexer->line == '-' && last_token
 			&& (last_token->type == FRED || last_token->type == BRED))
 		*token = new_token(lexer, CLOSE_FD, "-");
-	else if (*lexer->line == '`')
-	{
-		*token = (!lexer->bqt) ? new_token(lexer, BQT, "`") : new_token(lexer, EBQT, "`");
-		lexer->bqt = !lexer->bqt;		
-	}
-	else if (*lexer->line == '$' && ft_isalnum(*(lexer->line + 1)))
-		*token = new_token(lexer, VAR_OP, "$");
 }
 
 static void		is_limit_glob_op(t_lexer *lexer, t_token **token)
@@ -105,14 +109,17 @@ t_token		*identify_token(t_lexer *lexer, t_token *last_token)
 	t_token *token;
 
 	token = NULL;
-	token = is_reg_op(lexer);
-	if (!token)		
+	if (isnt_here_or_bqt(lexer))
+		token = is_reg_op(lexer);
+	if (!token && isnt_here_or_bqt(lexer))		
 		is_limit_glob_op(lexer, &token);
-	if (!token)
+	if (!token && isnt_here_or_bqt(lexer))
 		is_other_op(lexer, &token, last_token);
+	if (!token)
+		is_here_op(lexer, &token);
 	if (*lexer->line && !(token))
 		token = lex_word(lexer, last_token);
-	if (token && is_glob_token(TYPE) && !lexer->blank && last_token && (last_token->type == WORD || last_token->type == TILD || last_token->type == NUM))
+	if (isnt_here_or_bqt(lexer) && token && is_glob_token(TYPE) && !lexer->blank && last_token && (last_token->type == WORD || last_token->type == TILD || last_token->type == NUM))
 	{
 		if (last_token->type == TILD)
 			last_token->type = TILD_EXPR;
