@@ -68,7 +68,7 @@ char	**get_cmds(t_list **cmd_tokens, t_sh *sh)
 		if (TYPE == VAR_OP)
 		{
 			if (!sh->lexer->her)
-				ft_pop_node(&tmp, NULL);				
+				ft_pop_node(&tmp, NULL);
 			else
 			{
 				if (tmp == *cmd_tokens)

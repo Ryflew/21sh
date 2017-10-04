@@ -2,24 +2,24 @@
 
 static char fill_fd(t_sh *sh, int *left_fd, int *right_fd, e_token type)
 {
-    *left_fd = ft_atoi(sh->current_token->value);
-    eat(sh, FD);
-    eat(sh, type);
-    if (sh->current_token->type == FD)
-    {
-        *right_fd = ft_atoi(sh->current_token->value);
-        eat(sh, FD);
-    }
-    else
-    {
-        *right_fd = -2;
-        eat(sh, CLOSE_FD);
-    }
-    return (1);
+	*left_fd = ft_atoi(sh->current_token->value);
+	eat(sh, FD);
+	eat(sh, type);
+	if (sh->current_token->type == FD)
+	{
+		*right_fd = ft_atoi(sh->current_token->value);
+		eat(sh, FD);
+	}
+	else
+	{
+		*right_fd = -2;
+		eat(sh, CLOSE_FD);
+	}
+	return (1);
 }
 
 static char	fred_bred_rules(t_sh *sh, int *left_fd, int *right_fd, 
-            e_token type)
+			e_token type)
 {
 	if ( sh->current_token->type == FD && sh->lexer->lexems->next && \
 		((t_token*)sh->lexer->lexems->next->data)->type == type && \

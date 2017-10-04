@@ -19,3 +19,25 @@ void	help_history(void)
 		"a single entry.\n");
 	ft_putstr(C_RESET);
 }
+
+void	help_read(void)
+{
+	first_step("read");
+	ft_putendl("\tread [-ers] [-a array] [-d delim] [-n nchars] [-p prompt]" \
+		" [-u fd] [name ...]\n");
+	ft_putendl("\t-a array: assign the words read to sequential indices of " \
+		"the array.");
+	ft_putendl("\t-d delim: continue until the first character of DELIM is " \
+		"read, rather than newline.");
+	ft_putendl("\t-e : use get_next_line to obtain the line in an " \
+		"interactive shell.");
+	ft_putendl("\t-n nchars: return after reading NCHARS characters rather " \
+		"than waiting for a newline.");
+	ft_putendl("\t-p prompt: output the string PROMPT without a trailing " \
+		"newline before attempting to read.");
+	ft_putendl("\t-r : do not allow backslashes to escape any characters.");
+	ft_putendl("\t-s : do not echo input coming from a terminal.");
+	ft_putendl("\t-u fd: read from file descriptor FD instead of the standard" \
+		" input.\n");
+	ft_putstr(C_RESET);
+}

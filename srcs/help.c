@@ -37,6 +37,7 @@ static void	help_help(void)
 	ft_putendl("\t- help env.");
 	ft_putendl("\t- help hash.");
 	ft_putendl("\t- help history.");
+	ft_putendl("\t- help read.");
 	ft_putendl("\t- help setenv.");
 	ft_putendl("\t- help unsetenv.");
 	ft_putendl("\t- help exit.\n");
@@ -70,6 +71,8 @@ void		help_command(char **cmd) // trop de ligne
 				help_hash();
 			else if (!ft_strcmp(cmd[i], "history"))
 				help_history();
+			else if (!ft_strcmp(cmd[i], "read"))
+				help_read();
 		}
 	}
 }
