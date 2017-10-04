@@ -45,6 +45,8 @@ void		get_cursor(t_sh *shell)
 	}
 	shell->pos.first = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
 	shell->pos.last = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
+	if (shell->pos.cursor.y <= 0 && shell->pos.cursor.x <= 0)
+		get_cursor(shell);
 }
 
 int			get_current_pos_in_command(t_sh *shell)

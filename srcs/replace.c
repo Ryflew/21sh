@@ -10,7 +10,9 @@ void	    replace_var(t_token *token, t_env *env)
 		TYPE = WORD;
 		to_free = VAL;
 		if (!(var = find_env(env, to_free)))
-			var = "";
+			if (!(var = find_env(get_shell()->export, to_free)))
+				if (!(var = find_env(get_shell()->shell_var, to_free)))
+					var = "";
   		VAL = ft_strdup(var);
 		free(to_free);
 	}

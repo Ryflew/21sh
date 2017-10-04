@@ -33,8 +33,12 @@ char		check_quot(char *str, char *op, int *i, int *j)
 	{
 		while (str[++*i])
 		{
-			if (str[*i] == c && c == '"' && str[*i - 1] && str[*i - 1] == '\\')
+			if (str[*i] == c && c == '"' && *i >= 1 && str[*i - 1] == '\\')
+			{
+				if (*i >= 2 && str[*i - 2] == '\\')
+					return (0);
 				continue ;
+			}
 			else if (str[*i] == c)
 				return (0);
 		}
