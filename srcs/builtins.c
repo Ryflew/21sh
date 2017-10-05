@@ -50,19 +50,19 @@ char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 	return (0);
 }
 
-char	is_writable_builtins(char *cmd)
+char	is_writable_builtins(char **cmd)
 {
-	if (!ft_strcmp(cmd, "echo"))
+	if (!ft_strcmp(cmd[0], "echo"))
 		return (0);
-	else if (!ft_strcmp(cmd, "env"))
+	else if (!ft_strcmp(cmd[0], "env"))
 		return (0);
-	else if (!ft_strcmp(cmd, "history"))
+	else if (!ft_strcmp(cmd[0], "history") && !cmd[1])
 		return (0);
-	else if (!ft_strcmp(cmd, "export"))
+	else if (!ft_strcmp(cmd[0], "export") && !cmd[1])
 		return (0);
-	else if (!ft_strcmp(cmd, "hash"))
+	else if (!ft_strcmp(cmd[0], "hash") && !cmd[1])
 		return (0);
-	else if (!ft_strcmp(cmd, "help"))
+	else if (!ft_strcmp(cmd[0], "help"))
 		return (0);
 	return (1);
 }
@@ -85,6 +85,12 @@ char	is_builtins(char **cmd)
 		return (0);
 	else if (!ft_strcmp(cmd[0], "read"))
 		return (0);
+	else if (!ft_strcmp(cmd[0], "history"))
+		return (0);
+	else if (!ft_strcmp(cmd[0], "export"))
+		return (0);
+	else if (!ft_strcmp(cmd[0], "hash"))
+		return (0);
 	else
-		return (is_writable_builtins(cmd[0]));
+		return (is_writable_builtins(cmd));
 }
