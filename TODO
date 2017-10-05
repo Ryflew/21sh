@@ -19,6 +19,7 @@
 ------------ BUG --------------
 
 - ls `\` segfault
+- export a mettre dans writable et non
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
