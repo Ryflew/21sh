@@ -58,7 +58,7 @@ void		manage_tree(t_sh *sh, t_tree *commands_tree)
 		try_add_hashtab(commands_tree, sh);*/
 //	if (!is_term_env(commands_tree))
 //	{
-//		treat_history_cmd(commands_tree);
+		/*treat_history_cmd(commands_tree);*/
 		browse_tree(commands_tree, sh, NULL, 1);
 //	}
 }

@@ -58,31 +58,32 @@ typedef enum	e_token
 	SCL, // 11
 	NUM, // 12
 	WORD, // 13
-	FD, // 14
-	CLOSE_FD, // 15
-	BQT, // 16
-	EBQT, // 17
-	LPAR, // 18
-	RPAR, // 19
-	S_WILDCARD, // 20
-	Q_WILDCARD, // 21
-	E_WILDCARD, // 22
-	LBKT, // 23
-	RBKT, // 24
-	LBRC, // 25
-	RBRC, // 26
-	COM, // 27
-	TILD_EXPR, // 28
-	EXPR, // 29
-	BKT_EXPR, // 30
-	END_EXPR, // 31
-	HIST, // 32
-	VAR_OP, // 33
-	VAR_OP_C, // 34
-	VAR_WORD, // 35
-	TILD, // 36
-	SON, // 37
-	EQUAL // 38
+	ASCII_WORD, // 14
+	FD, // 15
+	CLOSE_FD, // 16
+	BQT, // 17
+	EBQT, // 18
+	LPAR, // 19
+	RPAR, // 20
+	S_WILDCARD, // 21
+	Q_WILDCARD, // 22
+	E_WILDCARD, // 23
+	LBKT, // 24
+	RBKT, // 25
+	LBRC, // 26
+	RBRC, // 27
+	COM, // 28
+	TILD_EXPR, // 29
+	EXPR, // 30
+	BKT_EXPR, // 31
+	END_EXPR, // 32
+	HIST, // 33
+	VAR_OP, // 34
+	VAR_OP_C, // 35
+	VAR_WORD, // 36
+	TILD, // 37
+	SON, // 38
+	EQUAL // 39
 }				e_token;
 
 typedef enum	e_state

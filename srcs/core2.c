@@ -108,5 +108,6 @@ char	manage_cmds(t_tree *node, t_sh *sh)
 	node->cmds = get_cmds(&node->cmd_tokens, sh);
 	if (find_env(sh->env, "PATH"))
 		try_add_hashtab(node, sh);
+	treat_history_cmd(node);
 	return (exec_cmds(node, &(sh->env), sh));
 }

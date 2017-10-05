@@ -54,10 +54,6 @@ static void history_get_opt(char **av)
 
 void	treat_history_cmd(t_tree *tree)
 {
-	if (tree->left)
-		treat_history_cmd(tree->left);
-	if (tree->right)
-		treat_history_cmd(tree->right);
 	if (tree->cmds && !ft_strcmp(tree->cmds[0], "history"))
 		history_get_opt(tree->cmds);
 }

@@ -6,7 +6,6 @@
 - Leaks
 - Separer tosh.h en plein de headers
 - ne pas faire un export si string_op au nom de la var
-- test$oki concatainer
 - refaire is_term_env et le mettre dans get_cmds
 
 ---------- BONUS --------------
