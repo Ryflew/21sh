@@ -49,7 +49,7 @@ char	**create_cmds_with_tokens(t_list *lexems)
 	while (lexems)
 	{
 		token = (t_token*)lexems->data;
-		if (TYPE == WORD && i < nb_cmds)
+		if (i < nb_cmds)
 			cmds[i++] = ft_strdup(token->value);
 		lexems = lexems->next;
 	}

@@ -33,9 +33,7 @@ static t_token	*get_next_token(t_lexer *lexer, t_token *last_token)
 		}
 		else
 		{
-			//ft_putendl("before lex");
 			token = identify_token(lexer, last_token);
-			//ft_putendl(VAL);	
 			lexer->blank = 0;
 		}
 		if (token)
@@ -54,13 +52,12 @@ void			get_lexems(t_sh *sh)
 	token = NULL;
 	while ((token = get_next_token(sh->lexer, token)))
 		ft_node_push_back(&(sh->lexer->lexems), token);
-	ft_putendl("after lex");	
-	t_list *tmp = sh->lexer->lexems;
+/*	t_list *tmp = sh->lexer->lexems;
 	while (tmp)
 	{
 		ft_putnbr(((t_token*)(tmp->data))->type);
 		ft_putendl(" <-- type");
 		ft_putendl(((t_token*)(tmp->data))->value);
 		tmp = tmp->next;
-	}
+	}*/
 }
