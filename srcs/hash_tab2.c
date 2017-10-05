@@ -35,15 +35,14 @@ static void	validity_path(char *cmd, t_sh *shell, int i)
 
 void		try_add_hashtab(t_tree *node, t_sh *shell)
 {
-	if (node->left)
+	/*if (node->left)
 		try_add_hashtab(node->left, shell);
 	if (node->right)
 	{
 		if (node->TYPE != CHEVB && node->TYPE != DCHEVB &&
-			node->TYPE != CHEVF && node->TYPE != DCHEVF &&
-			node->TYPE != FRED && node->TYPE != BRED)
+			node->TYPE != CHEVF && node->TYPE != DCHEVF)
 			try_add_hashtab(node->right, shell);
-	}
+	}*/
 	if (node->cmds && is_builtins(node->cmds))
 		validity_path(node->cmds[0], shell, -1);
 }

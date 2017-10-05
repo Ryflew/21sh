@@ -11,7 +11,7 @@ static char	is_operator(char c, char c2)
 {
 	if (c == '>' || c == '<' || (c == '&' && c2 == '&') || c == '|' || \
 		c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || \
-		c == '}' || c == ';' || c == '*' || c == '?' || c == '`')
+		c == '}' || c == ';' || c == '*' || c == '?' || c == '`' | c == '$')
 		return (1);
 	return (0);
 }
@@ -68,7 +68,9 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 		type = FD;
 	else if (isnt_here_or_bqt(lexer) && *lexer->line == '~' && (lexer->blank || !last_token || last_token->type == LBRC || last_token->type == COM) && (ft_isblank(*(lexer->line + 1)) || !*(lexer->line + 1) || *(lexer->line + 1) == '/' || *(lexer->line + 1) == '}' || *(lexer->line + 1) == ',') && !st_op)
 		type = TILD;
-	else if (last_token && last_token->type == VAR_OP)
+	else if (last_token && (last_token->type == VAR_OP || last_token->type == VAR_OP_C) && !lexer->blank)
+		type = VAR_WORD;
+	else if (last_token && last_token->type == VAR_WORD && !lexer->blank)
 		type = VAR_WORD;
 	if (isnt_here_or_bqt(lexer) && last_token && is_glob_token(last_token->type) && !lexer->blank)
 	{

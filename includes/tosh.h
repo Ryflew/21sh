@@ -78,9 +78,11 @@ typedef enum	e_token
 	END_EXPR, // 31
 	HIST, // 32
 	VAR_OP, // 33
-	VAR_WORD, // 34
-	TILD, // 35
-	SON // 36
+	VAR_OP_C, // 34
+	VAR_WORD, // 35
+	TILD, // 36
+	SON, // 37
+	EQUAL // 38
 }				e_token;
 
 typedef enum	e_state
@@ -389,7 +391,7 @@ char				subshell(t_sh *sh, e_token type);
 
 char				*get_word(char const *s, size_t len);
 
-void	    		replace_var(t_token *token, t_env *env);
+void	   			replace_var(e_token last_type, t_list **lexems, t_sh *sh);
 void				replace_tild(t_token *token, t_env *env);
 
 char				manage_cmds(t_tree *node, t_sh *sh);

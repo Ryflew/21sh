@@ -5,8 +5,9 @@
 - Norme
 - Leaks
 - Separer tosh.h en plein de headers
-- Testez le fonctionnement du heredoc "<<", avec ses options et cas particuliers.
-- voir tout manage_tree dans browse_tree
+- ne pas faire un export si string_op au nom de la var
+- test$oki concatainer
+- refaire is_term_env et le mettre dans get_cmds
 
 ---------- BONUS --------------
 
@@ -18,7 +19,6 @@
 
 ------------ BUG --------------
 
-- ls 2>9 | tr i I segfault
 - ls `\` segfault
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---

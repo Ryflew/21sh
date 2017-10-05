@@ -60,13 +60,17 @@ char	**get_cmds(t_list **cmd_tokens, t_sh *sh)
 {
 	t_list	*tmp;
 	t_token	*token;
+	e_token last_type;
 
 	tmp = *cmd_tokens;
 	while (tmp)
 	{
 		token = (t_token*)tmp->data;
-		if (TYPE == VAR_OP)
+		if (TYPE == VAR_OP || TYPE == VAR_OP_C)
 		{
+			last_type = TYPE;
+			if (tmp == *cmd_tokens)
+				*cmd_tokens = (*cmd_tokens)->next;
 			if (!sh->lexer->her)
 				ft_pop_node(&tmp, NULL);
 			else
@@ -76,7 +80,7 @@ char	**get_cmds(t_list **cmd_tokens, t_sh *sh)
 				ft_pop_node(&tmp, (void*)&clear_lexems);
 			}
 			if (tmp)
-				replace_var(tmp->data, sh->env);
+				replace_var(last_type, &tmp, sh);
 		}
 		else if (TYPE == TILD)
 			replace_tild(token, sh->env);
@@ -102,5 +106,7 @@ char	manage_cmds(t_tree *node, t_sh *sh)
 	}
 	ft_putendl("-----------------------------------------END");*/
 	node->cmds = get_cmds(&node->cmd_tokens, sh);
+	if (find_env(sh->env, "PATH"))
+		try_add_hashtab(node, sh);
 	return (exec_cmds(node, &(sh->env), sh));
 }

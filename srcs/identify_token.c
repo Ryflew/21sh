@@ -26,7 +26,12 @@ static void	is_here_op(t_lexer *lexer, t_token **token)
 		lexer->bqt = !lexer->bqt;		
 	}
 	else if (*lexer->line == '$' && ft_isalnum(*(lexer->line + 1)))
-		*token = new_token(lexer, VAR_OP, "$");
+	{
+		if (!lexer->blank)
+			*token = new_token(lexer, VAR_OP_C, "$");
+		else
+			*token = new_token(lexer, VAR_OP, "$");
+	}
 }
 
 static void	is_other_op(t_lexer *lexer, t_token **token, t_token *last_token)
@@ -48,6 +53,11 @@ static void	is_other_op(t_lexer *lexer, t_token **token, t_token *last_token)
 	else if (*lexer->line == '-' && last_token
 			&& (last_token->type == FRED || last_token->type == BRED))
 		*token = new_token(lexer, CLOSE_FD, "-");
+	else if (*lexer->line == '=' && last_token && (last_token->type == WORD || last_token->type == NUM))		
+	{
+		*token = new_token(lexer, EQUAL, "-");
+		last_token->type = VAR_WORD;
+	}
 }
 
 static void		is_limit_glob_op(t_lexer *lexer, t_token **token)

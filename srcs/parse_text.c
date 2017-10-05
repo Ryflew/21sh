@@ -81,8 +81,12 @@ t_token			*text_rules(t_sh *sh)
 		eat(sh, TILD);
 	else if (sh->current_token->type == VAR_OP)
 		eat(sh, VAR_OP);
+	else if (sh->current_token->type == VAR_OP_C)
+		eat(sh, VAR_OP_C);
 	else if (sh->current_token->type == VAR_WORD)
 		eat(sh, VAR_WORD);
+	else if (sh->current_token->type == EQUAL)
+		eat(sh, EQUAL);
 	else if (TYPE == BQT)
 		return (bqt_rule(sh));
 	else if (TYPE == LPAR)
