@@ -361,7 +361,7 @@ char				exec_cmds(t_tree *node, t_env **env, t_sh *shell);
 char				run_binary(t_tree *node, t_env *env, t_sh *shell);
 char				*get_path(t_tree *node, t_env *env, t_sh *shell);
 char				is_builtins(char **cmd);
-char				is_writable_builtins(char *cmd);
+char				is_writable_builtins(char **cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
 char				manage_dchevb(t_sh *sh, char *cmd, t_tree *node, int *fd_pipe);
 void				manage_chevb(t_fd fd);

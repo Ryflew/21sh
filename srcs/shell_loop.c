@@ -108,6 +108,11 @@ char	check_history_excla(t_sh *shell, char **command)
 				free(shell->toaddstr);
 				shell->toaddstr = NULL;
 			}
+			else if (!ft_strchr(tmp, '!'))
+			{
+				free(start);
+				break ;
+			}
 			free(start);
 		}
 		shell->toaddstr = *command;

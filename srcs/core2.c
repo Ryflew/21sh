@@ -4,7 +4,7 @@ char	exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 {
 	char	ret;
 
-	if ((ret = is_writable_builtins(node->cmds[0])) != 1)
+	if ((ret = is_writable_builtins(node->cmds)) != 1)
 		run_builtins(node, env, shell);
 	else if (!(ret = is_builtins(node->cmds)))
 		ret = go_builtins(node->cmds, env, shell);
