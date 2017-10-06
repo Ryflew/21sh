@@ -19,7 +19,8 @@
 ------------ BUG --------------
 
 - ls `\` segfault
-- export a mettre dans writable et non
+- <& (1<&$ boucle infini, 1<&- segfault)
+
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
