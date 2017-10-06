@@ -19,7 +19,6 @@
 ------------ BUG --------------
 
 - export var=`ls`
-- <& (1<&$ boucle infini, 1<&- segfault)
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

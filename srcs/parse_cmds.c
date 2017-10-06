@@ -25,7 +25,7 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, t_token **ss_emp
 	
 	fd = NULL;	
 	while (((token = text_rules(sh)) && token != (void*)-1) \
-	|| (token != (void*)-1 && (fd = aggregation_rules(sh))))
+	|| (token != (void*)-1 && (fd = aggregation_rules(sh)) && fd != (void*)-1))
 	{
 		if (fd)
 			ft_node_push_back(aggregations, fd);
@@ -41,6 +41,8 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, t_token **ss_emp
 			}
 		}
 	}
+	if (fd == (void*)-1)
+		return ((void*)-1);
 	return (token);
 }
 

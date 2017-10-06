@@ -36,7 +36,8 @@ int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
 		(!is_operator((lexer->line)[i], (lexer->line)[i + 1]) \
 		&& !ft_isblank((lexer->line)[i]) && ((lexer->line)[i] != ',' || !lexer->brc || lexer->bkt))
 		|| ((lexer->line)[i] == ']' && !lexer->bkt) || ((lexer->line)[i] == '}' && !lexer->brc)
-		|| ((lexer->line)[i] == '{' && lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt) || (*st_op && (!is_spe_operator((lexer->line)[i]) || *st_op == '\''))))))
+		|| ((lexer->line)[i] == '{' && lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt) ||
+		(*st_op && (!is_spe_operator((lexer->line)[i]) || *st_op == '\'')) || ((lexer->line)[i] == '$' && !ft_isalnum((lexer->line)[i+ 1]))))))
 	{
 		if (!ft_isdigit((lexer->line)[i]))
 		{

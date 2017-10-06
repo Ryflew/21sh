@@ -5,13 +5,13 @@ char			is_basic_red(t_sh *sh)
 	t_token	*next_token;
 
 	next_token = NULL;
-	if (sh->lexer->lexems->next)
+	if (sh->lexer->lexems && sh->lexer->lexems->next)
 		next_token = sh->lexer->lexems->next->data;
-	if (sh->current_token->type == CHEVF || sh->current_token->type == DCHEVF\
+	if (sh->current_token && (sh->current_token->type == CHEVF || sh->current_token->type == DCHEVF\
 	|| sh->current_token->type == CHEVB || sh->current_token->type \
 	== DCHEVB || (sh->current_token->type == FD && next_token &&
 		(next_token->type == DCHEVF || next_token->type == DCHEVF \
-		||  next_token->type == CHEVB || next_token->type == DCHEVB)))
+		||  next_token->type == CHEVB || next_token->type == DCHEVB))))
 		return (1);
 	return (0);
 }
