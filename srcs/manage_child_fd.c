@@ -1,6 +1,13 @@
 #include "tosh.h"
 #include <fcntl.h>
 
+static void	pipe_subshell(t_sh *shell)
+{
+	close(shell->pipe_ss[0]);	
+	dup2(shell->pipe_ss[1], 1);
+	close(shell->pipe_ss[1]);
+}
+
 static void	close_dup_fd(t_fd *fd)
 {
 	if (fd->from == -1 && fd->to == -1)
@@ -68,4 +75,6 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe)
 		tmp = tmp->next;
     }
     manage_aggregations(node);
+    if (shell->ssbqt)
+        pipe_subshell(shell);
 }

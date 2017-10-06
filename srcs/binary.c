@@ -12,13 +12,6 @@
 
 #include "tosh.h"
 
-static void	pipe_subshell(t_sh *shell)
-{
-	close(shell->pipe_ss[0]);	
-	dup2(shell->pipe_ss[1], 1);
-	close(shell->pipe_ss[1]);
-}
-
 static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
 {
 	char	*path;
@@ -28,8 +21,6 @@ static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
 	if ((path = get_path(node, env, shell)))
 	{
 		envi = conv_env(env);
-		if (shell->ssbqt)
-			pipe_subshell(shell);
 		ret = execve(path, node->cmds, envi);
 		free(path);
 		if (envi)

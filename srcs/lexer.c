@@ -35,12 +35,16 @@ static t_token	*get_next_token(t_lexer *lexer, t_token *last_token)
 		{
 			token = identify_token(lexer, last_token);
 			lexer->blank = 0;
+			if (last_token && last_token->type == ASCII_WORD)
+				last_token->type = WORD;
 		}
 		if (token)
 			return (token);
 	}
 	if (isnt_here_or_bqt(lexer) && last_token && (is_glob_token(last_token->type) || last_token->type == EXPR || last_token->type == TILD_EXPR || last_token->type == BKT_EXPR || last_token->type == COM))
 		return (new_token(lexer, END_EXPR, ""));
+	else if (last_token && last_token->type == ASCII_WORD)
+		last_token->type = WORD;
 	return (token);
 }
 
@@ -52,7 +56,7 @@ void			get_lexems(t_sh *sh)
 	token = NULL;
 	while ((token = get_next_token(sh->lexer, token)))
 		ft_node_push_back(&(sh->lexer->lexems), token);
-/*	t_list *tmp = sh->lexer->lexems;
+	/*t_list *tmp = sh->lexer->lexems;
 	while (tmp)
 	{
 		ft_putnbr(((t_token*)(tmp->data))->type);

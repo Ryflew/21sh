@@ -22,8 +22,11 @@ static void	is_here_op(t_lexer *lexer, t_token **token)
 {
 	if (*lexer->line == '`')
 	{
-		*token = (!lexer->bqt) ? new_token(lexer, BQT, "`") : new_token(lexer, EBQT, "`");
-		lexer->bqt = !lexer->bqt;		
+		if (!lexer->bqt)
+			*token = (lexer->blank) ? new_token(lexer, BQT, "`") : new_token(lexer, BQT_C, "`");
+		else
+			*token = new_token(lexer, EBQT, "`");
+		lexer->bqt = !lexer->bqt;
 	}
 	else if (*lexer->line == '$' && ft_isalnum(*(lexer->line + 1)))
 	{

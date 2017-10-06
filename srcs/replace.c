@@ -32,6 +32,8 @@ void	    replace_var(e_token last_type, t_list **lexems, t_sh *sh)
 		else
 			ft_pop_node(lexems, NULL);
 	}
+	if ((*lexems)->prev && ((t_token*)(*lexems)->prev->data)->type == EQUAL)
+		TYPE = VAR_WORD;
 }
 
 void		replace_tild(t_token *token, t_env *env)

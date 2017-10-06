@@ -52,6 +52,8 @@ char	*get_word(char const *s, size_t len)
 			++new_len;
 		bs = (s[i] == '\\' && string_op != '\'' && !bs) ? 1 : 0;
 	}
+	if (!new_len)
+		return (NULL);
 	if ((strf = (char*)malloc(sizeof(char) * (new_len + 1))))
 		return (fill_word(strf, s, len));
 	return (NULL);		

@@ -16,7 +16,7 @@ static char is_end_path(t_list *lexems)
     return (0);
 }
 
-static void free_join(char **s1, char *s2)
+void free_join(char **s1, char *s2)
 {
     char    *to_free;
 

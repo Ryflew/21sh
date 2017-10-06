@@ -7,11 +7,11 @@ char			is_string_op(char c)
 	return (0);
 }
 
-static char	is_operator(char c, char c2)
+char	is_operator(char c, char c2)
 {
 	if (c == '>' || c == '<' || (c == '&' && c2 == '&') || c == '|' || \
 		c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || \
-		c == '}' || c == ';' || c == '*' || c == '?' || c == '`' | c == '$')
+		c == '}' || c == ';' || c == '*' || c == '?' || c == '`' | c == '$' || c == '=')
 		return (1);
 	return (0);
 }
@@ -38,8 +38,13 @@ int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
 		|| ((lexer->line)[i] == ']' && !lexer->bkt) || ((lexer->line)[i] == '}' && !lexer->brc)
 		|| ((lexer->line)[i] == '{' && lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt) || (*st_op && (!is_spe_operator((lexer->line)[i]) || *st_op == '\''))))))
 	{
-		if (*type != WORD && !ft_isdigit((lexer->line)[i]))
-			*type = WORD;
+		if (!ft_isdigit((lexer->line)[i]))
+		{
+			if (!ft_isalnum((lexer->line)[i]))
+				*type = WORD;
+			else if (*type != WORD)
+				*type = ASCII_WORD;
+		}
 		if (is_string_op((lexer->line)[i]) && !*st_op)
 			*st_op = (lexer->line)[i];
 		else if ((lexer->line)[i] == *st_op)
@@ -58,7 +63,8 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 	int		word_size;
 	t_token	*token;
 	e_token	type;
-	char	st_op;	
+	char	st_op;
+	char 	*word;
 
 	type = NUM;
 	token = NULL;
@@ -70,8 +76,13 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 		type = TILD;
 	else if (last_token && (last_token->type == VAR_OP || last_token->type == VAR_OP_C) && !lexer->blank)
 		type = VAR_WORD;
-	else if (last_token && last_token->type == VAR_WORD && !lexer->blank)
-		type = VAR_WORD;
+	else if (isnt_here_or_bqt(lexer) && last_token && last_token->type == EQUAL && !lexer->blank)
+	{
+		if (*lexer->line == '~')
+			type = TILD_VAR_WORD;
+		else
+			type = VAR_WORD;
+	}
 	if (isnt_here_or_bqt(lexer) && last_token && is_glob_token(last_token->type) && !lexer->blank)
 	{
 		if (lexer->bkt)
@@ -81,7 +92,12 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 		else
 			type = EXPR;
 	}
-	token = new_token(lexer, type, get_word(lexer->line, word_size));
+	if (!(word = get_word(lexer->line, word_size)))
+	{
+		lexer->line += word_size;
+		return (NULL);
+	}
+	token = new_token(lexer, type, word);
 	lexer->line += word_size - ft_strlen(VAL);
 	return (token);
 }

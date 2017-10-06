@@ -18,7 +18,7 @@
 
 ------------ BUG --------------
 
-- ls `\` segfault
+- export var=`ls`
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 

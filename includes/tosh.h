@@ -62,28 +62,30 @@ typedef enum	e_token
 	FD, // 15
 	CLOSE_FD, // 16
 	BQT, // 17
-	EBQT, // 18
-	LPAR, // 19
-	RPAR, // 20
-	S_WILDCARD, // 21
-	Q_WILDCARD, // 22
-	E_WILDCARD, // 23
-	LBKT, // 24
-	RBKT, // 25
-	LBRC, // 26
-	RBRC, // 27
-	COM, // 28
-	TILD_EXPR, // 29
-	EXPR, // 30
-	BKT_EXPR, // 31
-	END_EXPR, // 32
-	HIST, // 33
-	VAR_OP, // 34
-	VAR_OP_C, // 35
-	VAR_WORD, // 36
-	TILD, // 37
-	SON, // 38
-	EQUAL // 39
+	BQT_C, // 18
+	EBQT, // 19
+	LPAR, // 21
+	RPAR, // 22
+	S_WILDCARD, // 23
+	Q_WILDCARD, // 24
+	E_WILDCARD, // 25
+	LBKT, // 26
+	RBKT, // 27
+	LBRC, // 28
+	RBRC, // 29
+	COM, // 30
+	TILD_EXPR, // 31
+	EXPR, // 32
+	BKT_EXPR, // 33
+	END_EXPR, // 34
+	HIST, // 35
+	VAR_OP, // 36
+	VAR_OP_C, // 37
+	VAR_WORD, // 38
+	TILD_VAR_WORD, // 39
+	TILD, // 40
+	SON, // 41
+	EQUAL // 42
 }				e_token;
 
 typedef enum	e_state
@@ -392,6 +394,8 @@ char				subshell(t_sh *sh, e_token type);
 
 char				*get_word(char const *s, size_t len);
 
+char				is_operator(char c, char c2);
+
 void	   			replace_var(e_token last_type, t_list **lexems, t_sh *sh);
 void				replace_tild(t_token *token, t_env *env);
 
@@ -412,5 +416,6 @@ void    			manage_brc(t_list *lexems);
 void				merge_expr_to_word(t_list *lexems);
 void    			merge_expr(t_list *lexems);
 
+void free_join(char **s1, char *s2);
 
 #endif
