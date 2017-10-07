@@ -46,33 +46,29 @@ static void	help_help(void)
 
 void		help_command(char **cmd) // trop de ligne
 {
-	int		i;
-
 	if (!*(cmd + 1))
 		help_help();
-	else
+	else if (cmd[1])
 	{
-		i = 0;
-		while (cmd[++i])
-		{
-			if (!ft_strcmp(cmd[i], "exit"))
-				help_exit();
-			else if (!ft_strcmp(cmd[i], "cd"))
-				help_cd();
-			else if (!ft_strcmp(cmd[i], "setenv"))
-				help_setenv();
-			else if (!ft_strcmp(cmd[i], "unsetenv"))
-				help_unsetenv();
-			else if (!ft_strcmp(cmd[i], "env"))
-				help_env();
-			else if (!ft_strcmp(cmd[i], "echo"))
-				help_echo();
-			else if (!ft_strcmp(cmd[i], "hash"))
-				help_hash();
-			else if (!ft_strcmp(cmd[i], "history"))
-				help_history();
-			else if (!ft_strcmp(cmd[i], "read"))
-				help_read();
-		}
+		if (!ft_strcmp(cmd[1], "exit"))
+			help_exit();
+		else if (!ft_strcmp(cmd[1], "cd"))
+			help_cd();
+		else if (!ft_strcmp(cmd[1], "setenv"))
+			help_setenv();
+		else if (!ft_strcmp(cmd[1], "unsetenv"))
+			help_unsetenv();
+		else if (!ft_strcmp(cmd[1], "env"))
+			help_env();
+		else if (!ft_strcmp(cmd[1], "echo"))
+			help_echo();
+		else if (!ft_strcmp(cmd[1], "hash"))
+			help_hash();
+		else if (!ft_strcmp(cmd[1], "history"))
+			help_history();
+		else if (!ft_strcmp(cmd[1], "read"))
+			help_read();
+		else
+			errexit("help", "bad builtin name.");
 	}
 }

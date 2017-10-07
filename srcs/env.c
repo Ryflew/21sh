@@ -13,14 +13,12 @@ static void	env_usage(char invalid)
 void		add_new_var(char ***av, t_env **env)
 {
 	char	**new_av;
-	//int		i;
 
 	if (**av[0] == '=')
 	{
 		errexit("env", "Invalid argument");
 		return ;
 	}
-	//i = 0;
 	if (!(new_av = (char**)malloc(sizeof(char*) * 4)))
 		exit(EXIT_FAILURE);
 	new_av[0] = ft_strdup("setenv");
@@ -39,7 +37,7 @@ void		add_new_var(char ***av, t_env **env)
 	ft_strdelpp(&new_av);
 }
 
-void		u_opt(char ***av, t_env **env)
+static void	u_opt(char ***av, t_env **env)
 {
 	char	**out;
 
@@ -57,7 +55,7 @@ void		u_opt(char ***av, t_env **env)
 	}
 }
 
-void		env_command2(char **av, t_env **cpy)
+static void	env_command2(char **av, t_env **cpy)
 {
 	while (*av)
 	{

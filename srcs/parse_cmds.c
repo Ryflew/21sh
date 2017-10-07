@@ -1,6 +1,6 @@
 #include "tosh.h"
 
-char		parse_error(t_sh *sh)
+char			parse_error(t_sh *sh)
 {
 	ft_putstr("parse error near '");
 	if (sh->current_token)
@@ -11,7 +11,7 @@ char		parse_error(t_sh *sh)
 	return (-1);
 }
 
-void		*ret_parse_error(t_tree *node)
+void			*ret_parse_error(t_tree *node)
 {
 	del_command_tree(node);
 	return ((void*)-1);
@@ -23,7 +23,7 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, t_token **ss_emp
 	t_token	*token;
 	t_fd	*fd;
 	
-	fd = NULL;	
+	fd = NULL;
 	while (((token = text_rules(sh)) && token != (void*)-1) \
 	|| (token != (void*)-1 && (fd = aggregation_rules(sh)) && fd != (void*)-1))
 	{
@@ -46,7 +46,7 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, t_token **ss_emp
 	return (token);
 }
 
-t_tree		*cmd_rules(t_sh *sh, char **tmp_env)
+t_tree			*cmd_rules(t_sh *sh, char **tmp_env)
 {
 	t_list	*cmd_tokens;
 	t_list	*aggregations;

@@ -20,6 +20,7 @@ void	add_var_to_shell(char *str1, char *str2, t_env **env)
 char		export(char **av, t_env **export)
 {
 	char	*tmp;
+
 	if (!*++av)
 		print_env(*export);
 	else
@@ -33,6 +34,7 @@ char		export(char **av, t_env **export)
 			add_var_to_shell(*av, NULL, export);
 		else
 		{
+			ft_putendl(*av);
 			add_new_var(&av, &(get_shell()->env));
 			add_new_var(&av, export);
 		}

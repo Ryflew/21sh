@@ -1,6 +1,6 @@
 #include "tosh.h"
 
-static int		history_prompt(t_sh *shell, int nb, char is_minus)
+static int	history_prompt(t_sh *shell, int nb, char is_minus)
 {
 	int		i;
 	char	*tmp;
@@ -51,14 +51,14 @@ static int	history_string(t_sh *shell, char *str)
 	return (0);
 }
 
-int		history_excla(char *str, t_sh *shell)
+int			history_excla(char *str, t_sh *shell)
 {
 	if (*str == '!')
-		return (history_prompt(shell, 1, 1)); // !!
+		return (history_prompt(shell, 1, 1));
 	else if (ft_isdigit(*str))
-		return (history_prompt(shell, ft_atoi(str), 0)); // !n
+		return (history_prompt(shell, ft_atoi(str), 0));
 	else if (*str == '-' && ft_isdigit(*(str + 1)))
-		return (history_prompt(shell, ft_atoi(str + 1), 1)); // !-n
+		return (history_prompt(shell, ft_atoi(str + 1), 1));
 	else
-		return (history_string(shell, str)); // cherche dans l'historique grace a la string
+		return (history_string(shell, str));
 }

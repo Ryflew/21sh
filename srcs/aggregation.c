@@ -35,7 +35,7 @@ static char	fred_bred_rules(t_sh *sh, int *left_fd, int *right_fd,
 	else if (sh->current_token->type == type && sh->lexer->lexems->next && \
 		((t_token*)sh->lexer->lexems->next->data)->type == FD)
 	{
-        *left_fd = (type == BRED) ? 0 : 1;
+		*left_fd = (type == BRED) ? 0 : 1;
 		eat(sh, type);
 		*right_fd = ft_atoi(sh->current_token->value);
 		eat(sh, FD);
@@ -59,7 +59,7 @@ static void	*free_return(t_fd *fd, void *ret)
 	return (ret);
 }
 
-t_fd	*aggregation_rules(t_sh *sh)
+t_fd		*aggregation_rules(t_sh *sh)
 {
 	t_fd	*fd;
 	char	ret;
@@ -71,12 +71,12 @@ t_fd	*aggregation_rules(t_sh *sh)
 	if ((ret = fred_bred_rules(sh, &fd->to, &fd->from, BRED)) == -1)
 		return (free_return(fd, (void*)-1));
 	else if (ret)
-        fd->type = BRED;
-    else if ((ret = fred_bred_rules(sh, &fd->from, &fd->to, FRED)) == -1)
+		fd->type = BRED;
+	else if ((ret = fred_bred_rules(sh, &fd->from, &fd->to, FRED)) == -1)
 		return (free_return(fd, (void*)-1));
 	else if (ret)
-        fd->type = FRED;
-    else
+		fd->type = FRED;
+	else
 		return (free_return(fd, NULL));
 	return (fd);
 }

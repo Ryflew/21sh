@@ -1,6 +1,6 @@
 #include "tosh.h"
 
-static char	**create_tmp_env(t_sh *sh, int size, t_token *token)
+static char		**create_tmp_env(t_sh *sh, int size, t_token *token)
 {
 	char	**tmp_env;
 	int		i;
@@ -35,7 +35,7 @@ static t_list	*increase(t_list *tmp, int *size)
 	return (tmp->next);
 }
 
-char		**parse_env_cmds(t_sh *sh)
+char			**parse_env_cmds(t_sh *sh)
 {
 	int		size;
 	t_list	*tmp;

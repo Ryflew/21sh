@@ -47,7 +47,7 @@ static void	is_other_op(t_lexer *lexer, t_token **token, t_token *last_token)
 	}
 }
 
-static void		is_limit_glob_op(t_lexer *lexer, t_token **token)
+static void	is_limit_glob_op(t_lexer *lexer, t_token **token)
 {
 	if (*lexer->line == '[')
 	{ 
@@ -102,14 +102,14 @@ static t_token	*is_reg_op(t_lexer *lexer)
 	return (token);
 }
 
-t_token		*identify_token(t_lexer *lexer, t_token *last_token)
+t_token			*identify_token(t_lexer *lexer, t_token *last_token)
 {
 	t_token *token;
 
 	token = NULL;
 	if (isnt_here_or_bqt(lexer))
 		token = is_reg_op(lexer);
-	if (!token && isnt_here_or_bqt(lexer))		
+	if (!token && isnt_here_or_bqt(lexer))
 		is_limit_glob_op(lexer, &token);
 	if (!token && isnt_here_or_bqt(lexer))
 		is_other_op(lexer, &token, last_token);

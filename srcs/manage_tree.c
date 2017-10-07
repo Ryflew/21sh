@@ -1,6 +1,6 @@
 #include "tosh.h"
 
-static char manage_children(t_tree *node, t_sh *shell, char rig, char ret)
+static char	manage_children(t_tree *node, t_sh *shell, char rig, char ret)
 {
 	if (node->left)
 	{

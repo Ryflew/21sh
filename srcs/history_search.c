@@ -75,7 +75,7 @@ static void	loop_search2(t_sh *shell, t_sh *bis_sh)
 		write_history(shell, bis_sh);
 }
 
-void		loop_search(t_sh *shell, t_sh *bis_sh)
+static void	loop_search(t_sh *shell, t_sh *bis_sh)
 {
 	unsigned long	buff;
 

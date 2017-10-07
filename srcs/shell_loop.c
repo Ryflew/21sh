@@ -125,9 +125,6 @@ void		shell_loop(t_sh *shell)
 {
 	char	*command;
 
-	shell->op = NULL;
-	shell->total_command = NULL;
-	shell->state = BASIC_SHELL;
 	while (1)
 	{
 		command = get_line(shell, 0, &(shell->state), shell->op);

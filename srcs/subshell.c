@@ -45,7 +45,7 @@ static char	add_new_tokens(t_sh *sh)
 {
 	int		i;
 	t_list	*new_lexems;
-	char    *tokens_line;
+	char	*tokens_line;
 	char	**new_tokens;
 	
 	sh->ssbqt = 0;

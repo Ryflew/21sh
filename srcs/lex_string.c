@@ -19,8 +19,8 @@ static void	if_its_word(char c, char *bs, char *st_op, e_token *type)
 		*bs = 0;
 }
 
-int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
-								t_token *l_tk)
+static int	compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
+				t_token *l_tk)
 {
 	char	bs;
 	int		i;

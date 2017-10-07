@@ -65,7 +65,7 @@ static char	**convert_history(char *str, int count)
 	return (out);
 }
 
-char **get_history(t_sh *shell, off_t size, char *home, char is_21sh_logs)
+char 		**get_history(t_sh *shell, off_t size, char *home, char is_21sh_logs)
 {
 	int		i;
 	int		fd;

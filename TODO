@@ -1,12 +1,13 @@
 ----------- TODO --------------
 
-- Unset / Export
+- test_main.c a retirer
+- Unset
 - Ajouter unset / export a la commande help
 - Norme
 - Leaks
 - Separer tosh.h en plein de headers
 - ne pas faire un export si string_op au nom de la var
-- refaire is_term_env et le mettre dans get_cmds
+- "env -i env" fonctionne pas
 
 ---------- BONUS --------------
 
@@ -19,6 +20,8 @@
 - leaks dans get_lexems, genre "yolo=swag", leaks sur "yolo" et "swag", sur "export bar foo" leaks sur les 3 strings
 - dd=ss message d'erreur
 - =foo boucle infini
+- echo ddd=ffff, wtf ?
+- export yolo=swag puis export yolo=foo marche pas (moi de le faire)
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
@@ -30,4 +33,15 @@
 - !
 - Command read
 - Globing
-=======
+
+
+=============================
+
+Liste des fonction de basile de + de 25 lignes: (je te simplifie la tâche psk je peux pas y toucher sans casser un truc)
+	- lexer.c => get_next_token
+	- nmatch.c => nmatch
+	- tout le fichier operators.c
+	- parse_text.c => bqt_rule, text_rules
+
+Victor:
+	shell_loop.c => check_history_excla

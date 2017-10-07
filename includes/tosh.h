@@ -334,8 +334,6 @@ char				*find_builtins(char *part);
 char				*check_dir_content(char *part, char *path);
 char				*check_quot_brackets(char *str, e_state *state);
 char				*get_with_tilde(char *path, t_env *env);
-char				*remove_useless_space(char *str, int i, int j,
-					int have_space);
 char				*find_env(t_env *env, char *name);
 char				*find_match_binary(t_sh *shell, char *tosearch);
 char				*get_line(t_sh *shell, unsigned long buff, e_state *state,
@@ -402,18 +400,18 @@ char				**get_cmds(t_list **cmds_token, t_sh *sh);
 
 void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe);
 
-char   				is_glob_token(e_token type);
+char				is_glob_token(e_token type);
 void				glob(t_list **first_lexems);
 int					nmatch(char *s1, char *s2, t_list *lexems);
 void				replace_all_exprs(t_list **first_lexems);
-void	  			manage_wildcards(t_list *lex, char *match);
+void				manage_wildcards(t_list *lex, char *match);
 DIR					*open_dir(char *dir_name, t_token *token);
 int					is_dir(char *dir_name, t_token *token);
-void    			clear_old_expr(t_list **lexems, t_list **first_lexems, char match);
-void    			manage_brc(t_list *lexems);
+void				clear_old_expr(t_list **lexems, t_list **first_lexems, char match);
+void				manage_brc(t_list *lexems);
 void				merge_expr_to_word(t_list *lexems);
-void    			merge_expr(t_list *lexems);
+void				merge_expr(t_list *lexems);
 
-void free_join(char **s1, char *s2);
+void				free_join(char **s1, char *s2);
 
 #endif

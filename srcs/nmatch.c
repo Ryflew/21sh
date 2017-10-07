@@ -32,7 +32,7 @@ int			nmatch(char *s1, char *s2, t_list *lexems)
 			while (*(s2))
 				if (*s1 != '\0' && *s2 != '\0' && *s2++ == *s1)
 					return (0);
-			return (nmatch(s1 + 1, NULL, lexems->next->next->next));					
+			return (nmatch(s1 + 1, NULL, lexems->next->next->next));
 		}
 	}
 	if (TYPE == LBKT && *s1 != '\0')

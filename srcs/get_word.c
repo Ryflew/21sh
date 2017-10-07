@@ -2,10 +2,10 @@
 
 static char	*fill_word(char *strf, char const *s, size_t len)
 {
-	size_t			i;
-	char			str_op;
-	size_t			new_len;
-	char			bs;
+	size_t	i;
+	char	str_op;
+	size_t	new_len;
+	char	bs;
 
 	i = -1;
 	new_len = 0;
@@ -28,13 +28,13 @@ static char	*fill_word(char *strf, char const *s, size_t len)
 	return (strf);
 }
 
-char	*get_word(char const *s, size_t len)
+char		*get_word(char const *s, size_t len)
 {
-	char			*strf;
-	size_t			i;
-	char			str_op;
-	size_t			new_len;
-	char			bs;
+	char	*strf;
+	size_t	i;
+	char	str_op;
+	size_t	new_len;
+	char	bs;
 
 	if (!s)
 		return (NULL);
@@ -54,5 +54,5 @@ char	*get_word(char const *s, size_t len)
 	}
 	if (new_len && (strf = (char*)malloc(sizeof(char) * (new_len + 1))))
 		return (fill_word(strf, s, len));
-	return (NULL);		
+	return (NULL);
 }

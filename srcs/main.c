@@ -20,6 +20,9 @@ static t_sh	g_sh;
 
 static void	init_shell(t_sh *shell, t_lexer *lexer)
 {
+	shell->op = NULL;
+	shell->total_command = NULL;
+	shell->state = BASIC_SHELL;
 	shell->ref_pos = -1;
 	shell->saved = NULL;
 	shell->history_pos = -1;

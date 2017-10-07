@@ -1,63 +1,6 @@
 #include "tosh.h"
 
-static char	exec_cmds(t_tree *node, t_env **env, t_sh *shell)
-{
-	char	ret;
-
-	if ((ret = is_writable_builtins(node->cmds)) != 1)
-		run_builtins(node, env, shell);
-	else if (!(ret = is_builtins(node->cmds)))
-		ret = go_builtins(node->cmds, env, shell);
-	else
-		ret = run_binary(node, *env, shell);
-	return (ret);
-}
-
-// METTRE DANS UN AUTRE FICHIER
-void	add_to_history(t_sh *shell, char *command)
-{
-	int		i;
-	char	*tmp;
-
-	if (!command || !*command)
-		return ;
-	if (!ft_strcont(command, "\n"))
-		add_line(shell, command);
-	else
-	{
-		i = -1;
-		while (command[++i] && command[i] != '\n')
-			;
-		tmp = ft_strsub(command, 0, i);
-		add_line(shell, tmp);
-		free(tmp);
-	}
-	shell->history_pos = -1;
-}
-
-char	**create_cmds_with_tokens(t_list *lexems)
-{
-	t_token	*token;
-	char	**cmds;
-	int		nb_cmds;
-	int		i;
-
-	nb_cmds = ft_list_size(lexems);
-	if (!(cmds = (char**)malloc(sizeof(char*) * (nb_cmds + 1))))
-		ft_exiterror("ERROR: malloc failure", 0);
-	cmds[nb_cmds] = NULL;
-	i = 0;
-	while (lexems)
-	{
-		token = (t_token*)lexems->data;
-		if (i < nb_cmds)
-			cmds[i++] = ft_strdup(token->value);
-		lexems = lexems->next;
-	}
-	return (cmds);
-}
-
-char	is_env_var_to_add(t_list *cmd_tokens)
+static char	is_env_var_to_add(t_list *cmd_tokens)
 {
 	t_list	*tmp;
 	t_token	*token;
@@ -79,6 +22,41 @@ char	is_env_var_to_add(t_list *cmd_tokens)
 		NEXT(tmp);
 	}
 	return (1);
+}
+
+static char	exec_cmds(t_tree *node, t_env **env, t_sh *shell)
+{
+	char	ret;
+
+	if ((ret = is_writable_builtins(node->cmds)) != 1)
+		run_builtins(node, env, shell);
+	else if (!(ret = is_builtins(node->cmds)))
+		ret = go_builtins(node->cmds, env, shell);
+	else
+		ret = run_binary(node, *env, shell);
+	return (ret);
+}
+
+static char	**create_cmds_with_tokens(t_list *lexems)
+{
+	t_token	*token;
+	char	**cmds;
+	int		nb_cmds;
+	int		i;
+
+	nb_cmds = ft_list_size(lexems);
+	if (!(cmds = (char**)malloc(sizeof(char*) * (nb_cmds + 1))))
+		ft_exiterror("ERROR: malloc failure", 0);
+	cmds[nb_cmds] = NULL;
+	i = 0;
+	while (lexems)
+	{
+		token = (t_token*)lexems->data;
+		if (i < nb_cmds)
+			cmds[i++] = ft_strdup(token->value);
+		lexems = lexems->next;
+	}
+	return (cmds);
 }
 
 char	**get_cmds(t_list **cmd_tokens, t_sh *sh)

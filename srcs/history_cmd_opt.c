@@ -72,7 +72,7 @@ void		hist_r(t_sh *shell, char *path)
 	hist_r2(shell, toadd, new);
 }
 
-void	hist_w(t_sh *shell, char *path)
+void		hist_w(t_sh *shell, char *path)
 {
 	char	**new;
 	struct stat	buff;
@@ -87,7 +87,7 @@ void	hist_w(t_sh *shell, char *path)
 	shell->history = new;
 }
 
-void	hist_a(t_sh *shell, char *path)
+void		hist_a(t_sh *shell, char *path)
 {
 	int			fd;
 	int			i;
