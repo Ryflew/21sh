@@ -1,17 +1,5 @@
 #include "tosh.h"
 
-char			is_term_env(t_tree *tree)
-{
-	if (!tree->left && !tree->right && tree->cmds && tree->cmds[0] && \
-		!tree->cmds[1] && ft_strchr(tree->cmds[0], '='))
-	{
-		add_new_var(&(tree->cmds), &(get_shell()->export));
-		return (1);
-	}
-	else
-		return (0);
-}
-
 void		clear_lexems(t_token *token)
 {
 	free(VAL);
@@ -51,8 +39,8 @@ void		go_core(char *command, t_sh *shell)
 	t_tree	*commands_tree;
 	t_list	*begin_lexems;
 
-	shell->lexer->line = shell->total_command;	
-	shell->lexer->her = 0;	
+	shell->lexer->line = shell->total_command;
+	shell->lexer->her = 0;
 	get_lexems(shell);
 	add_to_history(shell, command);
 	begin_lexems = shell->lexer->lexems;
@@ -64,6 +52,6 @@ void		go_core(char *command, t_sh *shell)
 		return ;
 	}
 	if (commands_tree)
-		manage_tree(shell, commands_tree);
+		browse_tree(commands_tree, shell, NULL, 1);
 	clear(shell, &begin_lexems, commands_tree);
 }

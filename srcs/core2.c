@@ -68,11 +68,15 @@ char	is_env_var_to_add(t_list *cmd_tokens)
 		token = (t_token*)tmp->data;
 		if (TYPE == EQUAL)
 		{
-			if (tmp->prev && tmp->prev->prev && !ft_strcmp(((t_token*)tmp->prev->prev->data)->value, "export"))
-				;// VICTOR doit implémenter export et setenv ici mais aussi yolo=ok; export yolo
-			return (0);
+			if (tmp->prev && ((t_token*)tmp->prev->data)->type == VAR_WORD && \
+				tmp->next && ((t_token*)tmp->next->data)->type == VAR_WORD)
+			{
+				add_var_to_shell(((t_token*)tmp->prev->data)->value, \
+				((t_token*)tmp->next->data)->value, &(get_shell()->shell_var));
+				NEXT(tmp);
+			}
 		}
-		tmp = tmp->next;
+		NEXT(tmp);
 	}
 	return (1);
 }

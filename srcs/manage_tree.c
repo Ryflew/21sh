@@ -50,15 +50,3 @@ char		browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char rig)
 	}
 	return (manage_children(node, shell, rig, ret));
 }
-
-void		manage_tree(t_sh *sh, t_tree *commands_tree)
-{
-	/*check_if_env_var(commands_tree);
-	if (find_env(sh->env, "PATH"))
-		try_add_hashtab(commands_tree, sh);*/
-//	if (!is_term_env(commands_tree))
-//	{
-		/*treat_history_cmd(commands_tree);*/
-		browse_tree(commands_tree, sh, NULL, 1);
-//	}
-}
