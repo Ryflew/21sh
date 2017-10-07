@@ -1,29 +1,12 @@
 #include "tosh.h"
 
-char    is_glob_token(e_token type)
-{
-    if (type == S_WILDCARD || type == Q_WILDCARD || type == E_WILDCARD
-         || type == LBKT || type == RBKT || type == LBRC || type == RBRC)
-         return (1);
-    return (0);
-}
-
-/*static void	lex_var(t_lexer *lexer, t_token **token, t_token *last_token)
-{
-	if (ft_isalnum(lexer->line[i + 1]) && (!last_token ||
-	last_token->type == AND || last_token->type == OR ||
-	last_token->type == SCL || last_token->type == BQT ||
-	last_token->type == LPAR || (last_token->type == WORD
-	&& ft_strcmp(token->value, "export"))))
-		*token = new_token(lexer, VAR_OP, "$");
-}*/
-
 static void	is_here_op(t_lexer *lexer, t_token **token)
 {
 	if (*lexer->line == '`')
 	{
 		if (!lexer->bqt)
-			*token = (lexer->blank) ? new_token(lexer, BQT, "`") : new_token(lexer, BQT_C, "`");
+			*token = (lexer->blank) ? new_token(lexer, BQT, "`") \
+			: new_token(lexer, BQT_C, "`");
 		else
 			*token = new_token(lexer, EBQT, "`");
 		lexer->bqt = !lexer->bqt;
@@ -56,7 +39,8 @@ static void	is_other_op(t_lexer *lexer, t_token **token, t_token *last_token)
 	else if (*lexer->line == '-' && last_token
 			&& (last_token->type == FRED || last_token->type == BRED))
 		*token = new_token(lexer, CLOSE_FD, "-");
-	else if (*lexer->line == '=' && last_token && (last_token->type == ASCII_WORD || last_token->type == NUM))		
+	else if (*lexer->line == '=' && last_token &&
+			(last_token->type == ASCII_WORD || last_token->type == NUM))
 	{
 		*token = new_token(lexer, EQUAL, "-");
 		last_token->type = VAR_WORD;
@@ -67,7 +51,8 @@ static void		is_limit_glob_op(t_lexer *lexer, t_token **token)
 {
 	if (*lexer->line == '[')
 	{ 
-		if (*(lexer->line + 1) && (*(lexer->line + 1) == '!' || *(lexer->line + 1) == '^'))
+		if (*(lexer->line + 1) && (*(lexer->line + 1) == '!'
+			|| *(lexer->line + 1) == '^'))
 			*token = new_token(lexer, E_WILDCARD, "[!");
 		else
 			*token = new_token(lexer, LBKT, "[");
@@ -132,7 +117,9 @@ t_token		*identify_token(t_lexer *lexer, t_token *last_token)
 		is_here_op(lexer, &token);
 	if (*lexer->line && !(token))
 		token = lex_word(lexer, last_token);
-	if (isnt_here_or_bqt(lexer) && token && is_glob_token(TYPE) && !lexer->blank && last_token && (last_token->type == WORD || last_token->type == TILD || last_token->type == NUM))
+	if (isnt_here_or_bqt(lexer) && token && is_glob_token(TYPE) &&
+	!lexer->blank && last_token && (last_token->type == WORD ||
+	last_token->type == TILD || last_token->type == NUM))
 	{
 		if (last_token->type == TILD)
 			last_token->type = TILD_EXPR;

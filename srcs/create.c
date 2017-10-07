@@ -15,7 +15,6 @@ t_tree	*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *rig)
 	new_node->from_fd = -1;
 	new_node->tmp_env = NULL;
 	new_node->aggregations = NULL;
-	//ft_clear_list(&tokens, &free);
 	return (new_node);
 }
 

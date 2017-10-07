@@ -357,7 +357,6 @@ char				eat(t_sh *sh, e_token token);
 t_token				*text_rules(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
 char				operators(t_tree *node, t_sh *shell);
-char				exec_cmds(t_tree *node, t_env **env, t_sh *shell);
 char				run_binary(t_tree *node, t_env *env, t_sh *shell);
 char				*get_path(t_tree *node, t_env *env, t_sh *shell);
 char				is_builtins(char **cmd);
@@ -396,7 +395,8 @@ char				*get_word(char const *s, size_t len);
 
 char				is_operator(char c, char c2);
 
-void	   			replace_var(e_token last_type, t_list **lexems, t_sh *sh);
+void				manage_var_op(t_sh *sh, t_list **tmp, t_list **cmd_tokens,
+								t_token *token);
 void				replace_tild(t_token *token, t_env *env);
 
 char				manage_cmds(t_tree *node, t_sh *sh);

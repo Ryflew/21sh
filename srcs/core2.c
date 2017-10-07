@@ -1,6 +1,6 @@
 #include "tosh.h"
 
-char	exec_cmds(t_tree *node, t_env **env, t_sh *shell)
+static char	exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 {
 	char	ret;
 
@@ -13,6 +13,7 @@ char	exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 	return (ret);
 }
 
+// METTRE DANS UN AUTRE FICHIER
 void	add_to_history(t_sh *shell, char *command)
 {
 	int		i;
@@ -80,28 +81,13 @@ char	**get_cmds(t_list **cmd_tokens, t_sh *sh)
 {
 	t_list	*tmp;
 	t_token	*token;
-	e_token last_type;
 
 	tmp = *cmd_tokens;
 	while (tmp)
 	{
 		token = (t_token*)tmp->data;
 		if (TYPE == VAR_OP || TYPE == VAR_OP_C)
-		{
-			last_type = TYPE;
-			if (tmp == *cmd_tokens)
-				*cmd_tokens = (*cmd_tokens)->next;
-			if (!sh->lexer->her)
-				ft_pop_node(&tmp, NULL);
-			else
-			{
-				if (tmp == *cmd_tokens)
-					*cmd_tokens = tmp->next;
-				ft_pop_node(&tmp, (void*)&clear_lexems);
-			}
-			if (tmp)
-				replace_var(last_type, &tmp, sh);
-		}
+			manage_var_op(sh, &tmp, cmd_tokens, token);
 		else if (TYPE == TILD || TYPE == TILD_VAR_WORD)
 			replace_tild(token, sh->env);
 		tmp = tmp->next;
@@ -113,18 +99,6 @@ char	**get_cmds(t_list **cmd_tokens, t_sh *sh)
 
 char	manage_cmds(t_tree *node, t_sh *sh)
 {
-	/*ft_putendl("BEFORE");
-	ft_putendl("START-----------------------------------------");
-	t_list *tmp2 = sh->begin;
-	while (tmp2)
-	{
-		token = (t_token*)tmp2->data;
-			ft_putendl(token->value);
-			ft_putnbr(token->type);
-			ft_putendl("");
-		tmp2 = tmp2->next;
-	}
-	ft_putendl("-----------------------------------------END");*/
 	node->cmds = get_cmds(&node->cmd_tokens, sh);
 	if (find_env(sh->env, "PATH"))
 		try_add_hashtab(node, sh);

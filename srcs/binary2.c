@@ -46,7 +46,8 @@ int		get_fd(t_sh *shell, int *fd, t_tree *node)
 	int	ret;
 
 	ret = 0;
-	if (shell->fd_pipe != -1 || (shell->ssbqt && !(shell->pipe_ss)[0]) || (node && node->TYPE == DCHEVB))
+	if (shell->fd_pipe != -1 || (shell->ssbqt && !(shell->pipe_ss)[0])
+		|| (node && node->TYPE == DCHEVB))
 		if ((ret = pipe(fd)) == -1)
 			ft_putstr("pipe failure !\n");
 	return (ret);
