@@ -1,40 +1,28 @@
 #include <stdlib.h>
 #include "tosh.h"
 
-void	unset_export(char **av, t_env **export)
+void	manage_unset(t_sh *shell, char **av)
 {
-	t_env	*first;
-	t_env	*prev;
-
-	first = *export;
-	while (*av)
+	if (!*(av + 1))
 	{
-		prev = *export;
-		while (*export && ft_strcmp((*export)->var_name, *av))
-		{
-			prev = *export;
-			*export = (*export)->next;
-		}
-		if (*export && !ft_strcmp(prev->var_name, (*export)->var_name))
-			first = first->next;
-		else if (*export)
-			prev->next = (*export)->next;
-		if (*export)
-			del_env(*export);
-		*export = first;
-		av++;
+		errexit("unset", "Too few arguments.");
+		return ;
 	}
+	if (find_env(shell->env, *(av + 1)))
+		unset_env(av, &(shell->env));
+	if (find_env(shell->export, *(av + 1)))
+		unset_env(av, &(shell->export));
+	if (find_env(shell->shell_var, *(av + 1)))
+		unset_env(av, &(shell->shell_var));
 }
 
-void	unset_env(char **av, t_env **env, t_env **export)
+void	unset_env(char **av, t_env **env)
 {
 	t_env	*first;
 	t_env	*prev;
 
 	if (!*++av)
 		errexit("unsetenv", "Too few arguments.");
-	if (export)
-		unset_export(av, export);
 	first = *env;
 	while (*av)
 	{

@@ -13,14 +13,6 @@ void		first_step(char *name)
 	ft_putchar('\n');
 }
 
-static void	help_unsetenv(void)
-{
-	first_step("unsetenv");
-	ft_putendl("\t- setenv name ...\n");
-	ft_putendl("\tname : Environment variable name.\n");
-	ft_putstr(C_RESET);
-}
-
 static void	help_exit(void)
 {
 	first_step("exit");
@@ -35,16 +27,33 @@ static void	help_help(void)
 	ft_putendl("\t- help cd.");
 	ft_putendl("\t- help echo.");
 	ft_putendl("\t- help env.");
+	ft_putendl("\t- help export.");
 	ft_putendl("\t- help hash.");
 	ft_putendl("\t- help history.");
 	ft_putendl("\t- help read.");
 	ft_putendl("\t- help setenv.");
+	ft_putendl("\t- help unset.");
 	ft_putendl("\t- help unsetenv.");
 	ft_putendl("\t- help exit.\n");
 	ft_putstr(C_RESET);
 }
 
-void		help_command(char **cmd) // trop de ligne
+static char help_command2(char *cmd)
+{
+	if (!ft_strcmp(cmd, "history"))
+		help_history();
+	else if (!ft_strcmp(cmd, "read"))
+		help_read();
+	else if (!ft_strcmp(cmd, "unset"))
+		help_unset();
+	else if (!ft_strcmp(cmd, "export"))
+		help_export();
+	else
+		return (0);
+	return (1);
+}
+
+void		help_command(char **cmd)
 {
 	if (!*(cmd + 1))
 		help_help();
@@ -64,10 +73,8 @@ void		help_command(char **cmd) // trop de ligne
 			help_echo();
 		else if (!ft_strcmp(cmd[1], "hash"))
 			help_hash();
-		else if (!ft_strcmp(cmd[1], "history"))
-			help_history();
-		else if (!ft_strcmp(cmd[1], "read"))
-			help_read();
+		else if (help_command2(cmd[1]))
+			;
 		else
 			errexit("help", "bad builtin name.");
 	}

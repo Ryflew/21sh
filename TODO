@@ -1,8 +1,5 @@
 ----------- TODO --------------
 
-- test_main.c a retirer
-- Unset
-- Ajouter unset / export a la commande help
 - Norme
 - Leaks
 - Separer tosh.h en plein de headers

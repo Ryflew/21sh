@@ -36,9 +36,9 @@ char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 	else if (!ft_strcmp(cmd[0], "setenv"))
 		set_env(cmd, env);
 	else if (!ft_strcmp(cmd[0], "unsetenv"))
-		unset_env(cmd, env, NULL);
+		unset_env(cmd, env);
 	else if (!ft_strcmp(cmd[0], "unset"))
-		unset_env(cmd, env, &(shell->export));
+		manage_unset(shell, cmd);
 	else if (!ft_strcmp(cmd[0], "export"))
 		export(cmd, &(shell->export));
 	else if (!ft_strcmp(cmd[0], "env"))
@@ -52,9 +52,11 @@ char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 
 char	is_writable_builtins(char **cmd)
 {
+	char	*tmp = cmd[1];
+	(void)tmp;
 	if (!ft_strcmp(cmd[0], "echo"))
 		return (0);
-	else if (!ft_strcmp(cmd[0], "env"))
+	else if (!ft_strcmp(cmd[0], "env") && !cmd[1])
 		return (0);
 	else if (!ft_strcmp(cmd[0], "history") && !cmd[1])
 		return (0);

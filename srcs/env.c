@@ -50,7 +50,7 @@ static void	u_opt(char ***av, t_env **env)
 		out[0] = ft_strdup("unsetenv");
 		out[1] = ft_strdup(*++*av);
 		out[2] = NULL;
-		unset_env(out, env, NULL);
+		unset_env(out, env);
 		ft_strdelpp(&out);
 	}
 }
@@ -65,6 +65,7 @@ static void	env_command2(char **av, t_env **cpy)
 			get_shell()->save_env = get_shell()->env;
 			get_shell()->env = cpy_env(*cpy);
 			print_env(get_shell()->env);
+			sleep(3);
 		}
 		else if (!ft_strcmp(*av, "-u"))
 			u_opt(&av, cpy);
