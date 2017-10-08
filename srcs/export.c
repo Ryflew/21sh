@@ -25,7 +25,7 @@ char		export(char **av, t_env **export)
 		print_env(*export);
 	else
 	{
-		if (*(av + 1) && **(av + 1) == '-' && *(av + 2))
+		if (*(av + 1) && **(av + 1) == '=' && *(av + 2))
 		{
 			add_var_to_shell(*av, *(av + 2), &(get_shell()->env));
 			add_var_to_shell(*av, *(av + 2), &(get_shell()->export));
