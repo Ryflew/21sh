@@ -56,12 +56,4 @@ void			get_lexems(t_sh *sh)
 	token = NULL;
 	while ((token = get_next_token(sh->lexer, token)))
 		ft_node_push_back(&(sh->lexer->lexems), token);
-	t_list *tmp = sh->lexer->lexems;
-	while (tmp)
-	{
-		ft_putnbr(((t_token*)(tmp->data))->type);
-		ft_putendl(" <-- type");
-		ft_putendl(((t_token*)(tmp->data))->value);
-		tmp = tmp->next;
-	}
 }

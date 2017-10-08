@@ -22,7 +22,7 @@ static t_tree	*cmd_with_op_rules(t_sh *sh, char **tmp_env)
 	t_tree	*tmp;
 
 	left = NULL;
-	if (!sh->current_token || (!(left = cmd_rules(sh, tmp_env)) && !is_basic_red(sh)) || left == (void*)-1)
+	if ((!sh->current_token && !tmp_env) || (!(left = cmd_rules(sh, tmp_env)) && !is_basic_red(sh)) || left == (void*)-1)
 		return (left);
 	while ((left || is_basic_red(sh)) && left != (void*)-1)
 	{
@@ -43,7 +43,7 @@ static t_tree	*pipe_rules(t_sh *sh, char **tmp_env)
 	t_tree	*right;
 
 	left = NULL;
-	if (!sh->current_token || !(left = cmd_with_op_rules(sh, tmp_env)) \
+	if ((!sh->current_token && !tmp_env) || !(left = cmd_with_op_rules(sh, tmp_env)) \
 		|| left == (void*)-1)
 		return (left);
 	while (sh->current_token &&  sh->current_token->type == PIPE)
@@ -68,8 +68,8 @@ static t_tree	*condition_operators_rules(t_sh *sh, char **tmp_env)
 
 	if (!(left = pipe_rules(sh, tmp_env)) || left == (void*)-1)
 		return (left);
-	while (sh->current_token && ( sh->current_token->type == OR
-	||  sh->current_token->type == AND))
+	while (sh->current_token && (sh->current_token->type == OR
+	|| sh->current_token->type == AND))
 	{
 		token = sh->current_token;
 		if (TYPE == OR)

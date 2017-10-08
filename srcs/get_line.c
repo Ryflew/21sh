@@ -105,7 +105,7 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 	shell->j = -1;
 	if (shell->toaddstr)
 		add_all_char(shell);
-	// return (ft_strdup("export var=foo"));
+	//return (ft_strdup("env -i && ls"));
 	while (1)
 	{
 		buff = 0;
