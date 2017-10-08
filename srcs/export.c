@@ -25,18 +25,21 @@ char		export(char **av, t_env **export)
 		print_env(*export);
 	else
 	{
-		if (!ft_strchr(*av, '=') && !find_env(*export, *av) && (tmp = find_env(get_shell()->shell_var, *av)))
+		if (*(av + 1) && **(av + 1) == '-' && *(av + 2))
 		{
-			add_var_to_shell(*av, tmp, &(get_shell()->env));
-			add_var_to_shell(*av, tmp, &(get_shell()->export));
+			add_var_to_shell(*av, *(av + 2), &(get_shell()->env));
+			add_var_to_shell(*av, *(av + 2), &(get_shell()->export));
 		}
-		else if (!ft_strchr(*av, '=') && (!*export || (*export && !find_env(*export, *av))))
-			add_var_to_shell(*av, NULL, export);
-		else
+		else if (!*(av + 1))
 		{
-			ft_putendl(*av);
-			add_new_var(&av, &(get_shell()->env));
-			add_new_var(&av, export);
+			if ((tmp = find_env(get_shell()->shell_var, *av)) || \
+				(tmp = find_env(*export, *av)))
+			{
+				add_var_to_shell(*av, tmp, &(get_shell()->env));
+				add_var_to_shell(*av, tmp, &(get_shell()->export));
+			}
+			else
+				add_var_to_shell(*av, NULL, export);
 		}
 	}
 	return (1);
