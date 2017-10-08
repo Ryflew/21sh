@@ -22,7 +22,8 @@ static void	concat_unused_add_var(t_list *cmd_tokens, t_sh *sh)
 		token = (t_token*)tmp->data;
 		if (tmp->next)
 			next_token = (t_token*)tmp->next->data;
-		if (tmp->next && TYPE == VAR_WORD && (next_token->type == EQUAL || next_token->type == VAR_WORD))
+		if (tmp->next && TYPE == VAR_WORD && (next_token->type == EQUAL
+			|| next_token->type == VAR_WORD))
 		{
 			free_join(&VAL, next_token->value);
 			free_lexems(sh, &tmp->next, &cmd_tokens);
@@ -36,18 +37,6 @@ static void	concat_unused_add_var(t_list *cmd_tokens, t_sh *sh)
 	}
 }
 
-/*static char	check_var_add_is_valid(t_list *cmd_tokens)
-{
-	t_token	*token;
-
-	token = (t_token*)cmd_tokens->data;
-	if (!ft_strcmp(VAL, "export"))
-		return (0);
-	if (TYPE == VAR_WORD)
-		return (0);
-	return (1);
-}*/
-
 static char	is_env_var_to_add(t_list **cmd_tokens, t_sh *sh)
 {
 	t_list	*tmp;
@@ -56,16 +45,13 @@ static char	is_env_var_to_add(t_list **cmd_tokens, t_sh *sh)
 	char	*var_content;
 
 	tmp = *cmd_tokens;
-	//ret = check_var_add_is_valid(*cmd_tokens);
 	while (tmp && !ret)
 	{
 		token = (t_token*)tmp->data;
 		if (TYPE != EQUAL && TYPE != VAR_WORD)
 			ret = 1;
-		else if (TYPE == EQUAL)
+		else if (TYPE == EQUAL && tmp->prev && ((t_token*)tmp->prev->data)->type == VAR_WORD)
 		{
-			if (tmp->prev && ((t_token*)tmp->prev->data)->type == VAR_WORD)
-			{
 				var_content = "";
 				if (tmp->next && ((t_token*)tmp->next->data)->type == VAR_WORD)
 					var_content = ((t_token*)tmp->next->data)->value;
@@ -75,7 +61,6 @@ static char	is_env_var_to_add(t_list **cmd_tokens, t_sh *sh)
 				free_lexems(sh, &tmp, cmd_tokens);
 				if (tmp && ((t_token*)tmp->data)->type == VAR_WORD)
 					free_lexems(sh, &tmp, cmd_tokens);
-			}
 		}
 		else
 			NEXT(tmp);

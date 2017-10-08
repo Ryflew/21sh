@@ -2,15 +2,12 @@
 
 - Norme
 - Leaks
-- Separer tosh.h en plein de headers
 - ne pas faire un export si string_op au nom de la var
 - "env -i env" fonctionne pas
 
 ---------- BONUS --------------
 
 ------------ A TESTER ---------
-
-- aggregation de fichier <&
 
 ------------ BUG --------------
 
