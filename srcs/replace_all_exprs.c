@@ -20,7 +20,7 @@ static char		check_son_expr(t_list **lexems, t_list **save_son, t_list **save,
 		{
 			*lexems = *save;
 			if (*save_son)
-				ft_pop_node(save_son,NULL);
+				ft_pop_node(save_son, NULL);
 			return (1);
 		}
 	}

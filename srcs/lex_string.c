@@ -19,8 +19,8 @@ static void	if_its_word(char c, char *bs, char *st_op, e_token *type)
 		*bs = 0;
 }
 
-static int	compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
-				t_token *l_tk)
+int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
+								t_token *l_tk)
 {
 	char	bs;
 	int		i;
@@ -36,7 +36,7 @@ static int	compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
 	((lexer->line)[i] == '}' && !lexer->brc) || ((lexer->line)[i] == '{' &&
 	lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt) || (*st_op &&
 	((lexer->line)[i] != '`' || *st_op == '\'')) || ((lexer->line)[i] == '$'
-	&& !ft_isalnum((lexer->line)[i+ 1]))))))
+	&& !ft_isalnum((lexer->line)[i+ 1])) || (((lexer->line)[i] == '=' && !i))))))
 		if_its_word((lexer->line)[i++], &bs, st_op, type);
 	return (i);
 }

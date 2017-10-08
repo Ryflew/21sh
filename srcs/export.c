@@ -11,7 +11,7 @@ void	add_var_to_shell(char *str1, char *str2, t_env **env)
 	if (str2 && *str2)
 		tmp[2] = ft_strdup(str2);
 	else
-		tmp[2] = ft_strdup("\'\'");
+		tmp[2] = ft_strdup("");
 	tmp[3] = NULL;
 	set_env(tmp, env);
 	ft_strdelpp(&tmp);

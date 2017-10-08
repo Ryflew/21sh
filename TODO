@@ -17,11 +17,6 @@
 
 ------------ BUG --------------
 
-- leaks dans get_lexems, genre "yolo=swag", leaks sur "yolo" et "swag", sur "export bar foo" leaks sur les 3 strings
-- dd=ss message d'erreur
-- =foo boucle infini
-- echo ddd=ffff, wtf ?
-
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
 - && et ||

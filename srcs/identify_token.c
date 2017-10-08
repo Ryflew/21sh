@@ -39,10 +39,10 @@ static void	is_other_op(t_lexer *lexer, t_token **token, t_token *last_token)
 	else if (*lexer->line == '-' && last_token
 			&& (last_token->type == FRED || last_token->type == BRED))
 		*token = new_token(lexer, CLOSE_FD, "-");
-	else if (*lexer->line == '=' && last_token &&
+	else if (*lexer->line == '=' && !lexer->blank && last_token &&
 			(last_token->type == ASCII_WORD || last_token->type == NUM))
 	{
-		*token = new_token(lexer, EQUAL, "-");
+		*token = new_token(lexer, EQUAL, "=");
 		last_token->type = VAR_WORD;
 	}
 }
