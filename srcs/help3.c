@@ -41,3 +41,23 @@ void	help_read(void)
 		" input.\n");
 	ft_putstr(C_RESET);
 }
+
+void	help_unsetenv(void)
+{
+	first_step("unsetenv");
+	ft_putendl("\t- setenv name ...\n");
+	ft_putendl("\tname : Environment variable name.\n");
+	ft_putstr(C_RESET);
+}
+
+void	help_unset(void)
+{
+	first_step("unset");
+	ft_putendl("\tunset [name ...]\n");
+}
+
+void	help_export(void)
+{
+	first_step("export");
+	ft_putendl("\texport [name[=value] ...]\n");
+}
