@@ -69,7 +69,7 @@ static char	is_env_var_to_add(t_list **cmd_tokens, t_sh *sh)
 				var_content = "";
 				if (tmp->next && ((t_token*)tmp->next->data)->type == VAR_WORD)
 					var_content = ((t_token*)tmp->next->data)->value;
-				add_var_to_shell(((t_token*)tmp->prev->data)->value, \
+					add_var_twoline(((t_token*)tmp->prev->data)->value, \
 				var_content, &(get_shell()->shell_var));
 				free_lexems(sh, &tmp->prev, cmd_tokens);
 				free_lexems(sh, &tmp, cmd_tokens);

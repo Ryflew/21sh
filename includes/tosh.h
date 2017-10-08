@@ -254,7 +254,7 @@ void				help_read(void);
 void				help_unsetenv(void);
 void				help_unset(void);
 void				help_export(void);
-void				add_var_to_shell(char *str1, char *str2, t_env **env);
+void				add_var_twoline(char *str1, char *str2, t_env **env);
 void				sig_hand(int sig);
 void				do_termcap(char *key);
 void				search_mode(t_sh *shell);

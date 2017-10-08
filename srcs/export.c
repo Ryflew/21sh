@@ -1,6 +1,6 @@
 #include "tosh.h"
 
-void	add_var_to_shell(char *str1, char *str2, t_env **env)
+void	add_var_twoline(char *str1, char *str2, t_env **env)
 {
 	char	**tmp;
 
@@ -17,6 +17,32 @@ void	add_var_to_shell(char *str1, char *str2, t_env **env)
 	ft_strdelpp(&tmp);
 }
 
+static void	add_var_oneline(char *str, t_env **env)
+{
+	char	*tmp[4];
+	char	*ptr;
+
+	tmp[0] = ft_strdup("setenv");
+	if ((ptr = ft_strchr(str, '=')))
+	{
+		tmp[1] = ft_strsub(str, 0, ptr - str);
+		if (*(ptr + 1))
+			tmp[2] = ft_strsub(str, ptr - str + 1, ft_strlen(str) - ft_strlen(tmp[1]) - 1);
+		else
+			tmp[2] = ft_strdup("\'\'");
+	}
+	else
+	{
+		tmp[1] = ft_strdup(str);
+		tmp[2] = ft_strdup("\'\'");
+	}
+	tmp[3] = NULL;
+	set_env(tmp, env);
+	ft_strdel(&tmp[0]);
+	ft_strdel(&tmp[1]);
+	ft_strdel(&tmp[2]);
+}
+
 char		export(char **av, t_env **export)
 {
 	char	*tmp;
@@ -25,21 +51,21 @@ char		export(char **av, t_env **export)
 		print_env(*export);
 	else
 	{
-		if (*(av + 1) && **(av + 1) == '=' && *(av + 2))
+		if ((tmp = ft_strchr(*av, '=')) && (tmp - *av) != 0)
 		{
-			add_var_to_shell(*av, *(av + 2), &(get_shell()->env));
-			add_var_to_shell(*av, *(av + 2), &(get_shell()->export));
+			add_var_oneline(*av, &(get_shell()->env));
+			add_var_oneline(*av, &(get_shell()->export));
 		}
-		else if (!*(av + 1))
+		else if (!ft_strchr(*av, '='))
 		{
 			if ((tmp = find_env(get_shell()->shell_var, *av)) || \
 				(tmp = find_env(*export, *av)))
 			{
-				add_var_to_shell(*av, tmp, &(get_shell()->env));
-				add_var_to_shell(*av, tmp, &(get_shell()->export));
+				add_var_twoline(*av, tmp, &(get_shell()->env));
+				add_var_twoline(*av, tmp, &(get_shell()->export));
 			}
 			else
-				add_var_to_shell(*av, NULL, export);
+				add_var_twoline(*av, NULL, export);
 		}
 	}
 	return (1);
