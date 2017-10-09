@@ -1,16 +1,13 @@
 #include "tosh.h"
 
-static void	free_lexems(t_sh *sh, t_list **lexems, t_list **cmd_tokens)
+static void	free_lexems(t_list **lexems, t_list **cmd_tokens)
 {
 	if (*lexems == *cmd_tokens)
 		*cmd_tokens = (*lexems)->next;
-	if (!sh->lexer->her)
-		ft_pop_node(lexems, NULL);
-	else
-		ft_pop_node(lexems, (void*)&clear_lexems);
+	ft_pop_node(lexems, (void*)&clear_lexems);
 }
 
-static void	concat_unused_add_var(t_list *cmd_tokens, t_sh *sh)
+static void	concat_unused_add_var(t_list *cmd_tokens)
 {
 	t_list	*tmp;
 	t_token	*token;
@@ -26,7 +23,7 @@ static void	concat_unused_add_var(t_list *cmd_tokens, t_sh *sh)
 			|| next_token->type == VAR_WORD))
 		{
 			free_join(&VAL, next_token->value);
-			free_lexems(sh, &tmp->next, &cmd_tokens);
+			free_lexems(&tmp->next, &cmd_tokens);
 		}
 		else
 		{
@@ -37,7 +34,11 @@ static void	concat_unused_add_var(t_list *cmd_tokens, t_sh *sh)
 	}
 }
 
+<<<<<<< HEAD
+static char	is_env_var_to_add(t_list **cmd_tokens)
+=======
 static char	is_env_var_to_add(t_list **cmd_tokens, t_sh *sh, t_list *tmp)
+>>>>>>> 3525c0f577fd51248ac5573ae9a6803a5817c6b7
 {
 	t_token	*token;
 	char	ret;
@@ -55,10 +56,10 @@ static char	is_env_var_to_add(t_list **cmd_tokens, t_sh *sh, t_list *tmp)
 					var_content = ((t_token*)tmp->next->data)->value;
 				add_var_twoline(((t_token*)tmp->prev->data)->value, \
 				var_content, &(get_shell()->shell_var));
-				free_lexems(sh, &tmp->prev, cmd_tokens);
-				free_lexems(sh, &tmp, cmd_tokens);
+				free_lexems(&tmp->prev, cmd_tokens);
+				free_lexems(&tmp, cmd_tokens);
 				if (tmp && ((t_token*)tmp->data)->type == VAR_WORD)
-					free_lexems(sh, &tmp, cmd_tokens);
+					free_lexems(&tmp, cmd_tokens);
 		}
 		else
 			NEXT(tmp);
@@ -117,10 +118,12 @@ char	**get_cmds(t_list **cmd_tokens, t_sh *sh)
 		NEXT(tmp);
 	}
 	if (!sh->lexer->her)
+	{
 		glob(cmd_tokens);
-	if (!is_env_var_to_add(cmd_tokens, sh, *cmd_tokens))
-		return (0);
-	concat_unused_add_var(*cmd_tokens, sh);
+		if (!is_env_var_to_add(cmd_tokens))
+			return (0);
+		concat_unused_add_var(*cmd_tokens);
+	}
 	return (create_cmds_with_tokens(*cmd_tokens));
 }
 

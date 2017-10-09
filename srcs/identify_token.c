@@ -1,11 +1,11 @@
 #include "tosh.h"
 
-static void	is_here_op(t_lexer *lexer, t_token **token)
+static void	is_here_op(t_lexer *lexer, t_token **token, t_token *last_token)
 {
 	if (*lexer->line == '`')
 	{
 		if (!lexer->bqt)
-			*token = (lexer->blank) ? new_token(lexer, BQT, "`") \
+			*token = (lexer->blank || !last_token) ? new_token(lexer, BQT, "`") \
 			: new_token(lexer, BQT_C, "`");
 		else
 			*token = new_token(lexer, EBQT, "`");
@@ -13,7 +13,7 @@ static void	is_here_op(t_lexer *lexer, t_token **token)
 	}
 	else if (*lexer->line == '$' && ft_isalnum(*(lexer->line + 1)))
 	{
-		if (!lexer->blank)
+		if (!lexer->blank && last_token)
 			*token = new_token(lexer, VAR_OP_C, "$");
 		else
 			*token = new_token(lexer, VAR_OP, "$");
@@ -114,7 +114,7 @@ t_token			*identify_token(t_lexer *lexer, t_token *last_token)
 	if (!token && isnt_here_or_bqt(lexer))
 		is_other_op(lexer, &token, last_token);
 	if (!token)
-		is_here_op(lexer, &token);
+		is_here_op(lexer, &token, last_token);
 	if (*lexer->line && !(token))
 		token = lex_word(lexer, last_token);
 	if (isnt_here_or_bqt(lexer) && token && is_glob_token(TYPE) &&

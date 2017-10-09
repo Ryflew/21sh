@@ -98,7 +98,9 @@ FILES = add_char.c \
 				aggregation.c \
 				manage_tree.c \
 				manage_child_fd.c \
-				is_tokens.c
+				is_tokens.c \
+				here_docs.c \
+				subshell_rules.c
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
 

@@ -10,6 +10,8 @@
 
 ------------ BUG --------------
 
+- ls a*
+
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
 - && et ||
@@ -25,7 +27,4 @@
 =============================
 
 Liste des fonction de basile de + de 25 lignes: (je te simplifie la tâche psk je peux pas y toucher sans casser un truc)
-	- lexer.c => get_next_token
 	- nmatch.c => nmatch
-	- tout le fichier operators.c
-	- parse_text.c => bqt_rule, text_rules

@@ -53,13 +53,13 @@ void	clear_old_expr(t_list **lexems, t_list **first_lexems, char match)
 		if (TYPE == END_EXPR)
 		{
 			if (match)
-				ft_pop_node(lexems,NULL);
+				ft_pop_node(lexems, (void*)&clear_lexems);
 			else
 				*lexems = (*lexems)->next;
 			break;
 		}
 		if (match)
-			ft_pop_node(lexems,NULL);
+			ft_pop_node(lexems, (void*)&clear_lexems);
 		else
 			*lexems = (*lexems)->next;
 	}

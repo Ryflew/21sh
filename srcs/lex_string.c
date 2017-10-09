@@ -53,7 +53,7 @@ static void	find_type(t_lexer *lx, t_token *l_tk, char st_op, e_token *type)
 		*type = VAR_WORD;
 	else if (isnt_here_or_bqt(lx) && l_tk && l_tk->type == EQUAL && !lx->blank)
 		*type = (*lx->line == '~') ? TILD_VAR_WORD : VAR_WORD;
-	if (isnt_here_or_bqt(lx) && l_tk && is_glob_token(l_tk->type)&& !lx->blank)
+	if (isnt_here_or_bqt(lx) && l_tk && is_glob_token(l_tk->type) && !lx->blank)
 	{
 		if (lx->bkt)
 			*type = BKT_EXPR;
@@ -86,6 +86,7 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 		return (NULL);
 	}
 	token = new_token(lexer, type, word);
+	free(word);
 	lexer->line += word_size - ft_strlen(VAL);
 	return (token);
 }

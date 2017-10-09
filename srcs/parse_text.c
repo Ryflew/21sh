@@ -15,79 +15,36 @@ char			eat(t_sh *sh, e_token token)
 	return (0);
 }
 
-static t_token	*par_rule(t_sh *sh)
+static void	bqt_c_rule(t_sh *sh, e_token type, t_token **token)
 {
-	t_token *token;
-
-	eat(sh, LPAR);
-	subshell(sh, LPAR);
-	if (!sh->current_token || eat(sh, RPAR) == -1)
-	{
-		ft_putendl("parse error: miss close par `)`");
-		return ((void*)-1);
-	}
-	if (!(token = text_rules(sh)))
-		return (new_token(NULL, NONE, ""));
-	return (token);
+	eat(sh, type);
+	if (sh->current_token && sh->current_token->type == BQT_C)
+		*token = text_rules(sh);
 }
 
-static t_token	*bqt_rule(t_sh *sh)
+static void	text_rules3(t_sh *sh, t_token **token)
 {
-	t_token *token;
-	char	concat = 0;
-	t_token	*prev_token;
-
-	prev_token = NULL;
-	if (sh->lexer->lexems->prev)
-		prev_token = (t_token*)sh->lexer->lexems->prev->data;
-	if (sh->current_token->type == BQT)
-		eat(sh, BQT);
+	if (sh->current_token->type == VAR_OP)
+		eat(sh, VAR_OP);
+	else if (sh->current_token->type == VAR_OP_C)
+		eat(sh, VAR_OP_C);
+	else if (sh->current_token->type == VAR_WORD)
+		bqt_c_rule(sh, VAR_WORD, token);
+	else if (sh->current_token->type == TILD_VAR_WORD)
+		bqt_c_rule(sh, TILD_VAR_WORD, token);
+	else if (sh->current_token->type == EQUAL)
+		eat(sh, EQUAL);
+	else if ((*token)->type == BQT || (*token)->type == BQT_C)
+		*token = bqt_rule(sh);
+	else if ((*token)->type == LPAR)
+		*token = par_rule(sh);
 	else
-	{
-		eat(sh, BQT_C);
-		concat = 1;
-	}
-	if (!(subshell(sh, BQT)))
-		return ((void*)-1);
-	if (!sh->current_token || eat(sh, EBQT) == -1)
-	{
-		ft_putendl("parse error: miss close backquote '`'");
-		return ((void*)-1);
-	}
-	if (!(token = text_rules(sh)))
-		return (new_token(NULL, NONE, ""));
-	else if (concat && prev_token && (prev_token->type == WORD || prev_token->type == NUM || prev_token->type == TILD_VAR_WORD || prev_token->type == TILD || prev_token->type == VAR_WORD))
-	{
-		free_join(&prev_token->value, VAL);
-		token = prev_token;
-	}
-	else if (prev_token && prev_token->type == EQUAL)
-		token->type = VAR_WORD;
-	return (token);
+		*token = NULL;
 }
 
-t_token			*text_rules(t_sh *sh)
+static void	text_rules2(t_sh *sh, t_token **token)
 {
-	t_token *token;
-
-	if (!sh->current_token)
-		return (NULL);
-	token = sh->current_token;
-	if (sh->current_token->type == WORD)
-	{
-		eat(sh, WORD);
-		if (sh->current_token && sh->current_token->type == BQT_C)
-			return (text_rules(sh));
-	}
-	else if (sh->current_token->type == NUM)
-	{
-		eat(sh, NUM);
-		if (sh->current_token && sh->current_token->type == BQT_C)
-		return (text_rules(sh));
-	}
-	else if (sh->current_token->type == END_EXPR)
-		eat(sh, END_EXPR);
-	else if (sh->current_token->type == S_WILDCARD)
+	if (sh->current_token->type == S_WILDCARD)
 		eat(sh, S_WILDCARD);
 	else if (sh->current_token->type == Q_WILDCARD)
 		eat(sh, Q_WILDCARD);
@@ -109,35 +66,26 @@ t_token			*text_rules(t_sh *sh)
 		eat(sh, BKT_EXPR);
 	else if (sh->current_token->type == TILD_EXPR)
 		eat(sh, TILD_EXPR);
-	else if (sh->current_token->type == TILD)
-	{
-		eat(sh, TILD);
-		if (sh->current_token && sh->current_token->type == BQT_C)
-			return (text_rules(sh));
-	}
-	else if (sh->current_token->type == VAR_OP)
-		eat(sh, VAR_OP);
-	else if (sh->current_token->type == VAR_OP_C)
-		eat(sh, VAR_OP_C);
-	else if (sh->current_token->type == VAR_WORD)
-	{
-		eat(sh, VAR_WORD);
-		if (sh->current_token && sh->current_token->type == BQT_C)
-			return (text_rules(sh));
-	}
-	else if (sh->current_token->type == TILD_VAR_WORD)
-	{
-		eat(sh, TILD_VAR_WORD);
-		if (sh->current_token && sh->current_token->type == BQT_C)
-			return (text_rules(sh));
-	}
-	else if (sh->current_token->type == EQUAL)
-		eat(sh, EQUAL);
-	else if (TYPE == BQT || TYPE == BQT_C)
-		return (bqt_rule(sh));
-	else if (TYPE == LPAR)
-		return (par_rule(sh));
 	else
+		text_rules3(sh, token);
+}
+
+t_token			*text_rules(t_sh *sh)
+{
+	t_token *token;
+
+	if (!sh->current_token)
 		return (NULL);
+	token = sh->current_token;
+	if (sh->current_token->type == WORD)
+		bqt_c_rule(sh, WORD, &token);
+	else if (sh->current_token->type == NUM)
+		bqt_c_rule(sh, NUM, &token);	
+	else if (sh->current_token->type == TILD)
+		bqt_c_rule(sh, TILD, &token);	
+	else if (sh->current_token->type == END_EXPR)
+		eat(sh, END_EXPR);
+	else
+		text_rules2(sh, &token);
 	return (token);
 }

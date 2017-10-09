@@ -64,28 +64,28 @@ typedef enum	e_token
 	BQT, // 17
 	BQT_C, // 18
 	EBQT, // 19
-	LPAR, // 21
-	RPAR, // 22
-	S_WILDCARD, // 23
-	Q_WILDCARD, // 24
-	E_WILDCARD, // 25
-	LBKT, // 26
-	RBKT, // 27
-	LBRC, // 28
-	RBRC, // 29
-	COM, // 30
-	TILD_EXPR, // 31
-	EXPR, // 32
-	BKT_EXPR, // 33
-	END_EXPR, // 34
-	HIST, // 35
-	VAR_OP, // 36
-	VAR_OP_C, // 37
-	VAR_WORD, // 38
-	TILD_VAR_WORD, // 39
-	TILD, // 40
-	SON, // 41
-	EQUAL // 42
+	LPAR, // 20
+	RPAR, // 21
+	S_WILDCARD, // 22
+	Q_WILDCARD, // 23
+	E_WILDCARD, // 24
+	LBKT, // 25
+	RBKT, // 26
+	LBRC, // 27
+	RBRC, // 28
+	COM, // 29
+	TILD_EXPR, // 30
+	EXPR, // 31
+	BKT_EXPR, // 32
+	END_EXPR, // 33
+	HIST, // 34
+	VAR_OP, // 35
+	VAR_OP_C, // 36
+	VAR_WORD, // 37
+	TILD_VAR_WORD, // 38
+	TILD, // 39
+	SON, // 40
+	EQUAL // 41
 }				e_token;
 
 typedef enum	e_state
@@ -344,7 +344,8 @@ char				*find_match_binary(t_sh *shell, char *tosearch);
 char				*get_line(t_sh *shell, unsigned long buff, e_state *state,
 					char *op);
 char				**conv_env(t_env *env);
-char				**get_history(t_sh *shell, off_t size, char *home, char is_21sh_logs);
+char				**get_history(t_sh *shell, off_t size, char *home,
+					char is_21sh_logs);
 char				**split_quot_cmd(char *cmd);
 void				child(t_tree *node, t_sh *shell, int *fd);
 t_env				*new_env(char *str);
@@ -412,11 +413,19 @@ void				replace_all_exprs(t_list **first_lexems);
 void				manage_wildcards(t_list *lex, char *match);
 DIR					*open_dir(char *dir_name, t_token *token);
 int					is_dir(char *dir_name, t_token *token);
-void				clear_old_expr(t_list **lexems, t_list **first_lexems, char match);
+void				clear_old_expr(t_list **lexems, t_list **first_lexems,
+					char match);
 void				manage_brc(t_list *lexems);
 void				merge_expr_to_word(t_list *lexems);
 void				merge_expr(t_list *lexems);
 
 void				free_join(char **s1, char *s2);
+
+char        		manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
+					int *fd_pipe);
+char				*read_here_doc(char *cmd, char *prompt);
+t_token				*par_rule(t_sh *sh);
+t_token				*bqt_rule(t_sh *sh);
+					
 
 #endif

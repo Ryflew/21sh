@@ -57,7 +57,10 @@ static char	add_new_tokens(t_sh *sh)
 	i = -1;
 	new_lexems = NULL;
 	while (new_tokens[++i])
+	{
 		ft_node_push_back(&new_lexems, new_token(NULL, WORD, new_tokens[i]));
+		free(new_tokens[i]);
+	}
 	free(tokens_line);
 	free(new_tokens);
 	close(sh->pipe_ss[0]);
