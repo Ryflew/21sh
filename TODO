@@ -29,7 +29,3 @@ Liste des fonction de basile de + de 25 lignes: (je te simplifie la tâche psk j
 	- nmatch.c => nmatch
 	- tout le fichier operators.c
 	- parse_text.c => bqt_rule, text_rules
-
-Victor:
-	shell_loop.c => check_history_excla
-	core2.c

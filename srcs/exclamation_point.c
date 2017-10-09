@@ -51,14 +51,44 @@ static int	history_string(t_sh *shell, char *str)
 	return (0);
 }
 
-int			history_excla(char *str, t_sh *shell)
+static int		history_excla(char *str, t_sh *shell)
 {
 	if (*str == '!')
-		return (history_prompt(shell, 1, 1));
+		return (history_prompt(shell, 1, 1) - 1);
 	else if (ft_isdigit(*str))
 		return (history_prompt(shell, ft_atoi(str), 0));
 	else if (*str == '-' && ft_isdigit(*(str + 1)))
 		return (history_prompt(shell, ft_atoi(str + 1), 1));
 	else
 		return (history_string(shell, str));
+}
+
+char		check_history_excla(t_sh *shell, char **command, char *start, \
+				char *tmp)
+{
+	char	*new;
+	int		i;
+
+	if (!ft_strchr(*command, '!'))
+		return (0);
+	while ((tmp = ft_strchr(*command, '!')))
+	{
+		start = ft_strsub(*command, 0, tmp - *command);
+		i = history_excla(++tmp, get_shell());
+		if (shell->toaddstr)
+		{
+			new = ft_strstrjoin(start, shell->toaddstr, tmp + i);
+			free(*command);
+			*command = new;
+			free(shell->toaddstr);
+			shell->toaddstr = NULL;
+		}
+		else if (!ft_strchr(tmp, '!'))
+			break ;
+		ft_strdel(&start);
+	}
+	if (start)
+		ft_strdel(&start);
+	shell->toaddstr = *command;
+	return (1);
 }

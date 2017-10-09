@@ -37,14 +37,12 @@ static void	concat_unused_add_var(t_list *cmd_tokens, t_sh *sh)
 	}
 }
 
-static char	is_env_var_to_add(t_list **cmd_tokens, t_sh *sh)
+static char	is_env_var_to_add(t_list **cmd_tokens, t_sh *sh, t_list *tmp)
 {
-	t_list	*tmp;
 	t_token	*token;
 	char	ret;
 	char	*var_content;
 
-	tmp = *cmd_tokens;
 	while (tmp && !ret)
 	{
 		token = (t_token*)tmp->data;
@@ -55,7 +53,7 @@ static char	is_env_var_to_add(t_list **cmd_tokens, t_sh *sh)
 				var_content = "";
 				if (tmp->next && ((t_token*)tmp->next->data)->type == VAR_WORD)
 					var_content = ((t_token*)tmp->next->data)->value;
-					add_var_twoline(((t_token*)tmp->prev->data)->value, \
+				add_var_twoline(((t_token*)tmp->prev->data)->value, \
 				var_content, &(get_shell()->shell_var));
 				free_lexems(sh, &tmp->prev, cmd_tokens);
 				free_lexems(sh, &tmp, cmd_tokens);
@@ -120,7 +118,7 @@ char	**get_cmds(t_list **cmd_tokens, t_sh *sh)
 	}
 	if (!sh->lexer->her)
 		glob(cmd_tokens);
-	if (!is_env_var_to_add(cmd_tokens, sh))
+	if (!is_env_var_to_add(cmd_tokens, sh, *cmd_tokens))
 		return (0);
 	concat_unused_add_var(*cmd_tokens, sh);
 	return (create_cmds_with_tokens(*cmd_tokens));

@@ -297,14 +297,13 @@ void				read_d(char *opt, char *delimiter, t_sh *shell);
 void				read_n(char *opt, char *nb, t_sh *shell);
 void				read_p(char *opt, char *prompt, t_sh *shell);
 void				read_u(char *opt, char *str_fd, t_sh *shell);
-int					history_excla(char *str, t_sh *shell);
 void				cd_tilde(char *str, t_env *env, t_sh *shell, t_cd *opt);
 void				print_cd_error(char *tmp, char *path);
 void				del_command_tree(t_tree *tree);
 void				try_add_hashtab(t_tree *node, t_sh *shell);
 void				init_setenv(char ***av, t_env **env, char *tmp);
 void				cd_current_dir(char *path, t_env *env, t_sh *shell,
-					t_cd *opt);
+						t_cd *opt);
 void				clear_to_bot(t_sh *shell);
 void				print_history2(t_sh *shell, t_sh *bis_sh);
 char				add_char(char *command, int *j, t_sh *shell, char c);
@@ -314,12 +313,14 @@ char				cd_path_validity(char *path);
 char				*is_absolute(t_tree *node, t_env *env, t_sh *shell);
 char				is_binary(char *path);
 char				only_space(char *str);
+char				check_history_excla(t_sh *shell, char **command, \
+						char *start, char *tmp);
 char				del_all_env(t_env **list);
 char				check_path(char *command, char *path);
 char				env_command(char **av, t_env *env);
 char				check_new_open(char *str, char *op, int *j);
 char				shell_loop2(char **command, char **last, e_state *state,
-					char **op);
+						char **op);
 char				stop_binary(int sig);
 char				check_new_open(char *str, char *op, int *j);
 char				check_quot(char *str, char *op, int *i, int *j);
