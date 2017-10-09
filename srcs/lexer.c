@@ -15,6 +15,17 @@ char	isnt_here_or_bqt(t_lexer *lexer)
 	return (!lexer->her || lexer->bqt);
 }
 
+static t_token	*is_end_expr(t_lexer *lexer, t_token *l_tk)
+{
+	if (isnt_here_or_bqt(lexer) && l_tk && (is_glob_token(l_tk->type)
+	|| l_tk->type == EXPR || l_tk->type == TILD_EXPR || l_tk->type == BKT_EXPR
+	|| l_tk->type == COM))
+		return (new_token(lexer, END_EXPR, ""));
+	else if (l_tk && l_tk->type == ASCII_WORD)
+		l_tk->type = WORD;
+	return (NULL);
+}
+
 static t_token	*get_next_token(t_lexer *lexer, t_token *last_token)
 {
 	t_token *token;
@@ -28,24 +39,18 @@ static t_token	*get_next_token(t_lexer *lexer, t_token *last_token)
 			while (*lexer->line && ft_isblank(*lexer->line))
 				++lexer->line;
 			lexer->blank = 1;
-			if (isnt_here_or_bqt(lexer) && last_token && (is_glob_token(last_token->type) || last_token->type == EXPR || last_token->type == TILD_EXPR || last_token->type == BKT_EXPR || last_token->type == COM))
-				return (new_token(lexer, END_EXPR, ""));
+			if ((token = is_end_expr(lexer, last_token)))
+				return (token);
 		}
-		else
+		else if ((token = identify_token(lexer, last_token)))
 		{
-			token = identify_token(lexer, last_token);
 			lexer->blank = 0;
 			if (last_token && last_token->type == ASCII_WORD)
 				last_token->type = WORD;
-		}
-		if (token)
 			return (token);
+		}
 	}
-	if (isnt_here_or_bqt(lexer) && last_token && (is_glob_token(last_token->type) || last_token->type == EXPR || last_token->type == TILD_EXPR || last_token->type == BKT_EXPR || last_token->type == COM))
-		return (new_token(lexer, END_EXPR, ""));
-	else if (last_token && last_token->type == ASCII_WORD)
-		last_token->type = WORD;
-	return (token);
+	return (is_end_expr(lexer, last_token));
 }
 
 void			get_lexems(t_sh *sh)

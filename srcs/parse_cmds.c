@@ -17,8 +17,8 @@ void			*ret_parse_error(t_tree *node)
 	return ((void*)-1);
 }
 
-static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, t_token **ss_empty,
-						t_list **cmd_tokens)
+static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations,
+								t_token **ss_empty, t_list **cmd_tokens)
 {
 	t_token	*token;
 	t_fd	*fd;
@@ -32,7 +32,7 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, t_token **ss_emp
 		if (token)
 		{
 			if (TYPE != NONE)
-				ft_node_push_back(cmd_tokens, token);
+				ft_node_push_back(cmd_tokens, new_token(NULL, TYPE, VAL));
 			else
 			{
 				if (*ss_empty)

@@ -6,7 +6,7 @@ t_tree	*basic_red(t_sh *sh, e_token type, t_tree *left)
 
 	if (left && !left->right && left->token && left->TYPE != SCL && left->TYPE != NONE)
 		return (ret_parse_error(left));
-	if ( sh->current_token->type == type)
+	if (sh->current_token->type == type)
 	{
 		token = sh->current_token;
 		eat(sh, type);
@@ -23,7 +23,7 @@ t_tree	*adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 
 	if (left && !left->right && left->token && left->TYPE != SCL && left->TYPE != NONE)
 		return (ret_parse_error(left));
-	if ( sh->current_token->type == type)
+	if (sh->current_token->type == type)
 	{
 		token_type = sh->current_token;
 		eat(sh, type);

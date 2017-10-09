@@ -27,10 +27,9 @@ t_token	*new_token(t_lexer *lexer, e_token token_type, char *value)
 	if (lexer)
 		lexer->line += ft_strlen(value);
 	TYPE = token_type;
-	if (token_type != WORD && token_type != TILD && token_type != NUM && \
-	token_type != FD && token_type != VAR_WORD && token_type != EXPR && \
-	token_type != TILD_EXPR && token_type != BKT_EXPR && token_type != TILD \
-	&& token_type != ASCII_WORD && token_type != TILD_VAR_WORD)
+	/*if (token_type != WORD && token_type != TILD && token_type != NUM && \
+	token_type != FD && token_type != VAR_WORD && token_type != TILD \
+	&& token_type != ASCII_WORD && token_type != TILD_VAR_WORD)*/
 		value = ft_strdup(value);
 	VAL = value;
 	return (token);

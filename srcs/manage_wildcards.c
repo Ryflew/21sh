@@ -69,7 +69,6 @@ static char	fill_new_lexems(t_list *lexems, char end_path, char *join)
 		tmp = tmp->next;
 	}
 	ft_add_list(tmp, new_lexems);
-	free(join);
 	return (1);
 }
 
@@ -95,6 +94,7 @@ void		manage_wildcards(t_list *lex, char *match)
 			&& nmatch(ent->d_name, VAL + ft_strfind_by_end(VAL, '/') + 1, lex))
 			|| (!dir_path[0] && nmatch(ent->d_name, VAL, lex))))))
 				*match = fill_new_lexems(lex, is_end_path(lex->next), join);
+			free(join);
 		}
 		closedir(dir);
 	}

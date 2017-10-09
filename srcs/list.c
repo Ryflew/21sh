@@ -84,7 +84,7 @@ void	del_command_tree(t_tree *tree)
 	if (tree->right)
 		del_command_tree(tree->right);
 	if (tree->cmd_tokens)
-		ft_clear_list(&tree->cmd_tokens, NULL);
+		ft_clear_list(&tree->cmd_tokens, (void*)&clear_lexems);
 	if (tree->cmds)
 		ft_strdelpp(&tree->cmds);
 	if (tree->aggregations)

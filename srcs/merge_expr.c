@@ -19,7 +19,7 @@ void	merge_expr(t_list *lexems)
 			to_free = VAL;
 			VAL = ft_strjoin(VAL, next_token->value);
 			free(to_free);
-			ft_pop_node(&(lexems->next),NULL);
+			ft_pop_node(&(lexems->next), (void*)&clear_lexems);
 		}
 		else
 			lexems = lexems->next;
@@ -39,12 +39,12 @@ void	merge_expr_to_word(t_list *lexems)
 		if (next_token->type == END_EXPR)
 		{
 			TYPE = WORD;
-			ft_pop_node(&(lexems->next),NULL);
+			ft_pop_node(&(lexems->next), (void*)&clear_lexems);
 			break;
 		}
 		to_free = VAL;
 		VAL = ft_strjoin(VAL, next_token->value);
 		free(to_free);
-		ft_pop_node(&(lexems->next),NULL);
+		ft_pop_node(&(lexems->next), (void*)&clear_lexems);
 	}
 }
