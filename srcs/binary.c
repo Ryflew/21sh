@@ -77,7 +77,7 @@ char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 			ret = EXIT_SUCCESS;
 			manage_child_fd(shell, node, pipe);
 			if (node->cmds)
-				ret = go_builtins(node->cmds, env, shell);
+				ret = go_builtins(node->cmds, env, shell, node);
 			exit(ret);
 		}
 		else

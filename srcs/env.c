@@ -65,7 +65,6 @@ static void	env_command2(char **av, t_env **cpy)
 			get_shell()->save_env = get_shell()->env;
 			get_shell()->env = cpy_env(*cpy);
 			print_env(get_shell()->env);
-			sleep(3);
 		}
 		else if (!ft_strcmp(*av, "-u"))
 			u_opt(&av, cpy);
