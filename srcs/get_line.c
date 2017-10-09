@@ -94,8 +94,7 @@ void	add_all_char(t_sh *shell)
 	i = -1;
 	while (shell->toaddstr[++i])
 		add_char(shell->command, &(shell->j), shell, shell->toaddstr[i]);
-	free(shell->toaddstr);
-	shell->toaddstr = NULL;
+	ft_strdel(&(shell->toaddstr));
 }
 
 char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)

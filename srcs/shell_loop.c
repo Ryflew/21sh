@@ -86,41 +86,6 @@ char		shell_loop2(char **command, char **last, e_state *state, char **op)
 	return (shell_loop3(command, last, state, op));
 }
 
-char	check_history_excla(t_sh *shell, char **command)
-{
-	char	*start;
-	char	*tmp;
-	char	*new;
-	int		i;
-
-	if (ft_strchr(*command, '!'))
-	{
-		while ((tmp = ft_strchr(*command, '!')))
-		{
-			start = ft_strsub(*command, 0, tmp - *command);
-			++tmp;
-			i = history_excla(tmp, get_shell());
-			if (shell->toaddstr)
-			{
-				new = ft_strstrjoin(start, shell->toaddstr, tmp + i);
-				free(*command);
-				*command = new;
-				free(shell->toaddstr);
-				shell->toaddstr = NULL;
-			}
-			else if (!ft_strchr(tmp, '!'))
-			{
-				free(start);
-				break ;
-			}
-			free(start);
-		}
-		shell->toaddstr = *command;
-		return (1);
-	}
-	return (0);
-}
-
 void		shell_loop(t_sh *shell)
 {
 	char	*command;
@@ -134,7 +99,7 @@ void		shell_loop(t_sh *shell)
 			free(command);
 			continue ;
 		}
-		if (check_history_excla(shell, &command))
+		if (check_history_excla(shell, &command, NULL, NULL))
 		{
 			if (shell->op)
 				ft_strdel(&shell->op);
