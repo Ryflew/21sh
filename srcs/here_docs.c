@@ -6,13 +6,13 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:31 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:26:31 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/10 20:31:33 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
 
-static char	manage_here_doc_bqt(t_sh *sh, t_token *token, t_list **tmp)
+static char	manage_here_doc_bqt(t_sh *sh, t_token *token, t_list **tmp, t_list **begin_lexems)
 {
 	if (eat(sh, BQT) == -1)
 		eat(sh, BQT_C);
@@ -26,22 +26,24 @@ static char	manage_here_doc_bqt(t_sh *sh, t_token *token, t_list **tmp)
 	while (*tmp)
 	{
 		token = (t_token*)(*tmp)->data;
+		if (*begin_lexems == *tmp)
+			*begin_lexems = (*tmp)->next;
 		if (TYPE == EBQT)
 		{
 			ft_pop_node(tmp, (void*)&clear_lexems);
-			break ;
+			break;
 		}
 		ft_pop_node(tmp, (void*)&clear_lexems);
 	}
 	return (1);
 }
 
-static char	is_bqt_in_heredoc(t_sh *sh)
+static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 {
 	t_list	*tmp;
 	t_token	*token;
 
-	tmp = sh->lexer->lexems;
+	tmp = *begin_lexems;
 	while (tmp)
 	{
 		token = (t_token*)tmp->data;
@@ -49,10 +51,11 @@ static char	is_bqt_in_heredoc(t_sh *sh)
 		{
 			sh->current_token = token;
 			sh->lexer->lexems = tmp;
-			if (!(manage_here_doc_bqt(sh, token, &tmp)))
+			if (!(manage_here_doc_bqt(sh, token, &tmp, begin_lexems)))
 				return (0);
 		}
-		NEXT(tmp);
+		if (tmp)
+			NEXT(tmp);
 	}
 	return (1);
 }
@@ -66,7 +69,7 @@ static char	**lex_parse_heredoc(t_sh *sh, char *heredoc_line)
 	sh->lexer->her = 1;
 	get_lexems(sh);
 	begin_lexems = sh->lexer->lexems;
-	if (!(is_bqt_in_heredoc(sh)))
+	if (!(is_bqt_in_heredoc(sh, &begin_lexems)))
 	{
 		ft_clear_list(&begin_lexems, (void*)&clear_lexems);
 		sh->lexer->her = 0;
