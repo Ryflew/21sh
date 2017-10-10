@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:07:22 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/10 16:08:48 by bdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 			ret = EXIT_SUCCESS;
 			manage_child_fd(shell, node, pipe);
 			if (node->cmds)
-				ret = go_builtins(node->cmds, env, shell, node);
+				ret = go_builtins(node->cmds, env, shell);
 			exit(ret);
 		}
 		else
