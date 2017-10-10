@@ -94,6 +94,7 @@ FILES = add_char.c \
 				replace_all_exprs.c \
 				manage_brc.c \
 				merge_expr.c \
+				shell_variable.c \
 				subshell.c \
 				aggregation.c \
 				manage_tree.c \

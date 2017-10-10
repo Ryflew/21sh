@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 20:56:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:06:47 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/10 18:44:24 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ static char	**convert_history(char *str, int count)
 	return (out);
 }
 
-char 		**get_history(t_sh *shell, off_t size, char *home, char is_21sh_logs)
+char		**get_history(t_sh *shell, off_t size, char *home, \
+				char is_21sh_logs)
 {
 	int		i;
 	int		fd;

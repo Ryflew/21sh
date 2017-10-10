@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   manage_brc.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:28:06 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:28:06 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 static void	get_rest_expr(t_list **lexems, t_list **new_lexems)
@@ -9,7 +21,7 @@ static void	get_rest_expr(t_list **lexems, t_list **new_lexems)
 	{
 		token = (t_token*)(*lexems)->data;
 		if (TYPE == END_EXPR)
-			break;
+			break ;
 		ft_node_push_back(new_lexems, new_token(NULL, TYPE, VAL));
 		*lexems = (*lexems)->next;
 	}
@@ -24,7 +36,7 @@ static void	get_expr_start(t_list *lexems, t_list **new_lexems, e_token type)
 		token = (t_token*)lexems->prev->data;
 		lexems = lexems->prev;
 		if (TYPE == type)
-			break;
+			break ;
 	}
 	while (lexems->prev)
 	{
@@ -32,7 +44,7 @@ static void	get_expr_start(t_list *lexems, t_list **new_lexems, e_token type)
 		if (is_glob_token(TYPE) || TYPE == EXPR)
 			ft_node_push_front(new_lexems, new_token(NULL, TYPE, VAL));
 		else
-			break;
+			break ;
 		lexems = lexems->prev;
 	}
 }
@@ -41,7 +53,7 @@ static char	create_expr_from_brc(t_list *lexems, t_token *token,
 				t_list **nw_lexems)
 {
 	t_list	*tmp;
-	
+
 	if (TYPE != RBRC)
 		get_expr_start(lexems, nw_lexems, LBRC);
 	tmp = lexems;
@@ -51,7 +63,7 @@ static char	create_expr_from_brc(t_list *lexems, t_token *token,
 		token = (t_token*)tmp->data;
 	}
 	if (tmp->next && TYPE != END_EXPR)
-	get_rest_expr(&tmp, nw_lexems);
+		get_rest_expr(&tmp, nw_lexems);
 	ft_node_push_back(nw_lexems, new_token(NULL, END_EXPR, ""));
 	ft_add_list(tmp, *nw_lexems);
 	token = (t_token*)lexems->data;
@@ -71,11 +83,11 @@ void		manage_brc(t_list *lexems)
 	{
 		token = (t_token*)lexems->data;
 		if (TYPE == END_EXPR)
-			break;
+			break ;
 		if (TYPE == COM || TYPE == RBRC)
 		{
 			if (!(create_expr_from_brc(lexems, token, &new_lexems)))
-				break;
+				break ;
 		}
 		else
 			ft_node_push_back(&new_lexems, new_token(NULL, TYPE, VAL));

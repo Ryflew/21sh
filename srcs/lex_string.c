@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lex_string.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:27:49 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:27:50 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 static void	if_its_word(char c, char *bs, char *st_op, e_token *type)
@@ -24,7 +36,7 @@ int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
 {
 	char	bs;
 	int		i;
-	
+
 	bs = 0;
 	*st_op = 0;
 	i = 0;
@@ -36,7 +48,8 @@ int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
 	((lexer->line)[i] == '}' && !lexer->brc) || ((lexer->line)[i] == '{' &&
 	lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt) || (*st_op &&
 	((lexer->line)[i] != '`' || *st_op == '\'')) || ((lexer->line)[i] == '$'
-	&& !ft_isalnum((lexer->line)[i+ 1])) || (((lexer->line)[i] == '=' && !i))))))
+	&& !ft_isalnum((lexer->line)[i + 1])) || (((lexer->line)[i] == '=' && \
+	!i))))))
 		if_its_word((lexer->line)[i++], &bs, st_op, type);
 	return (i);
 }
@@ -70,7 +83,7 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 	t_token	*token;
 	e_token	type;
 	char	st_op;
-	char 	*word;
+	char	*word;
 
 	type = NUM;
 	word_size = compute_word_size(lexer, &type, &st_op, last_token);

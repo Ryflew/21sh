@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   help3.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:26:26 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:26:26 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 void	help_history(void)
@@ -8,7 +20,8 @@ void	help_history(void)
 	ft_putendl("\t- history -d offset");
 	ft_putendl("\t- history [-arw] filename");
 	ft_putendl("\t- history -s arg\n");
-	ft_putendl("\tWithout options, print the history list with their offset.\n");
+	ft_putendl("\tWithout options, print the history list with their " \
+		"offset.\n");
 	ft_putendl("\t-c : Clear the history list.");
 	ft_putendl("\t-d : Delete the history entry at position offset.");
 	ft_putendl("\t-a : Append the new history lines to the history file.");

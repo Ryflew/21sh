@@ -73,9 +73,9 @@ char			**parse_env_cmds(t_sh *sh)
 
 	tmp = sh->lexer->lexems;
 	if (tmp->next)
-		token = tmp->next->data;	
-	if (!sh->current_token || ft_strcmp( sh->current_token->value, "env")
-		|| !tmp->next || (TYPE != WORD && TYPE != NUM && TYPE != TILD && 
+		token = tmp->next->data;
+	if (!sh->current_token || ft_strcmp(sh->current_token->value, "env")
+		|| !tmp->next || (TYPE != WORD && TYPE != NUM && TYPE != TILD && \
 		TYPE != VAR_WORD))
 		return (NULL);
 	tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:20:57 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:06:46 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/10 18:07:28 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_env	*get_env(char **env)
 		elem = first;
 	}
 	while (++env && *env)
-	{	
+	{
 		elem->next = new_env(*env);
 		elem = elem->next;
 	}
@@ -49,7 +49,7 @@ char	*find_env(t_env *env, char *name)
 		if (!ft_strcmp(env->var_name, name))
 			return (env->var_content);
 		env = env->next;
-	}		
+	}
 	return (NULL);
 }
 

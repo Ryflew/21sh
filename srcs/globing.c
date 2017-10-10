@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   globing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:26:01 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:26:01 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 static void	replace_expr_by_word(t_list **lexems)
@@ -38,7 +50,7 @@ static void	init_checker(char *brc, char *bkt, char *pb)
 	*pb = 0;
 }
 
-static char check_bad_or_not(t_list *lexems, t_token *token, char *brc,
+static char	check_bad_or_not(t_list *lexems, t_token *token, char *brc,
 				char *bkt)
 {
 	if (TYPE == LBRC)
@@ -68,7 +80,7 @@ static char check_bad_or_not(t_list *lexems, t_token *token, char *brc,
 	return (0);
 }
 
-static void clear_bad_expr(t_list *lexems)
+static void	clear_bad_expr(t_list *lexems)
 {
 	t_token	*token;
 	t_list	*save;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dir.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:24:12 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:24:13 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 #include <sys/stat.h>
 
@@ -27,7 +39,7 @@ int		is_dir(char *dir_name, t_token *token)
 {
 	struct stat	statbuf;
 	char		*dir_path;
-	
+
 	if (TYPE != EXPR || VAL[0] != '/')
 		dir_path = ft_strjoin("./", dir_name);
 	else
@@ -46,7 +58,7 @@ int		is_dir(char *dir_name, t_token *token)
 void	clear_old_expr(t_list **lexems, t_list **first_lexems, char match)
 {
 	t_token *token;
-	
+
 	while (*lexems)
 	{
 		token = (t_token*)(*lexems)->data;
@@ -56,7 +68,7 @@ void	clear_old_expr(t_list **lexems, t_list **first_lexems, char match)
 				ft_pop_node(lexems, (void*)&clear_lexems);
 			else
 				*lexems = (*lexems)->next;
-			break;
+			break ;
 		}
 		if (match)
 			ft_pop_node(lexems, (void*)&clear_lexems);

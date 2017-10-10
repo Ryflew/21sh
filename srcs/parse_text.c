@@ -1,6 +1,6 @@
 #include "tosh.h"
 
-char			eat(t_sh *sh, e_token token)
+char		eat(t_sh *sh, e_token token)
 {
 	if (sh->current_token->type == token)
 	{
@@ -70,7 +70,7 @@ static void	text_rules2(t_sh *sh, t_token **token)
 		text_rules3(sh, token);
 }
 
-t_token			*text_rules(t_sh *sh)
+t_token		*text_rules(t_sh *sh)
 {
 	t_token *token;
 
@@ -80,9 +80,9 @@ t_token			*text_rules(t_sh *sh)
 	if (sh->current_token->type == WORD)
 		bqt_c_rule(sh, WORD, &token);
 	else if (sh->current_token->type == NUM)
-		bqt_c_rule(sh, NUM, &token);	
+		bqt_c_rule(sh, NUM, &token);
 	else if (sh->current_token->type == TILD)
-		bqt_c_rule(sh, TILD, &token);	
+		bqt_c_rule(sh, TILD, &token);
 	else if (sh->current_token->type == END_EXPR)
 		eat(sh, END_EXPR);
 	else

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   history_cmd2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:27:21 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:27:22 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
-static void go_hist_opt(t_sh *shell, char **av, char *opt)
+static void	go_hist_opt(t_sh *shell, char **av, char *opt)
 {
 	if (opt[0])
 	{
@@ -19,7 +31,7 @@ static void go_hist_opt(t_sh *shell, char **av, char *opt)
 		add_to_history(shell, *av);
 }
 
-static void history_get_opt(char **av, char *opt, int i)
+static void	history_get_opt(char **av, char *opt, int i)
 {
 	++av;
 	while (*av && **av == '-')
@@ -28,17 +40,17 @@ static void history_get_opt(char **av, char *opt, int i)
 		while (**av)
 		{
 			if (*(*av + i) == 'c')
-			opt[0] = 1;
+				opt[0] = 1;
 			else if (*(*av + i) == 'd')
-			opt[1] = 1;
+				opt[1] = 1;
 			else if (*(*av + i) == 'a')
-			opt[2] = 1;
+				opt[2] = 1;
 			else if (*(*av + i) == 'r')
-			opt[3] = 1;
+				opt[3] = 1;
 			else if (*(*av + i) == 'w')
-			opt[4] = 1;
+				opt[4] = 1;
 			else if (*(*av + i) == 's')
-			opt[5] = 1;
+				opt[5] = 1;
 			else
 				break ;
 			++i;

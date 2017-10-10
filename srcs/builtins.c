@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:23:15 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:23:16 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 char	go_builtins2(char **cmd, t_sh *shell)
@@ -52,8 +64,6 @@ char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 
 char	is_writable_builtins(char **cmd)
 {
-	char	*tmp = cmd[1];
-	(void)tmp;
 	if (!ft_strcmp(cmd[0], "echo"))
 		return (0);
 	else if (!ft_strcmp(cmd[0], "env") && !cmd[1])

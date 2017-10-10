@@ -17,12 +17,12 @@ void			*ret_parse_error(t_tree *node)
 	return ((void*)-1);
 }
 
-static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations,
-								t_token **ss_empty, t_list **cmd_tokens)
+static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, \
+					t_token **ss_empty, t_list **cmd_tokens)
 {
 	t_token	*token;
 	t_fd	*fd;
-	
+
 	fd = NULL;
 	while (((token = text_rules(sh)) && token != (void*)-1) \
 	|| (token != (void*)-1 && (fd = aggregation_rules(sh)) && fd != (void*)-1))
@@ -49,24 +49,24 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations,
 t_tree			*cmd_rules(t_sh *sh)
 {
 	t_list	*cmd_tokens;
-	t_list	*aggregations;
+	t_list	*aggreg;
 	t_token	*ss_empty;
 	t_tree	*new_node;
 	char	**tmp_env;
 
-	aggregations = NULL;
+	aggreg = NULL;
 	ss_empty = 0;
 	cmd_tokens = NULL;
 	new_node = NULL;
-	tmp_env = parse_env_cmds(sh);	
-	if ((get_tokens_cmd(sh, &aggregations, &ss_empty, &cmd_tokens)) == (void*)-1)
+	tmp_env = parse_env_cmds(sh);
+	if ((get_tokens_cmd(sh, &aggreg, &ss_empty, &cmd_tokens)) == (void*)-1)
 		new_node = (void*)-1;
 	else if (cmd_tokens)
 	{
 		if (ss_empty)
 			clear_lexems(ss_empty);
 		new_node = create_node(NULL, NULL, cmd_tokens, NULL);
-		new_node->aggregations = aggregations;
+		new_node->aggregations = aggreg;
 	}
 	else if (ss_empty || tmp_env)
 		new_node = create_node(NULL, ss_empty, NULL, NULL);

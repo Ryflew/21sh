@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   history_cmd_opt.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:26:36 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:26:36 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <fcntl.h>
-#include <sys/types.h> 
-#include <sys/stat.h> 
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include "tosh.h"
 
@@ -32,7 +44,7 @@ void		hist_d(t_sh *shell, int nb)
 	shell->history = new;
 }
 
-static void hist_r2(t_sh *shell, char **toadd, char **new)
+static void	hist_r2(t_sh *shell, char **toadd, char **new)
 {
 	int			i;
 	int			count;
@@ -74,7 +86,7 @@ void		hist_r(t_sh *shell, char *path)
 
 void		hist_w(t_sh *shell, char *path)
 {
-	char	**new;
+	char		**new;
 	struct stat	buff;
 
 	if (!path || !*path || stat(path, &buff) == -1 || \
@@ -93,12 +105,14 @@ void		hist_a(t_sh *shell, char *path)
 	int			i;
 	int			max;
 
-	if ((i = shell->hist_first) > (max = ft_counttab(shell->history)))
+	i = shell->hist_first;
+	if (i > (max = ft_counttab(shell->history)))
 	{
 		i = 0;
 		return ;
 	}
-	if (!path || !*path || (fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU)) == -1)
+	if (!path || !*path || (fd = open(path, O_WRONLY | O_CREAT | \
+		O_TRUNC, S_IRWXU)) == -1)
 	{
 		errexit("history", "Unable to open file.");
 		return ;

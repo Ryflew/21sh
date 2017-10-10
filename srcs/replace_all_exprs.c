@@ -1,10 +1,10 @@
 #include "tosh.h"
 
-static char		check_son_expr(t_list **lexems, t_list **save_son, t_list **save,
-				char *son)
+static char		check_son_expr(t_list **lexems, t_list **save_son, \
+					t_list **save, char *son)
 {
 	e_token	type;
-	
+
 	type = ((t_token*)((*lexems)->data))->type;
 	if (type == SON)
 	{

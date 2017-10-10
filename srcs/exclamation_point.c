@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exclamation_point.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:24:48 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:24:49 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 static int	history_prompt(t_sh *shell, int nb, char is_minus)
@@ -51,7 +63,7 @@ static int	history_string(t_sh *shell, char *str)
 	return (0);
 }
 
-static int		history_excla(char *str, t_sh *shell)
+static int	history_excla(char *str, t_sh *shell)
 {
 	if (*str == '!')
 		return (history_prompt(shell, 1, 1) - 1);

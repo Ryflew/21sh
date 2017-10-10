@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   create.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:24:05 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:24:05 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 t_tree	*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *rig)
@@ -27,10 +39,7 @@ t_token	*new_token(t_lexer *lexer, e_token token_type, char *value)
 	if (lexer)
 		lexer->line += ft_strlen(value);
 	TYPE = token_type;
-	/*if (token_type != WORD && token_type != TILD && token_type != NUM && \
-	token_type != FD && token_type != VAR_WORD && token_type != TILD \
-	&& token_type != ASCII_WORD && token_type != TILD_VAR_WORD)*/
-		value = ft_strdup(value);
+	value = ft_strdup(value);
 	VAL = value;
 	return (token);
 }

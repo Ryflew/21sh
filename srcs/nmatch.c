@@ -24,7 +24,7 @@ static int	is_l_bkt(char *s1, char *s2, t_list *lexems)
 	return (0);
 }
 
-static int is_expr(char *s1, char *s2, t_list *lexems, t_token *token)
+static int	is_expr(char *s1, char *s2, t_list *lexems, t_token *token)
 {
 	if (!s2)
 		s2 = VAL;
