@@ -15,7 +15,7 @@ void		read_addvar(t_sh *shell, char *var_name, char *line)
 
 void		remove_backslash(char **str)
 {
-	int 	i;
+	int		i;
 	int		j;
 	char	buff[ft_strlen(*str) * 3 + 1];
 

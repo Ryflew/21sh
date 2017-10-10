@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   identify_token.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:27:38 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:27:39 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
-static void	is_here_op(t_lexer *lexer, t_token **token, t_token *last_token)
+static void		is_here_op(t_lexer *lexer, t_token **token, t_token *last_token)
 {
 	if (*lexer->line == '`')
 	{
 		if (!lexer->bqt)
-			*token = (lexer->blank || !last_token) ? new_token(lexer, BQT, "`") \
+			*token = (lexer->blank || !last_token) ? new_token(lexer, BQT, "`")
 			: new_token(lexer, BQT_C, "`");
 		else
 			*token = new_token(lexer, EBQT, "`");
@@ -20,7 +32,8 @@ static void	is_here_op(t_lexer *lexer, t_token **token, t_token *last_token)
 	}
 }
 
-static void	is_other_op(t_lexer *lexer, t_token **token, t_token *last_token)
+static void		is_other_op(t_lexer *lexer, t_token **token, \
+					t_token *last_token)
 {
 	if (*lexer->line == ',' && lexer->brc && !lexer->bkt)
 		*token = new_token(lexer, COM, ",");
@@ -47,16 +60,16 @@ static void	is_other_op(t_lexer *lexer, t_token **token, t_token *last_token)
 	}
 }
 
-static void	is_limit_glob_op(t_lexer *lexer, t_token **token)
+static void		is_limit_glob_op(t_lexer *lexer, t_token **token)
 {
 	if (*lexer->line == '[')
-	{ 
+	{
 		if (*(lexer->line + 1) && (*(lexer->line + 1) == '!'
 			|| *(lexer->line + 1) == '^'))
 			*token = new_token(lexer, E_WILDCARD, "[!");
 		else
 			*token = new_token(lexer, LBKT, "[");
-		lexer->bkt = 1;		
+		lexer->bkt = 1;
 	}
 	else if (*lexer->line == ']' && lexer->bkt)
 	{
@@ -74,7 +87,6 @@ static void	is_limit_glob_op(t_lexer *lexer, t_token **token)
 		lexer->brc = 0;
 	}
 }
-
 
 static t_token	*is_reg_op(t_lexer *lexer)
 {

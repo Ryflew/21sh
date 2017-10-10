@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:06:10 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/10 20:26:56 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,6 @@
 #include <limits.h>
 #include <stdlib.h>
 #include "tosh.h"
-
-static void	arrows(t_sh *shell, unsigned long c)
-{
-	if (c == UP_ARROW)
-		browse_history(shell, c);
-	else if (c == DOWN_ARROW)
-		browse_history(shell, c);
-	else if (c == RIGHT_ARROW)
-		right_arrow(shell);
-	else if (c == LEFT_ARROW)
-		left_arrow(shell);
-	else if (c == HOME)
-		move_to((shell->pos.cursor.x = shell->pos.first.x), \
-			(shell->pos.cursor.y = shell->pos.first.y));
-	else if (c == END)
-		move_to((shell->pos.cursor.x = shell->pos.last.x), \
-			(shell->pos.cursor.y = shell->pos.last.y));
-}
 
 static void	maj_arrows(t_sh *shell, unsigned long c)
 {
@@ -87,7 +69,7 @@ static char	get_line2(t_sh *shell, unsigned long buff, e_state *state)
 	return (1);
 }
 
-void	add_all_char(t_sh *shell)
+void		add_all_char(t_sh *shell)
 {
 	int	i;
 
@@ -104,7 +86,6 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 	shell->j = -1;
 	if (shell->toaddstr)
 		add_all_char(shell);
-	//return (ft_strdup(""));
 	while (1)
 	{
 		buff = 0;
@@ -112,7 +93,7 @@ char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
 		if (get_line2(shell, buff, state))
 			;
 		else if (buff == ENTER || (*state == READ_CMD && (buff == \
-				(unsigned long)shell->read_delimiter || !(shell->read_nchar - 1))))
+			(unsigned long)shell->read_delimiter || !(shell->read_nchar - 1))))
 		{
 			move_to(shell->pos.last.x, shell->pos.last.y);
 			break ;

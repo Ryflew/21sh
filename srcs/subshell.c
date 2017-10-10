@@ -47,7 +47,7 @@ static char	add_new_tokens(t_sh *sh)
 	t_list	*new_lexems;
 	char	*tokens_line;
 	char	**new_tokens;
-	
+
 	sh->ssbqt = 0;
 	close(sh->pipe_ss[1]);
 	if ((tokens_line = get_new_tokens(sh)) == (void*)-1)
@@ -73,7 +73,7 @@ static void	fork_subshell(t_sh *sh, t_tree *sub_tree)
 {
 	int		ret;
 	pid_t	father;
-	
+
 	if ((father = fork()) == -1)
 		ft_exiterror("fork failure !", -1);
 	else if (!father)

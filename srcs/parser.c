@@ -7,11 +7,12 @@ char			is_basic_red(t_sh *sh)
 	next_token = NULL;
 	if (sh->lexer->lexems && sh->lexer->lexems->next)
 		next_token = sh->lexer->lexems->next->data;
-	if (sh->current_token && (sh->current_token->type == CHEVF || sh->current_token->type == DCHEVF\
-	|| sh->current_token->type == CHEVB || sh->current_token->type \
-	== DCHEVB || (sh->current_token->type == FD && next_token &&
-		(next_token->type == DCHEVF || next_token->type == DCHEVF \
-		||  next_token->type == CHEVB || next_token->type == DCHEVB))))
+	if (sh->current_token && (sh->current_token->type == CHEVF || \
+		sh->current_token->type == DCHEVF || sh->current_token->type == CHEVB \
+		|| sh->current_token->type == DCHEVB || (sh->current_token->type == FD \
+		&& next_token && (next_token->type == DCHEVF || \
+		next_token->type == DCHEVF || next_token->type == CHEVB || \
+		next_token->type == DCHEVB))))
 		return (1);
 	return (0);
 }
@@ -22,7 +23,8 @@ static t_tree	*cmd_with_op_rules(t_sh *sh)
 	t_tree	*tmp;
 
 	left = NULL;
-	if (!sh->current_token || (!(left = cmd_rules(sh)) && !is_basic_red(sh)) || left == (void*)-1)
+	if (!sh->current_token || (!(left = cmd_rules(sh)) && !is_basic_red(sh)) \
+		|| left == (void*)-1)
 		return (left);
 	while ((left || is_basic_red(sh)) && left != (void*)-1)
 	{
@@ -46,7 +48,7 @@ static t_tree	*pipe_rules(t_sh *sh)
 	if (!sh->current_token || !(left = cmd_with_op_rules(sh)) \
 		|| left == (void*)-1)
 		return (left);
-	while (sh->current_token &&  sh->current_token->type == PIPE)
+	while (sh->current_token && sh->current_token->type == PIPE)
 	{
 		if (!left->right && left->token && left->TYPE != SCL)
 			return (ret_parse_error(left));
@@ -84,15 +86,20 @@ static t_tree	*condition_operators_rules(t_sh *sh)
 	return (left);
 }
 
-static t_tree	*parse_semicolons(t_sh *sh, t_tree *left)
+t_tree			*commands_line_rules(t_sh *sh)
 {
+	t_tree	*left;
 	t_tree	*right;
 	t_token	*token;
 
-	while (sh->current_token &&  sh->current_token->type == SCL)
+	while (sh->current_token && sh->current_token->type == SCL)
+		eat(sh, SCL);
+	if (!(left = condition_operators_rules(sh)) || left == (void*)-1)
+		return (left);
+	while (sh->current_token && sh->current_token->type == SCL)
 	{
 		token = sh->current_token;
-		while (sh->current_token &&  sh->current_token->type == SCL)
+		while (sh->current_token && sh->current_token->type == SCL)
 			eat(sh, SCL);
 		if ((right = condition_operators_rules(sh))
 			&& right != (void*)-1)
@@ -101,15 +108,4 @@ static t_tree	*parse_semicolons(t_sh *sh, t_tree *left)
 			return (ret_parse_error(left));
 	}
 	return (left);
-}
-
-t_tree			*commands_line_rules(t_sh *sh)
-{
-	t_tree	*left;
-
-	while (sh->current_token &&  sh->current_token->type == SCL)
-		eat(sh, SCL);
-	if (!(left = condition_operators_rules(sh)) || left == (void*)-1)
-		return (left);
-	return (parse_semicolons(sh, left));
 }

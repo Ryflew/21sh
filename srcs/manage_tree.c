@@ -1,4 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   manage_tree.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:28:18 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:28:18 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
+
+static void	reset_pipe(t_sh *shell)
+{
+	shell->fds_out = NULL;
+	shell->fd_pipe = -1;
+	shell->right_side = 1;
+}
 
 static char	manage_children(t_tree *node, t_sh *shell, char rig, char ret)
 {
@@ -11,17 +30,16 @@ static char	manage_children(t_tree *node, t_sh *shell, char rig, char ret)
 				(ret = browse_tree(node->left, shell, node, rig)) == -1)
 			return (-1);
 	}
-	if (node->right && node->token && (node->TYPE < CHEVB ||
-	node->TYPE > BRED) && (node->TYPE != OR || (ret && (node->left->token && node->left->TYPE == NONE))) &&
-	(node->TYPE != AND || !ret || (node->left->token && node->left->TYPE == NONE)))
+	if (node->right && node->token && (node->TYPE < CHEVB || node->TYPE > BRED)
+		&& (node->TYPE != OR || (ret && (node->left->token && \
+		node->left->TYPE == NONE))) && (node->TYPE != AND || !ret || \
+		(node->left->token && node->left->TYPE == NONE)))
 	{
 		if (node->TYPE == SCL)
 		{
 			if (shell->fds_out)
 				ft_clear_list(&shell->fds_out, (&free));
-			shell->fds_out = NULL;
-			shell->fd_pipe = -1;
-			shell->right_side = 1;
+			reset_pipe(shell);
 		}
 		if ((ret = browse_tree(node->right, shell, node, rig)) == -1)
 			return (-1);

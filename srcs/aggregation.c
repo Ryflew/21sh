@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   aggregation.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:22:49 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:22:52 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
-static char fill_fd(t_sh *sh, int *left_fd, int *right_fd, e_token type)
+static char	fill_fd(t_sh *sh, int *left_fd, int *right_fd, e_token type)
 {
 	*left_fd = ft_atoi(sh->current_token->value);
 	eat(sh, FD);

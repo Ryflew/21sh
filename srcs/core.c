@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   core.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:23:56 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:23:56 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 void		clear_lexems(t_token *token)
@@ -24,7 +36,7 @@ static void	clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 	}
 }
 
-void	init_shell_before_parser(t_sh *shell)
+void		init_shell_before_parser(t_sh *shell)
 {
 	if (shell->lexer->lexems)
 		shell->current_token = shell->lexer->lexems->data;

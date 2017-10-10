@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:27:54 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:27:56 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 static void		init_lexer(t_lexer *lexer)
@@ -10,7 +22,7 @@ static void		init_lexer(t_lexer *lexer)
 	lexer->red = 0;
 }
 
-char	isnt_here_or_bqt(t_lexer *lexer)
+char			isnt_here_or_bqt(t_lexer *lexer)
 {
 	return (!lexer->her || lexer->bqt);
 }

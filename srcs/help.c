@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   help.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:26:15 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:26:16 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 void		first_step(char *name)
@@ -38,7 +50,7 @@ static void	help_help(void)
 	ft_putstr(C_RESET);
 }
 
-static char help_command2(char *cmd)
+static char	help_command2(char *cmd)
 {
 	if (!ft_strcmp(cmd, "history"))
 		help_history();

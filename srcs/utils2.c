@@ -1,20 +1,23 @@
 #include "tosh.h"
 
-void	print_prompt(e_state state, char *op)
+static void	basic_prompt(void)
+{
+	ft_putchar('[');
+	ft_putstr(C_ITA);
+	ft_putstr(C_CYAN);
+	ft_putstr("21sh");
+	ft_putstr(C_RESET);
+	ft_putchar(':');
+	ft_putstr(C_GREEN);
+	ft_putstr(get_shell()->prompt);
+	ft_putstr(C_RESET);
+	ft_putstr("] $> ");
+}
+
+void		print_prompt(e_state state, char *op)
 {
 	if (state == BASIC_SHELL)
-	{
-		ft_putchar('[');
-		ft_putstr(C_ITA);
-		ft_putstr(C_CYAN);
-		ft_putstr("21sh");
-		ft_putstr(C_RESET);
-		ft_putchar(':');
-		ft_putstr(C_GREEN);
-		ft_putstr(get_shell()->prompt);
-		ft_putstr(C_RESET);
-		ft_putstr("] $> ");
-	}
+		basic_prompt();
 	else if (op)
 	{
 		ft_putchar('\n');

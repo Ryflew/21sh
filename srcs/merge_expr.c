@@ -40,7 +40,7 @@ void	merge_expr_to_word(t_list *lexems)
 		{
 			TYPE = WORD;
 			ft_pop_node(&(lexems->next), (void*)&clear_lexems);
-			break;
+			break ;
 		}
 		to_free = VAL;
 		VAL = ft_strjoin(VAL, next_token->value);

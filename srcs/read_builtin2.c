@@ -43,4 +43,3 @@ void	reset_line_shell(t_sh *shell)
 	shell->total_command = NULL;
 	shell->state = READ_CMD;
 }
-

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/10 20:25:02 by vdarmaya          #+#    #+#             */
+/*   Updated: 2017/10/10 20:25:02 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
-void	add_var_twoline(char *str1, char *str2, t_env **env)
+void		add_var_twoline(char *str1, char *str2, t_env **env)
 {
 	char	**tmp;
 
@@ -27,7 +39,8 @@ static void	add_var_oneline(char *str, t_env **env)
 	{
 		tmp[1] = ft_strsub(str, 0, ptr - str);
 		if (*(ptr + 1))
-			tmp[2] = ft_strsub(str, ptr - str + 1, ft_strlen(str) - ft_strlen(tmp[1]) - 1);
+			tmp[2] = ft_strsub(str, ptr - str + 1, ft_strlen(str) - \
+				ft_strlen(tmp[1]) - 1);
 		else
 			tmp[2] = ft_strdup("\'\'");
 	}
