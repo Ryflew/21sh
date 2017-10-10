@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:22:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:22:52 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/10 21:42:07 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	fill_fd(t_sh *sh, int *left_fd, int *right_fd, e_token type)
 	}
 	else
 	{
-		*right_fd = -2;
+		*right_fd = -7895474;
 		eat(sh, CLOSE_FD);
 	}
 	return (1);
