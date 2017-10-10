@@ -22,7 +22,7 @@ char	go_builtins2(char **cmd, t_sh *shell)
 	return (0);
 }
 
-char	go_builtins(char **cmd, t_env **env, t_sh *shell, t_tree *tree)
+char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 {
 	if (!ft_strcmp(cmd[0], "echo"))
 	{
@@ -42,7 +42,7 @@ char	go_builtins(char **cmd, t_env **env, t_sh *shell, t_tree *tree)
 	else if (!ft_strcmp(cmd[0], "export"))
 		export(cmd, &(shell->export));
 	else if (!ft_strcmp(cmd[0], "env"))
-		env_command(tree->tmp_env, *env);
+		env_command(cmd, *env);
 	else if (!ft_strcmp(cmd[0], "true"))
 		return (0);
 	else

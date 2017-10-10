@@ -2,15 +2,12 @@
 
 - Norme
 - Leaks
-- ne pas faire un export si string_op au nom de la var
 
 ---------- BONUS --------------
 
 ------------ A TESTER ---------
 
 ------------ BUG --------------
-
-- ls a*
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
@@ -25,6 +22,3 @@
 
 
 =============================
-
-Liste des fonction de basile de + de 25 lignes: (je te simplifie la tâche psk je peux pas y toucher sans casser un truc)
-	- nmatch.c => nmatch

@@ -40,19 +40,31 @@ char			**parse_env_cmds(t_sh *sh)
 	int		size;
 	t_list	*tmp;
 	t_token	*token;
+	t_token	*next_token;	
 
 	tmp = sh->lexer->lexems;
+	if (tmp->next)
+		token = tmp->next->data;	
 	if (!sh->current_token || ft_strcmp( sh->current_token->value, "env")
-		|| !tmp->next || ((t_token*)(tmp->next->data))->type != WORD)
+		|| !tmp->next || (TYPE != WORD && TYPE != NUM && TYPE != TILD && 
+		TYPE != VAR_WORD))
 		return (NULL);
 	tmp = tmp->next;
-	token = tmp->data;
 	size = 1;
 	while (tmp && (!ft_strcmp(VAL, "-i") || !ft_strcmp(VAL, "-u")
 		|| !ft_strcmp(VAL, "env") ||\
-		ft_strchr(VAL, '=')))
+		ft_strchr(VAL, '=') || TYPE == VAR_WORD || TYPE == EQUAL))
 	{
-		tmp = increase(tmp, &size);
+		if (tmp->next)
+			next_token = (t_token*)tmp->next->data;
+		if (tmp->next && TYPE == VAR_WORD && (next_token->type == EQUAL
+			|| next_token->type == VAR_WORD))
+		{
+			free_join(&VAL, next_token->value);
+			ft_pop_node(&tmp->next, (void*)&clear_lexems);
+		}
+		else
+			tmp = increase(tmp, &size);
 		if (tmp && !ft_strcmp(VAL, "-u"))
 			tmp = increase(tmp, &size);
 		if (tmp)

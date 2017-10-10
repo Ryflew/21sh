@@ -71,7 +71,10 @@ static void	env_command2(char **av, t_env **cpy)
 		else if (**av == '-' && *(*av + 1))
 			env_usage(*(*av + 1));
 		else if (!ft_strcmp(*av, "env") && env_command(av, *cpy))
+		{
+			// Modifier shell->env avec cpy env
 			break ;
+		}
 		else if (ft_strchr(*av, '='))
 			add_new_var(&av, cpy);
 		else

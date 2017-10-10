@@ -34,16 +34,14 @@ static void	concat_unused_add_var(t_list *cmd_tokens)
 	}
 }
 
-<<<<<<< HEAD
 static char	is_env_var_to_add(t_list **cmd_tokens)
-=======
-static char	is_env_var_to_add(t_list **cmd_tokens, t_sh *sh, t_list *tmp)
->>>>>>> 3525c0f577fd51248ac5573ae9a6803a5817c6b7
 {
 	t_token	*token;
 	char	ret;
 	char	*var_content;
+	t_list	*tmp;
 
+	tmp = *cmd_tokens;
 	while (tmp && !ret)
 	{
 		token = (t_token*)tmp->data;
@@ -129,6 +127,8 @@ char	**get_cmds(t_list **cmd_tokens, t_sh *sh)
 
 char	manage_cmds(t_tree *node, t_sh *sh)
 {
+	if (node->tmp_env)
+		env_command(node->tmp_env, sh->env);
 	if (!(node->cmds = get_cmds(&node->cmd_tokens, sh)))
 		return (0);
 	if (find_env(sh->env, "PATH"))

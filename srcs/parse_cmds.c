@@ -46,17 +46,19 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations,
 	return (token);
 }
 
-t_tree			*cmd_rules(t_sh *sh, char **tmp_env)
+t_tree			*cmd_rules(t_sh *sh)
 {
 	t_list	*cmd_tokens;
 	t_list	*aggregations;
 	t_token	*ss_empty;
 	t_tree	*new_node;
+	char	**tmp_env;
 
 	aggregations = NULL;
 	ss_empty = 0;
 	cmd_tokens = NULL;
 	new_node = NULL;
+	tmp_env = parse_env_cmds(sh);	
 	if ((get_tokens_cmd(sh, &aggregations, &ss_empty, &cmd_tokens)) == (void*)-1)
 		new_node = (void*)-1;
 	else if (cmd_tokens)
@@ -68,5 +70,7 @@ t_tree			*cmd_rules(t_sh *sh, char **tmp_env)
 	}
 	else if (ss_empty || tmp_env)
 		new_node = create_node(NULL, ss_empty, NULL, NULL);
+	if (tmp_env)
+		new_node->tmp_env = tmp_env;
 	return (new_node);
 }

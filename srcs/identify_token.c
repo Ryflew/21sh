@@ -102,7 +102,7 @@ static t_token	*is_reg_op(t_lexer *lexer)
 	return (token);
 }
 
-t_token			*identify_token(t_lexer *lexer, t_token *last_token)
+t_token			*identify_token(t_lexer *lexer, t_token *l_tk)
 {
 	t_token *token;
 
@@ -112,19 +112,19 @@ t_token			*identify_token(t_lexer *lexer, t_token *last_token)
 	if (!token && isnt_here_or_bqt(lexer))
 		is_limit_glob_op(lexer, &token);
 	if (!token && isnt_here_or_bqt(lexer))
-		is_other_op(lexer, &token, last_token);
+		is_other_op(lexer, &token, l_tk);
 	if (!token)
-		is_here_op(lexer, &token, last_token);
+		is_here_op(lexer, &token, l_tk);
 	if (*lexer->line && !(token))
-		token = lex_word(lexer, last_token);
+		token = lex_word(lexer, l_tk);
 	if (isnt_here_or_bqt(lexer) && token && is_glob_token(TYPE) &&
-	!lexer->blank && last_token && (last_token->type == WORD ||
-	last_token->type == TILD || last_token->type == NUM))
+	!lexer->blank && l_tk && (l_tk->type == WORD ||
+		l_tk->type == TILD || l_tk->type == NUM || l_tk->type == ASCII_WORD))
 	{
-		if (last_token->type == TILD)
-			last_token->type = TILD_EXPR;
+		if (l_tk->type == TILD)
+			l_tk->type = TILD_EXPR;
 		else
-			last_token->type = EXPR;
+			l_tk->type = EXPR;
 	}
 	return (token);
 }

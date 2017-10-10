@@ -13,13 +13,11 @@ char	*find_match_binary(t_sh *shell, char *tosearch)
 	content = tosearch;
 	i = -1;
 	while (tmp[++i])
-	{
 		if ((out = check_dir_content(content, tmp[i])))
 		{
 			ft_strdelpp(&tmp);
 			return (out);
 		}
-	}
 	ft_strdelpp(&tmp);
 	return (NULL);
 }

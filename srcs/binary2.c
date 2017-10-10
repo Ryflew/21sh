@@ -17,7 +17,7 @@ static void	run_with_pipe(t_sh *shell, int *fd, t_tree *node)
 	}
 }
 
-void	child(t_tree *node, t_sh *shell, int *fd)
+void		child(t_tree *node, t_sh *shell, int *fd)
 {
 	if (node->parent && node->parent->TYPE == DCHEVB)
 		manage_dchevb(shell, node->parent->right->cmds[0], node->parent, fd);
@@ -27,7 +27,7 @@ void	child(t_tree *node, t_sh *shell, int *fd)
 		run_with_pipe(shell, fd, node);
 }
 
-char	stop_binary(int sig)
+char		stop_binary(int sig)
 {
 	if (!g_father)
 		exit(EXIT_SUCCESS);
@@ -41,7 +41,7 @@ char	stop_binary(int sig)
 	return (0);
 }
 
-int		get_fd(t_sh *shell, int *fd, t_tree *node)
+int			get_fd(t_sh *shell, int *fd, t_tree *node)
 {
 	int	ret;
 

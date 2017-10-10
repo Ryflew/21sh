@@ -12,7 +12,7 @@ t_tree	*basic_red(t_sh *sh, e_token type, t_tree *left)
 		eat(sh, type);
 		if (!sh->current_token)
 			return (ret_parse_error(left));
-		return (create_node(left, token, NULL, cmd_rules(sh, NULL)));
+		return (create_node(left, token, NULL, cmd_rules(sh)));
 	}
 	return (NULL);
 }
@@ -29,7 +29,7 @@ t_tree	*adv_red_forward(t_sh *sh, e_token type, t_tree *left)
 		eat(sh, type);
 		if (!sh->current_token)
 			return (ret_parse_error(left));
-		return (create_node(left, token_type, NULL, cmd_rules(sh, NULL)));
+		return (create_node(left, token_type, NULL, cmd_rules(sh)));
 	}
 	return (NULL);
 }

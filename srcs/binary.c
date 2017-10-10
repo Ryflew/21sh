@@ -41,7 +41,7 @@ char		run_binary(t_tree *node, t_env *env, t_sh *shell)
 {
 	int		pipe[2];
 	int		ret;
-	
+
 	set_old_term(shell);
 	if ((ret = get_fd(shell, pipe, node->parent)) != -1)
 	{

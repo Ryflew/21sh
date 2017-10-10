@@ -26,7 +26,7 @@ static char	is_fd_type(t_sh *sh, e_token type)
 	return (0);
 }
 
-static char	fred_bred_rules(t_sh *sh, int *left_fd, int *right_fd, 
+static char	fred_bred_rules(t_sh *sh, int *left_fd, int *right_fd,
 			e_token type)
 {
 	if (is_fd_type(sh, type) && sh->lexer->lexems->next->next && \

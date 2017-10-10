@@ -27,7 +27,7 @@ int		father(t_sh *shell, int *fd, t_tree *node)
 		close(fd[0]);
 	g_father = -1;
 	shell->return_value = WEXITSTATUS(ret);
-	return (ret);
+	return (WEXITSTATUS(ret));
 }
 
 char	*current_binary(t_tree *node, t_env *env, t_sh *shell)
