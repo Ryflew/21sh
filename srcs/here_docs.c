@@ -12,8 +12,11 @@
 
 #include "tosh.h"
 
-static char	manage_here_doc_bqt(t_sh *sh, t_token *token, t_list **tmp, t_list **begin_lexems)
+static char	manage_here_doc_bqt(t_sh *sh, t_list *end_bqt, t_list **tmp, t_list **begin_lexems)
 {
+	t_token	*token;
+	char	join;
+
 	if (eat(sh, BQT) == -1)
 		eat(sh, BQT_C);
 	if (!(subshell(sh, BQT)))
@@ -23,17 +26,23 @@ static char	manage_here_doc_bqt(t_sh *sh, t_token *token, t_list **tmp, t_list *
 		ft_putendl("parse error: backquote isn't close");
 		return (0);
 	}
-	while (*tmp)
+	join = 0;
+	while (*tmp && (*tmp)->next && (*tmp)->next != end_bqt)
 	{
 		token = (t_token*)(*tmp)->data;
-		if (*begin_lexems == *tmp)
+		if (*begin_lexems == *tmp && !join)
 			*begin_lexems = (*tmp)->next;
 		if (TYPE == EBQT)
+			join = 1;
+		else if (join)
 		{
-			ft_pop_node(tmp, (void*)&clear_lexems);
-			break;
+			if ((*tmp)->next->next != end_bqt)
+				free_join(&VAL, "\n");
+			free_join(&VAL, ((t_token*)(*tmp)->next->data)->value);
+			ft_pop_node(&(*tmp)->next, (void*)&clear_lexems);
 		}
-		ft_pop_node(tmp, (void*)&clear_lexems);
+		if (!join || TYPE == EBQT)
+			ft_pop_node(tmp, (void*)&clear_lexems);
 	}
 	return (1);
 }
@@ -42,6 +51,7 @@ static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 {
 	t_list	*tmp;
 	t_token	*token;
+	t_list	*end_bqt;
 
 	tmp = *begin_lexems;
 	while (tmp)
@@ -51,7 +61,12 @@ static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 		{
 			sh->current_token = token;
 			sh->lexer->lexems = tmp;
-			if (!(manage_here_doc_bqt(sh, token, &tmp, begin_lexems)))
+			while (tmp && ((t_token*)tmp->data)->type != EBQT)
+				NEXT(tmp);
+			if (tmp)
+				end_bqt = tmp->next;
+				tmp = sh->lexer->lexems;
+			if (!(manage_here_doc_bqt(sh, end_bqt, &tmp, begin_lexems)))
 				return (0);
 		}
 		if (tmp)
@@ -60,25 +75,56 @@ static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 	return (1);
 }
 
-static char	**lex_parse_heredoc(t_sh *sh, char *heredoc_line)
+static char	*lex_parse_heredoc(t_sh *sh, char *heredoc_line)
 {
 	t_list	*begin_lexems;
 	char	**cmds;
-
-	sh->lexer->line = heredoc_line;
+	char	**line;
+	int		i;
+	int		j;
+	char	*output;
+	
+	line = ft_strsplit(heredoc_line, '\n');
+	i = -1;
 	sh->lexer->her = 1;
-	get_lexems(sh);
-	begin_lexems = sh->lexer->lexems;
-	if (!(is_bqt_in_heredoc(sh, &begin_lexems)))
+	output = NULL;	
+	while (line[++i])
 	{
+		sh->lexer->line = line[i];
+		get_lexems(sh);
+		begin_lexems = sh->lexer->lexems;
+		if (!(is_bqt_in_heredoc(sh, &begin_lexems)))
+		{
+			ft_clear_list(&begin_lexems, (void*)&clear_lexems);
+			sh->lexer->her = 0;
+			return ((void*)-1);
+		}
+		cmds = get_cmds(&begin_lexems, sh);
+		j = -1;
+		while (cmds[++j])
+		{
+			if (j > 0)
+				free_join(&output, " ");
+			free_join(&output, cmds[j]);
+		}
+		if (line[i + 1])
+			free_join(&output, "\n");		
+		free_join(&output, cmds[j]);		
+		ft_strdelpp(&cmds);
+		/*t_list *tmp = begin_lexems;
+		t_token *token;
+		while (tmp)
+		{
+			token = (t_token*)tmp->data;
+			ft_putendl(VAL);
+			NEXT(tmp);
+		}*/
 		ft_clear_list(&begin_lexems, (void*)&clear_lexems);
-		sh->lexer->her = 0;
-		return ((void*)-1);
 	}
-	cmds = get_cmds(&begin_lexems, sh);
-	ft_clear_list(&begin_lexems, (void*)&clear_lexems);
+	free(heredoc_line);
+	ft_strdelpp(&line);
 	sh->lexer->her = 0;
-	return (cmds);
+	return (output);
 }
 
 char		*read_here_doc(char *cmd, char *prompt)
@@ -110,15 +156,12 @@ char		*read_here_doc(char *cmd, char *prompt)
 char		manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
 				int *fd_pipe)
 {
-	char	**cmds;
-	int		i;
+	char	*output;
 
-	if ((cmds = (lex_parse_heredoc(sh, heredoc_line))) == (void*)-1)
+	if ((output = (lex_parse_heredoc(sh, heredoc_line))) == (void*)-1)
 		return (0);
-	i = -1;
-	while (cmds && cmds[++i] && node->left)
-		ft_fputendl(cmds[i], fd_pipe[1]);
-	ft_strdelpp(&cmds);
-	free(heredoc_line);
+	if (output && node->left)
+		ft_fputendl(output, fd_pipe[1]);
+	free(output);
 	return (1);
 }

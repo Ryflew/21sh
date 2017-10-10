@@ -49,7 +49,8 @@ int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
 	lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt) || (*st_op &&
 	((lexer->line)[i] != '`' || *st_op == '\'')) || ((lexer->line)[i] == '$'
 	&& !ft_isalnum((lexer->line)[i + 1])) || (((lexer->line)[i] == '=' && \
-	!i))))))
+	!i)))) || (!isnt_here_or_bqt(lexer) && (lexer->line)[i] != '$' &&
+	(lexer->line)[i] != '`' && !ft_isblank((lexer->line)[i]))))
 		if_its_word((lexer->line)[i++], &bs, st_op, type);
 	return (i);
 }

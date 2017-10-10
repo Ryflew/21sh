@@ -20,9 +20,14 @@ void		free_join(char **s1, char *s2)
 {
 	char	*to_free;
 
-	to_free = *s1;
-	*s1 = ft_strjoin(*s1, s2);
-	free(to_free);
+	if (*s1)
+	{
+		to_free = *s1;
+		*s1 = ft_strjoin(*s1, s2);
+		free(to_free);
+	}
+	else
+		*s1 = ft_strdup(s2);
 }
 
 static void	add_end_path(t_list *lexems, t_list **new_lexems)
