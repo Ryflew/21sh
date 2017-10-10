@@ -35,7 +35,7 @@ static void	add_end_path(t_list *lexems, t_list **new_lexems)
 	{
 		token = (t_token*)lexems->data;
 		if (TYPE == END_EXPR)
-			break;
+			break ;
 		if (TYPE == EXPR && ft_strchr(VAL, '/'))
 			++copy;
 		if (copy)
@@ -67,7 +67,7 @@ static char	fill_new_lexems(t_list *lexems, char end_path, char *join)
 		t_token *token = (t_token*)tmp->data;
 		(void)token;
 		if (((t_token*)(tmp->data))->type == END_EXPR && (!tmp->next || ((t_token*)(tmp->next->data))->type != SON))
-			break;
+			break ;
 		tmp = tmp->next;
 	}
 	ft_add_list(tmp, new_lexems);

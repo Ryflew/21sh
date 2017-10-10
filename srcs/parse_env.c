@@ -29,10 +29,40 @@ static char		**create_tmp_env(t_sh *sh, int size, t_token *token)
 	return (tmp_env);
 }
 
-static t_list	*increase(t_list *tmp, int *size)
+static t_list	*increase(t_list *tmp, int *size, e_token type)
 {
-	++(*size);
+	if (type != VAR_WORD && type != EQUAL)
+		++(*size);
 	return (tmp->next);
+}
+
+static t_token	*compute_tmp_env_size(t_list **tmp, int *size, t_token *token)
+{
+	t_token	*prev_token;	
+	
+	if ((*tmp)->prev)
+		prev_token = (t_token*)(*tmp)->prev->data;
+	if ((*tmp)->prev && TYPE == EQUAL && (prev_token->type == VAR_WORD))
+	{
+		if ((*tmp)->next && ((t_token*)(*tmp)->next->data)->type == VAR_WORD)
+			free_join(&VAL, ((t_token*)(*tmp)->next->data)->value);
+		ft_pop_node(&(*tmp)->next, (void*)&clear_lexems);
+		free_join(&prev_token->value, VAL);
+		prev_token->type = WORD;
+		*tmp = (*tmp)->prev;
+		ft_pop_node(&(*tmp)->next, (void*)&clear_lexems);
+	}
+	else
+	{
+		*tmp = increase(*tmp, size, TYPE);
+		if (*tmp && !ft_strcmp(VAL, "-u") \
+		&& (((t_token*)(*tmp)->data)->type == WORD \
+		|| ((t_token*)(*tmp)->data)->type == NUM))
+			*tmp = increase(*tmp, size, NONE);
+	}
+	if (*tmp)
+		token = (*tmp)->data;
+	return (token);
 }
 
 char			**parse_env_cmds(t_sh *sh)
@@ -40,7 +70,6 @@ char			**parse_env_cmds(t_sh *sh)
 	int		size;
 	t_list	*tmp;
 	t_token	*token;
-	t_token	*next_token;	
 
 	tmp = sh->lexer->lexems;
 	if (tmp->next)
@@ -54,21 +83,6 @@ char			**parse_env_cmds(t_sh *sh)
 	while (tmp && (!ft_strcmp(VAL, "-i") || !ft_strcmp(VAL, "-u")
 		|| !ft_strcmp(VAL, "env") ||\
 		ft_strchr(VAL, '=') || TYPE == VAR_WORD || TYPE == EQUAL))
-	{
-		if (tmp->next)
-			next_token = (t_token*)tmp->next->data;
-		if (tmp->next && TYPE == VAR_WORD && (next_token->type == EQUAL
-			|| next_token->type == VAR_WORD))
-		{
-			free_join(&VAL, next_token->value);
-			ft_pop_node(&tmp->next, (void*)&clear_lexems);
-		}
-		else
-			tmp = increase(tmp, &size);
-		if (tmp && !ft_strcmp(VAL, "-u"))
-			tmp = increase(tmp, &size);
-		if (tmp)
-			token = tmp->data;
-	}
+		token = compute_tmp_env_size(&tmp, &size, token);
 	return (create_tmp_env(sh, size, token));
 }
