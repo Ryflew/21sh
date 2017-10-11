@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:25:08 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:25:09 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 17:20:25 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ int		father(t_sh *shell, int *fd, int *heredoc_pipe, t_tree *node)
 	{
 		if (shell->fd_pipe)
 			close(shell->fd_pipe);
-		shell->fd_pipe = fd[0];
-		if (shell->right_side)
+		if ((shell->fd_pipe = fd[0]) == fd[0] && shell->right_side)
 		{
 			waitpid(g_father, &ret, 0);
 			close(fd[0]);

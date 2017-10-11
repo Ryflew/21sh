@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:20 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 15:47:15 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 17:29:50 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ void	help_echo(void)
 	first_step("echo");
 	ft_putendl("\t- echo [string ...]\n");
 	do_termcap("us");
-	ft_putendl("The following operands are supported:\n");
+	ft_putstr("The following operands are supported:");
 	ft_putstr(C_RESET);
 	ft_putstr(C_ITA);
+	ft_putstr("\n\n");
 	ft_putendl("\t\\a : Write an <alert>.");
 	ft_putendl("\t\\b : Write a <backspace>.");
 	ft_putendl("\t\\c : Suppress the <newline> that otherwise follows the " \

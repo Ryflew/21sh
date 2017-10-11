@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 11:48:42 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 17:11:55 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,10 @@ char		run_binary(t_tree *node, t_env *env, t_sh *shell)
 	int		fd[2];
 	int		ret;
 	int		heredoc_pipe[2];
-	
+
 	set_old_term(shell);
-	if (node->parent && node->parent->TYPE == DCHEVB && (ret = pipe(heredoc_pipe)) == -1)
+	if (node->parent && node->parent->TYPE == DCHEVB && \
+		(ret = pipe(heredoc_pipe)) == -1)
 		errexit("21sh", "pipe failure !\n");
 	if ((ret = get_fd(shell, fd)) != -1)
 	{
@@ -70,9 +71,10 @@ char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 	int		ret;
 	int		fd[2];
 	int		heredoc_pipe[2];
-	
+
 	set_old_term(shell);
-	if (node->parent && node->parent->TYPE == DCHEVB && (ret = pipe(heredoc_pipe)) == -1)
+	if (node->parent && node->parent->TYPE == DCHEVB && \
+		(ret = pipe(heredoc_pipe)) == -1)
 		errexit("21sh", "pipe failure !\n");
 	if ((ret = get_fd(shell, fd)) != -1)
 	{
