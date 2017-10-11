@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:15 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:26:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 17:27:43 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void		first_step(char *name)
 	do_termcap("us");
 	ft_putstr("Using of ");
 	ft_putstr(name);
-	ft_putendl(" command:");
+	ft_putstr(" command:");
 	ft_putstr(C_RESET);
+	ft_putstr("\n\n");
 	ft_putstr(C_ITA);
-	ft_putchar('\n');
 }
 
 static void	help_exit(void)
