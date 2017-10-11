@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binary.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 20:07:05 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 20:09:10 by bdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
 	}
 	else if (!shell->have_write_error)
 	{
-
 		ft_fputstr("21sh: command not found: ", 2);
 		ft_fputendl(node->cmds[0], 2);
 		ret = EXIT_FAILURE;
