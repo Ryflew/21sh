@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:46:33 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:46:33 by bdurst           ###   ########.fr       */
+/*   Updated: 2017/10/11 19:40:43 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	open_chevb(t_tree *node)
 	int		fd_file;
 
 	if ((fd_file = open(node->right->cmds[0], O_RDONLY)) == -1)
-		errexit("No such file or directory", node->right->cmds[0]);
+		errexit(node->right->cmds[0], "File open failure");
 	return (fd_file);
 }
 
@@ -28,7 +28,7 @@ static int	open_dchevf(t_tree *node)
 
 	if ((fd_file = open(node->right->cmds[0], O_WRONLY | O_APPEND | \
 		O_CREAT, 0644)) == -1)
-		errexit("No such file or directory", node->right->cmds[0]);
+		errexit(node->right->cmds[0], "File open failure");
 	return (fd_file);
 }
 
@@ -38,7 +38,7 @@ static int	open_chevf(t_tree *node)
 
 	if ((fd_file = open(node->right->cmds[0], O_WRONLY | O_CREAT | \
 		O_TRUNC, 0644)) == -1)
-		errexit("No such file or directory", node->right->cmds[0]);
+		errexit(node->right->cmds[0], "File open failure");
 	return (fd_file);
 }
 

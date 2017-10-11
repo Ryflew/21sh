@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operators.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:46:19 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:46:20 by bdurst           ###   ########.fr       */
+/*   Updated: 2017/10/11 20:04:03 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ static char	manage_chev(t_tree *node, t_sh *shell)
 		if (!(fd = (t_fd*)malloc(sizeof(t_fd))))
 			exit(-1);
 		if ((fd->file = open_file(node)) == -1)
+		{
+			free(fd);
 			return (-1);
+		}
 		if (node->TYPE != FRED)
 			fd->from = (node->from_fd == -1) ? 1 : node->from_fd;
 		else
@@ -80,9 +83,6 @@ static char	manage_chev(t_tree *node, t_sh *shell)
 
 char		operators(t_tree *node, t_sh *shell)
 {
-	int		ret;
-
-	ret = 0;
 	if (node->TYPE == PIPE)
 	{
 		if (shell->fd_pipe == -1)

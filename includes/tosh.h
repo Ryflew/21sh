@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tosh.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:42:51 by bdurst           ###   ########.fr       */
+/*   Updated: 2017/10/11 19:06:57 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,7 @@ typedef	struct		s_sh
 	char			*saved;
 
 	char			have_write_error;
+	char			perm_error;
 	int				return_value;
 	char			read_delimiter;
 	int				read_nchar;

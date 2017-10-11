@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:05 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 16:05:05 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 18:53:11 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void		add_hash_line(char *name, char *path, t_sh *shell, char mute)
 	if (!is_binary(path))
 	{
 		if (!mute)
-			errexit("hash", "not valide path.");
+			errexit("hash", "not a valide path.");
 		return ;
 	}
 	i = 0;

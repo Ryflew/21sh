@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:44:33 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:44:35 by bdurst           ###   ########.fr       */
+/*   Updated: 2017/10/11 18:54:01 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,13 @@ char	is_binary(char *path)
 	if ((bytes = read(fd, buff, 299)) > 0)
 	{
 		while (--bytes)
+		{
 			if (buff[bytes] == '\0')
 			{
 				close(fd);
 				return (1);
 			}
+		}
 	}
 	close(fd);
 	return (0);
