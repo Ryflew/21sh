@@ -96,7 +96,7 @@ char		subshell(t_sh *sh, e_token type)
 	{
 		sh->ssbqt = 1;
 		sh->pipe_ss[0] = 0;
-		get_fd(sh, sh->pipe_ss, NULL);
+		get_fd(sh, sh->pipe_ss);
 	}
 	fork_subshell(sh, sub_tree);
 	if (sh->fds_out)

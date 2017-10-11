@@ -160,7 +160,10 @@ char		manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
 	if ((output = (lex_parse_heredoc(sh, heredoc_line))) == (void*)-1)
 		return (0);
 	if (output && node->left)
+	{
 		ft_fputendl(output, fd_pipe[1]);
+		close(fd_pipe[1]);
+	}
 	free(output);
 	return (1);
 }

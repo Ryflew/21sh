@@ -3,6 +3,8 @@
         "tosh.h": "c",
         "list.h": "c",
         "limits": "c",
-        "*.tcc": "c"
+        "*.tcc": "c",
+        "ios": "c",
+        "locale": "c"
     }
 }

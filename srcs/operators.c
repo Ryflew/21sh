@@ -19,9 +19,8 @@ char		manage_dchevb(t_sh *sh, char *cmd, t_tree *node, int *fd_pipe)
 		return (0);
 	if (node->left)
 	{
-		close(fd_pipe[1]);
-		(node->to_fd != -1) ? dup2(fd_pipe[0], node->to_fd) \
-		: dup2(fd_pipe[0], 0);
+		(node->to_fd != -1) ? dup2(fd_pipe[0], node->to_fd) : dup2(fd_pipe[0], 0);
+		close(fd_pipe[0]);
 	}
 	return (1);
 }
@@ -29,7 +28,7 @@ char		manage_dchevb(t_sh *sh, char *cmd, t_tree *node, int *fd_pipe)
 void		manage_chevb(t_fd fd)
 {
 	if (fd.to != -1)
-	{
+	{   
 		dup2(fd.to, 0);
 		close(fd.to);
 	}

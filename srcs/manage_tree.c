@@ -53,8 +53,7 @@ char		browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char rig)
 
 	node->parent = parent;
 	ret = 0;
-	if (node->token && ((node->left && node->left->cmd_tokens) || \
-		(node->right && node->right->cmd_tokens)))
+	if (node->token)
 	{
 		if ((operators(node, shell)) == -1)
 			return (-1);

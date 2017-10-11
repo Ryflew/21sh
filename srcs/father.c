@@ -14,11 +14,13 @@
 
 pid_t	g_father = -1;
 
-int		father(t_sh *shell, int *fd, t_tree *node)
+int		father(t_sh *shell, int *fd, int *heredoc_pipe, t_tree *node)
 {
 	int ret;
 
 	close(fd[1]);
+	if (node && node->TYPE == DCHEVB)
+		close(heredoc_pipe[1]);
 	if (shell->fd_pipe != -1)
 	{
 		if (shell->fd_pipe)
@@ -36,7 +38,7 @@ int		father(t_sh *shell, int *fd, t_tree *node)
 	else
 		waitpid(g_father, &ret, 0);
 	if (node && node->TYPE == DCHEVB)
-		close(fd[0]);
+		close(heredoc_pipe[0]);
 	g_father = -1;
 	shell->return_value = WEXITSTATUS(ret);
 	return (WEXITSTATUS(ret));

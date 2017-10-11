@@ -351,7 +351,7 @@ char				**conv_env(t_env *env);
 char				**get_history(t_sh *shell, off_t size, char *home,
 					char is_21sh_logs);
 char				**split_quot_cmd(char *cmd);
-void				child(t_tree *node, t_sh *shell, int *fd);
+void				child(t_tree *node, t_sh *shell, int *fd, int *heredoc_pipe);
 t_env				*new_env(char *str);
 t_env				*cpy_env(t_env *env);
 t_env				*get_env(char **env);
@@ -381,7 +381,7 @@ char				parse_error(t_sh *sh);
 char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
 char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
 pid_t				child_pid();
-int					get_fd(t_sh *shell, int *fd, t_tree *node);
+int					get_fd(t_sh *shell, int *fd);
 int					get_next_line(const int fd, char **line);
 char				browse_tree(t_tree *node, t_sh *shell, t_tree *parent,
 					char r_side);
@@ -390,7 +390,7 @@ void				*ret_parse_error(t_tree *node);
 t_token				*identify_token(t_lexer *lexer, t_token *last_token);
 char				**parse_env_cmds(t_sh *sh);
 t_fd				*aggregation_rules(t_sh *sh);
-int					father(t_sh *shell, int *fd, t_tree *node);
+int					father(t_sh *shell, int *fd, int *heredoc_pipe, t_tree *node);
 
 char				isnt_here_or_bqt(t_lexer *lexer);
 void				init_shell_before_parser(t_sh *shell);
@@ -408,7 +408,7 @@ void				replace_tild(t_token *token, t_env *env);
 char				manage_cmds(t_tree *node, t_sh *sh);
 char				**get_cmds(t_list **cmds_token, t_sh *sh);
 
-void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe);
+void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe, int *heredoc_pipe);
 
 char				is_glob_token(e_token type);
 void				glob(t_list **first_lexems);

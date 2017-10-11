@@ -66,14 +66,13 @@ static void	manage_aggregations(t_tree *node)
 	}
 }
 
-void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe)
+void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe, int *heredoc_pipe)
 {
 	t_fd	*fd;
 	t_list	*tmp;
 
-	if (!node->parent || node->parent->TYPE != DCHEVB)
-		close(pipe[0]);
-	child(node, shell, pipe);
+	close(pipe[0]);
+	child(node, shell, pipe, heredoc_pipe);
 	tmp = shell->fds_out;
 	while (tmp && node->parent && (shell->fd_pipe == -1 \
 		|| shell->right_side))
