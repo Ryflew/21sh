@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:31 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:31:33 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 11:18:31 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,13 +137,13 @@ char		*read_here_doc(char *cmd, char *prompt)
 	line = NULL;
 	heredoc_line = NULL;
 	ft_putstr(prompt);
-	while ((ret = gnl(0, &line) > 0) && ft_strcmp(line, cmd))
+	while ((ret = get_next_line(0, &line) > 0) && ft_strcmp(line, cmd))
 	{
 		to_free = heredoc_line;
 		heredoc_line = (!to_free) ? ft_strdup(line) : ft_strstrjoin(to_free, "\n", line);
 		if (to_free)
-			free(to_free);
-		free(line);
+			ft_strdel(&to_free);
+		ft_strdel(&line);
 		ft_putstr(prompt);
 	}
 	free(line);
