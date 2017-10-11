@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:58:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:06:14 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 16:17:27 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static void	treat_command(t_sh *shell, char *command)
 	shell->state = BASIC_SHELL;
 }
 
-static char	shell_loop3(char **command, char **last, e_state *state, char **op)
+static char	shell_loop3(char **command, char **last, enum e_state *state, \
+			char **op)
 {
 	char	*tmp;
 
@@ -63,7 +64,8 @@ static char	shell_loop3(char **command, char **last, e_state *state, char **op)
 	return (0);
 }
 
-char		shell_loop2(char **command, char **last, e_state *state, char **op)
+char		shell_loop2(char **command, char **last, enum e_state *state, \
+				char **op)
 {
 	if (*state == BASIC_SHELL)
 	{
@@ -76,7 +78,7 @@ char		shell_loop2(char **command, char **last, e_state *state, char **op)
 	}
 	if (*state == BRACKET_ERROR)
 	{
-		ft_putstr("\nBrackets error !\n");
+		errexit("21sh", "\nBrackets error !");
 		*state = BASIC_SHELL;
 		if (*last)
 			free(*last);

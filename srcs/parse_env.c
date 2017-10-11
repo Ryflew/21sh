@@ -29,7 +29,7 @@ static char		**create_tmp_env(t_sh *sh, int size, t_token *token)
 	return (tmp_env);
 }
 
-static t_list	*increase(t_list *tmp, int *size, e_token type)
+static t_list	*increase(t_list *tmp, int *size, enum e_token type)
 {
 	if (type != VAR_WORD && type != EQUAL)
 		++(*size);
@@ -38,8 +38,8 @@ static t_list	*increase(t_list *tmp, int *size, e_token type)
 
 static t_token	*compute_tmp_env_size(t_list **tmp, int *size, t_token *token)
 {
-	t_token	*prev_token;	
-	
+	t_token	*prev_token;
+
 	if ((*tmp)->prev)
 		prev_token = (t_token*)(*tmp)->prev->data;
 	if ((*tmp)->prev && TYPE == EQUAL && (prev_token->type == VAR_WORD))

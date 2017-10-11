@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 23:43:54 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:06:19 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 14:54:02 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	check_bad_bracket(char *str, char *op)
 	return (check_new_open(str, op, &j));
 }
 
-static void	continue_treat(char *str, int *j, char *new_op, e_state *state)
+static void	continue_treat(char *str, int *j, char *new_op, enum e_state *state)
 {
 	while (*str)
 	{
@@ -70,7 +70,7 @@ static void	continue_treat(char *str, int *j, char *new_op, e_state *state)
 	}
 }
 
-void		treat_second_prompt(char *string, char **op, e_state *state)
+void		treat_second_prompt(char *string, char **op, enum e_state *state)
 {
 	int		j;
 	char	*str;

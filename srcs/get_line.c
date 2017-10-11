@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:31:51 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 15:59:54 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	ctrl_d(t_sh *shell)
 		sig_hand(0);
 }
 
-static char	get_line2(t_sh *shell, unsigned long buff, e_state *state)
+static char	get_line2(t_sh *shell, unsigned long buff, enum e_state *state)
 {
 	if (shell->saved && shell->ref_pos > -1 && buff != CTRL_MAJ_LEFT && \
 		buff != CTRL_MAJ_RIGTH)
@@ -79,7 +79,8 @@ void		add_all_char(t_sh *shell)
 	ft_strdel(&(shell->toaddstr));
 }
 
-char		*get_line(t_sh *shell, unsigned long buff, e_state *state, char *op)
+char		*get_line(t_sh *shell, unsigned long buff, enum e_state *state, \
+				char *op)
 {
 	print_prompt(*state, op);
 	shell->have_write_error = 0;

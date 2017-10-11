@@ -14,7 +14,7 @@ static void	concat_var(t_list **lexems, t_token *token)
 	ft_pop_node(lexems, (void*)&clear_lexems);
 }
 
-static void	replace_var(e_token last_type, t_list **lexems, t_sh *sh)
+static void	replace_var(enum e_token last_type, t_list **lexems, t_sh *sh)
 {
 	char	*to_free;
 	t_token	*token;
@@ -41,7 +41,7 @@ static void	replace_var(e_token last_type, t_list **lexems, t_sh *sh)
 void		manage_var_op(t_sh *sh, t_list **tmp, t_list **cmd_tokens,
 					t_token *token)
 {
-	e_token last_type;
+	enum e_token	last_type;
 
 	last_type = TYPE;
 	if (*tmp == *cmd_tokens)

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 21:18:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:06:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 16:02:14 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,12 @@ static char	*get_tmp(char **av)
 	}
 }
 
+static char	set_env_format_error(void)
+{
+	errexit("setenv", "Wrong format.\n\tType \"help setenv\" for seeing usage.");
+	return (1);
+}
+
 void		set_env(char **av, t_env **env)
 {
 	char	*tmp;
@@ -82,6 +88,8 @@ void		set_env(char **av, t_env **env)
 	first = *env;
 	if (!*++av)
 		print_env(*env);
+	else if (ft_strchr(*av, '=') && set_env_format_error())
+		return ;
 	else if (!(find_env(*env, *av)))
 	{
 		while (*env && (*env)->next)

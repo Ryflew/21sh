@@ -9,7 +9,7 @@
 
 ------------ BUG --------------
 
-- aggregation: ls ferfef 2&>-
+- echo 2>&f
 
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
@@ -21,6 +21,3 @@
 - !
 - Command read
 - Globing
-
-
-=============================

@@ -6,13 +6,13 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:27:50 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 14:45:47 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
 
-static void	if_its_word(char c, char *bs, char *st_op, e_token *type)
+static void	if_its_word(char c, char *bs, char *st_op, enum e_token *type)
 {
 	if (!ft_isdigit(c))
 	{
@@ -31,7 +31,7 @@ static void	if_its_word(char c, char *bs, char *st_op, e_token *type)
 		*bs = 0;
 }
 
-int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
+int			compute_word_size(t_lexer *lexer, enum e_token *type, char *st_op,
 								t_token *l_tk)
 {
 	char	bs;
@@ -55,7 +55,8 @@ int			compute_word_size(t_lexer *lexer, e_token *type, char *st_op,
 	return (i);
 }
 
-static void	find_type(t_lexer *lx, t_token *l_tk, char st_op, e_token *type)
+static void	find_type(t_lexer *lx, t_token *l_tk, char st_op, \
+				enum e_token *type)
 {
 	if (isnt_here_or_bqt(lx) && *lx->line == '~' && (lx->blank || !l_tk
 	|| l_tk->type == LBRC || l_tk->type == COM) && (ft_isblank(*(lx->line + 1))
@@ -80,11 +81,11 @@ static void	find_type(t_lexer *lx, t_token *l_tk, char st_op, e_token *type)
 
 t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 {
-	int		word_size;
-	t_token	*token;
-	e_token	type;
-	char	st_op;
-	char	*word;
+	int				word_size;
+	t_token			*token;
+	enum e_token	type;
+	char			st_op;
+	char			*word;
 
 	type = NUM;
 	word_size = compute_word_size(lexer, &type, &st_op, last_token);

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:11 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:26:11 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 16:04:25 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	validity_path(char *cmd, t_sh *shell, int i)
 			if (!ft_strcmp(ent->d_name, cmd))
 			{
 				tmp = ft_strstrjoin(tab[i], "/", ent->d_name);
-				add_hash_line(cmd, tmp, get_shell());
+				add_hash_line(cmd, tmp, shell, 1);
 				free(tmp);
 				ft_strdelpp(&tab);
 				closedir(dir);

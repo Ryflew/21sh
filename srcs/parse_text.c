@@ -1,6 +1,6 @@
 #include "tosh.h"
 
-char		eat(t_sh *sh, e_token token)
+char		eat(t_sh *sh, enum e_token token)
 {
 	if (sh->current_token->type == token)
 	{
@@ -15,7 +15,7 @@ char		eat(t_sh *sh, e_token token)
 	return (0);
 }
 
-static void	bqt_c_rule(t_sh *sh, e_token type, t_token **token)
+static void	bqt_c_rule(t_sh *sh, enum e_token type, t_token **token)
 {
 	eat(sh, type);
 	if (sh->current_token && sh->current_token->type == BQT_C)

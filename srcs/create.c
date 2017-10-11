@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:05 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:24:05 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 14:46:01 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_tree	*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *rig)
 	return (new_node);
 }
 
-t_token	*new_token(t_lexer *lexer, e_token token_type, char *value)
+t_token	*new_token(t_lexer *lexer, enum e_token token_type, char *value)
 {
 	t_token *token;
 

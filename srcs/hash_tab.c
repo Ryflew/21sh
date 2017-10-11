@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:05 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:26:06 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 16:05:05 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,15 @@ static void	del_hash_line(char *name, t_sh *shell)
 		errexit("hash", "program name not found.");
 }
 
-void		add_hash_line(char *name, char *path, t_sh *shell)
+void		add_hash_line(char *name, char *path, t_sh *shell, char mute)
 {
 	char	**new_av;
 	int		i;
 
 	if (!is_binary(path))
 	{
-		errexit("hash", "not valide path.");
+		if (!mute)
+			errexit("hash", "not valide path.");
 		return ;
 	}
 	i = 0;
@@ -109,7 +110,7 @@ void		hash_tab(char **av, t_sh *shell)
 	if (d_opt && !*(av + 1))
 		del_hash_line(*av, shell);
 	else if (p_opt && *(av + 1) && !*(av + 2))
-		add_hash_line(*av, *(av + 1), shell);
+		add_hash_line(*av, *(av + 1), shell, 0);
 	else if (r_opt && shell->hash)
 	{
 		del_all_env(&shell->hash);

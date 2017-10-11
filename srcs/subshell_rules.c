@@ -8,7 +8,7 @@ t_token			*par_rule(t_sh *sh)
 	subshell(sh, LPAR);
 	if (!sh->current_token || eat(sh, RPAR) == -1)
 	{
-		ft_putendl("parse error: miss close par `)`");
+		errexit("21sh", "parse error: miss close par `)`");
 		return ((void*)-1);
 	}
 	if (!(token = text_rules(sh)))
@@ -25,7 +25,7 @@ static t_token	*concat_bqt(t_sh *sh, char concat,
 		return ((void*)-1);
 	if (!sh->current_token || eat(sh, EBQT) == -1)
 	{
-		ft_putendl("parse error: miss close backquote '`'");
+		errexit("21sh", "parse error: miss close backquote '`'");
 		return ((void*)-1);
 	}
 	if (!(token = text_rules(sh)))

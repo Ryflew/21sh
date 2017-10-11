@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/13 19:47:25 by bdurst            #+#    #+#             */
-/*   Updated: 2017/07/09 17:02:06 by bdurst           ###   ########.fr       */
+/*   Updated: 2017/10/11 13:37:37 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ char				*ft_strstrjoin(char *s1, char *s2, char *s3);
 char				*ft_strjoinchar(char *s1, char s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
-char			    **ft_strseparate(char const *s, char c);
+char				**ft_strseparate(char const *s, char c);
 void				ft_perror(const char *str, int status);
 void				ft_exiterror(const char *str, int status);
-int		            ft_strfind_by_end(const char *s, int c);
+int					ft_strfind_by_end(const char *s, int c);
 int					ft_strfind(const char *s, int start, int c);
 char				ft_strcont(char *s1, char *s2);
 size_t				ft_counttab(char **tabu);

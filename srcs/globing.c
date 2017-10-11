@@ -6,18 +6,16 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:01 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:26:01 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 12:55:46 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
 
-static void	replace_expr_by_word(t_list **lexems)
+static void	replace_expr_by_word(t_list **lexems, t_list *tmp)
 {
 	t_token *token;
-	t_list	*tmp;
 
-	tmp = *lexems;
 	while (tmp)
 	{
 		token = (t_token*)tmp->data;
@@ -128,5 +126,5 @@ void		glob(t_list **first_lexems)
 			lexems = lexems->next;
 	}
 	replace_all_exprs(first_lexems);
-	replace_expr_by_word(first_lexems);
+	replace_expr_by_word(first_lexems, *first_lexems);
 }

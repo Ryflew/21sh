@@ -35,7 +35,7 @@ static char	*get_new_tokens(t_sh *sh)
 	}
 	if (ret == -1)
 	{
-		ft_putendl("read failure");
+		errexit("21sh", "read failure");
 		return ((void*)-1);
 	}
 	return (tokens_line);
@@ -86,7 +86,7 @@ static void	fork_subshell(t_sh *sh, t_tree *sub_tree)
 		waitpid(father, &ret, 0);
 }
 
-char		subshell(t_sh *sh, e_token type)
+char		subshell(t_sh *sh, enum e_token type)
 {
 	t_tree	*sub_tree;
 
