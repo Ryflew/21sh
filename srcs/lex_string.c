@@ -6,7 +6,7 @@
 /*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 19:13:54 by bdurst           ###   ########.fr       */
+/*   Updated: 2017/10/11 19:59:46 by bdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			compute_word_size(t_lexer *lexer, enum e_token *type, char *st_op,
 	((lexer->line)[i] == '}' && !lexer->brc) || ((lexer->line)[i] == '{' &&
 	lexer->bkt) || ((lexer->line)[i] == '}' && lexer->bkt) || (*st_op &&
 	(((lexer->line)[i] != '`' && (lexer->line)[i] != '$') || *st_op == '\''))
-	|| ((lexer->line)[i] == '$' && !ft_isalnum((lexer->line)[i + 1])) || 
+	|| ((lexer->line)[i] == '$' && !ft_isalnum((lexer->line)[i + 1])) ||
 	(((lexer->line)[i] == '=' && !i)))) || (!isnt_here_or_bqt(lexer) &&
 	(lexer->line)[i] != '$' && (lexer->line)[i] != '`'
 	&& !ft_isblank((lexer->line)[i]))))
