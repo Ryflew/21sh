@@ -52,9 +52,9 @@ int				gnl(int const fd, char **line)
 	{
 		buff[ret] = '\0';
 		tmp = stock;
-		if (stock && clean)
-			free(stock);
-		stock = ft_strjoin(tmp, buff);
+		stock = ft_strjoin(stock, buff);
+		if (tmp && clean)
+			free(tmp);
 	}
 	if (ret == -1)
 		return (-1);

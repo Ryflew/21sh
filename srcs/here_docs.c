@@ -140,8 +140,7 @@ char		*read_here_doc(char *cmd, char *prompt)
 	while ((ret = gnl(0, &line) > 0) && ft_strcmp(line, cmd))
 	{
 		to_free = heredoc_line;
-		heredoc_line = (!to_free) ? ft_strdup(line) : \
-		ft_strstrjoin(to_free, "\n", line);
+		heredoc_line = (!to_free) ? ft_strdup(line) : ft_strstrjoin(to_free, "\n", line);
 		if (to_free)
 			free(to_free);
 		free(line);
