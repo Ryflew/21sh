@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:20:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 15:21:01 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 16:11:29 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	manage_here_doc_bqt0(t_sh *sh)
 		return (0);
 	if (eat(sh, EBQT) == -1)
 	{
-		ft_putendl("parse error: backquote isn't close");
+		errexit("21sh", "parse error: backquote isn't close");
 		return (0);
 	}
 	return (1);

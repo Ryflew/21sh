@@ -35,7 +35,7 @@ static char	*get_new_tokens(t_sh *sh)
 	}
 	if (ret == -1)
 	{
-		ft_putendl("read failure");
+		errexit("21sh", "read failure");
 		return ((void*)-1);
 	}
 	return (tokens_line);

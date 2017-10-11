@@ -336,7 +336,7 @@ void				history_cmd(char **av, t_sh *shell);
 void				treat_history_cmd(t_tree *tree);
 char				check_quot_brackets2(char *str, char *op, int i, int *j);
 int					get_history_size(t_sh *shell);
-void				add_hash_line(char *name, char *path, t_sh *shell);
+void				add_hash_line(char *name, char *path, t_sh *shell, char mute);
 char				is_in_hashtab(char *path, t_env *env);
 char				*clear_quot(char *str, char string_op);
 char				*read_line_echo(int fd, unsigned long deli, int nchar);

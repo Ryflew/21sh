@@ -9,6 +9,8 @@
 
 ------------ BUG --------------
 
+- echo 2>&f
+
 --- Bonus Slider A Dire En soutenance pour le 21 ---
 
 - && et ||

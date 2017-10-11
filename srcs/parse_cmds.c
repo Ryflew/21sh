@@ -8,6 +8,7 @@ char			parse_error(t_sh *sh)
 	else
 		ft_putstr("\\n");
 	ft_putendl("'");
+	sh->return_value = 1;
 	return (-1);
 }
 
