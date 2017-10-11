@@ -86,7 +86,7 @@ static void	fork_subshell(t_sh *sh, t_tree *sub_tree)
 		waitpid(father, &ret, 0);
 }
 
-char		subshell(t_sh *sh, e_token type)
+char		subshell(t_sh *sh, enum e_token type)
 {
 	t_tree	*sub_tree;
 

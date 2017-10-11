@@ -14,7 +14,7 @@ static void	basic_prompt(void)
 	ft_putstr("] $> ");
 }
 
-void		print_prompt(e_state state, char *op)
+void		print_prompt(enum e_state state, char *op)
 {
 	if (state == BASIC_SHELL)
 		basic_prompt();

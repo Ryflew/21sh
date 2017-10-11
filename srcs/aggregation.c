@@ -6,13 +6,13 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:22:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 21:42:07 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 14:46:16 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
 
-static char	fill_fd(t_sh *sh, int *left_fd, int *right_fd, e_token type)
+static char	fill_fd(t_sh *sh, int *left_fd, int *right_fd, enum e_token type)
 {
 	*left_fd = ft_atoi(sh->current_token->value);
 	eat(sh, FD);
@@ -30,7 +30,7 @@ static char	fill_fd(t_sh *sh, int *left_fd, int *right_fd, e_token type)
 	return (1);
 }
 
-static char	is_fd_type(t_sh *sh, e_token type)
+static char	is_fd_type(t_sh *sh, enum e_token type)
 {
 	if (sh->current_token->type == FD && sh->lexer->lexems->next && \
 	((t_token*)sh->lexer->lexems->next->data)->type == type)
@@ -39,7 +39,7 @@ static char	is_fd_type(t_sh *sh, e_token type)
 }
 
 static char	fred_bred_rules(t_sh *sh, int *left_fd, int *right_fd,
-			e_token type)
+			enum e_token type)
 {
 	if (is_fd_type(sh, type) && sh->lexer->lexems->next->next && \
 		((t_token*)sh->lexer->lexems->next->next->data)->type == FD)

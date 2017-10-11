@@ -69,9 +69,8 @@ static char	fill_new_lexems(t_list *lexems, char end_path, char *join)
 	tmp = lexems;
 	while (tmp)
 	{
-		t_token *token = (t_token*)tmp->data;
-		(void)token;
-		if (((t_token*)(tmp->data))->type == END_EXPR && (!tmp->next || ((t_token*)(tmp->next->data))->type != SON))
+		if (((t_token*)(tmp->data))->type == END_EXPR && (!tmp->next || \
+			((t_token*)(tmp->next->data))->type != SON))
 			break ;
 		tmp = tmp->next;
 	}

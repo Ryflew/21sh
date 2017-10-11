@@ -3,7 +3,7 @@
 static char		check_son_expr(t_list **lexems, t_list **save_son, \
 					t_list **save, char *son)
 {
-	e_token	type;
+	enum e_token	type;
 
 	type = ((t_token*)((*lexems)->data))->type;
 	if (type == SON)
@@ -29,10 +29,10 @@ static char		check_son_expr(t_list **lexems, t_list **save_son, \
 
 static char		search_expr(t_list **lexems)
 {
-	e_token	type;
-	t_list	*save;
-	t_list	*save_son;
-	char	son;
+	enum e_token	type;
+	t_list			*save;
+	t_list			*save_son;
+	char			son;
 
 	save = NULL;
 	save_son = NULL;

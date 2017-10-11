@@ -42,7 +42,7 @@ typedef struct termios	t_termios;
 typedef struct dirent	t_dirent;
 typedef struct stat		t_stat;
 
-typedef enum	e_token
+enum				e_token
 {
 	NONE, // 0
 	ENDOF, // 1
@@ -86,16 +86,16 @@ typedef enum	e_token
 	TILD, // 39
 	SON, // 40
 	EQUAL // 41
-}				e_token;
+};
 
-typedef enum	e_state
+enum				e_state
 {
 	BASIC_SHELL,
 	ADVANCE_SHELL,
 	BRACKET_ERROR,
 	COMMAND_RUN,
 	READ_CMD
-}				e_state;
+};
 
 typedef struct		s_env
 {
@@ -129,7 +129,7 @@ typedef	struct		s_lexer
 typedef	struct		s_token
 {
 	char			*value;
-	e_token			type;
+	enum e_token	type;
 }					t_token;
 
 typedef struct		s_tree
@@ -165,7 +165,7 @@ typedef struct		s_fd
 	int				file;
 	int				from;
 	int				to;
-	e_token			type;
+	enum e_token	type;
 }					t_fd;
 
 typedef	struct		s_sh
@@ -186,7 +186,7 @@ typedef	struct		s_sh
 	int				fd_pipe;
 	int				right_side;
 	char			ssbqt;
-	
+
 	char			*prompt;
 	char			*toaddstr;
 	char			command[ARG_MAX];
@@ -194,7 +194,7 @@ typedef	struct		s_sh
 	char			*op;
 	int				j;
 
-	e_state			state;
+	enum e_state	state;
 	t_termios		old;
 	t_termios		our;
 	t_term_pos		pos;
@@ -270,14 +270,15 @@ void				add_new_var(char ***av, t_env **env);
 void				arrows(t_sh *shell, unsigned long c);
 void				past_data(t_sh *shell);
 void				concat_unused_add_var(t_list *cmd_tokens);
-char				is_env_var_to_add(t_list **cmd_tokens, t_list *tmp, char ret);
+char				is_env_var_to_add(t_list **cmd_tokens, t_list *tmp, \
+						char ret);
 void				tild_to_home(char **str, t_env *env);
 void				delete_char(char *command, int *j, t_sh *shell);
 void				get_cursor(t_sh *shell);
 void				hash_tab(char **av, t_sh *shell);
-void				print_prompt(e_state state, char *op);
+void				print_prompt(enum e_state state, char *op);
 void				treat_second_prompt(char *string, char **op,
-					e_state *state);
+						enum e_state *state);
 void				go_core(char *command, t_sh *shell);
 void				manage_redirection(t_tree **tree);
 void				load_history(t_sh *shell, t_env *env);
@@ -323,12 +324,14 @@ char				del_all_env(t_env **list);
 char				check_path(char *command, char *path);
 char				env_command(char **av, t_env *env);
 char				check_new_open(char *str, char *op, int *j);
-char				shell_loop2(char **command, char **last, e_state *state,
-						char **op);
+char				shell_loop2(char **command, char **last, \
+						enum e_state *state, char **op);
 char				stop_binary(int sig);
 char				check_new_open(char *str, char *op, int *j);
 char				check_quot(char *str, char *op, int *i, int *j);
 char				reg_or_dir(char *path);
+char				manage_here_doc_bqt(t_sh *sh, t_list *end_bqt, \
+						t_list **tmp, t_list **begin_lexems);
 void				history_cmd(char **av, t_sh *shell);
 void				treat_history_cmd(t_tree *tree);
 char				check_quot_brackets2(char *str, char *op, int i, int *j);
@@ -341,15 +344,15 @@ char				*read_line_cano(t_sh *shell, int fd);
 char				*get_start_str(t_sh *shell);
 char				*find_builtins(char *part);
 char				*check_dir_content(char *part, char *path);
-char				*check_quot_brackets(char *str, e_state *state);
+char				*check_quot_brackets(char *str, enum e_state *state);
 char				*get_with_tilde(char *path, t_env *env);
 char				*find_env(t_env *env, char *name);
 char				*find_match_binary(t_sh *shell, char *tosearch);
-char				*get_line(t_sh *shell, unsigned long buff, e_state *state,
-					char *op);
+char				*get_line(t_sh *shell, unsigned long buff, \
+						enum e_state *state, char *op);
 char				**conv_env(t_env *env);
 char				**get_history(t_sh *shell, off_t size, char *home,
-					char is_21sh_logs);
+						char is_21sh_logs);
 char				**split_quot_cmd(char *cmd);
 void				child(t_tree *node, t_sh *shell, int *fd);
 t_env				*new_env(char *str);
@@ -360,8 +363,8 @@ t_tree				*commands_line_rules(t_sh *sh);
 void				get_lexems(t_sh *sh);
 t_tree				*redirection_rules(t_sh *sh, t_tree *left);
 t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens,
-					t_tree *right);
-char				eat(t_sh *sh, e_token token);
+						t_tree *right);
+char				eat(t_sh *sh, enum e_token token);
 t_token				*text_rules(t_sh *sh);
 char				**list_to_tabstr(t_list *list);
 char				operators(t_tree *node, t_sh *shell);
@@ -370,13 +373,15 @@ char				*get_path(t_tree *node, t_env *env, t_sh *shell);
 char				is_builtins(char **cmd);
 char				is_writable_builtins(char **cmd);
 char				go_builtins(char **cmd, t_env **env, t_sh *shell);
-char				manage_dchevb(t_sh *sh, char *cmd, t_tree *node, int *fd_pipe);
+char				manage_dchevb(t_sh *sh, char *cmd, t_tree *node, \
+						int *fd_pipe);
 void				manage_chevb(t_fd fd);
 char				*current_binary(t_tree *node, t_env *env, t_sh *shell);
 t_token				*lex_number(t_lexer *lexer);
 t_token				*lex_word(t_lexer *lexer, t_token *last_token);
 t_tree				*cmd_rules(t_sh *sh);
-t_token				*new_token(t_lexer *lexer, e_token token_type, char *val);
+t_token				*new_token(t_lexer *lexer, enum e_token token_type, \
+						char *val);
 char				parse_error(t_sh *sh);
 char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
 char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
@@ -395,7 +400,7 @@ int					father(t_sh *shell, int *fd, t_tree *node);
 char				isnt_here_or_bqt(t_lexer *lexer);
 void				init_shell_before_parser(t_sh *shell);
 
-char				subshell(t_sh *sh, e_token type);
+char				subshell(t_sh *sh, enum e_token type);
 
 char				*get_word(char const *s, size_t len);
 
@@ -410,7 +415,7 @@ char				**get_cmds(t_list **cmds_token, t_sh *sh);
 
 void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe);
 
-char				is_glob_token(e_token type);
+char				is_glob_token(enum e_token type);
 void				glob(t_list **first_lexems);
 int					nmatch(char *s1, char *s2, t_list *lexems);
 void				replace_all_exprs(t_list **first_lexems);
@@ -425,11 +430,10 @@ void				merge_expr(t_list *lexems);
 
 void				free_join(char **s1, char *s2);
 
-char        		manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
+char				manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
 					int *fd_pipe);
 char				*read_here_doc(char *cmd, char *prompt);
 t_token				*par_rule(t_sh *sh);
 t_token				*bqt_rule(t_sh *sh);
-					
 
 #endif

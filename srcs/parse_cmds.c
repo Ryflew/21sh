@@ -29,6 +29,7 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, \
 	{
 		if (fd)
 			ft_node_push_back(aggregations, fd);
+		fd = NULL;
 		if (token)
 		{
 			if (TYPE != NONE)

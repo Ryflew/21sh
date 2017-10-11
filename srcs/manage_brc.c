@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:28:06 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:28:06 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 14:45:06 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static void	get_rest_expr(t_list **lexems, t_list **new_lexems)
 	}
 }
 
-static void	get_expr_start(t_list *lexems, t_list **new_lexems, e_token type)
+static void	get_expr_start(t_list *lexems, t_list **new_lexems, \
+			enum e_token type)
 {
 	t_token	*token;
 

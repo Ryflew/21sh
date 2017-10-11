@@ -101,6 +101,7 @@ FILES = add_char.c \
 				manage_child_fd.c \
 				is_tokens.c \
 				here_docs.c \
+				here_docs2.c \
 				subshell_rules.c
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug

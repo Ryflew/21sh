@@ -1,6 +1,6 @@
 #include "tosh.h"
 
-t_tree			*basic_red(t_sh *sh, e_token type, t_tree *left)
+t_tree			*basic_red(t_sh *sh, enum e_token type, t_tree *left)
 {
 	t_token	*token;
 
@@ -18,7 +18,7 @@ t_tree			*basic_red(t_sh *sh, e_token type, t_tree *left)
 	return (NULL);
 }
 
-t_tree			*adv_red_forward(t_sh *sh, e_token type, t_tree *left)
+t_tree			*adv_red_forward(t_sh *sh, enum e_token type, t_tree *left)
 {
 	t_token	*token_type;
 
