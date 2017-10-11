@@ -3,7 +3,8 @@
 t_tree			*basic_red(t_sh *sh, enum e_token type, t_tree *left)
 {
 	t_token	*token;
-
+	t_tree	*right;
+	
 	if (left && !left->right && left->token && left->TYPE != SCL && \
 		left->TYPE != NONE)
 		return (ret_parse_error(left));
@@ -13,7 +14,9 @@ t_tree			*basic_red(t_sh *sh, enum e_token type, t_tree *left)
 		eat(sh, type);
 		if (!sh->current_token)
 			return (ret_parse_error(left));
-		return (create_node(left, token, NULL, cmd_rules(sh)));
+		if (!(right = cmd_rules(sh)) || right == (void*)-1)
+			return (ret_parse_error(left));		
+		return (create_node(left, token, NULL, right));
 	}
 	return (NULL);
 }
@@ -21,6 +24,7 @@ t_tree			*basic_red(t_sh *sh, enum e_token type, t_tree *left)
 t_tree			*adv_red_forward(t_sh *sh, enum e_token type, t_tree *left)
 {
 	t_token	*token_type;
+	t_tree	*right;
 
 	if (left && !left->right && left->token && left->TYPE != SCL && \
 		left->TYPE != NONE)
@@ -31,7 +35,9 @@ t_tree			*adv_red_forward(t_sh *sh, enum e_token type, t_tree *left)
 		eat(sh, type);
 		if (!sh->current_token)
 			return (ret_parse_error(left));
-		return (create_node(left, token_type, NULL, cmd_rules(sh)));
+		if (!(right = cmd_rules(sh)) || right == (void*)-1)
+			return (ret_parse_error(left));		
+		return (create_node(left, token_type, NULL, right));
 	}
 	return (NULL);
 }

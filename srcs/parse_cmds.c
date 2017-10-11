@@ -18,6 +18,16 @@ void			*ret_parse_error(t_tree *node)
 	return ((void*)-1);
 }
 
+static t_token	*ret_get_tokens(t_fd *fd, t_token *token, t_list **cmd_tokens)
+{
+	if (fd == (void*)-1)
+	{
+		ft_clear_list(cmd_tokens, (void*)&clear_lexems);		
+		return ((void*)-1);
+	}
+	return (token);
+}
+
 static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, \
 					t_token **ss_empty, t_list **cmd_tokens)
 {
@@ -43,9 +53,7 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, \
 			}
 		}
 	}
-	if (fd == (void*)-1)
-		return ((void*)-1);
-	return (token);
+	return (ret_get_tokens(fd, token, cmd_tokens));
 }
 
 t_tree			*cmd_rules(t_sh *sh)

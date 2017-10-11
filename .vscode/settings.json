@@ -5,6 +5,10 @@
         "limits": "c",
         "*.tcc": "c",
         "ios": "c",
-        "locale": "c"
+        "locale": "c",
+        "atomic": "c",
+        "list": "c",
+        "string": "c",
+        "system_error": "c"
     }
 }
