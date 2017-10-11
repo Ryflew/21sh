@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:24:39 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 17:23:38 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,20 @@ void	add_new_var(char ***av, t_env **env)
 	new_av[3] = NULL;
 	set_env(new_av, env);
 	ft_strdelpp(&new_av);
+}
+
+char	*get_tmp(char **av)
+{
+	char	*str;
+	char	*tmp;
+
+	if (!(*(av + 1)))
+		return (ft_strjoin(*av, "="));
+	else
+	{
+		str = ft_strdup(*(av + 1));
+		tmp = ft_strstrjoin(*av, "=", str);
+		free(str);
+		return (tmp);
+	}
 }

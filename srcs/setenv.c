@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 21:18:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 16:02:14 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 17:24:18 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,25 +56,10 @@ static char	setenv_size(char **av)
 	return (0);
 }
 
-static char	*get_tmp(char **av)
-{
-	char	*str;
-	char	*tmp;
-
-	if (!(*(av + 1)))
-		return (ft_strjoin(*av, "="));
-	else
-	{
-		str = ft_strdup(*(av + 1));
-		tmp = ft_strstrjoin(*av, "=", str);
-		free(str);
-		return (tmp);
-	}
-}
-
 static char	set_env_format_error(void)
 {
-	errexit("setenv", "Wrong format.\n\tType \"help setenv\" for seeing usage.");
+	errexit("setenv", "Wrong format.\n\tType \"help setenv\" " \
+		"for seeing usage.");
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:28:10 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 11:39:42 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 17:20:56 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ static void	manage_aggregations(t_tree *node)
 	}
 }
 
-void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe, int *heredoc_pipe)
+void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe, \
+				int *heredoc_pipe)
 {
 	t_fd	*fd;
 	t_list	*tmp;

@@ -314,6 +314,7 @@ void				print_history2(t_sh *shell, t_sh *bis_sh);
 char				add_char(char *command, int *j, t_sh *shell, char c);
 char				check_alpha(char *str);
 char				go_to_c(char **str, char c);
+char				*get_tmp(char **av);
 char				cd_path_validity(char *path);
 char				*is_absolute(t_tree *node, t_env *env, t_sh *shell);
 char				is_binary(char *path);
