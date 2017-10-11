@@ -6,20 +6,16 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:16 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:24:17 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 23:43:24 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
 
-static char	echo_env(char *str, t_env *env)
+static char	echo_env(char *str)
 {
-	char	*tmp;
-
 	if (*(str + 1) == '?')
 		ft_putnbr(get_shell()->return_value);
-	else if ((tmp = find_env(env, str + 1)))
-		ft_putstr(tmp);
 	return (1);
 }
 
@@ -69,11 +65,11 @@ static void	backslash(char **str)
 		echo_octal(str);
 }
 
-static char	print_echo(char *str, t_env *env, char *nflag, char last)
+static char	print_echo(char *str, char *nflag, char last)
 {
 	while (*str)
 	{
-		if (*str == '$' && *(str + 1) && echo_env(str, env))
+		if (*str == '$' && *(str + 1) && echo_env(str))
 			break ;
 		else if (*str == '\\' && *(str + 1) && (*(str + 1) == 'a' || \
 			*(str + 1) == 'b' || *(str + 1) == 'c' || *(str + 1) == 'f' || \
@@ -96,7 +92,7 @@ static char	print_echo(char *str, t_env *env, char *nflag, char last)
 	return (0);
 }
 
-void		echo_builtin(char **av, t_env *env)
+void		echo_builtin(char **av)
 {
 	char	nflag;
 
@@ -108,7 +104,7 @@ void		echo_builtin(char **av, t_env *env)
 		ft_putchar('\n');
 	while (*av)
 	{
-		if (print_echo(*av, env, &nflag, *(av + 1) ? 0 : 1))
+		if (print_echo(*av, &nflag, *(av + 1) ? 0 : 1))
 			return ;
 		if (*(av + 1))
 			ft_putchar(' ');

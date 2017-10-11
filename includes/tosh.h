@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 19:06:57 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 23:43:30 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ extern pid_t		g_father;
 void				cd(char **av, t_env *env, t_sh *shell);
 void				change_prompt(char *path, t_env *env, char **new_prompt,
 					t_cd *opt);
-void				echo_builtin(char **av, t_env *env);
+void				echo_builtin(char **av);
 void				set_env(char **av, t_env **env);
 void				unset_env(char **av, t_env **env);
 void				exit_command(char **av, t_sh *shell);

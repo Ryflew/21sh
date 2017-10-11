@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:54:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:07:15 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 23:14:14 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,11 @@ static void	treat_current(char *path, char **new_prompt, t_cd *opt)
 	char	buff[4097];
 
 	if (!ft_strcmp(path, "."))
+	{
+		if (!*new_prompt)
+			*new_prompt = ft_strdup(get_shell()->prompt);
 		return ;
+	}
 	else if (!ft_strcmp(path, ".."))
 		cd_dot_dot(new_prompt);
 	else if (*path == '/')

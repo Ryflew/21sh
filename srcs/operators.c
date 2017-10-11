@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:46:19 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 20:06:56 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 20:10:19 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ void		manage_chevb(t_fd fd)
 	close(fd.file);
 }
 
+static char	free_and_return(t_fd *fd)
+{
+	free(fd);
+	return (-1);
+}
+
 static char	manage_chev(t_tree *node, t_sh *shell)
 {
 	t_fd	*fd;
@@ -66,10 +72,7 @@ static char	manage_chev(t_tree *node, t_sh *shell)
 		if (!(fd = (t_fd*)malloc(sizeof(t_fd))))
 			exit(-1);
 		if ((fd->file = open_file(node)) == -1)
-		{
-			free(fd);
-			return (-1);
-		}
+			return (free_and_return(fd));
 		if (node->TYPE != FRED)
 			fd->from = (node->from_fd == -1) ? 1 : node->from_fd;
 		else

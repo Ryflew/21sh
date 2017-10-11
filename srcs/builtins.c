@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:15 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:23:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 23:43:49 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	go_builtins(char **cmd, t_env **env, t_sh *shell)
 {
 	if (!ft_strcmp(cmd[0], "echo"))
 	{
-		echo_builtin(cmd, *env);
+		echo_builtin(cmd);
 		shell->return_value = 0;
 		return (0);
 	}
