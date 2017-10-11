@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection_parser.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/11 17:39:07 by bdurst            #+#    #+#             */
+/*   Updated: 2017/10/11 17:44:10 by bdurst           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 t_tree			*basic_red(t_sh *sh, enum e_token type, t_tree *left)
 {
 	t_token	*token;
 	t_tree	*right;
-	
+
 	if (left && !left->right && left->token && left->TYPE != SCL && \
 		left->TYPE != NONE)
 		return (ret_parse_error(left));
@@ -15,7 +27,7 @@ t_tree			*basic_red(t_sh *sh, enum e_token type, t_tree *left)
 		if (!sh->current_token)
 			return (ret_parse_error(left));
 		if (!(right = cmd_rules(sh)) || right == (void*)-1)
-			return (ret_parse_error(left));		
+			return (ret_parse_error(left));
 		return (create_node(left, token, NULL, right));
 	}
 	return (NULL);
@@ -36,7 +48,7 @@ t_tree			*adv_red_forward(t_sh *sh, enum e_token type, t_tree *left)
 		if (!sh->current_token)
 			return (ret_parse_error(left));
 		if (!(right = cmd_rules(sh)) || right == (void*)-1)
-			return (ret_parse_error(left));		
+			return (ret_parse_error(left));
 		return (create_node(left, token_type, NULL, right));
 	}
 	return (NULL);

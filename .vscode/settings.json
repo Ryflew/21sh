@@ -9,6 +9,8 @@
         "atomic": "c",
         "list": "c",
         "string": "c",
-        "system_error": "c"
+        "system_error": "c",
+        "stdlib.h": "c",
+        "fcntl.h": "c"
     }
 }

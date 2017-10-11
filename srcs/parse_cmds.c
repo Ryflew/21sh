@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_cmds.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/11 17:38:43 by bdurst            #+#    #+#             */
+/*   Updated: 2017/10/11 17:38:44 by bdurst           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 char			parse_error(t_sh *sh)
@@ -22,7 +34,7 @@ static t_token	*ret_get_tokens(t_fd *fd, t_token *token, t_list **cmd_tokens)
 {
 	if (fd == (void*)-1)
 	{
-		ft_clear_list(cmd_tokens, (void*)&clear_lexems);		
+		ft_clear_list(cmd_tokens, (void*)&clear_lexems);
 		return ((void*)-1);
 	}
 	return (token);

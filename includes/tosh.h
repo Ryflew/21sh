@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tosh.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
+/*   Updated: 2017/10/11 17:42:51 by bdurst           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef TOSH_H
 # define TOSH_H
 
@@ -44,48 +56,48 @@ typedef struct stat		t_stat;
 
 enum				e_token
 {
-	NONE, // 0
-	ENDOF, // 1
-	PIPE, // 2
-	CHEVB, // 3
-	DCHEVB, // 4
-	CHEVF, // 5
-	DCHEVF, // 6
-	FRED, // 7
-	BRED, // 8
-	AND, // 9
-	OR, // 10
-	SCL, // 11
-	NUM, // 12
-	WORD, // 13
-	ASCII_WORD, // 14
-	FD, // 15
-	CLOSE_FD, // 16
-	BQT, // 17
-	BQT_C, // 18
-	EBQT, // 19
-	LPAR, // 20
-	RPAR, // 21
-	S_WILDCARD, // 22
-	Q_WILDCARD, // 23
-	E_WILDCARD, // 24
-	LBKT, // 25
-	RBKT, // 26
-	LBRC, // 27
-	RBRC, // 28
-	COM, // 29
-	TILD_EXPR, // 30
-	EXPR, // 31
-	BKT_EXPR, // 32
-	END_EXPR, // 33
-	HIST, // 34
-	VAR_OP, // 35
-	VAR_OP_C, // 36
-	VAR_WORD, // 37
-	TILD_VAR_WORD, // 38
-	TILD, // 39
-	SON, // 40
-	EQUAL // 41
+	NONE,
+	ENDOF,
+	PIPE,
+	CHEVB,
+	DCHEVB,
+	CHEVF,
+	DCHEVF,
+	FRED,
+	BRED,
+	AND,
+	OR,
+	SCL,
+	NUM,
+	WORD,
+	ASCII_WORD,
+	FD,
+	CLOSE_FD,
+	BQT,
+	BQT_C,
+	EBQT,
+	LPAR,
+	RPAR,
+	S_WILDCARD,
+	Q_WILDCARD,
+	E_WILDCARD,
+	LBKT,
+	RBKT,
+	LBRC,
+	RBRC,
+	COM,
+	TILD_EXPR,
+	EXPR,
+	BKT_EXPR,
+	END_EXPR,
+	HIST,
+	VAR_OP,
+	VAR_OP_C,
+	VAR_WORD,
+	TILD_VAR_WORD,
+	TILD,
+	SON,
+	EQUAL
 };
 
 enum				e_state
@@ -337,7 +349,8 @@ void				history_cmd(char **av, t_sh *shell);
 void				treat_history_cmd(t_tree *tree);
 char				check_quot_brackets2(char *str, char *op, int i, int *j);
 int					get_history_size(t_sh *shell);
-void				add_hash_line(char *name, char *path, t_sh *shell, char mute);
+void				add_hash_line(char *name, char *path, t_sh *shell,\
+					char mute);
 char				is_in_hashtab(char *path, t_env *env);
 char				*clear_quot(char *str, char string_op);
 char				*read_line_echo(int fd, unsigned long deli, int nchar);
@@ -355,7 +368,8 @@ char				**conv_env(t_env *env);
 char				**get_history(t_sh *shell, off_t size, char *home,
 						char is_21sh_logs);
 char				**split_quot_cmd(char *cmd);
-void				child(t_tree *node, t_sh *shell, int *fd, int *heredoc_pipe);
+void				child(t_tree *node, t_sh *shell, int *fd,\
+					int *heredoc_pipe);
 t_env				*new_env(char *str);
 t_env				*cpy_env(t_env *env);
 t_env				*get_env(char **env);
@@ -396,7 +410,8 @@ void				*ret_parse_error(t_tree *node);
 t_token				*identify_token(t_lexer *lexer, t_token *last_token);
 char				**parse_env_cmds(t_sh *sh);
 t_fd				*aggregation_rules(t_sh *sh);
-int					father(t_sh *shell, int *fd, int *heredoc_pipe, t_tree *node);
+int					father(t_sh *shell, int *fd, int *heredoc_pipe,\
+					t_tree *node);
 
 char				isnt_here_or_bqt(t_lexer *lexer);
 void				init_shell_before_parser(t_sh *shell);
@@ -407,14 +422,15 @@ char				*get_word(char const *s, size_t len);
 
 char				is_operator(char c, char c2);
 
-void				manage_var_op(t_sh *sh, t_list **tmp, t_list **cmd_tokens,
+void				manage_var_op(t_sh *sh, t_list **tmp, t_list **cmd_tokens,\
 								t_token *token);
 void				replace_tild(t_token *token, t_env *env);
 
 char				manage_cmds(t_tree *node, t_sh *sh);
 char				**get_cmds(t_list **cmds_token, t_sh *sh);
 
-void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe, int *heredoc_pipe);
+void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe,
+					int *heredoc_pipe);
 
 char				is_glob_token(enum e_token type);
 void				glob(t_list **first_lexems);
