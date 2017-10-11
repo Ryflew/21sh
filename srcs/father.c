@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   father.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:25:08 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 17:20:25 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/10/11 19:59:27 by bdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,23 @@
 
 pid_t	g_father = -1;
 
-int		father(t_sh *shell, int *fd, int *heredoc_pipe, t_tree *node)
+static void	wait_if_pipe(t_sh *shell, int *ret, int *fd, t_tree *node)
+{
+	if (shell->fd_pipe)
+		close(shell->fd_pipe);
+	if ((shell->fd_pipe = fd[0]) == fd[0] && shell->right_side)
+	{
+		waitpid(g_father, ret, 0);
+		close(fd[0]);
+		shell->fd_pipe = -1;
+	}
+	else if (node && node->token && node->TYPE != DCHEVB)
+		waitpid(g_father, ret, WNOHANG);
+	else
+		waitpid(g_father, ret, 0);
+}
+
+int			father(t_sh *shell, int *fd, int *heredoc_pipe, t_tree *node)
 {
 	int ret;
 
@@ -22,18 +38,7 @@ int		father(t_sh *shell, int *fd, int *heredoc_pipe, t_tree *node)
 	if (node && node->TYPE == DCHEVB)
 		close(heredoc_pipe[1]);
 	if (shell->fd_pipe != -1)
-	{
-		if (shell->fd_pipe)
-			close(shell->fd_pipe);
-		if ((shell->fd_pipe = fd[0]) == fd[0] && shell->right_side)
-		{
-			waitpid(g_father, &ret, 0);
-			close(fd[0]);
-			shell->fd_pipe = -1;
-		}
-		else
-			waitpid(g_father, &ret, WNOHANG);
-	}
+		wait_if_pipe(shell, &ret, fd, node);
 	else
 		waitpid(g_father, &ret, 0);
 	if (node && node->TYPE == DCHEVB)
@@ -43,7 +48,7 @@ int		father(t_sh *shell, int *fd, int *heredoc_pipe, t_tree *node)
 	return (WEXITSTATUS(ret));
 }
 
-char	*current_binary(t_tree *node, t_env *env, t_sh *shell)
+char		*current_binary(t_tree *node, t_env *env, t_sh *shell)
 {
 	int		i;
 	char	*str;
