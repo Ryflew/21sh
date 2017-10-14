@@ -12,18 +12,17 @@
 
 #include "tosh.h"
 
-static char	manage_here_doc_bqt0(t_sh *sh)
+static void	manage_here_doc_bqt0(t_sh *sh)
 {
 	if (eat(sh, BQT) == -1)
 		eat(sh, BQT_C);
-	if (!(subshell(sh, BQT)))
-		return (0);
+	if (!(subshell(sh, sh->lexer->lexems, BQT)))
+		return ;
 	if (eat(sh, EBQT) == -1)
 	{
 		errexit("21sh", "parse error: backquote isn't close");
-		return (0);
+		return ;
 	}
-	return (1);
 }
 
 char		manage_here_doc_bqt(t_sh *sh, t_list *end_bqt, t_list **tmp, \
@@ -32,8 +31,7 @@ char		manage_here_doc_bqt(t_sh *sh, t_list *end_bqt, t_list **tmp, \
 	t_token	*token;
 	char	join;
 
-	if (!manage_here_doc_bqt0(sh))
-		return (0);
+	manage_here_doc_bqt0(sh);
 	join = 0;
 	while (*tmp && (*tmp)->next && (*tmp)->next != end_bqt)
 	{

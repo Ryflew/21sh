@@ -1,19 +1,12 @@
 ---------- BUG -------------
 
-(ls) > cat -e
+BASILE :
 
 ls toto |& cat -e
+`ls ; (ls)` marche pas
+
+Victor :
 
 Desactive les signaux quand on lance un binaire
-
-Cat -e << elf; ls ; cat -e eof // pete
-
 Env PS1 pour modifier le prompt du Shell
-
-Ls ; (pwd) ; ls // a executer dans l’ordre
-
-<< eof | cat -e > o
-
-Virer gestion $ dans écho
-
-echo '$HOME' marche pas
+ctrl D marche pas avec <<

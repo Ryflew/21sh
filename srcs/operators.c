@@ -59,14 +59,7 @@ static char	manage_chev(t_tree *node, t_sh *shell)
 {
 	t_fd	*fd;
 
-	if (node->TYPE == DCHEVB)
-	{
-		node->right->cmds = get_cmds(&node->right->cmd_tokens, shell);
-		if (!node->left &&
-		!(manage_dchevb(shell, node->right->cmds[0], node, NULL)))
-			return (-1);
-	}
-	else if (node->TYPE == CHEVF || node->TYPE == DCHEVF || node->TYPE == FRED)
+	if (node->TYPE == CHEVF || node->TYPE == DCHEVF || node->TYPE == FRED)
 	{
 		node->right->cmds = get_cmds(&node->right->cmd_tokens, shell);
 		if (!(fd = (t_fd*)malloc(sizeof(t_fd))))

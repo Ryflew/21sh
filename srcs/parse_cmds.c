@@ -45,9 +45,11 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, \
 {
 	t_token	*token;
 	t_fd	*fd;
+	char	is_inside_bqt;
 
 	fd = NULL;
-	while (((token = text_rules(sh)) && token != (void*)-1) \
+	is_inside_bqt = 0;
+	while (((token = text_rules(sh, is_inside_bqt)) && token != (void*)-1) \
 	|| (token != (void*)-1 && (fd = aggregation_rules(sh)) && fd != (void*)-1))
 	{
 		if (fd)
@@ -55,6 +57,10 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, \
 		fd = NULL;
 		if (token)
 		{
+			if (TYPE == BQT || TYPE == BQT_C || TYPE == LPAR)
+				is_inside_bqt = 1;
+			else if (TYPE == EBQT || TYPE == RPAR)
+				is_inside_bqt = 0;
 			if (TYPE != NONE)
 				ft_node_push_back(cmd_tokens, new_token(NULL, TYPE, VAL));
 			else

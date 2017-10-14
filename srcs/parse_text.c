@@ -27,12 +27,12 @@ char		eat(t_sh *sh, enum e_token token)
 	return (0);
 }
 
-static void	bqt_c_rule(t_sh *sh, enum e_token type, t_token **token)
+/*static void	bqt_c_rule(t_sh *sh, enum e_token type, t_token **token)
 {
 	eat(sh, type);
 	if (sh->current_token && sh->current_token->type == BQT_C)
 		*token = text_rules(sh);
-}
+}*/
 
 static void	text_rules3(t_sh *sh, t_token **token)
 {
@@ -41,15 +41,17 @@ static void	text_rules3(t_sh *sh, t_token **token)
 	else if (sh->current_token->type == VAR_OP_C)
 		eat(sh, VAR_OP_C);
 	else if (sh->current_token->type == VAR_WORD)
-		bqt_c_rule(sh, VAR_WORD, token);
+		eat(sh, VAR_WORD);
 	else if (sh->current_token->type == TILD_VAR_WORD)
-		bqt_c_rule(sh, TILD_VAR_WORD, token);
+		eat(sh, TILD_VAR_WORD);
 	else if (sh->current_token->type == EQUAL)
 		eat(sh, EQUAL);
-	else if ((*token)->type == BQT || (*token)->type == BQT_C)
-		*token = bqt_rule(sh);
-	else if ((*token)->type == LPAR)
-		*token = par_rule(sh);
+	else if (sh->current_token->type == BQT)
+		eat(sh, BQT);
+	else if (sh->current_token->type == BQT_C)
+		eat(sh, BQT_C);
+	else if (sh->current_token->type == LPAR)
+		eat(sh, LPAR);
 	else
 		*token = NULL;
 }
@@ -82,19 +84,21 @@ static void	text_rules2(t_sh *sh, t_token **token)
 		text_rules3(sh, token);
 }
 
-t_token		*text_rules(t_sh *sh)
+t_token		*text_rules(t_sh *sh, char is_inside_bqt)
 {
 	t_token *token;
 
 	if (!sh->current_token)
 		return (NULL);
 	token = sh->current_token;
-	if (sh->current_token->type == WORD)
-		bqt_c_rule(sh, WORD, &token);
+	if (is_inside_bqt)
+		eat(sh, TYPE);
+	else if (sh->current_token->type == WORD)
+		eat(sh, WORD);
 	else if (sh->current_token->type == NUM)
-		bqt_c_rule(sh, NUM, &token);
+		eat(sh, NUM);
 	else if (sh->current_token->type == TILD)
-		bqt_c_rule(sh, TILD, &token);
+		eat(sh, TILD);
 	else if (sh->current_token->type == END_EXPR)
 		eat(sh, END_EXPR);
 	else

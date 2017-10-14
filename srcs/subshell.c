@@ -12,23 +12,6 @@
 
 #include "tosh.h"
 
-static void	manage_subshell(t_sh *sh, t_tree *sub_tree)
-{
-	sh->fd_pipe = -1;
-	sh->fds_out = NULL;
-	sh->lexer->her = 0;
-	sh->return_value = 0;
-	browse_tree(sub_tree, sh, NULL, 1);
-	if (sub_tree)
-	{
-		if (sh->fds_out)
-			ft_clear_list(&sh->fds_out, (&free));
-		sh->fds_out = NULL;
-		sh->fd_pipe = -1;
-		del_command_tree(sub_tree);
-	}
-}
-
 static char	*get_new_tokens(t_sh *sh)
 {
 	char	*tokens_line;
@@ -53,32 +36,59 @@ static char	*get_new_tokens(t_sh *sh)
 	return (tokens_line);
 }
 
-static char	add_new_tokens(t_sh *sh)
+static char	add_new_tokens(t_sh *sh, enum e_token type)
 {
 	int		i;
 	t_list	*new_lexems;
 	char	*tokens_line;
 	char	**new_tokens;
+	char	*trim_line;
 
 	sh->ssbqt = 0;
 	close(sh->pipe_ss[1]);
 	if ((tokens_line = get_new_tokens(sh)) == (void*)-1)
 		return (0);
-	if (!(new_tokens = ft_strsplit(tokens_line, '\n')))
-		return (1);
-	i = -1;
+	close(sh->pipe_ss[0]);
 	new_lexems = NULL;
-	while (new_tokens[++i])
+	if (type == BQT)
 	{
-		ft_node_push_back(&new_lexems, new_token(NULL, WORD, new_tokens[i]));
-		free(new_tokens[i]);
+		if (!(new_tokens = ft_strsplit(tokens_line, '\n')))
+			return (1);
+		i = -1;
+		while (new_tokens[++i])
+		{
+			ft_node_push_back(&new_lexems, new_token(NULL, WORD, new_tokens[i]));
+			free(new_tokens[i]);
+		}
+		free(new_tokens);
+	}
+	else
+	{
+		trim_line = ft_strtrim(tokens_line);
+		ft_node_push_back(&new_lexems, new_token(NULL, WORD, "echo"));
+		ft_node_push_back(&new_lexems, new_token(NULL, WORD, trim_line));
+		free(trim_line);
 	}
 	free(tokens_line);
-	free(new_tokens);
-	close(sh->pipe_ss[0]);
 	if (new_lexems)
 		ft_add_list(sh->lexer->lexems, new_lexems);
 	return (1);
+}
+
+static void	manage_subshell(t_sh *sh, t_tree *sub_tree)
+{
+	sh->fd_pipe = -1;
+	sh->fds_out = NULL;
+	sh->return_value = 0;
+	browse_tree(sub_tree, sh, NULL, 1);
+	if (sub_tree)
+	{
+		if (sh->fds_out)
+			ft_clear_list(&sh->fds_out, (&free));
+		sh->fds_out = NULL;
+		sh->fd_pipe = -1;
+		del_command_tree(sub_tree);
+	}
 }
 
 static void	fork_subshell(t_sh *sh, t_tree *sub_tree)
@@ -96,25 +106,24 @@ static void	fork_subshell(t_sh *sh, t_tree *sub_tree)
 	}
 	else
 		waitpid(father, &ret, 0);
+
 }
 
-char		subshell(t_sh *sh, enum e_token type)
+char		subshell(t_sh *sh, t_list *lexems, enum e_token type)
 {
 	t_tree	*sub_tree;
 
+	sh->lexer->lexems = lexems;
+	sh->current_token = (t_token*)lexems->data;
 	if ((sub_tree = commands_line_rules(sh)) == (void*)-1 || !sub_tree)
-		return (0);
-	if (type == BQT)
 	{
-		sh->ssbqt = 1;
-		sh->pipe_ss[0] = 0;
-		get_fd(sh, sh->pipe_ss);
+		return (0);
+		parse_error(sh);
 	}
+	sh->ssbqt = 1;
+	sh->pipe_ss[0] = 0;
+	get_fd(sh, sh->pipe_ss);
 	fork_subshell(sh, sub_tree);
-	if (sh->fds_out)
-		ft_clear_list(&sh->fds_out, (&free));
 	del_command_tree(sub_tree);
-	if (type == BQT)
-		return (add_new_tokens(sh));
-	return (1);
+	return (add_new_tokens(sh, type));
 }

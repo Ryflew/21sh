@@ -72,8 +72,29 @@ char		**get_cmds(t_list **cmd_tokens, t_sh *sh)
 	return (create_cmds_with_tokens(*cmd_tokens));
 }
 
+static void	replace_subshell(t_sh *sh, t_list **cmd_tokens)
+{
+	t_list	*lexems;
+	t_token	*token;
+
+	lexems = *cmd_tokens;
+	while (lexems)
+	{
+		token = (t_token*)lexems->data;
+		//ft_putstr("val = ");
+		//ft_putendl(VAL);		
+		if (TYPE == BQT || TYPE == BQT_C)
+			bqt_rule(sh, &lexems, cmd_tokens);
+		else if (TYPE == LPAR)
+			par_rule(sh, &lexems, cmd_tokens);
+		else
+			NEXT(lexems);
+	}
+}
+
 char		manage_cmds(t_tree *node, t_sh *sh)
 {
+	replace_subshell(sh, &node->cmd_tokens);
 	if (node->tmp_env)
 		env_command(node->tmp_env, sh->env);
 	if (!(node->cmds = get_cmds(&node->cmd_tokens, sh)))
@@ -81,5 +102,10 @@ char		manage_cmds(t_tree *node, t_sh *sh)
 	if (find_env(sh->env, "PATH"))
 		try_add_hashtab(node, sh);
 	treat_history_cmd(node);
+	/*for (int i = 0; node->cmds[i]; i++)
+	{
+		ft_putstr("tab = ");
+		ft_putendl(node->cmds[i]);
+	}*/
 	return (exec_cmds(node, &(sh->env), sh));
 }

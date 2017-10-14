@@ -31,8 +31,7 @@ static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 			if (tmp)
 				end_bqt = tmp->next;
 			tmp = sh->lexer->lexems;
-			if (!(manage_here_doc_bqt(sh, end_bqt, &tmp, begin_lexems)))
-				return (0);
+			manage_here_doc_bqt(sh, end_bqt, &tmp, begin_lexems);
 		}
 		if (tmp)
 			NEXT(tmp);

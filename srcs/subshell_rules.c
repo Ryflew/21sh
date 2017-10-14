@@ -12,63 +12,70 @@
 
 #include "tosh.h"
 
-t_token			*par_rule(t_sh *sh)
+static void	delete_lexems(t_list **first_lexems, t_list **lexems)
 {
-	t_token *token;
-
-	eat(sh, LPAR);
-	subshell(sh, LPAR);
-	if (!sh->current_token || eat(sh, RPAR) == -1)
-	{
-		errexit("21sh", "parse error: miss close par `)`");
-		return ((void*)-1);
-	}
-	if (!(token = text_rules(sh)))
-		return (new_token(NULL, NONE, ""));
-	return (token);
+	if (*first_lexems == *lexems)
+		*first_lexems = (*lexems)->next;
+	ft_pop_node(lexems, (void*)&clear_lexems);
 }
 
-static t_token	*concat_bqt(t_sh *sh, char concat,
-					t_token *prev_token)
+static void	delete_subshell_lexems(t_list **first_lexems, t_list **lexems,
+									enum e_token type)
 {
-	t_token *token;
+	t_token	*token;
 
-	if (!(subshell(sh, BQT)))
-		return ((void*)-1);
-	if (!sh->current_token || eat(sh, EBQT) == -1)
+	while (*lexems)
 	{
-		errexit("21sh", "parse error: miss close backquote '`'");
-		return ((void*)-1);
+		token = (t_token*)(*lexems)->data;
+		if (TYPE == type)
+		{
+			delete_lexems(first_lexems, lexems);
+			break ;
+		}
+		delete_lexems(first_lexems, lexems);
 	}
-	if (!(token = text_rules(sh)))
-		return (new_token(NULL, NONE, ""));
-	else if (concat && prev_token && (prev_token->type == WORD ||
-	prev_token->type == NUM || prev_token->type == TILD_VAR_WORD ||
-	prev_token->type == TILD || prev_token->type == VAR_WORD))
-	{
-		free_join(&prev_token->value, VAL);
-		token = prev_token;
-	}
-	else if (prev_token && prev_token->type == EQUAL)
-		token->type = VAR_WORD;
-	return (token);
 }
 
-t_token			*bqt_rule(t_sh *sh)
+void		par_rule(t_sh *sh, t_list **lexems, t_list **first_lexems)
+{
+	delete_lexems(first_lexems, lexems);
+	subshell(sh, *lexems, LPAR);
+	delete_subshell_lexems(first_lexems, lexems, RPAR);
+}
+
+static void	concat_bqt(t_sh *sh, t_list **lexems, t_list **first_lexems,
+					char concat)
+{
+	t_token *token;
+	t_token *prev_token;
+
+	if ((*lexems)->prev)
+		prev_token = (t_token*)(*lexems)->data;
+	delete_lexems(first_lexems, lexems);
+	subshell(sh, *lexems, BQT);
+	delete_subshell_lexems(first_lexems, lexems, EBQT);
+	if (*lexems)
+	{
+		token = (t_token*)(*lexems)->data;
+		if (concat && prev_token && (prev_token->type == WORD ||
+		prev_token->type == NUM || prev_token->type == TILD_VAR_WORD ||
+		prev_token->type == TILD || prev_token->type == VAR_WORD))
+			free_join(&prev_token->value, VAL);
+		else if (prev_token && prev_token->type == EQUAL)
+			TYPE = VAR_WORD;
+	}
+}
+
+void		bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems)
 {
 	char	concat;
 	t_token	*prev_token;
+	t_token	*token;
 
 	prev_token = NULL;
 	concat = 0;
-	if (sh->lexer->lexems->prev)
-		prev_token = (t_token*)sh->lexer->lexems->prev->data;
-	if (sh->current_token->type == BQT)
-		eat(sh, BQT);
-	else
-	{
-		eat(sh, BQT_C);
+	token = (t_token*)(*lexems)->data;
+	if (TYPE == BQT_C)
 		concat = 1;
-	}
-	return (concat_bqt(sh, concat, prev_token));
+	concat_bqt(sh, lexems, first_lexems, concat);
 }

@@ -28,6 +28,8 @@ t_tree			*basic_red(t_sh *sh, enum e_token type, t_tree *left)
 			return (ret_parse_error(left));
 		if (!(right = cmd_rules(sh)) || right == (void*)-1)
 			return (ret_parse_error(left));
+		if (!left)
+			left = create_node(NULL, NULL, ft_create_node(new_token(NULL, WORD, "")), NULL);
 		return (create_node(left, token, NULL, right));
 	}
 	return (NULL);

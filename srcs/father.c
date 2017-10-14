@@ -20,9 +20,10 @@ static void	wait_if_pipe(t_sh *shell, int *ret, int *fd, t_tree *node)
 		close(shell->fd_pipe);
 	if ((shell->fd_pipe = fd[0]) == fd[0] && shell->right_side)
 	{
-		waitpid(g_father, ret, 0);
 		close(fd[0]);
 		shell->fd_pipe = -1;
+		waitpid(-1, ret, 0);
+		usleep(3000);
 	}
 	else if (node && node->token && node->TYPE != DCHEVB)
 		waitpid(g_father, ret, WNOHANG);

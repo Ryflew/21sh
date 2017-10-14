@@ -24,7 +24,7 @@ static char		**create_tmp_env(t_sh *sh, int size, t_token *token)
 	}
 	else if (size == 1)
 	{
-		token = text_rules(sh);
+		token = text_rules(sh, 0);
 		return (NULL);
 	}
 	if (ft_strcmp(VAL, "env"))
@@ -35,7 +35,7 @@ static char		**create_tmp_env(t_sh *sh, int size, t_token *token)
 	--size;
 	while (i < size)
 	{
-		token = text_rules(sh);
+		token = text_rules(sh, 0);
 		tmp_env[i++] = VAL;
 	}
 	return (tmp_env);

@@ -381,7 +381,7 @@ t_tree				*redirection_rules(t_sh *sh, t_tree *left);
 t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens,
 						t_tree *right);
 char				eat(t_sh *sh, enum e_token token);
-t_token				*text_rules(t_sh *sh);
+t_token				*text_rules(t_sh *sh, char is_inside_bqt);
 char				**list_to_tabstr(t_list *list);
 char				operators(t_tree *node, t_sh *shell);
 char				run_binary(t_tree *node, t_env *env, t_sh *shell);
@@ -417,7 +417,7 @@ int					father(t_sh *shell, int *fd, int *heredoc_pipe,\
 char				isnt_here_or_bqt(t_lexer *lexer);
 void				init_shell_before_parser(t_sh *shell);
 
-char				subshell(t_sh *sh, enum e_token type);
+char				subshell(t_sh *sh, t_list *cmd_tokens, enum e_token type);
 
 char				*get_word(char const *s, size_t len);
 
@@ -451,7 +451,7 @@ void				free_join(char **s1, char *s2);
 char				manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
 					int *fd_pipe);
 char				*read_here_doc(char *cmd, char *prompt);
-t_token				*par_rule(t_sh *sh);
-t_token				*bqt_rule(t_sh *sh);
+void				bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems);
+void				par_rule(t_sh *sh, t_list **lexems, t_list **first_lexems);
 
 #endif

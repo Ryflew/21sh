@@ -17,6 +17,11 @@ static void	pipe_subshell(t_sh *shell)
 {
 	close(shell->pipe_ss[0]);
 	dup2(shell->pipe_ss[1], 1);
+	if (shell->lexer->her)
+	{
+		ft_putendl("sub here");
+		dup2(shell->pipe_ss[1], 2);
+	}
 	close(shell->pipe_ss[1]);
 }
 
