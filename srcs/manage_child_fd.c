@@ -13,16 +13,16 @@
 #include "tosh.h"
 #include <fcntl.h>
 
-static void	pipe_subshell(t_sh *shell)
+static void	pipe_subshell(t_sh *sh)
 {
-	close(shell->pipe_ss[0]);
-	dup2(shell->pipe_ss[1], 1);
-	if (shell->lexer->her)
-	{
-		ft_putendl("sub here");
-		dup2(shell->pipe_ss[1], 2);
-	}
-	close(shell->pipe_ss[1]);
+	int		*fd;
+
+	fd = (int*)ft_go_end_list(sh->pipe_ss)->data;
+	close(fd[0]);
+	dup2(fd[1], 1);
+	if (sh->lexer->her)
+		dup2(fd[1], 2);
+	close(fd[1]);
 }
 
 static void	close_dup_fd(t_fd *fd)

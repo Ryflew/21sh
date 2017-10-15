@@ -183,7 +183,7 @@ typedef struct		s_fd
 typedef	struct		s_sh
 {
 	t_list			*begin;
-	int				pipe_ss[2];
+	t_list			*pipe_ss;
 
 	t_env			*env;
 	t_env			*save_env;
@@ -402,7 +402,7 @@ char				parse_error(t_sh *sh);
 char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
 char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
 pid_t				child_pid();
-int					get_fd(t_sh *shell, int *fd);
+int					get_fd(t_sh *shell, int *fds);
 int					get_next_line(const int fd, char **line);
 char				browse_tree(t_tree *node, t_sh *shell, t_tree *parent,
 					char r_side);
@@ -453,5 +453,6 @@ char				manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
 char				*read_here_doc(char *cmd, char *prompt);
 void				bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems);
 void				par_rule(t_sh *sh, t_list **lexems, t_list **first_lexems);
+void				add_subshell_tokens(t_sh *sh, enum e_token type);
 
 #endif

@@ -20,17 +20,25 @@ static void	delete_lexems(t_list **first_lexems, t_list **lexems)
 }
 
 static void	delete_subshell_lexems(t_list **first_lexems, t_list **lexems,
-									enum e_token type)
+								enum e_token open_type, enum e_token close_type)
 {
 	t_token	*token;
+	char	open;
 
+	open = 0;
 	while (*lexems)
 	{
 		token = (t_token*)(*lexems)->data;
-		if (TYPE == type)
+		if (TYPE == open_type)
+			++open;
+		if (TYPE == close_type)
 		{
-			delete_lexems(first_lexems, lexems);
-			break ;
+			if (!open)
+			{
+				delete_lexems(first_lexems, lexems);
+				break ;
+			}
+			--open;
 		}
 		delete_lexems(first_lexems, lexems);
 	}
@@ -40,7 +48,7 @@ void		par_rule(t_sh *sh, t_list **lexems, t_list **first_lexems)
 {
 	delete_lexems(first_lexems, lexems);
 	subshell(sh, *lexems, LPAR);
-	delete_subshell_lexems(first_lexems, lexems, RPAR);
+	delete_subshell_lexems(first_lexems, lexems, LPAR, RPAR);
 }
 
 static void	concat_bqt(t_sh *sh, t_list **lexems, t_list **first_lexems,
@@ -53,7 +61,7 @@ static void	concat_bqt(t_sh *sh, t_list **lexems, t_list **first_lexems,
 		prev_token = (t_token*)(*lexems)->data;
 	delete_lexems(first_lexems, lexems);
 	subshell(sh, *lexems, BQT);
-	delete_subshell_lexems(first_lexems, lexems, EBQT);
+	delete_subshell_lexems(first_lexems, lexems, BQT, EBQT);
 	if (*lexems)
 	{
 		token = (t_token*)(*lexems)->data;

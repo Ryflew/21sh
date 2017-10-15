@@ -59,8 +59,8 @@ int			get_fd(t_sh *shell, int *fd)
 	int	ret;
 
 	ret = 0;
-	if (shell->fd_pipe != -1 || (shell->ssbqt && !(shell->pipe_ss)[0]))
+	if (shell->fd_pipe != -1)
 		if ((ret = pipe(fd)) == -1)
-			ft_putstr("pipe failure !\n");
+			errexit("21sh", "pipe failure !\n");
 	return (ret);
 }

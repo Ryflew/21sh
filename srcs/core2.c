@@ -40,8 +40,8 @@ static char	**create_cmds_with_tokens(t_list *lexems)
 	while (lexems)
 	{
 		token = (t_token*)lexems->data;
-		if (i < nb_cmds)
-			cmds[i++] = ft_strdup(token->value);
+		if (i < nb_cmds && VAL)
+			cmds[i++] = ft_strdup(VAL);
 		NEXT(lexems);
 	}
 	return (cmds);

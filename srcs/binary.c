@@ -84,7 +84,7 @@ char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 		{
 			ret = EXIT_SUCCESS;
 			manage_child_fd(shell, node, fd, heredoc_pipe);
-			if (node->cmds)
+			if (node->cmds && node->cmds[0] && node->cmds[0][0])
 				ret = go_builtins(node->cmds, env, shell);
 			exit(ret);
 		}

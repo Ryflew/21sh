@@ -36,6 +36,7 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	shell->toaddstr = NULL;
 	shell->hist_first = 0;
 	shell->ssbqt = 0;
+	shell->pipe_ss = NULL;
 	shell->shell_var = NULL;
 	shell->read_delimiter = 0;
 	shell->read_nchar = 0;

@@ -3,7 +3,7 @@
 BASILE :
 
 ls toto |& cat -e
-`ls ; (ls)` marche pas
+Replace BQT_C par des token SPACE
 
 Victor :
 
