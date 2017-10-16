@@ -417,7 +417,7 @@ int					father(t_sh *shell, int *fd, int *heredoc_pipe,\
 char				isnt_here_or_bqt(t_lexer *lexer);
 void				init_shell_before_parser(t_sh *shell);
 
-char				subshell(t_sh *sh, t_list *cmd_tokens, enum e_token type);
+char				subshell(t_sh *sh, t_list *cmd_tokens, enum e_token type, char is_cmd);
 
 char				*get_word(char const *s, size_t len);
 
@@ -427,7 +427,7 @@ void				manage_var_op(t_sh *sh, t_list **tmp, t_list **cmd_tokens,\
 								t_token *token);
 void				replace_tild(t_token *token, t_env *env);
 
-char				manage_cmds(t_tree *node, t_sh *sh);
+char				manage_cmds(t_tree *node, t_sh *sh, char is_cmd);
 char				**get_cmds(t_list **cmds_token, t_sh *sh);
 
 void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe,
@@ -451,8 +451,8 @@ void				free_join(char **s1, char *s2);
 char				manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
 					int *fd_pipe);
 char				*read_here_doc(char *cmd, char *prompt);
-void				bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems);
+void				bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems, char is_cmd);
 void				par_rule(t_sh *sh, t_list **lexems, t_list **first_lexems);
-void				add_subshell_tokens(t_sh *sh, enum e_token type);
+void				add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd);
 
 #endif

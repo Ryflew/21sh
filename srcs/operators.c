@@ -61,7 +61,7 @@ static char	manage_chev(t_tree *node, t_sh *shell)
 
 	if (node->TYPE == CHEVF || node->TYPE == DCHEVF || node->TYPE == FRED)
 	{
-		node->right->cmds = get_cmds(&node->right->cmd_tokens, shell);
+		manage_cmds(node->right, shell, 0);
 		if (!(fd = (t_fd*)malloc(sizeof(t_fd))))
 			exit(-1);
 		if ((fd->file = open_file(node)) == -1)
@@ -86,7 +86,7 @@ char		operators(t_tree *node, t_sh *shell)
 	}
 	else if (node->TYPE == CHEVB)
 	{
-		node->right->cmds = get_cmds(&node->right->cmd_tokens, shell);
+		manage_cmds(node->right, shell, 0);
 		if ((shell->fd_in.file = open_file(node)) == -1)
 			return (-1);
 		shell->fd_in.to = node->to_fd;

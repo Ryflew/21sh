@@ -47,12 +47,12 @@ static void	delete_subshell_lexems(t_list **first_lexems, t_list **lexems,
 void		par_rule(t_sh *sh, t_list **lexems, t_list **first_lexems)
 {
 	delete_lexems(first_lexems, lexems);
-	subshell(sh, *lexems, LPAR);
+	subshell(sh, *lexems, LPAR, 1);
 	delete_subshell_lexems(first_lexems, lexems, LPAR, RPAR);
 }
 
 static void	concat_bqt(t_sh *sh, t_list **lexems, t_list **first_lexems,
-					char concat)
+					char is_cmd)
 {
 	t_token *token;
 	t_token *prev_token;
@@ -60,30 +60,30 @@ static void	concat_bqt(t_sh *sh, t_list **lexems, t_list **first_lexems,
 	if ((*lexems)->prev)
 		prev_token = (t_token*)(*lexems)->data;
 	delete_lexems(first_lexems, lexems);
-	subshell(sh, *lexems, BQT);
+	subshell(sh, *lexems, BQT, is_cmd);
 	delete_subshell_lexems(first_lexems, lexems, BQT, EBQT);
 	if (*lexems)
 	{
 		token = (t_token*)(*lexems)->data;
-		if (concat && prev_token && (prev_token->type == WORD ||
+		/*if (concat && prev_token && (prev_token->type == WORD ||
 		prev_token->type == NUM || prev_token->type == TILD_VAR_WORD ||
 		prev_token->type == TILD || prev_token->type == VAR_WORD))
-			free_join(&prev_token->value, VAL);
-		else if (prev_token && prev_token->type == EQUAL)
+			free_join(&prev_token->value, VAL);*/
+		if (prev_token && prev_token->type == EQUAL)
 			TYPE = VAR_WORD;
 	}
 }
 
-void		bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems)
+void		bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems, char is_cmd)
 {
-	char	concat;
+	//char	concat;
 	t_token	*prev_token;
-	t_token	*token;
+	//t_token	*token;
 
 	prev_token = NULL;
-	concat = 0;
-	token = (t_token*)(*lexems)->data;
-	if (TYPE == BQT_C)
-		concat = 1;
-	concat_bqt(sh, lexems, first_lexems, concat);
+	//concat = 0;
+	//token = (t_token*)(*lexems)->data;
+	////if (TYPE == BQT_C)
+	//	concat = 1;
+	concat_bqt(sh, lexems, first_lexems, is_cmd);
 }

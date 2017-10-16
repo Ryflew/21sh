@@ -62,7 +62,7 @@ char		browse_tree(t_tree *node, t_sh *shell, t_tree *parent, char rig)
 	{
 		if (node->parent && shell->fd_pipe != -1)
 			shell->right_side = rig;
-		if ((ret = manage_cmds(node, shell)) == -1)
+		if ((ret = manage_cmds(node, shell, 1)) == -1)
 			return (-1);
 	}
 	return (manage_children(node, shell, rig, ret));

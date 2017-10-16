@@ -47,7 +47,7 @@ static void	fork_subshell(t_sh *sh, t_tree *sub_tree)
 		waitpid(father, &ret, 0);
 }
 
-char		subshell(t_sh *sh, t_list *lexems, enum e_token type)
+char		subshell(t_sh *sh, t_list *lexems, enum e_token type, char is_cmd)
 {
 	t_tree	*sub_tree;
 	int		pipe_ss[2];
@@ -68,7 +68,7 @@ char		subshell(t_sh *sh, t_list *lexems, enum e_token type)
 	ft_node_push_back(&sh->pipe_ss, pipe_ss);
 	fork_subshell(sh, sub_tree);
 	del_command_tree(sub_tree);
-	add_subshell_tokens(sh, type);
+	add_subshell_tokens(sh, type, is_cmd);
 	last_pipe = ft_go_end_list(sh->pipe_ss);
 	if (last_pipe == sh->pipe_ss)
 		sh->pipe_ss = NULL;

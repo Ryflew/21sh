@@ -43,7 +43,7 @@ static void	split_line_to_tokens(char *tokens_line, t_list **new_lexems)
 	free(new_tokens);
 }
 
-void		add_subshell_tokens(t_sh *sh, enum e_token type)
+void		add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd)
 {
 	t_list	*new_lexems;
 	char	*tokens_line;
@@ -52,12 +52,13 @@ void		add_subshell_tokens(t_sh *sh, enum e_token type)
 	if ((tokens_line = get_new_tokens(sh)) == (void*)-1)
 		return ;
 	new_lexems = NULL;
-	if (type == BQT)
+	if (type == BQT && is_cmd)
 		split_line_to_tokens(tokens_line, &new_lexems);
 	else
 	{
 		trim_line = ft_strtrim(tokens_line);
-		ft_node_push_back(&new_lexems, new_token(NULL, WORD, "echo"));
+		if (is_cmd)
+			ft_node_push_back(&new_lexems, new_token(NULL, WORD, "echo"));
 		ft_node_push_back(&new_lexems, new_token(NULL, WORD, trim_line));
 		free(trim_line);
 	}
