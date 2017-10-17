@@ -37,7 +37,7 @@ static void	split_line_to_tokens(char *tokens_line, t_list **new_lexems)
 	i = -1;
 	while (new_tokens[++i])
 	{
-		ft_node_push_back(new_lexems, new_token(NULL, WORD, new_tokens[i]));
+		ft_node_push_back(new_lexems, new_token(NULL, WORD, new_tokens[i], 1));
 		free(new_tokens[i]);
 	}
 	free(new_tokens);
@@ -58,8 +58,8 @@ void		add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd)
 	{
 		trim_line = ft_strtrim(tokens_line);
 		if (is_cmd)
-			ft_node_push_back(&new_lexems, new_token(NULL, WORD, "echo"));
-		ft_node_push_back(&new_lexems, new_token(NULL, WORD, trim_line));
+			ft_node_push_back(&new_lexems, new_token(NULL, WORD, "echo", 1));
+		ft_node_push_back(&new_lexems, new_token(NULL, WORD, trim_line, 1));
 		free(trim_line);
 	}
 	free(tokens_line);

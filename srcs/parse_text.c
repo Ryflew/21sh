@@ -27,19 +27,10 @@ char		eat(t_sh *sh, enum e_token token)
 	return (0);
 }
 
-/*static void	bqt_c_rule(t_sh *sh, enum e_token type, t_token **token)
-{
-	eat(sh, type);
-	if (sh->current_token && sh->current_token->type == BQT_C)
-		*token = text_rules(sh);
-}*/
-
 static void	text_rules3(t_sh *sh, t_token **token)
 {
 	if (sh->current_token->type == VAR_OP)
 		eat(sh, VAR_OP);
-	else if (sh->current_token->type == VAR_OP_C)
-		eat(sh, VAR_OP_C);
 	else if (sh->current_token->type == VAR_WORD)
 		eat(sh, VAR_WORD);
 	else if (sh->current_token->type == TILD_VAR_WORD)
@@ -48,8 +39,6 @@ static void	text_rules3(t_sh *sh, t_token **token)
 		eat(sh, EQUAL);
 	else if (sh->current_token->type == BQT)
 		eat(sh, BQT);
-	else if (sh->current_token->type == BQT_C)
-		eat(sh, BQT_C);
 	else if (sh->current_token->type == LPAR)
 		eat(sh, LPAR);
 	else

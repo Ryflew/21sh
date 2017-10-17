@@ -61,7 +61,7 @@ static void	add_end_path(t_list *lexems, t_list **new_lexems)
 				free_join(&((t_token*)(*new_lexems)->data)->value, \
 				VAL + ft_strfind(VAL, 0, '/'));
 			else
-				ft_node_push_back(new_lexems, new_token(NULL, TYPE, VAL));
+				ft_node_push_back(new_lexems, new_token(NULL, TYPE, VAL, BLK));
 		}
 		lexems = lexems->next;
 	}
@@ -73,11 +73,11 @@ static char	fill_new_lexems(t_list *lexems, char end_path, char *join)
 	t_list	*new_lexems;
 
 	new_lexems = NULL;
-	ft_node_push_back(&new_lexems, new_token(NULL, SON, ""));
-	ft_node_push_back(&new_lexems, new_token(NULL, EXPR, join));
+	ft_node_push_back(&new_lexems, new_token(NULL, SON, "", 0));
+	ft_node_push_back(&new_lexems, new_token(NULL, EXPR, join, 1));
 	if (end_path)
 		add_end_path(lexems->next, &new_lexems->next);
-	ft_node_push_back(&new_lexems, new_token(NULL, END_EXPR, ""));
+	ft_node_push_back(&new_lexems, new_token(NULL, END_EXPR, "", 0));
 	tmp = lexems;
 	while (tmp)
 	{

@@ -14,8 +14,7 @@
 
 static void	manage_here_doc_bqt0(t_sh *sh)
 {
-	if (eat(sh, BQT) == -1)
-		eat(sh, BQT_C);
+	eat(sh, BQT);
 	if (!(subshell(sh, sh->lexer->lexems, BQT, 1)))
 		return ;
 	if (eat(sh, EBQT) == -1)

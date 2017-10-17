@@ -64,7 +64,7 @@ static void	find_type(t_lexer *lx, t_token *l_tk, char st_op, \
 	|| !*(lx->line + 1) || *(lx->line + 1) == '/' || *(lx->line + 1) == '}' ||
 	*(lx->line + 1) == ',') && !st_op)
 		*type = TILD;
-	else if (l_tk && (l_tk->type == VAR_OP || l_tk->type == VAR_OP_C)
+	else if (l_tk && (l_tk->type == VAR_OP)
 			&& !lx->blank)
 		*type = VAR_WORD;
 	else if (isnt_here_or_bqt(lx) && l_tk && l_tk->type == EQUAL && !lx->blank)
@@ -101,7 +101,7 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 		lexer->line += word_size;
 		return (NULL);
 	}
-	token = new_token(lexer, type, word);
+	token = new_token(lexer, type, word, lexer->blank);
 	free(word);
 	lexer->line += word_size - ft_strlen(VAL);
 	return (token);

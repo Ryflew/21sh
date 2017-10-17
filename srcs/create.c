@@ -30,7 +30,8 @@ t_tree	*create_node(t_tree *left, t_token *token, t_list *tokens, t_tree *rig)
 	return (new_node);
 }
 
-t_token	*new_token(t_lexer *lexer, enum e_token token_type, char *value)
+t_token	*new_token(t_lexer *lexer, enum e_token token_type, char *value,
+					char blank)
 {
 	t_token *token;
 
@@ -42,5 +43,6 @@ t_token	*new_token(t_lexer *lexer, enum e_token token_type, char *value)
 	if (value)
 		value = ft_strdup(value);
 	VAL = value;
+	token->blank = blank;
 	return (token);
 }

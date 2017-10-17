@@ -21,6 +21,7 @@
 # define NEXT(elem) elem = elem->next
 # define VAL token->value
 # define TYPE token->type
+# define BLK token->blank
 
 # define UP_ARROW 4283163
 # define DOWN_ARROW 4348699
@@ -74,7 +75,6 @@ enum				e_token
 	FD,
 	CLOSE_FD,
 	BQT,
-	BQT_C,
 	EBQT,
 	LPAR,
 	RPAR,
@@ -92,7 +92,6 @@ enum				e_token
 	END_EXPR,
 	HIST,
 	VAR_OP,
-	VAR_OP_C,
 	VAR_WORD,
 	TILD_VAR_WORD,
 	TILD,
@@ -142,6 +141,7 @@ typedef	struct		s_token
 {
 	char			*value;
 	enum e_token	type;
+	char			blank;
 }					t_token;
 
 typedef struct		s_tree
@@ -397,7 +397,7 @@ t_token				*lex_number(t_lexer *lexer);
 t_token				*lex_word(t_lexer *lexer, t_token *last_token);
 t_tree				*cmd_rules(t_sh *sh);
 t_token				*new_token(t_lexer *lexer, enum e_token token_type, \
-						char *val);
+						char *val, char blank);
 char				parse_error(t_sh *sh);
 char				exec_cmds_with_op(t_tree *node, t_env **env, t_sh *shell);
 char				run_builtins(t_tree *node, t_env **env, t_sh *shell);
@@ -451,8 +451,12 @@ void				free_join(char **s1, char *s2);
 char				manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
 					int *fd_pipe);
 char				*read_here_doc(char *cmd, char *prompt);
-void				bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems, char is_cmd);
-void				par_rule(t_sh *sh, t_list **lexems, t_list **first_lexems);
+void				bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems,
+							char is_cmd);
 void				add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd);
+void				delete_lexems(t_list **first_lexems, t_list **lexems);
+void				delete_subshell_lexems(t_list **first_lexems,
+					t_list **lexems, enum e_token open_type,
+					enum e_token close_type);
 
 #endif

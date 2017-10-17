@@ -32,7 +32,7 @@ static t_token	*is_end_expr(t_lexer *lexer, t_token *l_tk)
 	if (isnt_here_or_bqt(lexer) && l_tk && (is_glob_token(l_tk->type)
 	|| l_tk->type == EXPR || l_tk->type == TILD_EXPR || l_tk->type == BKT_EXPR
 	|| l_tk->type == COM))
-		return (new_token(lexer, END_EXPR, ""));
+		return (new_token(lexer, END_EXPR, "", lexer->blank));
 	else if (l_tk && l_tk->type == ASCII_WORD)
 		l_tk->type = WORD;
 	return (NULL);

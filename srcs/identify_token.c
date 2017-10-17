@@ -12,50 +12,44 @@
 
 #include "tosh.h"
 
-static void		is_here_op(t_lexer *lexer, t_token **token, t_token *last_token)
+static void		is_here_op(t_lexer *lexer, t_token **token)
 {
 	if (*lexer->line == '`')
 	{
 		if (!lexer->bqt)
-			*token = (lexer->blank || !last_token) ? new_token(lexer, BQT, "`")
-			: new_token(lexer, BQT_C, "`");
+			*token = new_token(lexer, BQT, "`", lexer->blank);
 		else
-			*token = new_token(lexer, EBQT, "`");
+			*token = new_token(lexer, EBQT, "`", lexer->blank);
 		lexer->bqt = !lexer->bqt;
 	}
 	else if (*lexer->line == '$' && ft_isalnum(*(lexer->line + 1)))
-	{
-		if (!lexer->blank && last_token)
-			*token = new_token(lexer, VAR_OP_C, "$");
-		else
-			*token = new_token(lexer, VAR_OP, "$");
-	}
+		*token = new_token(lexer, VAR_OP, "$", lexer->blank);
 }
 
 static void		is_other_op(t_lexer *lexer, t_token **token, \
 					t_token *last_token)
 {
 	if (*lexer->line == ',' && lexer->brc && !lexer->bkt)
-		*token = new_token(lexer, COM, ",");
+		*token = new_token(lexer, COM, ",", lexer->blank);
 	else if (*lexer->line == '*')
-		*token = new_token(lexer, S_WILDCARD, "*");
+		*token = new_token(lexer, S_WILDCARD, "*", lexer->blank);
 	else if (*lexer->line == '?')
-		*token = new_token(lexer, Q_WILDCARD, "?");
+		*token = new_token(lexer, Q_WILDCARD, "?", lexer->blank);
 	else if (*lexer->line == '(')
-		*token = new_token(lexer, LPAR, "(");
+		*token = new_token(lexer, LPAR, "(", lexer->blank);
 	else if (*lexer->line == ')')
-		*token = new_token(lexer, RPAR, ")");
+		*token = new_token(lexer, RPAR, ", lexer->blank)", lexer->blank);
 	else if (*lexer->line == '!')
-		*token = new_token(lexer, HIST, "!");
+		*token = new_token(lexer, HIST, "!", lexer->blank);
 	else if (*lexer->line == ';')
-		*token = new_token(lexer, SCL, ";");
+		*token = new_token(lexer, SCL, ";", lexer->blank);
 	else if (*lexer->line == '-' && last_token
 			&& (last_token->type == FRED || last_token->type == BRED))
-		*token = new_token(lexer, CLOSE_FD, "-");
+		*token = new_token(lexer, CLOSE_FD, "-", lexer->blank);
 	else if (*lexer->line == '=' && !lexer->blank && last_token &&
 			(last_token->type == ASCII_WORD || last_token->type == NUM))
 	{
-		*token = new_token(lexer, EQUAL, "=");
+		*token = new_token(lexer, EQUAL, "=", lexer->blank);
 		last_token->type = VAR_WORD;
 	}
 }
@@ -66,24 +60,24 @@ static void		is_limit_glob_op(t_lexer *lexer, t_token **token)
 	{
 		if (*(lexer->line + 1) && (*(lexer->line + 1) == '!'
 			|| *(lexer->line + 1) == '^'))
-			*token = new_token(lexer, E_WILDCARD, "[!");
+			*token = new_token(lexer, E_WILDCARD, "[!", lexer->blank);
 		else
-			*token = new_token(lexer, LBKT, "[");
+			*token = new_token(lexer, LBKT, "[", lexer->blank);
 		lexer->bkt = 1;
 	}
 	else if (*lexer->line == ']' && lexer->bkt)
 	{
-		*token = new_token(lexer, RBKT, "]");
+		*token = new_token(lexer, RBKT, "]", lexer->blank);
 		lexer->bkt = 0;
 	}
 	else if (*lexer->line == '{' && !lexer->bkt)
 	{
-		*token = new_token(lexer, LBRC, "{");
+		*token = new_token(lexer, LBRC, "{", lexer->blank);
 		lexer->brc = 1;
 	}
 	else if (*lexer->line == '}' && lexer->brc && !lexer->bkt)
 	{
-		*token = new_token(lexer, RBRC, "}");
+		*token = new_token(lexer, RBRC, "}", lexer->blank);
 		lexer->brc = 0;
 	}
 }
@@ -94,23 +88,23 @@ static t_token	*is_reg_op(t_lexer *lexer)
 
 	token = NULL;
 	if (*lexer->line == '>' && *(lexer->line + 1) == '>')
-		token = new_token(lexer, DCHEVF, ">>");
+		token = new_token(lexer, DCHEVF, ">>", lexer->blank);
 	else if (*lexer->line == '<' && *(lexer->line + 1) == '<')
-		token = new_token(lexer, DCHEVB, "<<");
+		token = new_token(lexer, DCHEVB, "<<", lexer->blank);
 	else if (*lexer->line == '>' && *(lexer->line + 1) == '&')
-		token = new_token(lexer, FRED, ">&");
+		token = new_token(lexer, FRED, ">&", lexer->blank);
 	else if (*lexer->line == '<' && *(lexer->line + 1) == '&')
-		token = new_token(lexer, BRED, "<&");
+		token = new_token(lexer, BRED, "<&", lexer->blank);
 	else if (*lexer->line == '>')
-		token = new_token(lexer, CHEVF, ">");
+		token = new_token(lexer, CHEVF, ">", lexer->blank);
 	else if (*lexer->line == '<')
-		token = new_token(lexer, CHEVB, "<");
+		token = new_token(lexer, CHEVB, "<", lexer->blank);
 	else if (*lexer->line == '&' && *(lexer->line + 1) == '&')
-		token = new_token(lexer, AND, "&&");
+		token = new_token(lexer, AND, "&&", lexer->blank);
 	else if (*lexer->line == '|' && *(lexer->line + 1) == '|')
-		token = new_token(lexer, OR, "||");
+		token = new_token(lexer, OR, "||", lexer->blank);
 	else if (*lexer->line == '|')
-		token = new_token(lexer, PIPE, "|");
+		token = new_token(lexer, PIPE, "|", lexer->blank);
 	return (token);
 }
 
@@ -126,7 +120,7 @@ t_token			*identify_token(t_lexer *lexer, t_token *l_tk)
 	if (!token && isnt_here_or_bqt(lexer))
 		is_other_op(lexer, &token, l_tk);
 	if (!token)
-		is_here_op(lexer, &token, l_tk);
+		is_here_op(lexer, &token);
 	if (*lexer->line && !(token))
 		token = lex_word(lexer, l_tk);
 	if (isnt_here_or_bqt(lexer) && token && is_glob_token(TYPE) &&
