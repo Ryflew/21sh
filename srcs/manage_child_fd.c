@@ -92,6 +92,6 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe, \
 		tmp = tmp->next;
 	}
 	manage_aggregations(node);
-	if (shell->ssbqt)
+	if (shell->ssbqt == BQT)
 		pipe_subshell(shell);
 }

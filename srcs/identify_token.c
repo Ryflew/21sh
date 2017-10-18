@@ -38,7 +38,7 @@ static void		is_other_op(t_lexer *lexer, t_token **token, \
 	else if (*lexer->line == '(')
 		*token = new_token(lexer, LPAR, "(", lexer->blank);
 	else if (*lexer->line == ')')
-		*token = new_token(lexer, RPAR, ", lexer->blank)", lexer->blank);
+		*token = new_token(lexer, RPAR, ")", lexer->blank);
 	else if (*lexer->line == '!')
 		*token = new_token(lexer, HIST, "!", lexer->blank);
 	else if (*lexer->line == ';')

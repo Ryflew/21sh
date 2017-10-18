@@ -73,7 +73,7 @@ char		**get_cmds(t_list **cmd_tokens, t_sh *sh)
 	return (create_cmds_with_tokens(*cmd_tokens));
 }
 
-static void	replace_subshell(t_sh *sh, t_list **cmd_tokens, char is_cmd)
+static char	replace_subshell(t_sh *sh, t_list **cmd_tokens, char is_cmd)
 {
 	t_list	*lexems;
 	t_token	*token;
@@ -86,13 +86,16 @@ static void	replace_subshell(t_sh *sh, t_list **cmd_tokens, char is_cmd)
 			bqt_rule(sh, &lexems, cmd_tokens, is_cmd);
 		else if (TYPE == LPAR && is_cmd)
 		{
+			sh->ssbqt = RPAR;
 			delete_lexems(cmd_tokens, &lexems);
 			subshell(sh, lexems, LPAR, 1);
 			delete_subshell_lexems(cmd_tokens, &lexems, LPAR, RPAR);
+			sh->ssbqt = 0;
 		}
 		else
 			NEXT(lexems);
 	}
+	return (0);
 }
 
 char		manage_cmds(t_tree *node, t_sh *sh, char is_cmd)

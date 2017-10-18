@@ -38,7 +38,7 @@ static void	fork_subshell(t_sh *sh, t_tree *sub_tree)
 	else if (!father)
 	{
 		ret = EXIT_SUCCESS;
-		sh->ssbqt = 1;
+		sh->ssbqt = BQT;
 		manage_subshell(sh, sub_tree);
 		sh->ssbqt = 0;
 		exit(ret);

@@ -44,11 +44,14 @@ void		delete_subshell_lexems(t_list **first_lexems, t_list **lexems,
 	}
 }
 
-static void	concat_prev_bqt(t_list **lexems, t_token *prev_token, char blank)
+static void	concat_prev_bqt(t_list **lexems, t_token *prev_token, char blank,
+							t_list **next_lexems)
 {
 	t_token *token;
 
 	token = (t_token*)(*lexems)->data;
+	if (*lexems == *next_lexems)
+		*next_lexems = NULL;
 	if (prev_token && !blank && (prev_token->type == WORD ||
 		prev_token->type == NUM))
 	{
@@ -75,7 +78,8 @@ static void	concat_next_bqt(t_list **lexems, t_list *next_lexems)
 				break ;
 			NEXT(last_new_token);
 		}
-		free_join(&((t_token*)last_new_token->data)->value, next_token->value);
+		if (last_new_token)
+			free_join(&((t_token*)last_new_token->data)->value, next_token->value);
 		ft_pop_node(&next_lexems, (void*)&clear_lexems);
 	}
 }
@@ -85,9 +89,11 @@ void		bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems,
 {
 	t_token *prev_token;
 	t_list	*next_lexems;
+	t_list	*prev_lexems;
 	char	blank;
 
-	prev_token = ((*lexems)->prev) ? (t_token*)(*lexems)->prev->data : NULL;
+	prev_lexems = (*lexems)->prev;
+	prev_token = (prev_lexems) ? (t_token*)prev_lexems->data : NULL;
 	blank = ((t_token*)(*lexems)->data)->blank;
 	next_lexems = (*lexems)->next;
 	while (next_lexems)
@@ -101,9 +107,9 @@ void		bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems,
 	delete_subshell_lexems(first_lexems, lexems, BQT, EBQT);
 	if (*lexems)
 	{
-		if (prev_token)
-			concat_prev_bqt(lexems, prev_token, blank);
-		if (next_lexems)
+		if (prev_token && *lexems != prev_lexems && (*lexems != next_lexems || !((t_token*)next_lexems->data)->blank))
+			concat_prev_bqt(lexems, prev_token, blank, &next_lexems);
+		if (next_lexems && *lexems != next_lexems && *lexems != prev_lexems)
 			concat_next_bqt(lexems, next_lexems);
 	}
 }
