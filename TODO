@@ -2,11 +2,7 @@
 
 BASILE :
 
-ls toto |& cat -e
-
 Victor :
 
-Desactive les signaux quand on lance un binaire
+??? Desactive les signaux quand on lance un binaire
 Env PS1 pour modifier le prompt du Shell
-ctrl D marche pas avec <<
-(ls enter puis ) affiche brackets error alors que ca devrait marcher
