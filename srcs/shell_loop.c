@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:58:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/06/14 17:45:23 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/06/14 19:54:52 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,14 @@ char		shell_loop2(char **command, char **last, enum e_state *state, \
 void		shell_loop(t_sh *shell)
 {
 	char	*command;
+	// int		i = 1;
 
 	while (1)
 	{
+		// if (++i == 2)
+		// 	command = ft_strdup("base64 /dev/urandom | head -c 1000 | grep 42 | wc -l");
+		// else
+		// 	exit(1);
 		command = get_line(shell, 0, &(shell->state), shell->op);
 		if (shell_loop2(&command, &(shell->total_command), \
 			&(shell->state), &(shell->op)))

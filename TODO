@@ -4,7 +4,6 @@ BASILE :
 
 ls toto |& cat -e
 commande "base64" sortie pas normale
-"cat -e << EOF" marche pas
 
 Victor :
 
