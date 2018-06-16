@@ -2,13 +2,11 @@
 
 BASILE :
 
-ls toto |& cat -e
 commande "base64" sortie pas normale
 
 Victor :
 
 ??? Desactive les signaux quand on lance un binaire
-ctrl D marche pas avec <<
 
 -------- LIST BONUS 21sh -------------
 - cmd "history"
