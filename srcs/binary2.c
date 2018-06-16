@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:06 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/06/14 17:57:46 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/06/14 19:27:11 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void		child(t_tree *node, t_sh *shell, int *fd, int *heredoc_pipe)
 {
 	if (node->parent && node->parent->TYPE == DCHEVB)
 		manage_dchevb(shell, node->parent->right->cmds[0], node->parent, \
-		heredoc_pipe);
+			heredoc_pipe);
 	else if (node->parent && node->parent->TYPE == CHEVB)
 		manage_chevb(shell->fd_in);
 	if (shell->fd_pipe != -1)
