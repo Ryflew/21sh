@@ -2,7 +2,17 @@
 
 BASILE :
 
+commande "base64" sortie pas normale
+
 Victor :
 
 ??? Desactive les signaux quand on lance un binaire
-Env PS1 pour modifier le prompt du Shell
+
+-------- LIST BONUS 21sh -------------
+- cmd "history"
+- ctrl + r
+- cmd "help"
+- hash table
+- cmd "read"
+- && 
+- ||
