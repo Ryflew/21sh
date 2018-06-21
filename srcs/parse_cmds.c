@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:38:43 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:38:44 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/06/21 15:47:28 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static t_token	*ret_get_tokens(t_sh *sh, t_fd *fd, t_token *token,
 								t_list **cmd_tokens)
 {
 	if (fd == (void*)-1 || (sh->current_token && sh->current_token->type == RPAR
-		 && sh->ssbqt != sh->current_token->type))
+		&& sh->ssbqt != sh->current_token->type))
 	{
 		ft_clear_list(cmd_tokens, (void*)&clear_lexems);
 		return ((void*)-1);
@@ -54,21 +54,17 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, \
 	while (((token = text_rules(sh, is_inside_bqt)) && token != (void*)-1) \
 	|| (token != (void*)-1 && (fd = aggregation_rules(sh)) && fd != (void*)-1))
 	{
-		if (fd)
-			ft_node_push_back(aggregations, fd);
-		fd = NULL;
-		if (token)
+		fd ? ft_node_push_back(aggregations, fd) : NULL;
+		if (!(fd = NULL) && token)
 		{
-			if (TYPE == BQT || TYPE == LPAR)
-				++is_inside_bqt;
-			else if (TYPE == EBQT || TYPE == RPAR)
-				--is_inside_bqt;
+			TYPE == BQT || TYPE == LPAR ? ++is_inside_bqt : 1;
+			!(TYPE == BQT || TYPE == LPAR) && (TYPE == EBQT || TYPE == RPAR) ? \
+				--is_inside_bqt : 1;
 			if (TYPE != NONE)
 				ft_node_push_back(cmd_tokens, new_token(NULL, TYPE, VAL, BLK));
 			else
 			{
-				if (*ss_empty)
-					clear_lexems(*ss_empty);
+				*ss_empty ? clear_lexems(*ss_empty) : NULL;
 				*ss_empty = token;
 			}
 		}

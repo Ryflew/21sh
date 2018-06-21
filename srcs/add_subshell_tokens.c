@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   add_subshell_tokens.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/06/21 14:56:34 by vdarmaya          #+#    #+#             */
+/*   Updated: 2018/06/21 15:04:08 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 static char	*get_new_tokens(t_sh *sh)
@@ -31,7 +43,7 @@ static void	split_line_to_tokens(char *tokens_line, t_list **new_lexems)
 {
 	char	**new_tokens;
 	int		i;
-	
+
 	if (!(new_tokens = ft_strsplit(tokens_line, '\n')))
 		return ;
 	i = -1;

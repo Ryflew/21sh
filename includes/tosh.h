@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 23:43:30 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/06/21 15:54:39 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -417,7 +417,8 @@ int					father(t_sh *shell, int *fd, int *heredoc_pipe,\
 char				isnt_here_or_bqt(t_lexer *lexer);
 void				init_shell_before_parser(t_sh *shell);
 
-char				subshell(t_sh *sh, t_list *cmd_tokens, enum e_token type, char is_cmd);
+char				subshell(t_sh *sh, t_list *cmd_tokens, enum e_token type, \
+						char is_cmd);
 
 char				*get_word(char const *s, size_t len);
 
@@ -452,8 +453,9 @@ char				manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
 					int *fd_pipe);
 char				*read_here_doc(char *cmd, char *prompt);
 void				bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems,
-							char is_cmd);
-void				add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd);
+						char is_cmd);
+void				add_subshell_tokens(t_sh *sh, enum e_token type, \
+						char is_cmd);
 void				delete_lexems(t_list **first_lexems, t_list **lexems);
 void				delete_subshell_lexems(t_list **first_lexems,
 					t_list **lexems, enum e_token open_type,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_parser.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:07 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:44:10 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/06/21 15:49:36 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ t_tree			*basic_red(t_sh *sh, enum e_token type, t_tree *left)
 		if (!(right = cmd_rules(sh)) || right == (void*)-1)
 			return (ret_parse_error(left));
 		if (!left)
-			left = create_node(NULL, NULL, ft_create_node(new_token(NULL, WORD, "", 1)), NULL);
+			left = create_node(NULL, NULL, \
+				ft_create_node(new_token(NULL, WORD, "", 1)), NULL);
 		return (create_node(left, token, NULL, right));
 	}
 	return (NULL);

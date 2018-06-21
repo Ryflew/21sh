@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:24 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:45:24 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/06/21 15:48:47 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ static void	concat_var(t_list **lexems, t_token *token, t_token *last_token,
 	free(to_free);
 	last_lexems = (*lexems)->prev;
 	ft_pop_node(lexems, (void*)&clear_lexems);
-	if ((*lexems) && (*lexems) != last_lexems && !((t_token*)(*lexems)->data)->blank)
-		concat_var(&(*lexems), (t_token*)(*lexems)->data, (t_token*)(*lexems)->prev->data, 0);
+	if ((*lexems) && (*lexems) != last_lexems && \
+		!((t_token*)(*lexems)->data)->blank)
+		concat_var(&(*lexems), (t_token*)(*lexems)->data, \
+			(t_token*)(*lexems)->prev->data, 0);
 }
 
 static void	replace_var(char last_blank, t_list **lexems, t_sh *sh)

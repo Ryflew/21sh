@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subshell_rules.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:09 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:45:10 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/06/21 15:53:11 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ static void	concat_next_bqt(t_list **lexems, t_list *next_lexems)
 			NEXT(last_new_token);
 		}
 		if (last_new_token)
-			free_join(&((t_token*)last_new_token->data)->value, next_token->value);
+			free_join(&((t_token*)last_new_token->data)->value, \
+				next_token->value);
 		ft_pop_node(&next_lexems, (void*)&clear_lexems);
 	}
 }
@@ -96,18 +97,15 @@ void		bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems,
 	prev_token = (prev_lexems) ? (t_token*)prev_lexems->data : NULL;
 	blank = ((t_token*)(*lexems)->data)->blank;
 	next_lexems = (*lexems)->next;
-	while (next_lexems)
-	{
-		if (((t_token*)next_lexems->prev->data)->type == EBQT)
-			break ;
+	while (next_lexems && ((t_token*)next_lexems->prev->data)->type == EBQT)
 		NEXT(next_lexems);
-	}
 	delete_lexems(first_lexems, lexems);
 	subshell(sh, *lexems, BQT, is_cmd);
 	delete_subshell_lexems(first_lexems, lexems, BQT, EBQT);
 	if (*lexems)
 	{
-		if (prev_token && *lexems != prev_lexems && (*lexems != next_lexems || !((t_token*)next_lexems->data)->blank))
+		if (prev_token && *lexems != prev_lexems && (*lexems != next_lexems || \
+			!((t_token*)next_lexems->data)->blank))
 			concat_prev_bqt(lexems, prev_token, blank, &next_lexems);
 		if (next_lexems && *lexems != next_lexems && *lexems != prev_lexems)
 			concat_next_bqt(lexems, next_lexems);

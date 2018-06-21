@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:06 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/06/16 17:06:12 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/06/21 14:57:29 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void		child(t_tree *node, t_sh *shell, int *fd, int *heredoc_pipe)
 	t_list	*tmp;
 	char	*cmd;
 
-	if (node->parent && node->parent->TYPE == DCHEVB) {
+	if (node->parent && node->parent->TYPE == DCHEVB)
+	{
 		if (node->parent->right)
 		{
 			tmp = node->parent->right->cmd_tokens;
