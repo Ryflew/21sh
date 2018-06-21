@@ -3,6 +3,7 @@
 BASILE :
 
 commande "base64" sortie pas normale
+cd /tmp; sort << EOF | cat -e > sorted_poem ; sed -e 's/Roses/Turnips/' < sorted_poem > better_poem; cd -; echo "I prefer turnips anyway" >> /tmp/better_poem; cat /tmp/better_poem
 
 Victor :
 

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:54:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/06/21 15:02:55 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/06/21 17:21:13 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ static void	cd_dot_dot(char **new_prompt)
 		free(tmp);
 	}
 	else
+	{
+		ft_strdel(new_prompt);
 		*new_prompt = ft_strdup(getcwd(buff, 4097));
+	}
 }
 
 static void	treat_current2(t_cd *opt, char *tmp, char **new_prompt)
