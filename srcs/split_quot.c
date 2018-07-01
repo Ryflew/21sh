@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/04 23:11:41 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:06:13 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 21:43:40 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	get_next_quot(char *buff, char *cmd, int *count, int *i)
 static void	get_splited_char(char *cmd, char ***out, int j, int i)
 {
 	int		count;
-	char	buff[ft_strlen(cmd)];
+	char	buff[ft_strlen(cmd)] + 1;
 
 	ft_bzero(buff, ft_strlen(cmd));
 	count = -1;

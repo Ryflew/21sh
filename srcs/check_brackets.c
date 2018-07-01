@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 14:54:07 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 20:34:56 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char		*check_quot_brackets(char *str, enum e_state *state)
 {
 	int		i;
 	int		j;
-	char	op[ft_strlen(str)];
+	char	op[ft_strlen(str) + 1];
 
 	j = -1;
 	i = -1;

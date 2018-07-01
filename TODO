@@ -1,13 +1,24 @@
----------- BUG -------------
+-------- BUG -------------
 
 BASILE :
 
-commande "base64" sortie pas normale
-cd /tmp; sort << EOF | cat -e > sorted_poem ; sed -e 's/Roses/Turnips/' < sorted_poem > better_poem; cd -; echo "I prefer turnips anyway" >> /tmp/better_poem; cat /tmp/better_poem
+leaks 2>&- et 1>&-
+./21sh * 5 puis kill le process au milieu
 
 Victor :
 
-??? Desactive les signaux quand on lance un binaire
+export A=`python -c 'print("../"*20000)'`
+./21sh
+setenv P $A$A$A$A$A$$A
+
+"""""""""""""""""
+
+env -i PATH=`python -c 'print("."*200000)'` TERM="xterm-256color" ./21sh
+ls
+
+hash quand on clear PATH on clear la table de hash
+
+
 
 -------- LIST BONUS 21sh -------------
 - cmd "history"
@@ -17,3 +28,4 @@ Victor :
 - cmd "read"
 - && 
 - ||
+- ()
