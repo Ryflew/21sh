@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:46:19 by bdurst            #+#    #+#             */
-/*   Updated: 2018/06/14 17:58:14 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:26:04 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static char	manage_chev(t_tree *node, t_sh *shell)
 	{
 		manage_cmds(node->right, shell, 0);
 		if (!(fd = (t_fd*)malloc(sizeof(t_fd))))
-			exit(-1);
+			ft_exiterror("Malloc failed", 1);
 		if ((fd->file = open_file(node)) == -1)
 			return (free_and_return(fd));
 		if (node->TYPE != FRED)

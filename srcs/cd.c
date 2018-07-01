@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:24 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 23:14:27 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:19:05 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	change_path(char *path, t_env *env, t_sh *shell, t_cd *opt)
 	change_prompt(tmp, env, &new_prompt, opt);
 	free(tmp);
 	if (!(av = (char**)malloc(sizeof(char*) * 4)))
-		exit(EXIT_FAILURE);
+		ft_exiterror("Malloc failed", 1);
 	av[0] = ft_strdup("setenv");
 	av[1] = ft_strdup("PWD");
 	av[2] = ft_strdup(new_prompt);

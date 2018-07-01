@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:46:04 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:46:04 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/07/01 22:28:02 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,26 @@ static char		**create_tmp_env(t_sh *sh, int size, t_token *token)
 	int		i;
 
 	if (!token)
-	{
 		sh->current_token = NULL;
-		return (NULL);
-	}
 	else if (size == 1)
-	{
 		token = text_rules(sh, 0);
-		return (NULL);
-	}
-	if (ft_strcmp(VAL, "env"))
-		++size;
-	tmp_env = (char**)malloc(sizeof(char*) * size);
-	tmp_env[size - 1] = NULL;
-	i = 0;
-	--size;
-	while (i < size)
+	else
 	{
-		token = text_rules(sh, 0);
-		tmp_env[i++] = VAL;
+		if (ft_strcmp(VAL, "env"))
+			++size;
+		if (!(tmp_env = (char**)malloc(sizeof(char*) * size)))
+			ft_exiterror("Malloc failed", 1);
+		tmp_env[size - 1] = NULL;
+		i = 0;
+		--size;
+		while (i < size)
+		{
+			token = text_rules(sh, 0);
+			tmp_env[i++] = VAL;
+		}
+		return (tmp_env);
 	}
-	return (tmp_env);
+	return (NULL);
 }
 
 static t_list	*increase(t_list *tmp, int *size, enum e_token type)

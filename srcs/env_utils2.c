@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 17:23:38 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:21:43 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	add_new_var(char ***av, t_env **env)
 		return ;
 	}
 	if (!(new_av = (char**)malloc(sizeof(char*) * 4)))
-		exit(EXIT_FAILURE);
+		ft_exiterror("Malloc failed", 1);
 	new_av[0] = ft_strdup("setenv");
 	if (ft_strchr(**av, '='))
 	{

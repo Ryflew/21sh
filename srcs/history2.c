@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 20:56:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 18:44:24 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:34:00 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ void		add_line(t_sh *shell, char *toadd)
 	if (!shell->history)
 	{
 		if (!(shell->history = (char**)malloc(sizeof(char*) * 2)))
-			errexit("\n21sh", "Malloc failed.\n");
+			ft_exiterror("Malloc failed", 1);
 		shell->history[0] = ft_strdup(toadd);
 		shell->history[1] = NULL;
 		return ;
 	}
 	if (!(new = (char**)malloc(sizeof(char*) * \
 		(ft_counttab(shell->history) + 2))))
-		errexit("\n21sh", "Malloc failed.\n");
+		ft_exiterror("Malloc failed", 1);
 	i = -1;
 	new[0] = ft_strdup(toadd);
 	while (shell->history[++i])
@@ -49,7 +49,7 @@ static char	**convert_history(char *str, int count)
 	char	**out;
 
 	if (!(out = (char**)malloc(sizeof(char*) * (count + 1))))
-		return (NULL);
+		ft_exiterror("Malloc failed", 1);
 	last = 0;
 	i = -1;
 	j = -1;

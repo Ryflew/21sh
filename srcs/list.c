@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:35:32 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 12:36:04 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:25:44 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_env	*new_env(char *str)
 	char	*tmp;
 
 	if (!(elem = (t_env*)malloc(sizeof(t_env))))
-		exit(EXIT_FAILURE);
+		ft_exiterror("Malloc failed", 1);
 	elem->all = ft_strdup(str);
 	elem->var_name = ft_strsub(str, 0, ft_strchr(str, '=') - str);
 	tmp = ft_strchr(str, '=') + 1;
@@ -66,7 +66,7 @@ char	**list_to_tabstr(t_list *list)
 	tmp = list;
 	size = ft_list_size(list);
 	if (!(args = (char**)malloc(sizeof(char*) * (size + 1))))
-		ft_exiterror("ERROR: malloc failure", 0);
+		ft_exiterror("Malloc failed", 1);
 	i = 0;
 	while (tmp)
 	{

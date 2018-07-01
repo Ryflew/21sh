@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:36 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:26:36 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:24:33 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		hist_d(t_sh *shell, int nb)
 	if (!shell->history || nb <= 0 || nb > count)
 		return ;
 	if (!(new = (char**)malloc(sizeof(char*) * (count))))
-		errexit("\n21sh", "Malloc failed.\n");
+		ft_exiterror("Malloc failed", 1);
 	i = -1;
 	j = 0;
 	while (shell->history[++i])
@@ -77,10 +77,7 @@ void		hist_r(t_sh *shell, char *path)
 	}
 	count = ft_counttab(shell->history) + ft_counttab(toadd);
 	if (!(new = (char**)malloc(sizeof(char*) * (count + 1))))
-	{
-		errexit("history", "Malloc failed.");
-		return ;
-	}
+		ft_exiterror("Malloc failed", 1);
 	hist_r2(shell, toadd, new);
 }
 

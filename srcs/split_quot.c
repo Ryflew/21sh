@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/04 23:11:41 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/01 21:43:40 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:29:24 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	get_next_quot(char *buff, char *cmd, int *count, int *i)
 static void	get_splited_char(char *cmd, char ***out, int j, int i)
 {
 	int		count;
-	char	buff[ft_strlen(cmd)] + 1;
+	char	buff[ft_strlen(cmd) + 1];
 
 	ft_bzero(buff, ft_strlen(cmd));
 	count = -1;
@@ -93,10 +93,7 @@ char		**split_quot_cmd(char *cmd)
 		return (NULL);
 	nb = count_quot(cmd, 0, -1, 0);
 	if (!(out = (char**)malloc(sizeof(char*) * nb + 1)))
-	{
-		ft_putstr("Malloc failed.");
-		return (NULL);
-	}
+		ft_exiterror("Malloc failed", 1);
 	out[nb] = NULL;
 	get_splited_char(cmd, &out, -1, -1);
 	return (out);

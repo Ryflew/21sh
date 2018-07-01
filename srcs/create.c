@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:05 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 14:46:01 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:20:39 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_token	*new_token(t_lexer *lexer, enum e_token token_type, char *value,
 	t_token *token;
 
 	if (!(token = (t_token *)malloc(sizeof(t_token))))
-		exit(-1);
+		ft_exiterror("Malloc failed", 1);
 	if (lexer)
 		lexer->line += ft_strlen(value);
 	TYPE = token_type;

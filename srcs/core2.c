@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:01 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:24:01 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:32:28 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	**create_cmds_with_tokens(t_list *lexems)
 
 	nb_cmds = ft_list_size(lexems);
 	if (!(cmds = (char**)malloc(sizeof(char*) * (nb_cmds + 1))))
-		ft_exiterror("ERROR: malloc failure", 0);
+		ft_exiterror("Malloc failed", 1);
 	cmds[nb_cmds] = NULL;
 	i = 0;
 	while (lexems)

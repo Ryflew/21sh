@@ -3,17 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   unsetenv.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:44:52 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:44:53 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/07/01 22:36:34 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "tosh.h"
 
-void	manage_unset(t_sh *shell, char **av)
+static void	is_path_var(void)
+{
+	del_all_env(&(get_shell()->hash));
+	get_shell()->hash = NULL;
+}
+
+void		manage_unset(t_sh *shell, char **av)
 {
 	if (!*(av + 1))
 	{
@@ -28,7 +34,7 @@ void	manage_unset(t_sh *shell, char **av)
 		unset_env(av, &(shell->shell_var));
 }
 
-void	unset_env(char **av, t_env **env)
+void		unset_env(char **av, t_env **env)
 {
 	t_env	*first;
 	t_env	*prev;
@@ -48,6 +54,8 @@ void	unset_env(char **av, t_env **env)
 			first = first->next;
 		else if (*env)
 			prev->next = (*env)->next;
+		if (!ft_strcmp((*env)->var_name, "PATH"))
+			is_path_var();
 		if (*env)
 			del_env(*env);
 		*env = first;

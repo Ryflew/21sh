@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:05 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 18:53:11 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:23:49 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,7 @@ static void	del_hash_line(char *name, t_sh *shell)
 	if (find_env(shell->hash, name))
 	{
 		if (!(out = (char**)malloc(sizeof(char*) * 3)))
-		{
-			ft_putstr("Malloc failed.");
-			exit(EXIT_FAILURE);
-		}
+			ft_exiterror("Malloc failed", 1);
 		out[0] = ft_strdup("unsetenv");
 		out[1] = ft_strdup(name);
 		out[2] = NULL;
@@ -69,7 +66,7 @@ void		add_hash_line(char *name, char *path, t_sh *shell, char mute)
 	}
 	i = 0;
 	if (!(new_av = (char**)malloc(sizeof(char*) * 4)))
-		exit(EXIT_FAILURE);
+		ft_exiterror("Malloc failed", 1);
 	new_av[0] = ft_strdup("setenv");
 	new_av[1] = ft_strdup(name);
 	new_av[2] = ft_strdup(path);

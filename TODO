@@ -4,20 +4,18 @@ BASILE :
 
 leaks 2>&- et 1>&-
 ./21sh * 5 puis kill le process au milieu
+``
 
 Victor :
 
-export A=`python -c 'print("../"*20000)'`
-./21sh
-setenv P $A$A$A$A$A$$A
-
+-------
 """""""""""""""""
+-------
 
 env -i PATH=`python -c 'print("."*200000)'` TERM="xterm-256color" ./21sh
 ls
 
-hash quand on clear PATH on clear la table de hash
-
+A TESTER: leaks quand on fait un "unsetenv PATH"
 
 
 -------- LIST BONUS 21sh -------------
@@ -29,3 +27,4 @@ hash quand on clear PATH on clear la table de hash
 - && 
 - ||
 - ()
+- globing *

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:44:33 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 18:54:01 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:29:40 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*clear_quot(char *str, char string_op)
 		if (str[i] != string_op)
 			++count;
 	if (!(out = (char *)malloc(sizeof(char) * (count + 1))))
-		exit(EXIT_FAILURE);
+		ft_exiterror("Malloc failed", 1);
 	i = -1;
 	count = -1;
 	while (str[++i])

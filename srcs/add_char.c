@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 22:35:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:07:21 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 23:39:28 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char		add_char(char *command, int *j, t_sh *shell, char c)
 	int		total;
 	int		i;
 
-	if (*j + 1 == ARG_MAX)
+	if (*j + 1 == MAX_CMD)
 	{
 		ft_putstr("\nInput too long.");
 		sig_hand(0);

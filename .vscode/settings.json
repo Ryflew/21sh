@@ -11,6 +11,10 @@
         "string": "c",
         "system_error": "c",
         "stdlib.h": "c",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "memory": "c",
+        "utility": "c",
+        "__locale": "c",
+        "iterator": "c"
     }
 }

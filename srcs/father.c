@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   father.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:25:08 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 19:59:27 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/07/01 22:22:28 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char		*current_binary(t_tree *node, t_env *env, t_sh *shell)
 	while (node->cmds[++i])
 		;
 	if (!(tab = (char**)malloc(sizeof(char*) * (i + 1))))
-		exit(EXIT_FAILURE);
+		ft_exiterror("Malloc failed", 1);
 	if (!(cwd = getcwd(buff, 4097)))
 		return (0);
 	tab[0] = ft_strstrjoin(cwd, "/", str);

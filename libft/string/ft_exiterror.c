@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exiterror.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/27 12:32:57 by bdurst            #+#    #+#             */
-/*   Updated: 2016/05/27 12:32:57 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/07/01 22:14:54 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 void	ft_exiterror(const char *str, int status)
 {
-	ft_putendl(str);
+	ft_fputendl(str, 2);
 	exit(status);
 }

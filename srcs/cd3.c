@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:32 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:23:32 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:20:03 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	print_cd_error(char *tmp, char *path)
 void	init_setenv(char ***av, t_env **env, char *tmp)
 {
 	if (!(*av = (char**)malloc(sizeof(char*) * 4)))
-		exit(EXIT_FAILURE);
+		ft_exiterror("Malloc failed", 1);
 	(*av)[0] = ft_strdup("setenv");
 	(*av)[1] = ft_strdup("OLDPWD");
 	(*av)[2] = ft_strdup(tmp);

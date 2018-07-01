@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:42 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:45:43 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/07/01 22:28:34 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void		read_addvar(t_sh *shell, char *var_name, char *line)
 {
 	char	**av;
 
-	av = (char**)malloc(sizeof(char*) * 4);
+	if (!(av = (char**)malloc(sizeof(char*) * 4)))
+		ft_exiterror("Malloc failed", 1);
 	av[0] = ft_strdup("setenv");
 	av[1] = ft_strdup(var_name);
 	av[2] = ft_strdup(line);

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:20:57 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 18:07:28 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 23:37:26 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ t_env	*get_env(char **env)
 	}
 	while (++env && *env)
 	{
+		if (ft_strlen(*env) > MAX_CMD)
+		{
+			write(2, *env, ft_strchr(*env, '=') - *env);
+			ft_fputstr(": Environment variable too large\n", 2);
+			continue ;
+		}
 		elem->next = new_env(*env);
 		elem = elem->next;
 	}
@@ -65,7 +71,8 @@ char	**conv_env(t_env *env)
 		tmp = tmp->next;
 	if (i == 0)
 		return (NULL);
-	out = (char**)malloc(sizeof(char*) * (i + 1));
+	if ((out = (char**)malloc(sizeof(char*) * (i + 1))) == NULL)
+		ft_exiterror("Malloc failed.", 1);
 	out[i] = NULL;
 	i = -1;
 	while (env)

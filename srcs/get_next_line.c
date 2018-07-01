@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 21:05:40 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/03/18 21:07:07 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:23:09 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ static char		*ft_strcdup(char *s, char c)
 	size_t	i;
 
 	i = 0;
-	dest = (char *)malloc(sizeof(*dest) * (ft_strlen(s) + 1));
-	if (!dest)
-		return (NULL);
+	if (!(dest = (char *)malloc(sizeof(*dest) * (ft_strlen(s) + 1))))
+		ft_exiterror("Malloc failed", 1);
 	while (i < ft_strlen(s) && s[i] != c)
 	{
 		dest[i] = s[i];

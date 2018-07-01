@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:44 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:24:44 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 22:22:06 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	u_opt(char ***av, t_env **env)
 	else
 	{
 		if (!(out = (char**)malloc(sizeof(char*) * 3)))
-			exit(EXIT_FAILURE);
+			ft_exiterror("Malloc failed", 1);
 		out[0] = ft_strdup("unsetenv");
 		out[1] = ft_strdup(*++*av);
 		out[2] = NULL;

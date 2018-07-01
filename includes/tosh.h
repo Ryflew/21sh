@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/06/21 15:54:39 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/01 23:39:31 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define TYPE token->type
 # define BLK token->blank
 
+# define MAX_CMD 4096
 # define UP_ARROW 4283163
 # define DOWN_ARROW 4348699
 # define LEFT_ARROW 4479771
@@ -201,7 +202,7 @@ typedef	struct		s_sh
 
 	char			*prompt;
 	char			*toaddstr;
-	char			command[ARG_MAX];
+	char			command[MAX_CMD];
 	char			*total_command;
 	char			*op;
 	int				j;
