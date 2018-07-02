@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:24 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/01 23:49:06 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/02 21:29:14 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,9 @@ static void	replace_var(char last_blank, t_list **lexems, t_sh *sh)
 			if (!(var = find_env(sh->export, to_free)))
 				if (!(var = find_env(sh->shell_var, to_free)))
 					var = "";
-		if (ft_strlen(VAL) + ft_strlen(var) > MAX_CMD)
-		{
-			ft_fputstr("Size of the environment variable too large\n", 2);
-			var = "";
-		}
+		var = ft_strlen(VAL) + ft_strlen(var) > MAX_CMD ? "" : var;
+		ft_strlen(VAL) + ft_strlen(var) > MAX_CMD ? \
+			ft_fputstr("Environment variable too large\n", 2) : NULL;
 		VAL = ft_strdup(var);
 		free(to_free);
 	}

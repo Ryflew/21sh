@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:09 by bdurst            #+#    #+#             */
-/*   Updated: 2018/06/21 15:53:11 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/02 21:15:51 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void		bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems,
 	prev_token = (prev_lexems) ? (t_token*)prev_lexems->data : NULL;
 	blank = ((t_token*)(*lexems)->data)->blank;
 	next_lexems = (*lexems)->next;
-	while (next_lexems && ((t_token*)next_lexems->prev->data)->type == EBQT)
+	while (next_lexems && ((t_token*)next_lexems->prev->data)->type != EBQT)
 		NEXT(next_lexems);
 	delete_lexems(first_lexems, lexems);
 	subshell(sh, *lexems, BQT, is_cmd);
