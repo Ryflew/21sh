@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/01 22:21:43 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/06 23:37:48 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,32 @@ char	*get_tmp(char **av)
 		free(str);
 		return (tmp);
 	}
+}
+
+void	inc_shlvl(t_env *env)
+{
+	char	*str[4];
+	char	*tmp;
+	int		nb;
+
+	if (!(tmp = find_env(env, "SHLVL")))
+		str[2] = ft_strdup("1");
+	else
+	{
+		nb = ft_atoi(tmp);
+		if (nb > 0)
+		{
+			tmp = ft_itoa(++nb);
+			str[2] = ft_strdup(tmp);
+		}
+		else
+			str[2] = ft_strdup("1");
+	}
+	str[0] = ft_strdup("setenv");
+	str[1] = ft_strdup("SHLVL");
+	str[3] = NULL;
+	set_env(str, &env);
+	free(str[0]);
+	free(str[1]);
+	free(str[2]);
 }

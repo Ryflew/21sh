@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:06:34 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/06 23:48:01 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int			main(int ac, char **av, char **termenv)
 	(void)ac;
 	(void)av;
 	g_sh.env = get_env(termenv);
+	inc_shlvl(g_sh.env);
 	init_shell(&g_sh, &lexer);
 	init_termcap(&g_sh, g_sh.env);
 	get_current_path(g_sh.env);

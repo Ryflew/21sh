@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/01 23:39:31 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/06 23:37:55 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,7 @@ void				change_prompt(char *path, t_env *env, char **new_prompt,
 void				echo_builtin(char **av);
 void				set_env(char **av, t_env **env);
 void				unset_env(char **av, t_env **env);
+void				inc_shlvl(t_env *env);
 void				exit_command(char **av, t_sh *shell);
 char				export(char **av, t_env **export);
 char				is_string_op(char c);
