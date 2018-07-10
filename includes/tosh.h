@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/06 23:37:55 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/07 00:12:16 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,7 @@ void				manage_redirection(t_tree **tree);
 void				load_history(t_sh *shell, t_env *env);
 void				hist_w(t_sh *shell, char *path);
 void				hist_d(t_sh *shell, int nb);
-void				set_old_term(t_sh *shell);
+void				set_old_term(t_sh *shell, char *str);
 void				set_our_term(t_sh *shell);
 void				read_builtin(t_sh *shell, char **av);
 void				del_env(t_env *todel);

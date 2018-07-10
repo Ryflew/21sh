@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/06 23:37:48 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/11 01:28:50 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void	inc_shlvl(t_env *env)
 		{
 			tmp = ft_itoa(++nb);
 			str[2] = ft_strdup(tmp);
+			free(tmp);
 		}
 		else
 			str[2] = ft_strdup("1");

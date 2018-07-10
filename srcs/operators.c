@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:46:19 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/01 22:26:04 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/07 00:20:45 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char		manage_dchevb(t_sh *sh, char *cmd, t_tree *node, int *fd_pipe)
 	char	*prompt;
 
 	if (!node->left)
-		set_old_term(get_shell());
+		set_old_term(get_shell(), "123");
 	if (!(prompt = find_env(sh->env, "PS2")))
 		prompt = "heredoc> ";
 	heredoc_line = read_here_doc(cmd, prompt);

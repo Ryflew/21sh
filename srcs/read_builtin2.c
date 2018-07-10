@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_builtin2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:38 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:45:39 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/07/07 00:21:10 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*read_line_cano(t_sh *shell, int fd)
 {
 	char	*str;
 
-	set_old_term(shell);
+	set_old_term(shell, "123");
 	get_next_line(fd, &str);
 	set_our_term(shell);
 	return (str);

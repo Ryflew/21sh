@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:06 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/06/21 14:57:29 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/07/11 01:35:10 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,18 @@ void		child(t_tree *node, t_sh *shell, int *fd, int *heredoc_pipe)
 
 char		stop_binary(int sig)
 {
+	int	ret;
+
+	if (sig == SIGTERM)
+	{
+		if (g_father != -1)
+		{
+			kill(g_father, sig);
+			waitpid(g_father, &ret, WNOHANG);
+			ft_putchar('\n');
+		}
+		exit(EXIT_SUCCESS);
+	}
 	if (!g_father)
 		exit(EXIT_SUCCESS);
 	if (g_father != -1 && sig == SIGINT)

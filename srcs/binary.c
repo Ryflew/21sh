@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binary.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 20:09:10 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/07/07 00:14:00 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char		run_binary(t_tree *node, t_env *env, t_sh *shell)
 	int		ret;
 	int		heredoc_pipe[2];
 
-	set_old_term(shell);
+	set_old_term(shell, *(node->cmds));
 	if (node->parent && node->parent->TYPE == DCHEVB && \
 		(ret = pipe(heredoc_pipe)) == -1)
 		errexit("21sh", "pipe failure !\n");
@@ -72,7 +72,7 @@ char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 	int		fd[2];
 	int		heredoc_pipe[2];
 
-	set_old_term(shell);
+	set_old_term(shell, "123");
 	if (node->parent && node->parent->TYPE == DCHEVB && \
 		(ret = pipe(heredoc_pipe)) == -1)
 		errexit("21sh", "pipe failure !\n");
