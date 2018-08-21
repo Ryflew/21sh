@@ -37,8 +37,6 @@ static void	text_rules3(t_sh *sh, t_token **token)
 		eat(sh, TILD_VAR_WORD);
 	else if (sh->current_token->type == EQUAL)
 		eat(sh, EQUAL);
-	else if (sh->current_token->type == BQT)
-		eat(sh, BQT);
 	else if (sh->current_token->type == LPAR)
 		eat(sh, LPAR);
 	else

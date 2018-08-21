@@ -73,22 +73,21 @@ char		**get_cmds(t_list **cmd_tokens, t_sh *sh)
 	return (create_cmds_with_tokens(*cmd_tokens));
 }
 
-static char	replace_subshell(t_sh *sh, t_list **cmd_tokens, char is_cmd)
+static char	replace_par_subshell(t_sh *sh, t_list **cmd_tokens, char is_cmd)
 {
 	t_list	*lexems;
 	t_token	*token;
 
 	lexems = *cmd_tokens;
+	sh->lexer->lexems = lexems;
 	while (lexems)
 	{
 		token = (t_token*)lexems->data;
-		if (TYPE == BQT)
-			bqt_rule(sh, &lexems, cmd_tokens, is_cmd);
-		else if (TYPE == LPAR && is_cmd)
+		if (TYPE == LPAR && is_cmd)
 		{
 			sh->ssbqt = RPAR;
-			delete_lexems(cmd_tokens, &lexems);
-			subshell(sh, lexems, LPAR, 1);
+			delete_first_subshell_lexems(cmd_tokens, &lexems);
+			subshell(sh, lexems, LPAR, is_cmd);
 			delete_subshell_lexems(cmd_tokens, &lexems, LPAR, RPAR);
 			sh->ssbqt = 0;
 		}
@@ -100,7 +99,7 @@ static char	replace_subshell(t_sh *sh, t_list **cmd_tokens, char is_cmd)
 
 char		manage_cmds(t_tree *node, t_sh *sh, char is_cmd)
 {
-	replace_subshell(sh, &node->cmd_tokens, is_cmd);
+	replace_par_subshell(sh, &node->cmd_tokens, is_cmd);
 	if (node->tmp_env)
 		env_command(node->tmp_env, sh->env);
 	if (!(node->cmds = get_cmds(&node->cmd_tokens, sh)))

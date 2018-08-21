@@ -12,11 +12,13 @@
 
 #include "tosh.h"
 
-static char		**create_tmp_env(t_sh *sh, int size, t_token *token)
+static char		**create_tmp_env(t_sh *sh, int size, t_token *token, t_list *tp)
 {
 	char	**tmp_env;
 	int		i;
 
+	if (tp && tp->prev && !ft_strcmp(((t_token*)tp->prev->data)->value, "env"))
+		token = (t_token*)tp->prev->data;
 	if (!token)
 		sh->current_token = NULL;
 	else if (size == 1)
@@ -29,8 +31,7 @@ static char		**create_tmp_env(t_sh *sh, int size, t_token *token)
 			ft_exiterror("Malloc failed", 1);
 		tmp_env[size - 1] = NULL;
 		i = 0;
-		--size;
-		while (i < size)
+		while (--size)
 		{
 			token = text_rules(sh, 0);
 			tmp_env[i++] = VAL;
@@ -53,7 +54,7 @@ static t_token	*compute_tmp_env_size(t_list **tmp, int *size, t_token *token)
 
 	if ((*tmp)->prev)
 		prev_token = (t_token*)(*tmp)->prev->data;
-	if ((*tmp)->prev && TYPE == EQUAL && (prev_token->type == VAR_WORD))
+	if ((*tmp)->prev && TYPE == EQUAL && prev_token->type == VAR_WORD)
 	{
 		if ((*tmp)->next && ((t_token*)(*tmp)->next->data)->type == VAR_WORD)
 			free_join(&VAL, ((t_token*)(*tmp)->next->data)->value);
@@ -95,5 +96,5 @@ char			**parse_env_cmds(t_sh *sh)
 		|| !ft_strcmp(VAL, "env") ||\
 		ft_strchr(VAL, '=') || TYPE == VAR_WORD || TYPE == EQUAL))
 		token = compute_tmp_env_size(&tmp, &size, token);
-	return (create_tmp_env(sh, size, token));
+	return (create_tmp_env(sh, size, token, tmp));
 }

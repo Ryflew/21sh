@@ -90,7 +90,10 @@ void	del_command_tree(t_tree *tree)
 	if (tree->aggregations)
 		ft_clear_list(&tree->aggregations, &free);
 	if (tree->tmp_env)
+	{
 		free(tree->tmp_env);
+		tree->tmp_env = NULL;
+	}
 	free(tree);
 	tree = NULL;
 }

@@ -12,7 +12,7 @@
 
 #include "tosh.h"
 
-void		delete_lexems(t_list **first_lexems, t_list **lexems)
+void		delete_first_subshell_lexems(t_list **first_lexems, t_list **lexems)
 {
 	if (*first_lexems == *lexems)
 		*first_lexems = (*lexems)->next;
@@ -35,12 +35,12 @@ void		delete_subshell_lexems(t_list **first_lexems, t_list **lexems,
 		{
 			if (!open)
 			{
-				delete_lexems(first_lexems, lexems);
+				delete_first_subshell_lexems(first_lexems, lexems);
 				break ;
 			}
 			--open;
 		}
-		delete_lexems(first_lexems, lexems);
+		delete_first_subshell_lexems(first_lexems, lexems);
 	}
 }
 
@@ -85,7 +85,7 @@ static void	concat_next_bqt(t_list **lexems, t_list *next_lexems)
 	}
 }
 
-void		bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems,
+void		bqt_rule(t_sh *sh, t_list **lexems,
 					char is_cmd)
 {
 	t_token *prev_token;
@@ -99,9 +99,9 @@ void		bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems,
 	next_lexems = (*lexems)->next;
 	while (next_lexems && ((t_token*)next_lexems->prev->data)->type != EBQT)
 		NEXT(next_lexems);
-	delete_lexems(first_lexems, lexems);
+	delete_first_subshell_lexems(&sh->lexer->lexems, lexems);
 	subshell(sh, *lexems, BQT, is_cmd);
-	delete_subshell_lexems(first_lexems, lexems, BQT, EBQT);
+	delete_subshell_lexems(&sh->lexer->lexems, lexems, BQT, EBQT);
 	if (*lexems)
 	{
 		if (prev_token && *lexems != prev_lexems && (*lexems != next_lexems || \

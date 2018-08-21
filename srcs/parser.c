@@ -98,12 +98,16 @@ static t_tree	*condition_operators_rules(t_sh *sh)
 	return (left);
 }
 
-t_tree			*commands_line_rules(t_sh *sh)
+t_tree			*commands_line_rules(t_sh *sh, t_list **begin_lexems)
 {
 	t_tree	*left;
 	t_tree	*right;
 	t_token	*token;
 
+	replace_bqt_subshell(sh);
+	sh->current_token = (sh->lexer->lexems) ? sh->lexer->lexems->data : NULL;
+	if (begin_lexems)
+		*begin_lexems = sh->lexer->lexems;
 	while (sh->current_token && sh->current_token->type == SCL)
 		eat(sh, SCL);
 	if (!(left = condition_operators_rules(sh)) || left == (void*)-1)

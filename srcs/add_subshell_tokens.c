@@ -64,14 +64,16 @@ void		add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd)
 	if ((tokens_line = get_new_tokens(sh)) == (void*)-1)
 		return ;
 	new_lexems = NULL;
-	if (type == BQT && is_cmd)
+	if (type == BQT)
 		split_line_to_tokens(tokens_line, &new_lexems);
 	else
 	{
 		trim_line = ft_strtrim(tokens_line);
-		if (is_cmd)
+		if (is_cmd && trim_line)
+		{
 			ft_node_push_back(&new_lexems, new_token(NULL, WORD, "echo", 1));
-		ft_node_push_back(&new_lexems, new_token(NULL, WORD, trim_line, 1));
+			ft_node_push_back(&new_lexems, new_token(NULL, WORD, trim_line, 1));
+		}
 		free(trim_line);
 	}
 	free(tokens_line);

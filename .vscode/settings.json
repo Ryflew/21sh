@@ -16,6 +16,15 @@
         "utility": "c",
         "__locale": "c",
         "iterator": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "__bit_reference": "c",
+        "__functional_base": "c",
+        "algorithm": "c",
+        "bitset": "c",
+        "chrono": "c",
+        "functional": "c",
+        "ratio": "c",
+        "tuple": "c",
+        "type_traits": "c"
     }
 }

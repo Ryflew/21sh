@@ -57,9 +57,8 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, \
 		fd ? ft_node_push_back(aggregations, fd) : NULL;
 		if (!(fd = NULL) && token)
 		{
-			TYPE == BQT || TYPE == LPAR ? ++is_inside_bqt : 1;
-			!(TYPE == BQT || TYPE == LPAR) && (TYPE == EBQT || TYPE == RPAR) ? \
-				--is_inside_bqt : 1;
+			TYPE == LPAR ? ++is_inside_bqt : 1;
+			(TYPE == EBQT || TYPE == RPAR) ? --is_inside_bqt : 1;
 			if (TYPE != NONE)
 				ft_node_push_back(cmd_tokens, new_token(NULL, TYPE, VAL, BLK));
 			else

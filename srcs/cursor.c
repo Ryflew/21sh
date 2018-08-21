@@ -32,10 +32,10 @@ void		get_cursor(t_sh *shell)
 {
 	int		i;
 	int		bytes;
-	char	buff[20];
+	char	buff[10000];
 
 	ft_putstr("\x1B[6n");
-	if ((bytes = read(0, buff, 20)))
+	if ((bytes = read(0, buff, 1024)) > 0)
 	{
 		buff[bytes] = '\0';
 		i = 2;
@@ -43,6 +43,8 @@ void		get_cursor(t_sh *shell)
 		++i;
 		shell->pos.cursor.x = get_number(buff, &i) - 1;
 	}
+	else
+		ft_putendl("read failure !");
 	shell->pos.first = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
 	shell->pos.last = (t_pos){shell->pos.cursor.x, shell->pos.cursor.y};
 	if (shell->pos.cursor.y <= 0 && shell->pos.cursor.x <= 0)

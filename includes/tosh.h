@@ -377,7 +377,7 @@ t_env				*new_env(char *str);
 t_env				*cpy_env(t_env *env);
 t_env				*get_env(char **env);
 t_sh				*get_shell();
-t_tree				*commands_line_rules(t_sh *sh);
+t_tree				*commands_line_rules(t_sh *sh, t_list **begin_lexems);
 void				get_lexems(t_sh *sh);
 t_tree				*redirection_rules(t_sh *sh, t_tree *left);
 t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens,
@@ -432,6 +432,7 @@ void				replace_tild(t_token *token, t_env *env);
 
 char				manage_cmds(t_tree *node, t_sh *sh, char is_cmd);
 char				**get_cmds(t_list **cmds_token, t_sh *sh);
+char				replace_bqt_subshell(t_sh *sh);
 
 void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe,
 					int *heredoc_pipe);
@@ -454,11 +455,11 @@ void				free_join(char **s1, char *s2);
 char				manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
 					int *fd_pipe);
 char				*read_here_doc(char *cmd, char *prompt);
-void				bqt_rule(t_sh *sh, t_list **lexems, t_list **first_lexems,
+void				bqt_rule(t_sh *sh, t_list **lexems,
 						char is_cmd);
 void				add_subshell_tokens(t_sh *sh, enum e_token type, \
 						char is_cmd);
-void				delete_lexems(t_list **first_lexems, t_list **lexems);
+void				delete_first_subshell_lexems(t_list **first_lexems, t_list **lexems);
 void				delete_subshell_lexems(t_list **first_lexems,
 					t_list **lexems, enum e_token open_type,
 					enum e_token close_type);

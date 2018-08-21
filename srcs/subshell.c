@@ -12,7 +12,7 @@
 
 #include "tosh.h"
 
-static void	manage_subshell(t_sh *sh, t_tree *sub_tree)
+static void		manage_subshell(t_sh *sh, t_tree *sub_tree)
 {
 	sh->fd_pipe = -1;
 	sh->fds_out = NULL;
@@ -28,7 +28,7 @@ static void	manage_subshell(t_sh *sh, t_tree *sub_tree)
 	}
 }
 
-static void	fork_subshell(t_sh *sh, t_tree *sub_tree)
+static void		fork_subshell(t_sh *sh, t_tree *sub_tree)
 {
 	int		ret;
 	pid_t	father;
@@ -47,19 +47,28 @@ static void	fork_subshell(t_sh *sh, t_tree *sub_tree)
 		waitpid(father, &ret, 0);
 }
 
-char		subshell(t_sh *sh, t_list *lexems, enum e_token type, char is_cmd)
+char			replace_bqt_subshell(t_sh *sh)
 {
-	t_tree	*sub_tree;
+	t_list	*lexems;
+	t_token	*token;
+
+	lexems = sh->lexer->lexems;
+	while (lexems)
+	{
+		token = (t_token*)lexems->data;
+		if (TYPE == BQT)
+			bqt_rule(sh, &lexems, 1);
+		else
+			NEXT(lexems);
+	}
+	return (0);
+}
+
+ static char	subshell_pipe(t_sh *sh, enum e_token type, char is_cmd, t_tree *sub_tree)
+{
 	int		pipe_ss[2];
 	t_list	*last_pipe;
 
-	sh->lexer->lexems = lexems;
-	sh->current_token = (t_token*)lexems->data;
-	if ((sub_tree = commands_line_rules(sh)) == (void*)-1 || !sub_tree)
-	{
-		return (0);
-		parse_error(sh);
-	}
 	if ((pipe(pipe_ss)) == -1)
 	{
 		errexit("21sh", "pipe failure !\n");
@@ -73,5 +82,27 @@ char		subshell(t_sh *sh, t_list *lexems, enum e_token type, char is_cmd)
 	if (last_pipe == sh->pipe_ss)
 		sh->pipe_ss = NULL;
 	ft_pop_node(&last_pipe, NULL);
+	return (1);
+}
+
+char			subshell(t_sh *sh, t_list *lexems, enum e_token type, char is_cmd)
+{
+	t_tree	*sub_tree;
+	t_list	*save_first_lexems;
+
+	save_first_lexems = sh->lexer->lexems;
+	sh->lexer->lexems = lexems;
+	sh->current_token = (t_token*)lexems->data;
+	if (!lexems->prev)
+		save_first_lexems = NULL;
+	if (!(sub_tree = commands_line_rules(sh, NULL)))
+	{
+		sh->lexer->lexems = save_first_lexems;
+		return (0);
+	}
+	if (!subshell_pipe(sh, type, is_cmd, sub_tree))
+		return (0);
+	if (save_first_lexems)
+		sh->lexer->lexems = save_first_lexems;
 	return (1);
 }

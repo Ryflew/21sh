@@ -78,6 +78,8 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe, \
 	t_list	*tmp;
 
 	close(pipe[0]);
+	if (shell->ssbqt == BQT)
+		pipe_subshell(shell);
 	child(node, shell, pipe, heredoc_pipe);
 	tmp = shell->fds_out;
 	while (tmp && node->parent && (shell->fd_pipe == -1 \
@@ -92,6 +94,4 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe, \
 		tmp = tmp->next;
 	}
 	manage_aggregations(node);
-	if (shell->ssbqt == BQT)
-		pipe_subshell(shell);
 }
