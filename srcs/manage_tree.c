@@ -31,7 +31,7 @@ static char	manage_children(t_tree *node, t_sh *shell, char rig, char ret)
 			return (-1);
 	}
 	if (node->right && node->token && (node->TYPE < CHEVB || node->TYPE > BRED)
-		&& (node->TYPE != OR || (ret && (node->left->token && \
+		&& (node->TYPE != OR || (ret || (node->left->token && \
 		node->left->TYPE == NONE))) && (node->TYPE != AND || !ret || \
 		(node->left->token && node->left->TYPE == NONE)))
 	{

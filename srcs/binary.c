@@ -63,7 +63,7 @@ char		run_binary(t_tree *node, t_env *env, t_sh *shell)
 			ret = father(shell, fd, heredoc_pipe, node->parent);
 	}
 	set_our_term(shell);
-	return (WEXITSTATUS(ret));
+	return (ret);
 }
 
 char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
@@ -92,5 +92,5 @@ char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 			ret = father(shell, fd, heredoc_pipe, node->parent);
 	}
 	set_our_term(shell);
-	return (WEXITSTATUS(ret));
+	return (ret);
 }
