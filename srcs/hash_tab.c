@@ -6,13 +6,13 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:05 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/01 22:23:49 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/08/30 15:06:14 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
 
-void		get_hash_opt(char ***hash, char *r_opt, char *p_opt, char *d_opt)
+static char	get_hash_opt(char ***hash, char *r_opt, char *p_opt, char *d_opt)
 {
 	char *tmp;
 
@@ -23,9 +23,12 @@ void		get_hash_opt(char ***hash, char *r_opt, char *p_opt, char *d_opt)
 		{
 			if (*tmp != 'r' && *tmp != 'p' && *tmp != 'd')
 			{
-				ft_putstr("hash: illegal option -- ");
-				ft_putchar(***hash);
-				ft_putchar('\n');
+				ft_fputstr("hash: illegal option -- ", 2);
+				ft_fputchar(*tmp, 2);
+				ft_fputchar('\n', 2);
+				get_shell()->have_write_error = 1;
+				get_shell()->return_value = 1;
+				return (0);
 			}
 			*r_opt = *tmp == 'r' ? 1 : *r_opt;
 			*p_opt = *tmp == 'p' ? 1 : *p_opt;
@@ -33,6 +36,7 @@ void		get_hash_opt(char ***hash, char *r_opt, char *p_opt, char *d_opt)
 		}
 		++(*hash);
 	}
+	return (1);
 }
 
 static void	del_hash_line(char *name, t_sh *shell)
@@ -103,7 +107,8 @@ void		hash_tab(char **av, t_sh *shell)
 	r_opt = 0;
 	p_opt = 0;
 	d_opt = 0;
-	get_hash_opt(&av, &r_opt, &p_opt, &d_opt);
+	if (!get_hash_opt(&av, &r_opt, &p_opt, &d_opt))
+		return ;
 	if (d_opt && !*(av + 1))
 		del_hash_line(*av, shell);
 	else if (p_opt && *(av + 1) && !*(av + 2))

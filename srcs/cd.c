@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:24 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/08/30 13:36:38 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/08/30 15:12:32 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		cd_current_dir(char *path, t_env *env, t_sh *shell, t_cd *opt)
 		print_cd_error(path, path);
 }
 
-static void	get_cd_opt(char ***av, t_cd *opt)
+static char	get_cd_opt(char ***av, t_cd *opt)
 {
 	opt->is_oldpwd = 0;
 	opt->is_p = 0;
@@ -80,8 +80,19 @@ static void	get_cd_opt(char ***av, t_cd *opt)
 		opt->is_oldpwd = !(*(**av + 1)) ? 1 : opt->is_oldpwd;
 		opt->is_p = *(**av + 1) == 'P' ? 1 : opt->is_p;
 		opt->is_l = *(**av + 1) == 'L' ? 1 : opt->is_l;
+		if (*(**av + 1) && *(**av + 1) != 'P' && *(**av + 1) != 'L')
+		{
+			ft_fputstr("cd: -", 2);
+			ft_fputchar(*(**av + 1), 2);
+			ft_fputstr(": invalid option", 2);
+			ft_fputchar('\n', 2);
+			get_shell()->have_write_error = 1;
+			get_shell()->return_value = 1;
+			return (0);
+		}
 		++*av;
 	}
+	return (1);
 }
 
 static void	cd2(char **av, t_env *env, t_sh *shell, t_cd *opt)
@@ -103,7 +114,8 @@ void		cd(char **av, t_env *env, t_sh *shell)
 	t_cd	opt;
 
 	++av;
-	get_cd_opt(&av, &opt);
+	if (!get_cd_opt(&av, &opt))
+		return ;
 	if (*av && *(av + 1))
 		errexit("cd", "Too many arguments.");
 	else if ((!*av && !opt.is_oldpwd) || (*av && **av == '~'))

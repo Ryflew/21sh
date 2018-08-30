@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:16 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 23:43:24 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/08/30 15:26:21 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,16 @@ void		echo_builtin(char **av)
 {
 	char	nflag;
 
-	if (*++av && !ft_strcmp(*av, "-n") && (++av || !av))
+	if (*++av && **av == '-' && *(*av + 1) != 'n')
+	{
+		ft_fputstr("hash: illegal option -- ", 2);
+		ft_fputchar(*(*av + 1), 2);
+		ft_fputchar('\n', 2);
+		get_shell()->have_write_error = 1;
+		get_shell()->return_value = 1;
+		return ;
+	}
+	else if (*(*av + 1) == 'n' && (++av || !av))
 		nflag = 1;
 	else
 		nflag = 0;

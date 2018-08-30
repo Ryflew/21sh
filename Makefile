@@ -105,7 +105,7 @@ FILES = add_char.c \
 				subshell_rules.c \
 				add_subshell_tokens.c \
 
-SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN)) # debug
+SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN))
 
 OBJS = $(patsubst %.c, $(DIR_OBJ)%.o, $(FILES)) $(patsubst %.c, $(DIR_OBJ)%.o, $(MAIN))
 
@@ -149,7 +149,7 @@ src_msg:
 debug: mkdirobj $(DEP_OBJ)
 		@ make -C $(DIR_LIB)
 		@ /bin/echo -n "Archiving object in $(NAME):"
-		@ $(CC) $(CFLAGS) $(SRCS) -I$(INCLUDE_DIR) -o $(NAME) -L $(DIR_LIB) -l ft -ltermcap -g # debug
+		@ $(CC) $(CFLAGS) $(SRCS) -I$(INCLUDE_DIR) -o $(NAME) -L $(DIR_LIB) -l ft -ltermcap -g
 		@ echo " \033[32mAll done!\033[0m"
 
-.PHONY : all clean fclean re
+.PHONY : all clean fclean re mkdirobj src_msg debug

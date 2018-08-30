@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:44:52 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/01 22:36:34 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/08/30 14:28:48 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,18 @@ void		manage_unset(t_sh *shell, char **av)
 		unset_env(av, &(shell->shell_var));
 }
 
+static void	unset_env2(t_env **env, t_env **first, t_env *prev)
+{
+	if (*env && !ft_strcmp(prev->var_name, (*env)->var_name))
+		*first = (*first)->next;
+	else if (*env)
+		prev->next = (*env)->next;
+	if (!ft_strcmp((*env)->var_name, "PATH"))
+		is_path_var();
+	if (*env)
+		del_env(*env);
+}
+
 void		unset_env(char **av, t_env **env)
 {
 	t_env	*first;
@@ -50,14 +62,13 @@ void		unset_env(char **av, t_env **env)
 			prev = *env;
 			*env = (*env)->next;
 		}
-		if (*env && !ft_strcmp(prev->var_name, (*env)->var_name))
-			first = first->next;
-		else if (*env)
-			prev->next = (*env)->next;
-		if (!ft_strcmp((*env)->var_name, "PATH"))
-			is_path_var();
-		if (*env)
-			del_env(*env);
+		if (!*env)
+		{
+			*env = first;
+			errexit("setenv", "Varibale not found.");
+		}
+		else
+			unset_env2(env, &first, prev);
 		*env = first;
 		av++;
 	}
