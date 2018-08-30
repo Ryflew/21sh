@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 21:18:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 17:24:18 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/08/30 13:02:56 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 
 static void	override_env(char **av, t_env **env)
 {
+	if (!ft_strcmp(*av, "PATH"))
+	{
+		del_all_env(&(get_shell()->hash));
+		get_shell()->hash = NULL;
+	}
 	while (ft_strcmp((*env)->var_name, *av) != 0)
 		*env = (*env)->next;
 	free((*env)->var_content);

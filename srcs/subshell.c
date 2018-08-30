@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subshell.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:03 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:45:04 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/08/30 13:07:21 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ char			replace_bqt_subshell(t_sh *sh)
 	return (0);
 }
 
- static char	subshell_pipe(t_sh *sh, enum e_token type, char is_cmd, t_tree *sub_tree)
+static char		subshell_pipe(t_sh *sh, enum e_token type, char is_cmd, \
+					t_tree *sub_tree)
 {
 	int		pipe_ss[2];
 	t_list	*last_pipe;
@@ -85,7 +86,8 @@ char			replace_bqt_subshell(t_sh *sh)
 	return (1);
 }
 
-char			subshell(t_sh *sh, t_list *lexems, enum e_token type, char is_cmd)
+char			subshell(t_sh *sh, t_list *lexems, enum e_token type, \
+					char is_cmd)
 {
 	t_tree	*sub_tree;
 	t_list	*save_first_lexems;

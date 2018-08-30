@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:32 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/01 22:20:03 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/08/30 13:38:13 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,17 @@ void	init_setenv(char ***av, t_env **env, char *tmp)
 	(*av)[3] = NULL;
 	set_env(*av, env);
 	ft_strdelpp(av);
+}
+
+char	is_valid_dir(char *path)
+{
+	DIR		*dir;
+
+	if (!path || !(dir = opendir(path)))
+	{
+		errexit("cd", "Not a valid directory.");
+		return (0);
+	}
+	closedir(dir);
+	return (1);
 }

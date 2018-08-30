@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/07 00:12:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/08/30 13:36:52 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -459,9 +459,11 @@ void				bqt_rule(t_sh *sh, t_list **lexems,
 						char is_cmd);
 void				add_subshell_tokens(t_sh *sh, enum e_token type, \
 						char is_cmd);
-void				delete_first_subshell_lexems(t_list **first_lexems, t_list **lexems);
+void				delete_first_subshell_lexems(t_list **first_lexems, \
+						t_list **lexems);
 void				delete_subshell_lexems(t_list **first_lexems,
 					t_list **lexems, enum e_token open_type,
 					enum e_token close_type);
+char				is_valid_dir(char *path);
 
 #endif

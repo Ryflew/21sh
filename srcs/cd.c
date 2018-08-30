@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:24 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/01 22:19:05 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/08/30 13:36:38 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static void	change_path(char *path, t_env *env, t_sh *shell, t_cd *opt)
 	char	*new_prompt;
 
 	tmp = getcwd(buff, 4097);
+	if (!is_valid_dir(path))
+		return ;
 	if (cd_path_validity(tmp))
 		init_setenv(&av, &env, tmp);
 	new_prompt = NULL;
