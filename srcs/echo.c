@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:16 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/08/30 15:26:21 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/01 16:35:02 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ void		echo_builtin(char **av)
 		ft_fputstr("hash: illegal option -- ", 2);
 		ft_fputchar(*(*av + 1), 2);
 		ft_fputchar('\n', 2);
-		get_shell()->have_write_error = 1;
 		get_shell()->return_value = 1;
 		return ;
 	}
@@ -119,4 +118,5 @@ void		echo_builtin(char **av)
 			ft_putchar(' ');
 		++av;
 	}
+	get_shell()->return_value = 0;
 }

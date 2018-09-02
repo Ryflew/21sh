@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/11 01:35:09 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/01 16:22:35 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	shell->hash = NULL;
 	shell->export = NULL;
 	shell->save_env = NULL;
-	shell->have_write_error = 0;
 	shell->return_value = 0;
+	shell->have_write_error = 0;
 	shell->toaddstr = NULL;
 	shell->hist_first = 0;
 	shell->ssbqt = 0;

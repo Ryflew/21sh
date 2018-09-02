@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:01 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/01 22:32:28 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/01 16:37:35 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,16 @@ static char	exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 	char	ret;
 
 	if ((ret = is_writable_builtins(node->cmds)) != 1)
-		run_builtins(node, env, shell);
+		ret = run_builtins(node, env, shell);
 	else if (!(ret = is_builtins(node->cmds)))
 		ret = go_builtins(node->cmds, env, shell);
 	else
 		ret = run_binary(node, *env, shell);
+	if (ret)
+	{
+		shell->have_write_error = 1;
+		shell->return_value = 1;
+	}
 	return (ret);
 }
 

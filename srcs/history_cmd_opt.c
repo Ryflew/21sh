@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:36 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/01 22:24:33 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/01 16:47:22 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,18 @@ void		hist_d(t_sh *shell, int nb)
 
 	count = (int)ft_counttab(shell->history);
 	if (!shell->history || nb <= 0 || nb > count)
+	{
+		errexit("history", "Bad offset.");
 		return ;
+	}
 	if (!(new = (char**)malloc(sizeof(char*) * (count))))
 		ft_exiterror("Malloc failed", 1);
 	i = -1;
 	j = 0;
 	while (shell->history[++i])
 	{
-		if (i + nb == count)
-		{
-			j = 1;
+		if (i + nb == count && (j = 1))
 			continue ;
-		}
 		new[i - j] = ft_strdup(shell->history[i]);
 	}
 	new[i] = NULL;

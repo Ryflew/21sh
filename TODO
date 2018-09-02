@@ -2,14 +2,17 @@
 
 BASILE :
 
-env -i PATH=`python -c 'print("."*200000)'` TERM="xterm-256color" ./21sh
-ls
+- herdoc ctrl + d direct sans rien taper marche pas
+- Globing (ex: f*chier.*xt, ou **/**.[ch])
 
-- ls wefwefw || ls			// il doit y avoir 2 print et pas que 1 seule
+VICTOR :
 
-Victor :
+- segf quand on ctrl r direct et qu'un fichier .21sh_history existe pas
+- cmd v (pour paste)
 
-- "echo -t" retour de fonction a 1s
+BASILE || VICTOR:
+
+- quand on ctr + z le shell puis fg, termcaps pete ou un truc comme ca
 
 -------- LIST BONUS 21sh -------------
 - cmd "history"

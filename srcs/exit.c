@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:24:55 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/01 16:57:33 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 void		errexit(char *content, char *reason)
 {
-	get_shell()->have_write_error = 1;
 	get_shell()->return_value = 1;
+	get_shell()->have_write_error = 1;
 	ft_fputstr(content, 2);
 	ft_fputstr(": ", 2);
 	ft_fputendl(reason, 2);
@@ -43,8 +43,8 @@ void		exit_command(char **av, t_sh *shell)
 		exit(ft_atoi(*av));
 	}
 	else if ((**av >= '0' && **av <= '9') && *(*av + i))
-		ft_putstr("Badly formed number.");
+		errexit("exit", "Badly formed number.");
 	else if (*(av + 1) || (*(*av + i) < '0' || *(*av + i) > '9' || \
 			*(*av + i) != '-'))
-		ft_putstr("Expression Syntax.");
+		errexit("exit", "Expression Syntax.");
 }

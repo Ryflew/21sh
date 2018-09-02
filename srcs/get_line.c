@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/06/14 19:15:35 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/01 16:18:48 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ char		*get_line(t_sh *shell, unsigned long buff, enum e_state *state, \
 				char *op)
 {
 	print_prompt(*state, op);
-	shell->have_write_error = 0;
 	shell->j = -1;
 	if (shell->toaddstr)
 		add_all_char(shell);

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:58:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/07 01:12:45 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/01 17:03:41 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	treat_command(t_sh *shell, char *command)
 {
 	char	*tmp;
 
+	shell->have_write_error = 0;
 	if (!shell->total_command)
 		shell->total_command = command;
 	else
@@ -111,6 +112,8 @@ void		shell_loop(t_sh *shell)
 			ft_putchar('\n');
 			continue ;
 		}
+		if (!shell->have_write_error)
+			shell->return_value = 0;
 		treat_command(shell, command);
 	}
 }

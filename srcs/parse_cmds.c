@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:38:43 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 21:09:39 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/01 16:23:04 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char			parse_error(t_sh *sh)
 		ft_putstr("\\n");
 	ft_putendl("'");
 	sh->return_value = 1;
+	sh->have_write_error = 1;
 	return (-1);
 }
 

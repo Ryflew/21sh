@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:05 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/08/30 15:06:14 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/01 17:00:50 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static char	get_hash_opt(char ***hash, char *r_opt, char *p_opt, char *d_opt)
 				ft_fputstr("hash: illegal option -- ", 2);
 				ft_fputchar(*tmp, 2);
 				ft_fputchar('\n', 2);
-				get_shell()->have_write_error = 1;
 				get_shell()->return_value = 1;
+				get_shell()->have_write_error = 1;
 				return (0);
 			}
 			*r_opt = *tmp == 'r' ? 1 : *r_opt;
@@ -113,9 +113,6 @@ void		hash_tab(char **av, t_sh *shell)
 		del_hash_line(*av, shell);
 	else if (p_opt && *(av + 1) && !*(av + 2))
 		add_hash_line(*av, *(av + 1), shell, 0);
-	else if (r_opt && shell->hash)
-	{
-		del_all_env(&shell->hash);
+	else if (r_opt && shell->hash && del_all_env(&shell->hash))
 		shell->hash = NULL;
-	}
 }

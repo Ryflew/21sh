@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:24 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/08/30 15:12:32 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/01 16:21:35 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ static char	get_cd_opt(char ***av, t_cd *opt)
 			ft_fputchar(*(**av + 1), 2);
 			ft_fputstr(": invalid option", 2);
 			ft_fputchar('\n', 2);
-			get_shell()->have_write_error = 1;
 			get_shell()->return_value = 1;
+			get_shell()->have_write_error = 1;
 			return (0);
 		}
 		++*av;
