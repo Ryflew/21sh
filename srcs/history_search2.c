@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:29 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:27:30 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/02 16:47:15 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,13 @@ void	print_history2(t_sh *shell, t_sh *bis_sh)
 		bis_sh->pos.cursor = (t_pos){16, shell->pos.last.y + 1};
 		move_to(shell->pos.last.x, shell->pos.last.y);
 	}
+}
+
+void	init_bis_sh(t_sh *shell, t_sh *bis_sh)
+{
+	bis_sh->j = -1;
+	bis_sh->pos = shell->pos;
+	bis_sh->pos.cursor.x = 16;
+	bis_sh->pos.first.x = 16;
+	bis_sh->pos.last.x = 16;
 }

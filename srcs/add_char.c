@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 22:35:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/01 23:39:28 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/02 17:13:58 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	add_to_middle(t_sh *shell)
 	move_to(shell->pos.cursor.x, shell->pos.cursor.y);
 }
 
-char		add_char(char *command, int *j, t_sh *shell, char c)
+char		add_char(char *command, int *j, t_sh *shell, unsigned long c)
 {
 	int		total;
 	int		i;
@@ -66,17 +66,18 @@ char		add_char(char *command, int *j, t_sh *shell, char c)
 	}
 	if (shell->pos.cursor.y == shell->pos.last.y && \
 		shell->pos.cursor.x == shell->pos.last.x)
-		add_to_last(command, j, shell, c);
+		add_to_last(command, j, shell, (char)c);
 	else
 	{
 		total = get_current_pos_in_command(shell);
 		i = ++(*j) + 1;
 		while (total < --i)
 			command[i] = command[i - 1];
-		command[total] = c;
+		command[total] = (char)c;
 		while (total <= *j)
 			ft_putchar(command[total++]);
 		add_to_middle(shell);
 	}
+	(c >> 8) ? add_char(command, j, shell, c >> 8) : 0;
 	return (0);
 }

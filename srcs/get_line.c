@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/01 16:18:48 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/02 17:00:47 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ char		*get_line(t_sh *shell, unsigned long buff, enum e_state *state, \
 			move_to(shell->pos.last.x, shell->pos.last.y);
 			break ;
 		}
-		else if (buff >= 32 && buff <= 126)
-			if (add_char(shell->command, &(shell->j), shell, (char)buff))
+		else if ((char)buff >= 32 && (char)buff <= 126)
+			if (add_char(shell->command, &(shell->j), shell, buff))
 				return (ft_strdup(""));
 		if (shell->read_nchar > 0)
 			--(shell->read_nchar);

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:25 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:27:26 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/02 16:47:13 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,13 @@ void		search_mode(t_sh *shell)
 {
 	t_sh	bis_sh;
 
-	bis_sh.j = -1;
-	bis_sh.pos = shell->pos;
-	bis_sh.pos.cursor.x = 16;
-	bis_sh.pos.first.x = 16;
-	bis_sh.pos.last.x = 16;
+	if (shell->history == NULL)
+	{
+		ft_fputstr("\n21sh: No history found.", 2);
+		sig_hand(-1);
+		return ;
+	}
+	init_bis_sh(shell, &bis_sh);
 	if (bis_sh.pos.max_window.y > bis_sh.pos.cursor.y)
 	{
 		++(bis_sh.pos.cursor.y);

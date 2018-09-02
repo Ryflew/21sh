@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/01 16:19:38 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/02 17:15:14 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,7 +326,8 @@ void				cd_current_dir(char *path, t_env *env, t_sh *shell,
 						t_cd *opt);
 void				clear_to_bot(t_sh *shell);
 void				print_history2(t_sh *shell, t_sh *bis_sh);
-char				add_char(char *command, int *j, t_sh *shell, char c);
+char				add_char(char *command, int *j, t_sh *shell, \
+						unsigned long c);
 char				check_alpha(char *str);
 char				go_to_c(char **str, char c);
 char				*get_tmp(char **av);
@@ -465,5 +466,6 @@ void				delete_subshell_lexems(t_list **first_lexems,
 					t_list **lexems, enum e_token open_type,
 					enum e_token close_type);
 char				is_valid_dir(char *path);
+void				init_bis_sh(t_sh *shell, t_sh *bis_sh);
 
 #endif
