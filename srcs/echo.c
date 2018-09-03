@@ -96,6 +96,7 @@ void		echo_builtin(char **av)
 {
 	char	nflag;
 
+	nflag = 0;
 	if (*++av && **av == '-' && *(*av + 1) != 'n')
 	{
 		ft_fputstr("hash: illegal option -- ", 2);
@@ -104,10 +105,8 @@ void		echo_builtin(char **av)
 		get_shell()->return_value = 1;
 		return ;
 	}
-	else if (*(*av + 1) == 'n' && (++av || !av))
+	else if (**av == '-' && *(*av + 1) == 'n' && (++av || !av))
 		nflag = 1;
-	else
-		nflag = 0;
 	if (!*av && !nflag)
 		ft_putchar('\n');
 	while (*av)

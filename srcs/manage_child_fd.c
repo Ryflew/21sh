@@ -59,6 +59,7 @@ static void	manage_aggregations(t_tree *node)
 	tmp = node->aggregations;
 	while (tmp)
 	{
+		ft_fputendl("aggreg", 2);
 		fd = tmp->data;
 		if (fd->to == -7895474)
 			(fd->from != -1) ? close(fd->from) : close(1);
@@ -85,6 +86,7 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe, \
 	while (tmp && node->parent && (shell->fd_pipe == -1 \
 		|| shell->right_side))
 	{
+		ft_fputendl("fds_out", 2);
 		fd = tmp->data;
 		if ((fd->type != FRED || fd->from != -1))
 			dup2(fd->file, fd->from);

@@ -24,9 +24,13 @@ char		manage_dchevb(t_sh *sh, char *cmd, t_tree *node, int *fd_pipe)
 	heredoc_line = read_here_doc(cmd, prompt);
 	if (!node->left)
 		set_our_term(get_shell());
-	if (heredoc_line == (void*)-1)
-		return (0);
-	if (heredoc_line && !(manage_here_doc(sh, heredoc_line, node, fd_pipe)))
+	if (!heredoc_line)
+	{
+		node->left->cmds = NULL;
+		return (1);
+	}
+	if (heredoc_line == (void*)-1 || \
+		!(manage_here_doc(sh, heredoc_line, node, fd_pipe)))
 		return (0);
 	if (node->left)
 	{
