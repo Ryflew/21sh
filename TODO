@@ -7,12 +7,7 @@ BASILE :
 
 VICTOR :
 
-- segf quand on ctrl r direct et qu'un fichier .21sh_history existe pas
-- cmd v (pour paste)
-
 BASILE || VICTOR:
-
-- quand on ctr + z le shell puis fg, termcaps pete ou un truc comme ca
 
 -------- LIST BONUS 21sh -------------
 - cmd "history"

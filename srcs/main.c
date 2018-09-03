@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/01 16:22:35 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/02 17:25:41 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ t_sh		*get_shell(void)
 
 void		sig_hand(int sig)
 {
+	if (sig == SIGCONT)
+		set_our_term(&g_sh);
 	if (!stop_binary(sig))
 	{
 		if (g_sh.j > -1)
@@ -89,6 +91,7 @@ int			main(int ac, char **av, char **termenv)
 	get_current_path(g_sh.env);
 	signal(SIGINT, sig_hand);
 	signal(SIGTERM, sig_hand);
+	signal(SIGCONT, sig_hand);
 	load_history(&g_sh, g_sh.env);
 	shell_loop(&g_sh);
 	return (0);

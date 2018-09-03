@@ -26,6 +26,6 @@
         "ratio": "c",
         "tuple": "c",
         "type_traits": "c",
-        "typeinfo": "c"
-    }
+			"types.h": "c"
+	}
 }
