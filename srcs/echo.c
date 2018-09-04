@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:16 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/01 16:35:02 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/04 13:55:39 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void		echo_builtin(char **av)
 		get_shell()->return_value = 1;
 		return ;
 	}
-	else if (**av == '-' && *(*av + 1) == 'n' && (++av || !av))
+	else if (*av && **av == '-' && *(*av + 1) == 'n' && (++av || !av))
 		nflag = 1;
 	if (!*av && !nflag)
 		ft_putchar('\n');
