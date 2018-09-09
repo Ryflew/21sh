@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:28:10 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 17:20:56 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/09 17:53:41 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static void	manage_aggregations(t_tree *node)
 	tmp = node->aggregations;
 	while (tmp)
 	{
-		ft_fputendl("aggreg", 2);
 		fd = tmp->data;
 		if (fd->to == -7895474)
 			(fd->from != -1) ? close(fd->from) : close(1);
