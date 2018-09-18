@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:44:52 by bdurst            #+#    #+#             */
-/*   Updated: 2018/08/30 14:28:48 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 15:52:28 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void		unset_env(char **av, t_env **env)
 		if (!*env)
 		{
 			*env = first;
-			errexit("setenv", "Varibale not found.");
+			errexit("unsetenv", "Variable not found.");
 		}
 		else
 			unset_env2(env, &first, prev);

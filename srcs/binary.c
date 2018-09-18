@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/01 16:30:34 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:16:41 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
 	}
 	else if (!shell->have_write_error)
 	{
-		ft_fputstr("21sh: command not found: ", 2);
+		ft_fputstr("42sh: command not found: ", 2);
 		ft_fputendl(node->cmds[0], 2);
 		ret = EXIT_FAILURE;
 	}
@@ -46,7 +46,7 @@ char		run_binary(t_tree *node, t_env *env, t_sh *shell)
 	set_old_term(shell, *(node->cmds));
 	if (node->parent && node->parent->TYPE == DCHEVB && \
 		(ret = pipe(heredoc_pipe)) == -1)
-		errexit("21sh", "pipe failure !\n");
+		errexit("42sh", "pipe failure !\n");
 	if ((ret = get_fd(shell, fd)) != -1)
 	{
 		if ((g_father = fork()) == -1)
@@ -75,7 +75,7 @@ char		run_builtins(t_tree *node, t_env **env, t_sh *shell)
 	set_old_term(shell, "123");
 	if (node->parent && node->parent->TYPE == DCHEVB && \
 		(ret = pipe(heredoc_pipe)) == -1)
-		errexit("21sh", "pipe failure !\n");
+		errexit("42sh", "pipe failure !\n");
 	if ((ret = get_fd(shell, fd)) != -1)
 	{
 		if ((g_father = fork()) == -1)

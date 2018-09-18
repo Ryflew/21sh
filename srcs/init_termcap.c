@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/20 02:29:29 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/11 01:10:33 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:17:38 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	build_term(t_sh *shell)
 	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &term) == -1)
 	{
-		errexit("21sh", "Impossible de set le nouveau terminal");
+		errexit("42sh", "Impossible de set le nouveau terminal");
 		exit(EXIT_FAILURE);
 	}
 	ft_memmove(&shell->our, &term, sizeof(term));
@@ -60,11 +60,11 @@ void		init_termcap(t_sh *shell, t_env *env)
 
 void		set_old_term(t_sh *shell, char *str)
 {
-	if (ft_strstr(str, "21sh"))
+	if (ft_strstr(str, "42sh"))
 		signal(SIGINT, SIG_IGN);
 	if (tcsetattr(0, TCSADRAIN, &(shell->old)) == -1)
 	{
-		errexit("21sh", "Impossible de set l'ancien terminal");
+		errexit("42sh", "Impossible de set l'ancien terminal");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -74,7 +74,7 @@ void		set_our_term(t_sh *shell)
 	signal(SIGINT, sig_hand);
 	if (tcsetattr(0, TCSADRAIN, &(shell->our)) == -1)
 	{
-		errexit("21sh", "Impossible de set le nouveau terminal");
+		errexit("42sh", "Impossible de set le nouveau terminal");
 		exit(EXIT_FAILURE);
 	}
 }

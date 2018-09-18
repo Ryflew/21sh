@@ -1,8 +1,19 @@
 -------- BUG -------------
 
 BASILE :
+- echappement des back quot (\`) dans des back quot
+- 2>&1 && 1>&- && ls
+- ls && 2>&1
 
 VICTOR :
+- cpy paste dans les herdoc
+- autocompletion a revoir
+- verification sur le fichier 21sh_history
+- builtins posix
+- echo -n -n msg
+- check les variables locales
+- check la builtins read
+- changer les noms pour 42sh
 
 BASILE || VICTOR:
 

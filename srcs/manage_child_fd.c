@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:28:10 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/09 17:53:41 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:17:42 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	check_fd_is_good(t_tree *node, int left, int right)
 {
 	if (fcntl(left, F_GETFD) == -1)
 	{
-		ft_fputstr("21sh: ", 2);
+		ft_fputstr("42sh: ", 2);
 		ft_fputnbr(left, 2);
 		ft_fputendl(": Bad file descriptor", 2);
 		ft_strdelpp(&node->cmds);
@@ -85,7 +85,6 @@ void		manage_child_fd(t_sh *shell, t_tree *node, int *pipe, \
 	while (tmp && node->parent && (shell->fd_pipe == -1 \
 		|| shell->right_side))
 	{
-		ft_fputendl("fds_out", 2);
 		fd = tmp->data;
 		if ((fd->type != FRED || fd->from != -1))
 			dup2(fd->file, fd->from);

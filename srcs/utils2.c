@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:44:28 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/01 21:43:56 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:15:32 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	basic_prompt(void)
 	ft_putchar('[');
 	ft_putstr(C_ITA);
 	ft_putstr(C_CYAN);
-	ft_putstr("21sh");
+	ft_putstr("42sh");
 	ft_putstr(C_RESET);
 	ft_putchar(':');
 	ft_putstr(C_GREEN);

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 14:56:34 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/06/21 15:04:08 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:16:18 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*get_new_tokens(t_sh *sh)
 	}
 	if (ret == -1)
 	{
-		errexit("21sh", "read failure");
+		errexit("42sh", "read failure");
 		return ((void*)-1);
 	}
 	return (tokens_line);

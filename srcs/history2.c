@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 20:56:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/01 22:34:00 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:18:41 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static char	**convert_history(char *str, int count)
 }
 
 char		**get_history(t_sh *shell, off_t size, char *home, \
-				char is_21sh_logs)
+				char is_42sh_logs)
 {
 	int		i;
 	int		fd;
@@ -87,7 +87,7 @@ char		**get_history(t_sh *shell, off_t size, char *home, \
 	while (history[++i])
 		if (history[i] == '\n')
 			++count;
-	if (is_21sh_logs)
+	if (is_42sh_logs)
 		shell->history = convert_history(history, count);
 	else
 		return (convert_history(history, count));
@@ -101,7 +101,7 @@ void		load_history(t_sh *shell, t_env *env)
 
 	if (!(home = find_env(env, "HOME")))
 		return ;
-	home = ft_strjoin(home, "/.21sh_history");
+	home = ft_strjoin(home, "/.42sh_history");
 	if (!stat(home, &buff))
 	{
 		get_history(shell, buff.st_size, home, 1);
@@ -120,7 +120,7 @@ void		save_history(t_sh *shell)
 
 	if (!shell->history || !(home = find_env(shell->env, "HOME")))
 		return ;
-	home = ft_strjoin(home, "/.21sh_history");
+	home = ft_strjoin(home, "/.42sh_history");
 	if ((fd = open(home, O_WRONLY | O_CREAT, S_IRWXU)) != -1)
 	{
 		i = -1;

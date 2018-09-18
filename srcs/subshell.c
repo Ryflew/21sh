@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:03 by bdurst            #+#    #+#             */
-/*   Updated: 2018/08/30 13:07:21 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:17:50 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static char		subshell_pipe(t_sh *sh, enum e_token type, char is_cmd, \
 
 	if ((pipe(pipe_ss)) == -1)
 	{
-		errexit("21sh", "pipe failure !\n");
+		errexit("42sh", "pipe failure !\n");
 		return (0);
 	}
 	ft_node_push_back(&sh->pipe_ss, pipe_ss);

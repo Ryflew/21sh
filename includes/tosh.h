@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/02 17:15:14 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:18:36 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,7 +370,7 @@ char				*get_line(t_sh *shell, unsigned long buff, \
 						enum e_state *state, char *op);
 char				**conv_env(t_env *env);
 char				**get_history(t_sh *shell, off_t size, char *home,
-						char is_21sh_logs);
+						char is_42sh_logs);
 char				**split_quot_cmd(char *cmd);
 void				child(t_tree *node, t_sh *shell, int *fd,\
 					int *heredoc_pipe);

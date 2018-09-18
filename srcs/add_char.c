@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 22:35:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/02 17:13:58 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 16:42:24 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,23 @@ static void	add_to_middle(t_sh *shell)
 	move_to(shell->pos.cursor.x, shell->pos.cursor.y);
 }
 
+static char	max_line(void)
+{
+	ft_putstr("\nInput too long.");
+	sig_hand(0);
+	return (1);
+}
+
 char		add_char(char *command, int *j, t_sh *shell, unsigned long c)
 {
 	int		total;
 	int		i;
 
 	if (*j + 1 == MAX_CMD)
-	{
-		ft_putstr("\nInput too long.");
-		sig_hand(0);
-		return (1);
-	}
-	if (shell->pos.cursor.y == shell->pos.last.y && \
+		return (max_line());
+	if ((char)c == ENTER)
+		add_char(command, j, shell, 32);
+	else if (shell->pos.cursor.y == shell->pos.last.y && \
 		shell->pos.cursor.x == shell->pos.last.x)
 		add_to_last(command, j, shell, (char)c);
 	else

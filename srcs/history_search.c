@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:25 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/02 16:47:13 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:17:01 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void		search_mode(t_sh *shell)
 
 	if (shell->history == NULL)
 	{
-		ft_fputstr("\n21sh: No history found.", 2);
+		ft_fputstr("\n42sh: No history found.", 2);
 		sig_hand(-1);
 		return ;
 	}

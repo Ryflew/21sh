@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:58:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/01 17:03:41 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:17:47 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char		shell_loop2(char **command, char **last, enum e_state *state, \
 	}
 	if (*state == BRACKET_ERROR)
 	{
-		errexit("21sh", "\nBrackets error !");
+		errexit("42sh", "\nBrackets error !");
 		*state = BASIC_SHELL;
 		if (*last)
 			free(*last);

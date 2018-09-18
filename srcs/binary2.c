@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:06 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/11 01:35:10 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:16:45 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,6 @@ int			get_fd(t_sh *shell, int *fd)
 	ret = 0;
 	if (shell->fd_pipe != -1)
 		if ((ret = pipe(fd)) == -1)
-			errexit("21sh", "pipe failure !\n");
+			errexit("42sh", "pipe failure !\n");
 	return (ret);
 }
