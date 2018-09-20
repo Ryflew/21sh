@@ -25,9 +25,8 @@ FILES = add_char.c \
 				cd2.c \
 				cd3.c \
 				check_brackets.c \
-				completion.c \
-				completion2.c \
-				completion3.c \
+				completion_bis.c \
+				completion2_bis.c \
 				copy_data.c \
 				core.c \
 				core2.c \
@@ -104,6 +103,9 @@ FILES = add_char.c \
 				here_docs2.c \
 				subshell_rules.c \
 				add_subshell_tokens.c \
+				# completion.c \
+				# completion2.c \
+				# completion3.c \
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN))
 
@@ -117,7 +119,7 @@ RM = /bin/rm -rf
 all: mkdirobj $(DEP_OBJ)
 		@ make -C $(DIR_LIB)
 		@ /bin/echo -n "Archiving object in $(NAME):"
-		@ $(CC) -o $(NAME) $(OBJS) $(MFLAGS) -L $(DIR_LIB) -fsanitize=address
+		@ $(CC) -o $(NAME) $(OBJS) $(MFLAGS) -L $(DIR_LIB) #-fsanitize=address
 		@ echo " \033[32mAll done!\033[0m"
 
 $(DIR_OBJ)%.o: $(SRC_DIR)%.c

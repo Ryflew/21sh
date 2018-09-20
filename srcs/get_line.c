@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/02 17:00:47 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/20 19:57:22 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static char	get_line2(t_sh *shell, unsigned long buff, enum e_state *state)
 		delete_char(shell->command, &(shell->j), shell);
 	else if (buff == CTRL_R && *state != READ_CMD)
 		search_mode(shell);
-	else if (buff == TAB && shell->j != -1 && *state != READ_CMD)
+	else if (buff == TAB && *state != READ_CMD)
 		go_completion(shell);
 	else
 		return (0);
