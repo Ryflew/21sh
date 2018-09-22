@@ -87,7 +87,7 @@ t_tree			*cmd_rules(t_sh *sh)
 	tmp_env = parse_env_cmds(sh);
 	if ((get_tokens_cmd(sh, &aggreg, &ss_empty, &cmd_tokens)) == (void*)-1)
 		new_node = (void*)-1;
-	else if (cmd_tokens)
+	else if (cmd_tokens || aggreg)
 	{
 		if (ss_empty)
 			clear_lexems(ss_empty);
