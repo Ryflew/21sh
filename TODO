@@ -2,10 +2,10 @@
 
 BASILE :
 - echappement des back quot (\`) dans des back quot
-- 2>&1 && 1>&- && ls
-- ls && 2>&1
 
 VICTOR :
+- autocompletion dans heredoc
+- BUG tab pour autocompleter dans un heredoc puis ctrl D
 - cpy paste dans les herdoc
 - autocompletion a revoir
 	- bloquer la completion si c'est au milieu de la ligne
