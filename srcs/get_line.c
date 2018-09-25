@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/20 19:57:22 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/25 19:19:59 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,15 @@ char		*get_line(t_sh *shell, unsigned long buff, enum e_state *state, \
 	{
 		buff = 0;
 		read(0, &buff, sizeof(unsigned long));
+		// add_char(shell->command, &(shell->j), shell, 'c');
+		// add_char(shell->command, &(shell->j), shell, 'd');
+		// add_char(shell->command, &(shell->j), shell, ' ');
+		// add_char(shell->command, &(shell->j), shell, 'a');
+		// add_char(shell->command, &(shell->j), shell, 'b');
+		// add_char(shell->command, &(shell->j), shell, 'c');
+		// add_char(shell->command, &(shell->j), shell, 'n');
+		// add_char(shell->command, &(shell->j), shell, 'm');
+		// buff = TAB;
 		if (get_line2(shell, buff, state))
 			;
 		else if (buff == ENTER || (*state == READ_CMD && (buff == \

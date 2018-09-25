@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/02 17:25:41 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/25 17:45:44 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	shell->shell_var = NULL;
 	shell->read_delimiter = 0;
 	shell->read_nchar = 0;
+	shell->tab_request = 0;
 }
 
 static void	get_current_path(t_env *env)

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/20 16:21:37 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/25 18:33:46 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ typedef	struct		s_sh
 	char			*total_command;
 	char			*op;
 	int				j;
+	char			tab_request;
 
 	enum e_state	state;
 	t_termios		old;
@@ -469,5 +470,8 @@ char				is_valid_dir(char *path);
 void				init_bis_sh(t_sh *shell, t_sh *bis_sh);
 char				get_bin_occur(t_sh *shell, char *part, char *to_add);
 char				get_dir_occur(char *part, char *to_add);
+int					dir_content_len(char *path, char *part, int *tab_count);
+void				completion_print(char **tabu, char *white_space, int obj_len);
+int					bin_content_len(char **path, char *part, int *tab_count);
 
 #endif

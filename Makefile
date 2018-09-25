@@ -27,6 +27,7 @@ FILES = add_char.c \
 				check_brackets.c \
 				completion_bis.c \
 				completion2_bis.c \
+				completion_print.c \
 				copy_data.c \
 				core.c \
 				core2.c \
