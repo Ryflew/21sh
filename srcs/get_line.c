@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/25 19:19:59 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/27 17:02:22 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,11 @@ static char	get_line2(t_sh *shell, unsigned long buff, enum e_state *state)
 	if (shell->saved && shell->ref_pos > -1 && buff != CTRL_MAJ_LEFT && \
 		buff != CTRL_MAJ_RIGTH)
 		clean_selected(shell);
-	if (buff == EOT && shell->j == -1)
+	if (shell->tab_request && (char)buff != 'y' && (char)buff != 'n')
+		;
+	else if ((buff == TAB || shell->tab_request) && *state != READ_CMD)
+		go_completion(shell, (char)buff);
+	else if (buff == EOT && shell->j == -1)
 		ctrl_d(shell);
 	else if (buff == UP_ARROW || buff == DOWN_ARROW || buff == LEFT_ARROW || \
 		buff == RIGHT_ARROW || buff == HOME || buff == END)
@@ -62,8 +66,6 @@ static char	get_line2(t_sh *shell, unsigned long buff, enum e_state *state)
 		delete_char(shell->command, &(shell->j), shell);
 	else if (buff == CTRL_R && *state != READ_CMD)
 		search_mode(shell);
-	else if (buff == TAB && *state != READ_CMD)
-		go_completion(shell);
 	else
 		return (0);
 	return (1);
@@ -90,15 +92,6 @@ char		*get_line(t_sh *shell, unsigned long buff, enum e_state *state, \
 	{
 		buff = 0;
 		read(0, &buff, sizeof(unsigned long));
-		// add_char(shell->command, &(shell->j), shell, 'c');
-		// add_char(shell->command, &(shell->j), shell, 'd');
-		// add_char(shell->command, &(shell->j), shell, ' ');
-		// add_char(shell->command, &(shell->j), shell, 'a');
-		// add_char(shell->command, &(shell->j), shell, 'b');
-		// add_char(shell->command, &(shell->j), shell, 'c');
-		// add_char(shell->command, &(shell->j), shell, 'n');
-		// add_char(shell->command, &(shell->j), shell, 'm');
-		// buff = TAB;
 		if (get_line2(shell, buff, state))
 			;
 		else if (buff == ENTER || (*state == READ_CMD && (buff == \

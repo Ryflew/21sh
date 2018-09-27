@@ -25,8 +25,11 @@ FILES = add_char.c \
 				cd2.c \
 				cd3.c \
 				check_brackets.c \
-				completion_bis.c \
-				completion2_bis.c \
+				completion.c \
+				completion2.c \
+				completion3.c \
+				completion4.c \
+				completion5.c \
 				completion_print.c \
 				copy_data.c \
 				core.c \
@@ -104,9 +107,6 @@ FILES = add_char.c \
 				here_docs2.c \
 				subshell_rules.c \
 				add_subshell_tokens.c \
-				# completion.c \
-				# completion2.c \
-				# completion3.c \
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN))
 

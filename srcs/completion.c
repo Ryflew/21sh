@@ -5,123 +5,118 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/10 20:23:40 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/18 18:05:54 by vdarmaya         ###   ########.fr       */
+/*   Created: 2018/09/18 18:06:09 by vdarmaya          #+#    #+#             */
+/*   Updated: 2018/09/27 16:37:38 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <dirent.h>
-#include <unistd.h>
 #include "tosh.h"
 
-static void	print_missing2(char **str, char **part, char *all)
+static char	bin_completion_print(t_sh *shell, char *part, char c)
 {
-	char	*tmp;
-	char	buff[4097];
+	char	*content;
+	char	**tmp;
+	char	ret;
 
-	tmp = ft_strsub(*part, 0, ft_strrchr(*part, '/') - *part);
-	*str = ft_strstrjoin(tmp, "/", all);
-	free(tmp);
-	if (**part != '/')
-	{
-		tmp = *str;
-		*str = ft_strstrjoin(getcwd(buff, 4097), "/", tmp);
-		free(tmp);
-	}
-	*part = ft_strrchr(*part, '/') + 1;
+	if (!(content = find_env(shell->env, "PATH")))
+		return (0);
+	tmp = ft_strsplit(content, ':');
+	if (!(shell->tab_request && c == 'n'))
+		ft_putchar('\n');
+	ret = print_in_dir(tmp, NULL, part, c);
+	ft_strdelpp(&tmp);
+	return (ret);
 }
 
-static void	print_missing(t_sh *shell, char *part, char *all)
+static char	dir_completion_print(char *part, char c)
 {
-	int		i;
+	char	*path;
 	char	buff[4097];
-	char	*cwd;
-	char	*str;
+	char	*slash;
 
-	i = -1;
-	if (!(cwd = getcwd(buff, 4097)))
+	if (!(get_shell()->tab_request && c == 'n'))
+		ft_putchar('\n');
+	if (!part && (path = getcwd(buff, 4097)))
+		return (print_in_dir(NULL, path, NULL, c));
+	else
+	{
+		if (!ft_strcmp(part, "."))
+			return (print_in_dir(NULL, ".", ".", c));
+		else
+		{
+			if (!(slash = ft_strrchr(part, '/')))
+				return (print_in_dir(NULL, ".", part, c));
+			else
+			{
+				ft_strncpy(buff, part, slash - part + 1);
+				buff[slash - part + 1] = '\0';
+				return (print_in_dir(NULL, buff, !*(slash + 1) ? NULL : \
+					slash + 1, c));
+			}
+		}
+	}
+}
+
+static void	go_completion3(t_sh *shell, char *part, char is_binary, char c)
+{
+	int		need_print;
+	char	save_cmd[MAX_CMD];
+	char	to_add[MAX_CMD];
+
+	to_add[0] = '\0';
+	convert_tild(shell, part);
+	need_print = is_binary ? get_bin_occur(shell, part, to_add, -1) : \
+		get_dir_occur(part, to_add, 0);
+	if (to_add[0])
+		write_to_prompt(shell, to_add, need_print ? NULL : part);
+	else if (need_print)
+	{
+		ft_strcpy(save_cmd, shell->command);
+		if (is_binary && bin_completion_print(shell, part, c))
+			return ;
+		if (!is_binary && dir_completion_print(part, c))
+			return ;
+		get_cursor(shell);
+		sig_hand(0);
+		ft_strcpy(save_cmd + ft_strlen(save_cmd), to_add);
+		write_to_prompt(shell, save_cmd, NULL);
+	}
+	else
+		slash_if_dir(shell, part);
+}
+
+static void	go_completion2(t_sh *shell, char is_binary, char c)
+{
+	char	save_cmd[MAX_CMD];
+
+	if (is_binary && !find_env(shell->env, "PATH"))
 		return ;
-	if (ft_strchr(part, '/'))
-		print_missing2(&str, &part, all);
-	else
-		str = ft_strstrjoin(cwd, "/", all);
-	while (part[++i] && all[i] && part[i] == all[i])
-		;
-	while (all[i])
-		add_char(shell->command, &(shell->j), shell, all[i++]);
-	if ((i = reg_or_dir(str)) == 1)
-		add_char(shell->command, &(shell->j), shell, '/');
-	else if (i == 2)
-		add_char(shell->command, &(shell->j), shell, ' ');
-	free(str);
+	if (is_binary && bin_completion_print(shell, NULL, c))
+		return ;
+	if (!is_binary && dir_completion_print(NULL, c))
+		return ;
+	save_cmd[0] = '\0';
+	if (shell->j > -1)
+		ft_strcpy(save_cmd, shell->command);
+	get_cursor(shell);
+	sig_hand(0);
+	if (save_cmd[0])
+		write_to_prompt(shell, save_cmd, NULL);
 }
 
-static void	find_match_elem2(char *path, char **tmp, char **tmp2, char **cwd)
+void		go_completion(t_sh *shell, char c)
 {
-	if (!*tmp)
-		*tmp = path;
-	*tmp2 = ft_strsub(path, 0, ft_strlen(path) - ft_strlen(*tmp));
-	*cwd = ft_strstrjoin(*cwd, "/", *tmp2);
-	free(*tmp2);
-	if (**tmp == '/')
-		++(*tmp);
-}
+	char	part[MAX_CMD];
+	char	is_binary;
 
-static char	*find_match_elem(char *path, char *cwd, char *tmp, char *tmp2)
-{
-	char	buff[4097];
-
-	if (*path == '/')
-	{
-		tmp = ft_strrchr(path, '/');
-		if ((!tmp || !*(tmp + 1)) && ft_strchr(path, '/'))
-			return (NULL);
-		cwd = ft_strsub(path, 0, ft_strlen(path) - ft_strlen(++tmp));
-	}
-	else
-	{
-		if (!(cwd = getcwd(buff, 4097)))
-			return (NULL);
-		tmp = ft_strrchr(path, '/');
-		if ((!tmp || !*(tmp + 1)) && ft_strchr(path, '/'))
-			return (NULL);
-		find_match_elem2(path, &tmp, &tmp2, &cwd);
-	}
-	if ((tmp2 = check_dir_content(tmp, cwd)))
-	{
-		free(cwd);
-		return (tmp2);
-	}
-	free(cwd);
-	return (NULL);
-}
-
-void		go_completion(t_sh *shell)
-{
-	char	*tmp;
-	char	*name;
-
+	if (shell->pos.cursor.y != shell->pos.last.y || \
+		shell->pos.cursor.x != shell->pos.last.x)
+		return ;
 	shell->command[shell->j + 1] = '\0';
-	if (!(tmp = get_start_str(shell)))
-		return ;
-	if (*tmp == '~')
-		tild_to_home(&tmp, shell->env);
-	if (*tmp == '.' && *(tmp + 1) && *(tmp + 1) == '/')
-		current_completion(&tmp);
-	if (!tmp)
-		return ;
-	if (ft_strchr(shell->command, ' ') || *tmp == '/')
-		name = find_match_elem(tmp, NULL, NULL, NULL);
+	get_start_str(shell, part);
+	is_binary = is_binary_dir(shell);
+	if (!part[0])
+		go_completion2(shell, is_binary, c);
 	else
-		name = find_match_binary(shell, tmp);
-	if (!name)
-		name = find_builtins(tmp);
-	if (name)
-	{
-		print_missing(shell, tmp, name);
-		free(name);
-	}
-	free(tmp);
+		go_completion3(shell, part, is_binary, c);
 }

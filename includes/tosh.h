@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/25 18:33:46 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/27 17:03:14 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,7 +288,6 @@ void				past_data(t_sh *shell);
 void				concat_unused_add_var(t_list *cmd_tokens);
 char				is_env_var_to_add(t_list **cmd_tokens, t_list *tmp, \
 						char ret);
-// void				tild_to_home(char **str, t_env *env);
 void				delete_char(char *command, int *j, t_sh *shell);
 void				get_cursor(t_sh *shell);
 void				hash_tab(char **av, t_sh *shell);
@@ -304,11 +303,10 @@ void				set_old_term(t_sh *shell, char *str);
 void				set_our_term(t_sh *shell);
 void				read_builtin(t_sh *shell, char **av);
 void				del_env(t_env *todel);
-void				go_completion(t_sh *shell);
+void				go_completion(t_sh *shell, char c);
 void				clear_line(t_sh *shell);
 void				hist_r(t_sh *shell, char *path);
 void				add_to_history(t_sh *shell, char *command);
-// void				current_completion(char **str);
 void				get_tree_rec(t_tree **tree, char *left, char *right);
 void				reset_line_shell(t_sh *shell);
 void				remove_backslash(char **str);
@@ -347,7 +345,6 @@ char				shell_loop2(char **command, char **last, \
 char				stop_binary(int sig);
 char				check_new_open(char *str, char *op, int *j);
 char				check_quot(char *str, char *op, int *i, int *j);
-// char				reg_or_dir(char *path);
 char				manage_here_doc_bqt(t_sh *sh, t_list *end_bqt, \
 						t_list **tmp, t_list **begin_lexems);
 void				history_cmd(char **av, t_sh *shell);
@@ -360,13 +357,9 @@ char				is_in_hashtab(char *path, t_env *env);
 char				*clear_quot(char *str, char string_op);
 char				*read_line_echo(int fd, unsigned long deli, int nchar);
 char				*read_line_cano(t_sh *shell, int fd);
-// char				*get_start_str(t_sh *shell);
-// char				*find_builtins(char *part);
-// char				*check_dir_content(char *part, char *path);
 char				*check_quot_brackets(char *str, enum e_state *state);
 char				*get_with_tilde(char *path, t_env *env);
 char				*find_env(t_env *env, char *name);
-// char				*find_match_binary(t_sh *shell, char *tosearch);
 char				*get_line(t_sh *shell, unsigned long buff, \
 						enum e_state *state, char *op);
 char				**conv_env(t_env *env);
@@ -468,10 +461,19 @@ void				delete_subshell_lexems(t_list **first_lexems,
 					enum e_token close_type);
 char				is_valid_dir(char *path);
 void				init_bis_sh(t_sh *shell, t_sh *bis_sh);
-char				get_bin_occur(t_sh *shell, char *part, char *to_add);
-char				get_dir_occur(char *part, char *to_add);
+char				get_bin_occur(t_sh *shell, char *part, char *to_add, int i);
+char				get_dir_occur(char *part, char *to_add, char out);
 int					dir_content_len(char *path, char *part, int *tab_count);
-void				completion_print(char **tabu, char *white_space, int obj_len);
-int					bin_content_len(char **path, char *part, int *tab_count);
+void				completion_print(char **tabu, char *white_space, \
+						int obj_len);
+char				print_in_dir(char **env_path, char *path, char *part, \
+						char c);
+char				**create_bin_tab(char **path, char *part, int nb);
+char				**create_print_tab(char *path, char *part, int nb, int i);
+void				write_to_prompt(t_sh *shell, char *str, char *part);
+void				convert_tild(t_sh *shell, char *str);
+void				slash_if_dir(t_sh *shell, char *str);
+char				is_binary_dir(t_sh *shell);
+void				get_start_str(t_sh *shell, char *buff);
 
 #endif

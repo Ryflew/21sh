@@ -5,106 +5,109 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/10 20:23:45 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:23:46 by vdarmaya         ###   ########.fr       */
+/*   Created: 2018/09/20 13:06:14 by vdarmaya          #+#    #+#             */
+/*   Updated: 2018/09/27 16:37:20 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
-#include <dirent.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
-char	*check_dir_content(char *part, char *path)
+static void	check_dir_content2(char *to_add, char *fill, t_dirent *ent, \
+	size_t part_len)
+{
+	size_t		i;
+
+	if (!*to_add && *fill)
+		ft_strcpy(to_add, ent->d_name + part_len);
+	else
+	{
+		i = 0;
+		while (i < ft_strlen(to_add) && *(ent->d_name + i))
+		{
+			if (*(to_add + i) != *(ent->d_name + part_len + i))
+			{
+				ft_bzero(to_add + i, ft_strlen(to_add) - i);
+				if (!to_add[0])
+					*fill = 0;
+				break ;
+			}
+			++i;
+		}
+	}
+}
+
+static char	check_dir_content(char *path, char *part, char *to_add, char *fill)
 {
 	DIR			*dir;
 	t_dirent	*ent;
+	char		out;
+	size_t		part_len;
 
 	if (!(dir = opendir(path)))
 		return (0);
+	part_len = ft_strlen(part);
+	out = 0;
 	while ((ent = readdir(dir)))
 	{
-		if (!ft_strncmp(ent->d_name, part, ft_strlen(part)))
+		if (!ft_strncmp(ent->d_name, part, part_len))
 		{
-			closedir(dir);
-			return (ft_strdup(ent->d_name));
+			if (!ft_strcmp(part, ent->d_name) && !(*fill = 0))
+				to_add[0] = '\0';
+			else
+				check_dir_content2(to_add, fill, ent, part_len);
+			if (out < 2)
+				++out;
 		}
 	}
 	closedir(dir);
-	return (NULL);
+	return (out);
 }
 
-char	reg_or_dir(char *path)
+char		get_bin_occur(t_sh *shell, char *part, char *to_add, int i)
 {
-	t_stat	buff;
+	char	*content;
+	char	**tmp;
+	char	out;
+	char	ret;
+	char	fill;
 
-	if (lstat(path, &buff) == -1)
+	if (!(content = find_env(shell->env, "PATH")))
 		return (0);
-	if (S_ISDIR(buff.st_mode) || S_ISLNK(buff.st_mode))
-		return (1);
-	else if (S_ISREG(buff.st_mode))
-		return (2);
-	return (0);
-}
-
-char	*get_start_str(t_sh *shell)
-{
-	int		end;
-	int		i;
-
-	i = shell->j + 1;
-	end = i;
-	while (--i > -1 && shell->command[i] != ' ')
-		;
-	if (i == shell->j)
-		return (NULL);
-	return (ft_strsub(shell->command, i + 1, end - (i + 1)));
-}
-
-void	tild_to_home(char **str, t_env *env)
-{
-	char	*home;
-	char	*tmp;
-
-	if ((home = find_env(env, "HOME")))
+	tmp = ft_strsplit(content, ':');
+	fill = 1;
+	out = 0;
+	while (tmp[++i])
 	{
-		tmp = *str;
-		*str = ft_strjoin(home, *str + 1);
-		free(tmp);
+		if ((ret = check_dir_content(tmp[i], part, to_add, &fill)) == 2)
+			out = 2;
+		else if (ret && out < 2)
+			++out;
 	}
+	ft_strdelpp(&tmp);
+	return (out > 1 ? 1 : 0);
+}
+
+char		get_dir_occur(char *part, char *to_add, char out)
+{
+	char	*slash;
+	char	fill;
+	char	*cwd;
+	char	buff[4097];
+	char	path[4097];
+
+	fill = 1;
+	slash = ft_strrchr(part, '/');
+	if (slash - part > 4096)
+		return (0);
+	if (!slash && (cwd = getcwd(buff, 4097)))
+		out = check_dir_content(cwd, part, to_add, &fill);
 	else
 	{
-		free(*str);
-		*str = NULL;
+		ft_strncpy(path, part, slash - part + 1);
+		path[slash - part + 1] = '\0';
+		if (!*(slash + 1))
+			return (1);
+		out = check_dir_content(path, slash + 1, to_add, &fill);
 	}
-}
-
-char	*find_builtins(char *part)
-{
-	if (!ft_strncmp("echo", part, ft_strlen(part)))
-		return (ft_strdup("echo"));
-	else if (!ft_strncmp("cd", part, ft_strlen(part)))
-		return (ft_strdup("cd"));
-	else if (!ft_strncmp("exit", part, ft_strlen(part)))
-		return (ft_strdup("exit"));
-	else if (!ft_strncmp("env", part, ft_strlen(part)))
-		return (ft_strdup("env"));
-	else if (!ft_strncmp("setenv", part, ft_strlen(part)))
-		return (ft_strdup("setenv"));
-	else if (!ft_strncmp("unsetenv", part, ft_strlen(part)))
-		return (ft_strdup("unsetenv"));
-	else if (!ft_strncmp("hash", part, ft_strlen(part)))
-		return (ft_strdup("hash"));
-	else if (!ft_strncmp("help", part, ft_strlen(part)))
-		return (ft_strdup("help"));
-	else if (!ft_strncmp("unset", part, ft_strlen(part)))
-		return (ft_strdup("unset"));
-	else if (!ft_strncmp("export", part, ft_strlen(part)))
-		return (ft_strdup("export"));
-	else if (!ft_strncmp("history", part, ft_strlen(part)))
-		return (ft_strdup("history"));
-	else if (!ft_strncmp("read", part, ft_strlen(part)))
-		return (ft_strdup("read"));
-	return (NULL);
+	return (out > 1 ? 1 : 0);
 }

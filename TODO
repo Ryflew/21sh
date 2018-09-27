@@ -2,13 +2,12 @@
 
 BASILE :
 - echappement des back quot (\`) dans des back quot
+- "cd /dev;"
 
 VICTOR :
 - autocompletion dans heredoc
 - BUG tab pour autocompleter dans un heredoc puis ctrl D
 - cpy paste dans les herdoc
-- autocompletion a revoir
-	- bloquer la completion si c'est au milieu de la ligne
 - verification sur le fichier 21sh_history
 - builtins posix
 - echo -n -n msg

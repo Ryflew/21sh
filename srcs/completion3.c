@@ -5,50 +5,85 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/10 20:23:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/20 13:06:30 by vdarmaya         ###   ########.fr       */
+/*   Created: 2018/09/20 19:12:01 by vdarmaya          #+#    #+#             */
+/*   Updated: 2018/09/27 16:48:55 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
 
-char	*find_match_binary(t_sh *shell, char *tosearch)
+static void	create_bin_tab2(DIR *dir, char *part, char **tab, int *i)
 {
-	int		i;
-	char	*content;
-	char	*out;
-	char	**tmp;
+	t_dirent	*ent;
 
-	if (!(content = find_env(shell->env, "PATH")))
-		return (NULL);
-	tmp = ft_strsplit(content, ':');
-	content = tosearch;
-	i = -1;
-	while (tmp[++i])
-		if ((out = check_dir_content(content, tmp[i])))
+	while ((ent = readdir(dir)))
+	{
+		if ((!part && ft_strcmp(ent->d_name, ".") && ft_strcmp(ent->d_name, \
+			"..")) || (part && !ft_strncmp(ent->d_name, part, ft_strlen(part))))
 		{
-			ft_strdelpp(&tmp);
-			return (out);
+			if (ent->d_type == DT_DIR)
+			{
+				tab[++*i] = ft_memalloc(ft_strlen(ent->d_name) + 2);
+				ft_strcpy(tab[*i], ent->d_name);
+				tab[*i][ft_strlen(ent->d_name)] = '/';
+			}
+			else
+				tab[++*i] = ft_strdup(ent->d_name);
 		}
-	ft_strdelpp(&tmp);
-	return (NULL);
+	}
 }
 
-void	current_completion(char **str)
+char		**create_bin_tab(char **path, char *part, int nb)
 {
-	char	*cwd;
-	char	*tmp;
-	char	buff[4097];
+	DIR			*dir;
+	char		**tab;
+	int			i;
+	int			count;
 
-	if ((cwd = getcwd(buff, 4097)))
+	if (!(tab = malloc(nb * sizeof(char**) + 1)))
+		return (NULL);
+	count = -1;
+	i = -1;
+	while (path[++count])
 	{
-		tmp = *str;
-		*str = ft_strjoin(cwd, *str + 1);
-		free(tmp);
+		if (!(dir = opendir(path[count])))
+		{
+			tab[++count] = NULL;
+			ft_strdelpp(&tab);
+			return (NULL);
+		}
+		create_bin_tab2(dir, part, tab, &i);
+		closedir(dir);
 	}
-	else
+	tab[++i] = NULL;
+	return (tab);
+}
+
+char		**create_print_tab(char *path, char *part, int nb, int i)
+{
+	DIR			*dir;
+	t_dirent	*ent;
+	char		**tab;
+
+	if (!(dir = opendir(path)) || \
+		!(tab = malloc(nb * sizeof(char**) + 1)))
+		return (NULL);
+	while ((ent = readdir(dir)))
 	{
-		free(*str);
-		*str = NULL;
+		if ((!part && ft_strcmp(ent->d_name, ".") && ft_strcmp(ent->d_name, \
+			"..")) || (part && !ft_strncmp(ent->d_name, part, ft_strlen(part))))
+		{
+			if (ent->d_type == DT_DIR)
+			{
+				tab[++i] = ft_memalloc(ft_strlen(ent->d_name) + 2);
+				ft_strcpy(tab[i], ent->d_name);
+				tab[i][ft_strlen(ent->d_name)] = '/';
+			}
+			else
+				tab[++i] = ft_strdup(ent->d_name);
+		}
 	}
+	tab[++i] = NULL;
+	closedir(dir);
+	return (tab);
 }

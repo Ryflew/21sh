@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/25 17:45:44 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/27 14:10:59 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void		sig_hand(int sig)
 			free(g_sh.total_command);
 		g_sh.total_command = NULL;
 		g_sh.state = BASIC_SHELL;
+		g_sh.tab_request = 0;
 		move_to(g_sh.pos.last.x, g_sh.pos.last.y);
 		ft_putstr("\n");
 		print_prompt(BASIC_SHELL, NULL);
