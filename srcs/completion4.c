@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/27 15:59:22 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/27 17:02:58 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/27 17:44:49 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ char		is_binary_dir(t_sh *shell)
 	i = shell->j + 1;
 	while (--i > -1 && shell->command[i] != ' ' && shell->command[i] != ';')
 		;
-	if (i == -1)
-		return (1);
 	while (i > -1 && shell->command[i] == ' ')
 		--i;
-	if (i == -1 || shell->command[i] == ';')
+	if ((i == -1 && (shell->command[0] != '/' && shell->command[0] != '.')) || \
+		(shell->command[i] == ';' && shell->command[i + 1] != '/' && \
+		shell->command[i + 1] != '.'))
 		return (1);
 	return (0);
 }
@@ -54,8 +54,13 @@ void		convert_tild(t_sh *shell, char *str)
 {
 	char	*home;
 	size_t	home_len;
+	char	buff[4097];
 
-	if (*str != '~' || !(home = find_env(shell->env, "HOME")))
+	if (*str == '~' && (home = find_env(shell->env, "HOME")))
+		;
+	else if (*str == '.' && *(str + 1) == '/' && (home = getcwd(buff, 4097)))
+		;
+	else
 		return ;
 	home_len = ft_strlen(home);
 	if (home_len > 4000)
