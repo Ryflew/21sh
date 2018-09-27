@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/27 17:03:14 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/27 18:43:37 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define TYPE token->type
 # define BLK token->blank
 
+# define HIST_MAX_SIZE 32768
 # define MAX_CMD 4096
 # define UP_ARROW 4283163
 # define DOWN_ARROW 4348699
@@ -475,5 +476,6 @@ void				convert_tild(t_sh *shell, char *str);
 void				slash_if_dir(t_sh *shell, char *str);
 char				is_binary_dir(t_sh *shell);
 void				get_start_str(t_sh *shell, char *buff);
+char				echo_env(char *str);
 
 #endif

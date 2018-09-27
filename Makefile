@@ -37,6 +37,7 @@ FILES = add_char.c \
 				cursor.c \
 				delete_char.c \
 				echo.c \
+				echo2.c \
 				env.c \
 				env_utils.c \
 				env_utils2.c \

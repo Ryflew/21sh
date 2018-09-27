@@ -3,14 +3,11 @@
 BASILE :
 - echappement des back quot (\`) dans des back quot
 - "cd /dev;"
+- puis ctrl D dans les herdoc
+- cpy paste dans les herdoc
 
 VICTOR :
-- autocompletion dans heredoc
-- BUG tab pour autocompleter dans un heredoc puis ctrl D
-- cpy paste dans les herdoc
-- verification sur le fichier 21sh_history
 - builtins posix
-- echo -n -n msg
 - check les variables locales
 - check la builtins read
 

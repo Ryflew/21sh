@@ -6,18 +6,11 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:16 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/04 13:55:39 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/27 18:44:55 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
-
-static char	echo_env(char *str)
-{
-	if (*(str + 1) == '?')
-		ft_putnbr(get_shell()->return_value);
-	return (1);
-}
 
 static void	echo_octal(char **str)
 {
@@ -92,21 +85,32 @@ static char	print_echo(char *str, char *nflag, char last)
 	return (0);
 }
 
+static void	parse_echo_opt(char ***av, char *nflag)
+{
+	char	*save;
+
+	while (*++*av && ***av == '-')
+	{
+		save = **av;
+		if (*++save == 'n')
+			*nflag = 1;
+		while (*save)
+		{
+			if (*save != 'n')
+				break ;
+			++save;
+		}
+		if (*save && *save != 'n')
+			break ;
+	}
+}
+
 void		echo_builtin(char **av)
 {
 	char	nflag;
 
 	nflag = 0;
-	if (*++av && **av == '-' && *(*av + 1) != 'n')
-	{
-		ft_fputstr("hash: illegal option -- ", 2);
-		ft_fputchar(*(*av + 1), 2);
-		ft_fputchar('\n', 2);
-		get_shell()->return_value = 1;
-		return ;
-	}
-	else if (*av && **av == '-' && *(*av + 1) == 'n' && (++av || !av))
-		nflag = 1;
+	parse_echo_opt(&av, &nflag);
 	if (!*av && !nflag)
 		ft_putchar('\n');
 	while (*av)

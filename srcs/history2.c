@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 20:56:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/18 17:18:41 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/27 18:45:05 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ void		load_history(t_sh *shell, t_env *env)
 	if (!(home = find_env(env, "HOME")))
 		return ;
 	home = ft_strjoin(home, "/.42sh_history");
-	if (!stat(home, &buff))
+	if (!stat(home, &buff) && buff.st_size <= HIST_MAX_SIZE && \
+		S_ISREG(buff.st_mode))
 	{
 		get_history(shell, buff.st_size, home, 1);
 		shell->hist_first = ft_counttab(shell->history);
