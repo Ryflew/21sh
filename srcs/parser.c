@@ -117,8 +117,9 @@ t_tree			*commands_line_rules(t_sh *sh, t_list **begin_lexems)
 		token = sh->current_token;
 		while (sh->current_token && sh->current_token->type == SCL)
 			eat(sh, SCL);
-		if ((right = condition_operators_rules(sh))
-			&& right != (void*)-1)
+		if (!sh->current_token)
+			break;
+		if ((right = condition_operators_rules(sh)) && right != (void*)-1)
 			left = create_node(left, token, NULL, right);
 		else
 			return (ret_parse_error(left));
