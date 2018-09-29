@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 23:39:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/18 17:16:41 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/29 18:45:58 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
 	char	**envi;
 	int		ret;
 
-	if ((path = get_path(node, env, shell)))
+	if ((path = get_path(node, shell->save_env ? shell->save_env : env, shell)))
 	{
 		envi = conv_env(env);
 		ret = execve(path, node->cmds, envi);

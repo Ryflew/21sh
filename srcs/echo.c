@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:16 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/27 18:44:55 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/29 14:33:29 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ static void	backslash(char **str)
 		echo_octal(str);
 }
 
-static char	print_echo(char *str, char *nflag, char last)
+static char	print_echo(char *str, char *nflag, char eflag, char last)
 {
 	while (*str)
 	{
 		if (*str == '$' && *(str + 1) && echo_env(str))
 			break ;
-		else if (*str == '\\' && *(str + 1) && (*(str + 1) == 'a' || \
+		else if (eflag && *str == '\\' && *(str + 1) && (*(str + 1) == 'a' || \
 			*(str + 1) == 'b' || *(str + 1) == 'c' || *(str + 1) == 'f' || \
 			*(str + 1) == 'n' || *(str + 1) == 'r' || *(str + 1) == 't' || \
 			*(str + 1) == 'v' || *(str + 1) == '\\' || *(str + 1) == '0'))
@@ -85,22 +85,27 @@ static char	print_echo(char *str, char *nflag, char last)
 	return (0);
 }
 
-static void	parse_echo_opt(char ***av, char *nflag)
+static void	parse_echo_opt(char ***av, char *nflag, char *eflag)
 {
 	char	*save;
 
 	while (*++*av && ***av == '-')
 	{
 		save = **av;
-		if (*++save == 'n')
-			*nflag = 1;
+		++save;
 		while (*save)
 		{
-			if (*save != 'n')
+			if (*save == 'n')
+				*nflag = 1;
+			else if (*save == 'e')
+				*eflag = 1;
+			else if (*save == 'E')
+				*eflag = 0;
+			else
 				break ;
 			++save;
 		}
-		if (*save && *save != 'n')
+		if (*save && *save != 'n' && *save != 'e' && *save != 'E')
 			break ;
 	}
 }
@@ -108,14 +113,16 @@ static void	parse_echo_opt(char ***av, char *nflag)
 void		echo_builtin(char **av)
 {
 	char	nflag;
+	char	eflag;
 
 	nflag = 0;
-	parse_echo_opt(&av, &nflag);
+	eflag = 0;
+	parse_echo_opt(&av, &nflag, &eflag);
 	if (!*av && !nflag)
 		ft_putchar('\n');
 	while (*av)
 	{
-		if (print_echo(*av, &nflag, *(av + 1) ? 0 : 1))
+		if (print_echo(*av, &nflag, eflag, *(av + 1) ? 0 : 1))
 			return ;
 		if (*(av + 1))
 			ft_putchar(' ');

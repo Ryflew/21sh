@@ -41,6 +41,7 @@ FILES = add_char.c \
 				env.c \
 				env_utils.c \
 				env_utils2.c \
+				env_utils3.c \
 				exclamation_point.c \
 				exit.c \
 				export.c \
@@ -50,6 +51,7 @@ FILES = add_char.c \
 				help.c \
 				help2.c \
 				help3.c \
+				help4.c \
 				history_cmd_opt.c \
 				history_cmd.c \
 				history_cmd2.c \

@@ -6,20 +6,24 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:54:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/06/21 17:21:13 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/29 17:54:54 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "tosh.h"
 
-static void	cd_dot_dot(char **new_prompt)
+static void	cd_dot_dot(char **new_prompt, t_cd *opt)
 {
 	char	*tmp;
 	char	*cwd;
 	char	buff[4097];
 
-	cwd = getcwd(buff, 4097);
+	if (!(opt->is_logical && (cwd = find_env(get_shell()->env, "PWD"))))
+		cwd = getcwd(buff, 4097);
 	if (ft_strlen(cwd) > 1)
 	{
 		if ((ft_strrchr(cwd, '/') - cwd) == 0)
@@ -42,9 +46,10 @@ static void	treat_current2(t_cd *opt, char *tmp, char **new_prompt)
 {
 	char	buff[4097];
 
-	if (opt->is_p && !access(tmp, R_OK | R_OK))
+	if (!opt->is_logical && !access(tmp, R_OK | R_OK))
 	{
 		chdir(tmp);
+		rewrite_env(get_shell()->env, "PWD", tmp);
 		ft_strdel(new_prompt);
 		*new_prompt = ft_strdup(getcwd(buff, 4097));
 	}
@@ -53,6 +58,7 @@ static void	treat_current2(t_cd *opt, char *tmp, char **new_prompt)
 		ft_strdel(new_prompt);
 		*new_prompt = ft_strdup(tmp);
 		chdir(tmp);
+		rewrite_env(get_shell()->env, "PWD", tmp);
 	}
 	else
 		errexit("cd", "permission denied.");
@@ -64,20 +70,30 @@ static void	treat_current(char *path, char **new_prompt, t_cd *opt)
 	char	*cwd;
 	char	buff[4097];
 
-	if (!ft_strcmp(path, ".") && (*new_prompt || \
-		(*new_prompt = ft_strdup(get_shell()->prompt))))
+	if (!ft_strcmp(path, "."))
+	{
+		ft_strdel(new_prompt);
+		if (!(opt->is_logical && (cwd = find_env(get_shell()->env, "PWD"))))
+			*new_prompt = ft_strdup(getcwd(buff, 4097));
+		else
+			*new_prompt = ft_strdup(cwd);
 		return ;
+	}
 	else if (!ft_strcmp(path, ".."))
-		cd_dot_dot(new_prompt);
+		cd_dot_dot(new_prompt, opt);
 	else if (*path == '/')
 	{
 		chdir(path);
+		if (!opt->is_logical)
+			path = getcwd(buff, 4097);
+		rewrite_env(get_shell()->env, "PWD", path);
 		ft_strdel(new_prompt);
 		*new_prompt = ft_strdup(path);
 	}
 	else
 	{
-		cwd = getcwd(buff, 4097);
+		if (!(opt->is_logical && (cwd = find_env(get_shell()->env, "PWD"))))
+			cwd = getcwd(buff, 4097);
 		if (!ft_strcmp(cwd, "/"))
 			tmp = ft_strjoin(cwd, path);
 		else
@@ -103,9 +119,17 @@ void		change_prompt(char *path, t_env *env, char **new_prompt, t_cd *opt)
 {
 	char	*tmp;
 	char	*path2;
+	char	buff[4097];
 
 	if (!ft_strchr(path, '/') || !ft_strcmp(path, "/"))
+	{
 		treat_current(path, new_prompt, opt);
+		if (!opt->is_logical)
+		{
+			ft_strdel(new_prompt);
+			*new_prompt = ft_strdup(getcwd(buff, 4097));
+		}
+	}
 	else
 	{
 		if (*path == '/' && !ft_strchr(path + 1, '/'))

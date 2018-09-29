@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:15 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 17:27:43 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/29 18:27:48 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static void	help_exit(void)
 {
 	first_step("exit");
 	ft_putendl("\t- exit [value]\n");
-	ft_putendl("\tvalue : Return value for parent process.\n");
+	ft_putstr("\tvalue : Return value for parent process. \n\t\tIf omitted, ");
+	ft_putstr("the exit status is that of the last command executed.\n\n");
 	ft_putstr(C_RESET);
 }
 

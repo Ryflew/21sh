@@ -6,31 +6,14 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:20 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 17:29:50 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/29 14:42:52 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
 
-void	help_cd(void)
+static void	help_echo2(void)
 {
-	first_step("cd");
-	ft_putendl("\t- cd [-L | -P] [directory]\n");
-	ft_putendl("\t-L : Handle the operand dot-dot logically.");
-	ft_putendl("\t-P : Handle the operand dot-dot physically.");
-	ft_putendl("\tdirectory : Directory absolute or relative path.\n");
-	ft_putstr(C_RESET);
-}
-
-void	help_echo(void)
-{
-	first_step("echo");
-	ft_putendl("\t- echo [string ...]\n");
-	do_termcap("us");
-	ft_putstr("The following operands are supported:");
-	ft_putstr(C_RESET);
-	ft_putstr(C_ITA);
-	ft_putstr("\n\n");
 	ft_putendl("\t\\a : Write an <alert>.");
 	ft_putendl("\t\\b : Write a <backspace>.");
 	ft_putendl("\t\\c : Suppress the <newline> that otherwise follows the " \
@@ -51,7 +34,24 @@ void	help_echo(void)
 	ft_putstr(C_RESET);
 }
 
-void	help_env(void)
+void		help_echo(void)
+{
+	first_step("echo");
+	ft_putendl("\t- echo [-neE] [string ...]\n");
+	ft_putstr("\t-n : The trailing newline is suppressed.\n");
+	ft_putstr("\t-e : Interpretation of the following backslash-escaped");
+	ft_putstr(" characters is enabled.\n");
+	ft_putstr("\t-E : Disables the interpretation of these escape");
+	ft_putstr("character.\n\n");
+	do_termcap("us");
+	ft_putstr("The following operands are supported:");
+	ft_putstr(C_RESET);
+	ft_putstr(C_ITA);
+	ft_putstr("\n\n");
+	help_echo2();
+}
+
+void		help_env(void)
 {
 	first_step("env");
 	ft_putendl("\t- env [-i] [-u name] [name=value]... [utility "\
@@ -65,7 +65,7 @@ void	help_env(void)
 	ft_putstr(C_RESET);
 }
 
-void	help_hash(void)
+void		help_hash(void)
 {
 	first_step("hash");
 	ft_putendl("\t- hash [-r | -p name path | -d name]\n");
@@ -75,7 +75,7 @@ void	help_hash(void)
 	ft_putstr(C_RESET);
 }
 
-void	help_setenv(void)
+void		help_setenv(void)
 {
 	first_step("setenv");
 	ft_putendl("\t- setenv name value\n");

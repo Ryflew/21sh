@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:15 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:39:17 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/09/29 14:43:14 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ t_tree			*commands_line_rules(t_sh *sh, t_list **begin_lexems)
 		while (sh->current_token && sh->current_token->type == SCL)
 			eat(sh, SCL);
 		if (!sh->current_token)
-			break;
+			break ;
 		if ((right = condition_operators_rules(sh)) && right != (void*)-1)
 			left = create_node(left, token, NULL, right);
 		else

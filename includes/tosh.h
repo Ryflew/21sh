@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/27 18:43:37 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/29 17:23:02 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,7 @@ typedef struct		s_env
 
 typedef struct		s_cd
 {
-	char			is_p;
-	char			is_l;
+	char			is_logical;
 	char			is_oldpwd;
 }					t_cd;
 
@@ -274,6 +273,7 @@ void				help_export(void);
 void				add_var_twoline(char *str1, char *str2, t_env **env);
 void				sig_hand(int sig);
 void				edit_env(t_env **env);
+void				rewrite_env(t_env *env, char *name, char *content);
 void				do_termcap(char *key);
 void				search_mode(t_sh *shell);
 void				manage_unset(t_sh *shell, char **av);

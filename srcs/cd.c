@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:24 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/01 16:21:35 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/29 18:02:16 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ static void	change_path(char *path, t_env *env, t_sh *shell, t_cd *opt)
 	char	*tmp;
 	char	*new_prompt;
 
-	tmp = getcwd(buff, 4097);
 	if (!is_valid_dir(path))
 		return ;
-	if (cd_path_validity(tmp))
+	if ((tmp = find_env(get_shell()->env, "PWD")) && cd_path_validity(tmp))
 		init_setenv(&av, &env, tmp);
+	if (!(opt->is_logical && (tmp = find_env(get_shell()->env, "PWD"))))
+		tmp = getcwd(buff, 4097);
 	new_prompt = NULL;
 	tmp = ft_strdup(path);
 	change_prompt(tmp, env, &new_prompt, opt);
@@ -73,13 +74,12 @@ void		cd_current_dir(char *path, t_env *env, t_sh *shell, t_cd *opt)
 static char	get_cd_opt(char ***av, t_cd *opt)
 {
 	opt->is_oldpwd = 0;
-	opt->is_p = 0;
-	opt->is_l = 0;
+	opt->is_logical = 1;
 	while (**av && ***av == '-')
 	{
 		opt->is_oldpwd = !(*(**av + 1)) ? 1 : opt->is_oldpwd;
-		opt->is_p = *(**av + 1) == 'P' ? 1 : opt->is_p;
-		opt->is_l = *(**av + 1) == 'L' ? 1 : opt->is_l;
+		opt->is_logical = *(**av + 1) == 'P' ? 0 : opt->is_logical;
+		opt->is_logical = *(**av + 1) == 'L' ? 1 : opt->is_logical;
 		if (*(**av + 1) && *(**av + 1) != 'P' && *(**av + 1) != 'L')
 		{
 			ft_fputstr("cd: -", 2);

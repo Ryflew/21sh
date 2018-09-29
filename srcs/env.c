@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:44 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/05 07:20:53 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/29 19:05:15 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ static void	env_command3(char **av, t_env **cpy)
 		else if (ft_strchr(*av, '='))
 		{
 			add_new_var(&av, cpy);
+			print_env(*cpy);
+			edit_env(cpy);
+		}
+		else if (!ft_strcmp(*av, "-i") && del_all_env(cpy))
+		{
+			*cpy = NULL;
 			edit_env(cpy);
 		}
 		else
