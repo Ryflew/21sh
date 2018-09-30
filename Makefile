@@ -24,6 +24,7 @@ FILES = add_char.c \
 				cd.c \
 				cd2.c \
 				cd3.c \
+				cd4.c \
 				check_brackets.c \
 				completion.c \
 				completion2.c \

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 22:54:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/29 17:54:54 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/30 19:32:29 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "tosh.h"
-
-static void	cd_dot_dot(char **new_prompt, t_cd *opt)
-{
-	char	*tmp;
-	char	*cwd;
-	char	buff[4097];
-
-	if (!(opt->is_logical && (cwd = find_env(get_shell()->env, "PWD"))))
-		cwd = getcwd(buff, 4097);
-	if (ft_strlen(cwd) > 1)
-	{
-		if ((ft_strrchr(cwd, '/') - cwd) == 0)
-			tmp = ft_strdup("/");
-		else
-			tmp = ft_strsub(cwd, 0, ft_strrchr(cwd, '/') - cwd);
-		ft_strdel(new_prompt);
-		*new_prompt = ft_strdup(tmp);
-		chdir(tmp);
-		free(tmp);
-	}
-	else
-	{
-		ft_strdel(new_prompt);
-		*new_prompt = ft_strdup(getcwd(buff, 4097));
-	}
-}
 
 static void	treat_current2(t_cd *opt, char *tmp, char **new_prompt)
 {
@@ -64,9 +38,24 @@ static void	treat_current2(t_cd *opt, char *tmp, char **new_prompt)
 		errexit("cd", "permission denied.");
 }
 
-static void	treat_current(char *path, char **new_prompt, t_cd *opt)
+static void	treat_current3(char **new_prompt, t_cd *opt, char *path)
 {
 	char	*tmp;
+	char	*cwd;
+	char	buff[4097];
+
+	if (!(opt->is_logical && (cwd = find_env(get_shell()->env, "PWD"))))
+		cwd = getcwd(buff, 4097);
+	if (!ft_strcmp(cwd, "/"))
+		tmp = ft_strjoin(cwd, path);
+	else
+		tmp = ft_strstrjoin(cwd, "/", path);
+	treat_current2(opt, tmp, new_prompt);
+	free(tmp);
+}
+
+static void	treat_current(char *path, char **new_prompt, t_cd *opt)
+{
 	char	*cwd;
 	char	buff[4097];
 
@@ -91,16 +80,7 @@ static void	treat_current(char *path, char **new_prompt, t_cd *opt)
 		*new_prompt = ft_strdup(path);
 	}
 	else
-	{
-		if (!(opt->is_logical && (cwd = find_env(get_shell()->env, "PWD"))))
-			cwd = getcwd(buff, 4097);
-		if (!ft_strcmp(cwd, "/"))
-			tmp = ft_strjoin(cwd, path);
-		else
-			tmp = ft_strstrjoin(cwd, "/", path);
-		treat_current2(opt, tmp, new_prompt);
-		free(tmp);
-	}
+		treat_current3(new_prompt, opt, path);
 }
 
 static void	change_prompt2(char **path2, char *path, char **tmp)
@@ -115,7 +95,7 @@ static void	change_prompt2(char **path2, char *path, char **tmp)
 	*path2 = ft_strsub(path, i + 1, ft_strlen(path) - i - 1);
 }
 
-void		change_prompt(char *path, t_env *env, char **new_prompt, t_cd *opt)
+void		change_prompt(char *path, t_env *env, char **new_promp, t_cd *opt)
 {
 	char	*tmp;
 	char	*path2;
@@ -123,26 +103,23 @@ void		change_prompt(char *path, t_env *env, char **new_prompt, t_cd *opt)
 
 	if (!ft_strchr(path, '/') || !ft_strcmp(path, "/"))
 	{
-		treat_current(path, new_prompt, opt);
+		treat_current(path, new_promp, opt);
 		if (!opt->is_logical)
 		{
-			ft_strdel(new_prompt);
-			*new_prompt = ft_strdup(getcwd(buff, 4097));
+			ft_strdel(new_promp);
+			*new_promp = ft_strdup(getcwd(buff, 4097));
 		}
 	}
 	else
 	{
-		if (*path == '/' && !ft_strchr(path + 1, '/'))
-		{
-			tmp = ft_strsub(path, 0, 1);
+		if (*path == '/' && !ft_strchr(path + 1, '/') && \
+			(tmp = ft_strsub(path, 0, 1)))
 			path2 = ft_strsub(path, 1, ft_strlen(path) - 1);
-		}
 		else
 			change_prompt2(&path2, path, &tmp);
-		treat_current(tmp, new_prompt, opt);
+		treat_current(tmp, new_promp, opt);
 		free(tmp);
-		if (ft_strlen(path2) > 0)
-			change_prompt(path2, env, new_prompt, opt);
+		ft_strlen(path2) > 0 ? change_prompt(path2, env, new_promp, opt) : NULL;
 		free(path2);
 	}
 }

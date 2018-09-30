@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 21:14:03 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/29 19:08:24 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/30 19:14:13 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,10 @@ char		*get_line(t_sh *shell, unsigned long buff, enum e_state *state, \
 	shell->j = -1;
 	if (shell->toaddstr)
 		add_all_char(shell);
-	// static char ccc = 0;
 	while (1)
 	{
 		buff = 0;
 		read(0, &buff, sizeof(unsigned long));
-		// if (!ccc++)
-			// write_to_prompt(shell, "env -i abc=abc -i env", NULL);
-		// else
-			// write_to_prompt(shell, "env t=", NULL);
-		// buff = ENTER;
 		if (get_line2(shell, buff, state))
 			;
 		else if (buff == ENTER || (*state == READ_CMD && (buff == \

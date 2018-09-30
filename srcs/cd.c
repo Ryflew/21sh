@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:24 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/29 18:02:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/30 19:19:54 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,12 @@ static void	change_path(char *path, t_env *env, t_sh *shell, t_cd *opt)
 	char	*tmp;
 	char	*new_prompt;
 
-	if (!is_valid_dir(path))
+	if (!is_valid_dir(path) || (new_prompt = NULL))
 		return ;
 	if ((tmp = find_env(get_shell()->env, "PWD")) && cd_path_validity(tmp))
 		init_setenv(&av, &env, tmp);
 	if (!(opt->is_logical && (tmp = find_env(get_shell()->env, "PWD"))))
 		tmp = getcwd(buff, 4097);
-	new_prompt = NULL;
 	tmp = ft_strdup(path);
 	change_prompt(tmp, env, &new_prompt, opt);
 	free(tmp);

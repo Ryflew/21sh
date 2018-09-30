@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/29 17:23:02 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/09/30 19:33:53 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -477,5 +477,6 @@ void				slash_if_dir(t_sh *shell, char *str);
 char				is_binary_dir(t_sh *shell);
 void				get_start_str(t_sh *shell, char *buff);
 char				echo_env(char *str);
+void				cd_dot_dot(char **new_prompt, t_cd *opt);
 
 #endif
