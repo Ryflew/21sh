@@ -94,7 +94,7 @@ char		*get_line(t_sh *shell, unsigned long buff, enum e_state *state, \
 		read(0, &buff, sizeof(unsigned long));
 		if (get_line2(shell, buff, state))
 			;
-		else if (buff == ENTER || (*state == READ_CMD && (buff == \
+			else if (buff == ENTER || (*state == READ_CMD && (buff == \
 			(unsigned long)shell->read_delimiter || !(shell->read_nchar - 1))))
 		{
 			move_to(shell->pos.last.x, shell->pos.last.y);

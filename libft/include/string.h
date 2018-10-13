@@ -50,6 +50,7 @@ char				*ft_strstrjoin(char *s1, char *s2, char *s3);
 char				*ft_strjoinchar(char *s1, char s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
+char				**ft_strsplitmulticharacters(char const *s, char *cs);
 char				**ft_strseparate(char const *s, char c);
 void				ft_perror(const char *str, int status);
 void				ft_exiterror(const char *str, int status);

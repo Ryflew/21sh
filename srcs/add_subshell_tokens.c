@@ -44,7 +44,7 @@ static void	split_line_to_tokens(char *tokens_line, t_list **new_lexems)
 	char	**new_tokens;
 	int		i;
 
-	if (!(new_tokens = ft_strsplit(tokens_line, '\n')))
+	if (!(new_tokens = ft_strsplitmulticharacters(tokens_line, "\n ")))
 		return ;
 	i = -1;
 	while (new_tokens[++i])
@@ -55,14 +55,14 @@ static void	split_line_to_tokens(char *tokens_line, t_list **new_lexems)
 	free(new_tokens);
 }
 
-void		add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd)
+t_list		*add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd)
 {
 	t_list	*new_lexems;
 	char	*tokens_line;
 	char	*trim_line;
 
 	if ((tokens_line = get_new_tokens(sh)) == (void*)-1)
-		return ;
+		return (void*)-1;
 	new_lexems = NULL;
 	if (type == BQT)
 		split_line_to_tokens(tokens_line, &new_lexems);
@@ -77,6 +77,5 @@ void		add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd)
 		free(trim_line);
 	}
 	free(tokens_line);
-	if (new_lexems)
-		ft_add_list(sh->lexer->lexems, new_lexems);
+	return (new_lexems);
 }

@@ -113,17 +113,17 @@ t_token			*identify_token(t_lexer *lexer, t_token *l_tk)
 	t_token *token;
 
 	token = NULL;
-	if (isnt_here_or_bqt(lexer))
+	if (!token && isnt_here_and_bqt(lexer))
 		token = is_reg_op(lexer);
-	if (!token && isnt_here_or_bqt(lexer))
+	if (!token && isnt_here_and_bqt(lexer))
 		is_limit_glob_op(lexer, &token);
-	if (!token && isnt_here_or_bqt(lexer))
+	if (!token && isnt_here_and_bqt(lexer))
 		is_other_op(lexer, &token, l_tk);
 	if (!token)
 		is_here_op(lexer, &token);
 	if (*lexer->line && !(token))
 		token = lex_word(lexer, l_tk);
-	if (isnt_here_or_bqt(lexer) && token && is_glob_token(TYPE) &&
+	if (isnt_here_and_bqt(lexer) && token && is_glob_token(TYPE) &&
 	!lexer->blank && l_tk && (l_tk->type == WORD ||
 		l_tk->type == TILD || l_tk->type == NUM || l_tk->type == ASCII_WORD))
 	{

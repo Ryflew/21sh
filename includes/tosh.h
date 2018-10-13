@@ -412,7 +412,7 @@ t_fd				*aggregation_rules(t_sh *sh);
 int					father(t_sh *shell, int *fd, int *heredoc_pipe,\
 					t_tree *node);
 
-char				isnt_here_or_bqt(t_lexer *lexer);
+char				isnt_here_and_bqt(t_lexer *lexer);
 void				init_shell_before_parser(t_sh *shell);
 
 char				subshell(t_sh *sh, t_list *cmd_tokens, enum e_token type, \
@@ -453,7 +453,7 @@ char				manage_here_doc(t_sh *sh, char *heredoc_line, t_tree *node,
 char				*read_here_doc(char *cmd, char *prompt);
 void				bqt_rule(t_sh *sh, t_list **lexems,
 						char is_cmd);
-void				add_subshell_tokens(t_sh *sh, enum e_token type, \
+t_list				*add_subshell_tokens(t_sh *sh, enum e_token type, \
 						char is_cmd);
 void				delete_first_subshell_lexems(t_list **first_lexems, \
 						t_list **lexems);

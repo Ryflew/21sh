@@ -26,7 +26,7 @@ static size_t	ft_nb_words(char const *s, char c)
 		else
 		{
 			j++;
-			while (s[i] != c && s[i])
+			while (s[i] && s[i] != c)
 				i++;
 		}
 	}

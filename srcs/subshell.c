@@ -64,47 +64,57 @@ char			replace_bqt_subshell(t_sh *sh)
 	return (0);
 }
 
-static char		subshell_pipe(t_sh *sh, enum e_token type, char is_cmd, \
+static t_list	*subshell_pipe(t_sh *sh, enum e_token type, char is_cmd, \
 					t_tree *sub_tree)
 {
 	int		pipe_ss[2];
 	t_list	*last_pipe;
+	t_list	*new_lexems;
 
 	if ((pipe(pipe_ss)) == -1)
 	{
 		errexit("42sh", "pipe failure !\n");
-		return (0);
+		return ((void*)-1);
 	}
 	ft_node_push_back(&sh->pipe_ss, pipe_ss);
 	fork_subshell(sh, sub_tree);
 	del_command_tree(sub_tree);
-	add_subshell_tokens(sh, type, is_cmd);
+	new_lexems = add_subshell_tokens(sh, type, is_cmd);
 	last_pipe = ft_go_end_list(sh->pipe_ss);
 	if (last_pipe == sh->pipe_ss)
 		sh->pipe_ss = NULL;
 	ft_pop_node(&last_pipe, NULL);
-	return (1);
+	return (new_lexems);
 }
 
 char			subshell(t_sh *sh, t_list *lexems, enum e_token type, \
 					char is_cmd)
 {
 	t_tree	*sub_tree;
-	t_list	*save_first_lexems;
+	t_lexer	ss_lexer;
+	t_lexer *save_lexer;
+	t_list	*new_lexems;
+	t_list	*end_bqt_lexem;
 
-	save_first_lexems = sh->lexer->lexems;
-	sh->lexer->lexems = lexems;
-	sh->current_token = (t_token*)lexems->data;
-	if (!lexems->prev)
-		save_first_lexems = NULL;
+	if (lexems)
+		ss_lexer.line = ((t_token*)lexems->data)->value;
+	ss_lexer.her = 0;
+	save_lexer = sh->lexer;
+	sh->lexer = &ss_lexer;
+	get_lexems(sh);
+	sh->lexer->line = sh->total_command;
+	sh->lexer->her = 0;
 	if (!(sub_tree = commands_line_rules(sh, NULL)))
+		return (0);
+	if ((new_lexems = subshell_pipe(sh, type, is_cmd, sub_tree)) == (void*)-1)
+		return (0);
+	if (new_lexems && save_lexer->lexems->next)
 	{
-		sh->lexer->lexems = save_first_lexems;
-		return (0);
+		end_bqt_lexem = save_lexer->lexems->next;
+		while (end_bqt_lexem && ((t_token*)end_bqt_lexem->data)->type != EBQT)
+			end_bqt_lexem = end_bqt_lexem->next;
+		ft_add_list(end_bqt_lexem, new_lexems);
 	}
-	if (!subshell_pipe(sh, type, is_cmd, sub_tree))
-		return (0);
-	if (save_first_lexems)
-		sh->lexer->lexems = save_first_lexems;
+	sh->lexer = save_lexer;
 	return (1);
 }

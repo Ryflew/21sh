@@ -22,14 +22,14 @@ static void		init_lexer(t_lexer *lexer)
 	lexer->red = 0;
 }
 
-char			isnt_here_or_bqt(t_lexer *lexer)
+char			isnt_here_and_bqt(t_lexer *lexer)
 {
-	return (!lexer->her || lexer->bqt);
+	return (!lexer->her && !lexer->bqt);
 }
 
 static t_token	*is_end_expr(t_lexer *lexer, t_token *l_tk)
 {
-	if (isnt_here_or_bqt(lexer) && l_tk && (is_glob_token(l_tk->type)
+	if (isnt_here_and_bqt(lexer) && l_tk && (is_glob_token(l_tk->type)
 	|| l_tk->type == EXPR || l_tk->type == TILD_EXPR || l_tk->type == BKT_EXPR
 	|| l_tk->type == COM))
 		return (new_token(lexer, END_EXPR, "", lexer->blank));

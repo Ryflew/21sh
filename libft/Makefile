@@ -85,6 +85,7 @@ SRC_STRING =	ft_atoi.c \
 				ft_strnstr.c \
 				ft_strrchr.c \
 				ft_strsplit.c \
+				ft_strsplitmulticharacters.c \
 				ft_strseparate.c \
 				ft_strstr.c \
 				ft_strsub.c \
