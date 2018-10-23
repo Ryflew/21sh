@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/30 19:33:53 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/10/23 18:18:16 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -478,5 +478,6 @@ char				is_binary_dir(t_sh *shell);
 void				get_start_str(t_sh *shell, char *buff);
 char				echo_env(char *str);
 void				cd_dot_dot(char **new_prompt, t_cd *opt);
+char				check_special_operator(char *str, int i, int *j, char *op);
 
 #endif

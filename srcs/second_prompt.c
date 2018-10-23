@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 23:43:54 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/01 21:43:35 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/10/23 18:19:54 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ static void	continue_treat(char *str, int *j, char *new_op, enum e_state *state)
 {
 	while (*str)
 	{
-		if (new_op[*j] == '|' && !(new_op[(*j)--] = '\0'))
+		if (*j > -1 && new_op[*j] == '|' && !(new_op[(*j)--] = '\0'))
 		{
 			if (check_new_open(str, new_op, j))
 				*state = BRACKET_ERROR;
 			return ;
 		}
-		else if (go_to_c(&str, get_good_char(new_op[*j])))
+		else if (*j > -1 && go_to_c(&str, get_good_char(new_op[*j])))
 		{
 			new_op[(*j)--] = '\0';
 			continue ;
@@ -86,7 +86,11 @@ void		treat_second_prompt(char *string, char **op, enum e_state *state)
 		return ;
 	}
 	sync_op(new_op, *op);
+	if (*op[ft_strlen(*op) - 1] == '\\' || *op[ft_strlen(*op) - 1] == '&' || \
+		*op[ft_strlen(*op) - 1] == 'o')
+		new_op[j--] = '\0';
 	continue_treat(str, &j, new_op, state);
+	check_special_operator(str, ft_strlen(str), &j, new_op);
 	new_op[++j] = '\0';
 	free(*op);
 	*op = ft_strdup(new_op);

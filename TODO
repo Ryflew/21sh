@@ -1,10 +1,8 @@
 -------- BUG -------------
 
 BASILE :
-- echappement des back quot (\`) dans des back quot
-- puis ctrl D dans les herdoc
-- cpy paste dans les herdoc
 - Tester le cd (j'ai change des trucs), avec l'option -P aussi.
+- segfault avec `\`
 
 VICTOR :
 - builtins posix (plus que env, setenv, unsetenv)

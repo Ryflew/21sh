@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:44:28 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/18 17:15:32 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/10/23 17:55:26 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ void		print_prompt(enum e_state state, char *op)
 			ft_putstr("par> ");
 		else if (op[ft_strlen(op) - 1] == '|')
 			ft_putstr("pipe> ");
+		else if (op[ft_strlen(op) - 1] == '\\')
+			ft_putstr("slash> ");
+		else if (op[ft_strlen(op) - 1] == '&')
+			ft_putstr("and> ");
+		else if (op[ft_strlen(op) - 1] == 'o')
+			ft_putstr("or> ");
 	}
 	get_cursor(get_shell());
 }

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:58:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/18 17:17:47 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/10/23 18:22:06 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ static char	shell_loop3(char **command, char **last, enum e_state *state, \
 		else
 		{
 			tmp = *last;
-			*last = ft_strstrjoin(*last, *command, "\n");
+			if (*op[ft_strlen(*op) - 1] == '\\')
+				*last = ft_strjoin(*last, *command);
+			else
+				*last = ft_strstrjoin(*last, *command, "\n");
 			free(tmp);
 			return (1);
 		}
@@ -73,7 +76,10 @@ char		shell_loop2(char **command, char **last, enum e_state *state, \
 		*op = check_quot_brackets(*command, state);
 		if (*state == ADVANCE_SHELL)
 		{
-			*last = ft_strjoin(*command, "\n");
+			if (*op[ft_strlen(*op) - 1] == '\\')
+				*last = ft_strdup(*command);
+			else
+				*last = ft_strjoin(*command, "\n");
 			return (1);
 		}
 	}
