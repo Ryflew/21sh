@@ -70,7 +70,8 @@ static void	find_type(t_lexer *lx, t_token *l_tk, char st_op, \
 		*type = VAR_WORD;
 	else if (isnt_here_and_bqt(lx) && l_tk && l_tk->type == EQUAL && !lx->blank)
 		*type = (*lx->line == '~') ? TILD_VAR_WORD : VAR_WORD;
-	if (isnt_here_and_bqt(lx) && l_tk && is_glob_token(l_tk->type) && !lx->blank)
+	if (isnt_here_and_bqt(lx) && l_tk && is_glob_token(l_tk->type)\
+		&& !lx->blank)
 	{
 		if (lx->bkt)
 			*type = BKT_EXPR;

@@ -67,12 +67,10 @@ static char	*lex_parse_heredoc(t_sh *sh, char *heredoc_line, int i)
 	char	*output;
 
 	line = ft_strsplit(heredoc_line, '\n');
-	sh->lexer->her = 1;
 	output = NULL;
 	while (line[++i])
 	{
-		sh->lexer->line = line[i];
-		get_lexems(sh);
+		get_lexems(sh, line[i], 1);
 		begin_lexems = sh->lexer->lexems;
 		if (!(is_bqt_in_heredoc(sh, &begin_lexems)))
 		{

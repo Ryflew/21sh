@@ -47,9 +47,7 @@ void		go_core(char *command, t_sh *shell)
 	t_tree	*cmds_tree;
 	t_list	*begin_lexems;
 
-	shell->lexer->line = shell->total_command;
-	shell->lexer->her = 0;
-	get_lexems(shell);
+	get_lexems(shell, shell->total_command, 0);
 	add_to_history(shell, command);
 	init_shell_before_parser(shell);
 	if ((cmds_tree = commands_line_rules(shell, &begin_lexems)) == (void*)-1)

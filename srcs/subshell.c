@@ -96,12 +96,9 @@ char			subshell(t_sh *sh, t_list *lexems, enum e_token type, \
 	t_list	*new_lexems;
 	t_list	*end_bqt_lexem;
 
-	if (lexems)
-		ss_lexer.line = ((t_token*)lexems->data)->value;
-	ss_lexer.her = 0;
 	save_lexer = sh->lexer;
 	sh->lexer = &ss_lexer;
-	get_lexems(sh);
+	get_lexems(sh, ((t_token*)lexems->data)->value, 0);
 	sh->lexer->line = sh->total_command;
 	sh->lexer->her = 0;
 	if (!(sub_tree = commands_line_rules(sh, NULL)))

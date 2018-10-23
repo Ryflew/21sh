@@ -374,7 +374,7 @@ t_env				*cpy_env(t_env *env);
 t_env				*get_env(char **env);
 t_sh				*get_shell();
 t_tree				*commands_line_rules(t_sh *sh, t_list **begin_lexems);
-void				get_lexems(t_sh *sh);
+void				get_lexems(t_sh *sh, char *line, int is_her);
 t_tree				*redirection_rules(t_sh *sh, t_tree *left);
 t_tree				*create_node(t_tree *left, t_token *token, t_list *tokens,
 						t_tree *right);

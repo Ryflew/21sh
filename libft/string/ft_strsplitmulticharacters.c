@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsplitmulticharacters.c                                      :+:      :+:    :+:   */
+/*   ft_strsplitmulticharacters.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "string.h"
 
-static char		is_c_of_cs(char c, char* cs)
+static char		is_c_of_cs(char c, char *cs)
 {
 	size_t	i;
 

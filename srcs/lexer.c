@@ -12,14 +12,16 @@
 
 #include "tosh.h"
 
-static void		init_lexer(t_lexer *lexer)
+static void		init_lexer(t_lexer *lexer, char *line, int is_her)
 {
 	lexer->lexems = NULL;
+	lexer->line = line;
 	lexer->brc = 0;
 	lexer->bkt = 0;
 	lexer->bqt = 0;
 	lexer->blank = 0;
 	lexer->red = 0;
+	lexer->her = is_her;
 }
 
 char			isnt_here_and_bqt(t_lexer *lexer)
@@ -65,11 +67,11 @@ static t_token	*get_next_token(t_lexer *lexer, t_token *last_token)
 	return (is_end_expr(lexer, last_token));
 }
 
-void			get_lexems(t_sh *sh)
+void			get_lexems(t_sh *sh, char *line, int is_her)
 {
 	t_token *token;
 
-	init_lexer(sh->lexer);
+	init_lexer(sh->lexer, line, is_her);
 	token = NULL;
 	while ((token = get_next_token(sh->lexer, token)))
 		ft_node_push_back(&(sh->lexer->lexems), token);
