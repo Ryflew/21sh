@@ -1,13 +1,10 @@
--------- BUG -------------
 
+-------- BUG -------------
 BASILE :
 - Tester le cd (j'ai change des trucs), avec l'option -P aussi.
 - segfault avec `\`
 
 VICTOR :
-- builtins posix (plus que env, setenv, unsetenv)
-- check les variables locales
-- check la builtins read
 
 BASILE || VICTOR:
 

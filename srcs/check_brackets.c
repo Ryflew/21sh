@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/10/23 18:23:20 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/10/24 11:32:15 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char		*check_quot_brackets(char *str, enum e_state *state)
 	while (str[++i])
 	{
 		if ((str[i] == '"' || str[i] == '\'' || str[i] == '`' || \
-			(str[i] == '|' && only_space(str + i + 1))) && \
+			(str[i] == '|' && str[i - 1] != '|' && only_space(str + i + 1))) &&
 			check_quot(str, op, &i, &j))
 			break ;
 		else
