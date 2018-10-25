@@ -100,10 +100,10 @@ void		bqt_rule(t_sh *sh, t_list **lexems,
 	while (next_lexems && ((t_token*)next_lexems->prev->data)->type != EBQT)
 		NEXT(next_lexems);
 	delete_first_subshell_lexems(&sh->lexer->lexems, lexems);
-	subshell(sh, *lexems, BQT, is_cmd);
-	delete_subshell_lexems(&sh->lexer->lexems, lexems, BQT, EBQT);
 	if (*lexems)
 	{
+		subshell(sh, *lexems, BQT, is_cmd);
+		delete_subshell_lexems(&sh->lexer->lexems, lexems, BQT, EBQT);
 		if (prev_token && *lexems != prev_lexems && (*lexems != next_lexems || \
 			!((t_token*)next_lexems->data)->blank))
 			concat_prev_bqt(lexems, prev_token, blank, &next_lexems);

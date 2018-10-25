@@ -47,23 +47,6 @@ static void		fork_subshell(t_sh *sh, t_tree *sub_tree)
 		waitpid(father, &ret, 0);
 }
 
-char			replace_bqt_subshell(t_sh *sh)
-{
-	t_list	*lexems;
-	t_token	*token;
-
-	lexems = sh->lexer->lexems;
-	while (lexems)
-	{
-		token = (t_token*)lexems->data;
-		if (TYPE == BQT)
-			bqt_rule(sh, &lexems, 1);
-		else
-			NEXT(lexems);
-	}
-	return (0);
-}
-
 static t_list	*subshell_pipe(t_sh *sh, enum e_token type, char is_cmd, \
 					t_tree *sub_tree)
 {
@@ -87,6 +70,23 @@ static t_list	*subshell_pipe(t_sh *sh, enum e_token type, char is_cmd, \
 	return (new_lexems);
 }
 
+static t_tree	*lex_and_parse_subshell(t_sh *sh, t_lexer *save_lexer, t_list *lexems)
+{
+	t_tree	*sub_tree;
+
+	get_lexems(sh, ((t_token*)lexems->data)->value, 0);
+	sh->lexer->line = sh->total_command;
+	sh->lexer->her = 0;
+	if (!(sub_tree = commands_line_rules(sh, NULL)) || sub_tree == (void*)-1)
+	{
+		if (sub_tree == (void*)-1)
+			parse_error(sh);
+		sh->lexer = save_lexer;
+		return (NULL);
+	}
+	return (sub_tree);
+}
+
 char			subshell(t_sh *sh, t_list *lexems, enum e_token type, \
 					char is_cmd)
 {
@@ -98,13 +98,13 @@ char			subshell(t_sh *sh, t_list *lexems, enum e_token type, \
 
 	save_lexer = sh->lexer;
 	sh->lexer = &ss_lexer;
-	get_lexems(sh, ((t_token*)lexems->data)->value, 0);
-	sh->lexer->line = sh->total_command;
-	sh->lexer->her = 0;
-	if (!(sub_tree = commands_line_rules(sh, NULL)))
+	if (!(sub_tree = lex_and_parse_subshell(sh, save_lexer, lexems)))
 		return (0);
 	if ((new_lexems = subshell_pipe(sh, type, is_cmd, sub_tree)) == (void*)-1)
+	{
+		sh->lexer = save_lexer;
 		return (0);
+	}
 	if (new_lexems && save_lexer->lexems->next)
 	{
 		end_bqt_lexem = save_lexer->lexems->next;

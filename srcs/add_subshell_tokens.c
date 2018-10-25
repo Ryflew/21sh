@@ -12,6 +12,23 @@
 
 #include "tosh.h"
 
+char			replace_bqt_subshell(t_sh *sh)
+{
+	t_list	*lexems;
+	t_token	*token;
+
+	lexems = sh->lexer->lexems;
+	while (lexems)
+	{
+		token = (t_token*)lexems->data;
+		if (TYPE == BQT)
+			bqt_rule(sh, &lexems, 1);
+		else
+			NEXT(lexems);
+	}
+	return (0);
+}
+
 static char	*get_new_tokens(t_sh *sh)
 {
 	char	*tokens_line;

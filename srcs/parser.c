@@ -12,7 +12,7 @@
 
 #include "tosh.h"
 
-char			is_basic_red(t_sh *sh)
+static char			check_basic_red(t_sh *sh)
 {
 	t_token	*next_token;
 
@@ -33,12 +33,18 @@ static t_tree	*cmd_with_op_rules(t_sh *sh)
 {
 	t_tree	*left;
 	t_tree	*tmp;
+	char	basic_red;
 
 	left = NULL;
-	if (!sh->current_token || (!(left = cmd_rules(sh)) && !is_basic_red(sh)) \
-		|| left == (void*)-1)
+	basic_red = 1;
+	if (!sh->current_token || (!(left = cmd_rules(sh)) && \
+	!(basic_red = check_basic_red(sh))) || left == (void*)-1)
+	{
+		if (!basic_red)
+			left = (void*)-1;
 		return (left);
-	while ((left || is_basic_red(sh)) && left != (void*)-1)
+	}
+	while ((left || !(basic_red = check_basic_red(sh))) && left != (void*)-1)
 	{
 		if ((tmp = redirection_rules(sh, left)) && tmp != (void*)-1)
 			left = tmp;
@@ -47,6 +53,8 @@ static t_tree	*cmd_with_op_rules(t_sh *sh)
 		else if (tmp == (void*)-1)
 			return (tmp);
 	}
+	if (!basic_red)
+		left = (void*)-1;
 	return (left);
 }
 

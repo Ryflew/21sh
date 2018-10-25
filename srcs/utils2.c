@@ -44,7 +44,7 @@ void		print_prompt(enum e_state state, char *op)
 		else if (op[ft_strlen(op) - 1] == '|')
 			ft_putstr("pipe> ");
 		else if (op[ft_strlen(op) - 1] == '\\')
-			ft_putstr("slash> ");
+			ft_putstr("bslash> ");
 		else if (op[ft_strlen(op) - 1] == '&')
 			ft_putstr("and> ");
 		else if (op[ft_strlen(op) - 1] == 'o')
