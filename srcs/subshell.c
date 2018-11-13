@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:03 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/18 17:17:50 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/13 14:32:16 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ static t_list	*subshell_pipe(t_sh *sh, enum e_token type, char is_cmd, \
 	return (new_lexems);
 }
 
-static t_tree	*lex_and_parse_subshell(t_sh *sh, t_lexer *save_lexer, t_list *lexems)
+static t_tree	*lex_and_parse_subshell(t_sh *sh, t_lexer *save_lexer, \
+	t_list *lexems)
 {
 	t_tree	*sub_tree;
 

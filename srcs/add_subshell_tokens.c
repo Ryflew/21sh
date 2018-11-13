@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 14:56:34 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/18 17:16:18 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/13 14:29:27 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char			replace_bqt_subshell(t_sh *sh)
 	return (0);
 }
 
-static char	*get_new_tokens(t_sh *sh)
+static char		*get_new_tokens(t_sh *sh)
 {
 	char	*tokens_line;
 	char	*to_free;
@@ -56,7 +56,7 @@ static char	*get_new_tokens(t_sh *sh)
 	return (tokens_line);
 }
 
-static void	split_line_to_tokens(char *tokens_line, t_list **new_lexems)
+static void		split_line_to_tokens(char *tokens_line, t_list **new_lexems)
 {
 	char	**new_tokens;
 	int		i;
@@ -72,7 +72,7 @@ static void	split_line_to_tokens(char *tokens_line, t_list **new_lexems)
 	free(new_tokens);
 }
 
-t_list		*add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd)
+t_list			*add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd)
 {
 	t_list	*new_lexems;
 	char	*tokens_line;

@@ -6,13 +6,13 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:15 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/29 14:43:14 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/13 14:29:59 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
 
-static char			check_basic_red(t_sh *sh)
+static char		check_basic_red(t_sh *sh)
 {
 	t_token	*next_token;
 
