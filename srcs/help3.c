@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:26 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:26:26 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/13 17:16:38 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	help_history(void)
 		"to the history list.");
 	ft_putendl("\t-w : Write out the current history to the history file.");
 	ft_putendl("\t-s : The args are added to the end of the history list as" \
-		"a single entry.\n");
+		" a single entry.\n");
 	ft_putstr(C_RESET);
 }
 
@@ -42,14 +42,14 @@ void	help_read(void)
 		"the array.");
 	ft_putendl("\t-d delim: continue until the first character of DELIM is " \
 		"read, rather than newline.");
-	ft_putendl("\t-e : use get_next_line to obtain the line in an " \
+	ft_putendl("\t-e: use get_next_line to obtain the line in an " \
 		"interactive shell.");
 	ft_putendl("\t-n nchars: return after reading NCHARS characters rather " \
 		"than waiting for a newline.");
 	ft_putendl("\t-p prompt: output the string PROMPT without a trailing " \
 		"newline before attempting to read.");
-	ft_putendl("\t-r : do not allow backslashes to escape any characters.");
-	ft_putendl("\t-s : do not echo input coming from a terminal.");
+	ft_putendl("\t-r: do not allow backslashes to escape any characters.");
+	ft_putendl("\t-s: do not echo input coming from a terminal.");
 	ft_putendl("\t-u fd: read from file descriptor FD instead of the standard" \
 		" input.\n");
 	ft_putstr(C_RESET);

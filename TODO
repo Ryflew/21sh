@@ -2,9 +2,22 @@
 -------- BUG -------------
 BASILE :
 
+Globing:
+- "ls inc[k-n]udes/" // tout de 'k' a 'n'
+- "ls inc[R-Z-k-n-5-89]udes/" // tout de la range de 'R' a 'Z' de 'k' a 'n' et de '5' a '8' et le carac '9'
+- "ls inc[!a-c]udes/" // tout a l'exterieur de la range de 'a' a 'c'
+- "ls inc[!]a-]udes/" // tout sauf les carac ']' 'a' '-'
+- "ls {/{tmp,goinfre}/,/{tmp,goinfre}/}"
+// A '/' in a pathname cannot be matched by a '?' or '*' wildcard, or by a range like "[.-0]"
+- sous shell marche pas + leaks quand on essaye
+
 VICTOR :
 
+- unset & export casse
+
 BASILE || VICTOR:
+
+- leaks: echo `ls -l`
 
 -------- LIST BONUS 21sh -------------
 - cmd "history"
