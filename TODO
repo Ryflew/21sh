@@ -13,8 +13,6 @@ Globing:
 
 VICTOR :
 
-- unset & export casse
-
 BASILE || VICTOR:
 
 - leaks: echo `ls -l`

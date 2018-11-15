@@ -6,28 +6,11 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:25:02 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:25:02 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/15 17:16:00 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
-
-void		add_var_twoline(char *str1, char *str2, t_env **env)
-{
-	char	**tmp;
-
-	if (!(tmp = (char**)malloc(sizeof(char*) * 4)))
-		ft_exiterror("Malloc failed", 1);
-	tmp[0] = ft_strdup("setenv");
-	tmp[1] = ft_strdup(str1);
-	if (str2 && *str2)
-		tmp[2] = ft_strdup(str2);
-	else
-		tmp[2] = ft_strdup("");
-	tmp[3] = NULL;
-	set_env(tmp, env);
-	ft_strdelpp(&tmp);
-}
 
 static void	add_var_oneline(char *str, t_env **env)
 {
@@ -56,30 +39,84 @@ static void	add_var_oneline(char *str, t_env **env)
 	ft_strdel(&tmp[2]);
 }
 
-char		export(char **av, t_env **export)
+static void	print_export(t_list *lst)
 {
 	char	*tmp;
 
-	if (!*++av)
-		print_env(*export);
+	while (lst)
+	{
+		if ((tmp = find_env(get_shell()->shell_var, (char*)lst->data)))
+		{
+			ft_putstr("export ");
+			ft_putstr((char*)lst->data);
+			ft_putchar('=');
+			ft_putendl(tmp);
+		}
+		else
+		{
+			ft_putstr("export ");
+			ft_putendl((char*)lst->data);
+		}
+		NEXT(lst);
+	}
+}
+
+static void	unset_var_env(char *var)
+{
+	char	*tab[3];
+
+	tab[0] = "unsetenv";
+	tab[1] = var;
+	tab[2] = NULL;
+	unset_env(tab, &get_shell()->env);
+}
+
+static void	remove_export(char **av, t_list **export)
+{
+	t_list *tmp;
+
+	while (*++av)
+	{
+		if (!is_exported(*av, export))
+			continue ;
+		tmp = *export;
+		while (tmp)
+		{
+			if (!ft_strcmp(*av, (char*)tmp->data))
+			{
+				if (!tmp->prev)
+					*export = tmp->next;
+				else
+					tmp->prev->next = tmp->next;
+				free(tmp->data);
+				free(tmp);
+				unset_var_env(*av);
+				break ;
+			}
+			NEXT(tmp);
+		}
+	}
+}
+
+char		export(char **av, t_list **export)
+{
+	char	*tmp;
+
+	if (!*++av || !ft_strcmp(*av, "-p"))
+		print_export(*export);
+	else if (!ft_strcmp(*av, "-n"))
+		remove_export(av, export);
 	else
 	{
 		if ((tmp = ft_strchr(*av, '=')) && (tmp - *av) != 0)
 		{
+			add_var_oneline(*av, &(get_shell()->shell_var));
 			add_var_oneline(*av, &(get_shell()->env));
-			add_var_oneline(*av, &(get_shell()->export));
 		}
-		else if (!ft_strchr(*av, '='))
-		{
-			if ((tmp = find_env(get_shell()->shell_var, *av)) || \
-				(tmp = find_env(*export, *av)))
-			{
-				add_var_twoline(*av, tmp, &(get_shell()->env));
-				add_var_twoline(*av, tmp, &(get_shell()->export));
-			}
-			else
-				add_var_twoline(*av, NULL, export);
-		}
+		else if (!ft_strchr(*av, '=') && \
+			(tmp = find_env(get_shell()->shell_var, *av)))
+			add_var_twoline(*av, tmp, &(get_shell()->env));
+		add_export(*av, &get_shell()->export);
 	}
 	return (1);
 }

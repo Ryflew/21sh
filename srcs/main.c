@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/27 14:10:59 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/15 16:21:03 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	shell->history_mem = NULL;
 	shell->lexer = lexer;
 	shell->hash = NULL;
+	shell->env = NULL;
 	shell->export = NULL;
 	shell->save_env = NULL;
 	shell->return_value = 0;
@@ -86,9 +87,12 @@ int			main(int ac, char **av, char **termenv)
 
 	(void)ac;
 	(void)av;
-	g_sh.env = get_env(termenv);
-	inc_shlvl(g_sh.env);
 	init_shell(&g_sh, &lexer);
+	g_sh.env = get_env(termenv);
+	g_sh.shell_var = get_env(termenv);
+	g_sh.export = add_to_export(termenv);
+	inc_shlvl(g_sh.env);
+	inc_shlvl(g_sh.shell_var);
 	init_termcap(&g_sh, g_sh.env);
 	get_current_path(g_sh.env);
 	signal(SIGINT, sig_hand);

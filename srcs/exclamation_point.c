@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:48 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:24:49 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/13 17:46:32 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,23 +75,23 @@ static int	history_excla(char *str, t_sh *shell)
 		return (history_string(shell, str));
 }
 
-char		check_history_excla(t_sh *shell, char **command, char *start, \
+char		check_history_excla(t_sh *shell, char **com, char *start, \
 				char *tmp)
 {
 	char	*new;
 	int		i;
 
-	if (!ft_strchr(*command, '!'))
+	if (!(tmp = ft_strchr(*com, '!')) || (tmp - *com > 0 && *(tmp - 1) == '['))
 		return (0);
-	while ((tmp = ft_strchr(*command, '!')))
+	while ((tmp = ft_strchr(*com, '!')))
 	{
-		start = ft_strsub(*command, 0, tmp - *command);
+		start = ft_strsub(*com, 0, tmp - *com);
 		i = history_excla(++tmp, get_shell());
 		if (shell->toaddstr)
 		{
 			new = ft_strstrjoin(start, shell->toaddstr, tmp + i);
-			free(*command);
-			*command = new;
+			free(*com);
+			*com = new;
 			free(shell->toaddstr);
 			shell->toaddstr = NULL;
 		}
@@ -101,6 +101,6 @@ char		check_history_excla(t_sh *shell, char **command, char *start, \
 	}
 	if (start)
 		ft_strdel(&start);
-	shell->toaddstr = *command;
+	shell->toaddstr = *com;
 	return (1);
 }

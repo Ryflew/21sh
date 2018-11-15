@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:44:52 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/18 15:52:28 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/15 15:50:23 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void		manage_unset(t_sh *shell, char **av)
 	}
 	if (find_env(shell->env, *(av + 1)))
 		unset_env(av, &(shell->env));
-	if (find_env(shell->export, *(av + 1)))
-		unset_env(av, &(shell->export));
 	if (find_env(shell->shell_var, *(av + 1)))
 		unset_env(av, &(shell->shell_var));
 }

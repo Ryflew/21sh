@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:15 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/29 18:27:48 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/15 15:01:54 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void	help_help(void)
 	ft_putendl("\t- help history.");
 	ft_putendl("\t- help read.");
 	ft_putendl("\t- help setenv.");
+	ft_putendl("\t- help shellvar.");
 	ft_putendl("\t- help unset.");
 	ft_putendl("\t- help unsetenv.");
 	ft_putendl("\t- help exit.\n");
@@ -86,6 +87,8 @@ void		help_command(char **cmd)
 			help_echo();
 		else if (!ft_strcmp(cmd[1], "hash"))
 			help_hash();
+		else if (!ft_strcmp(cmd[1], "shellvar"))
+			help_shellvar();
 		else if (help_command2(cmd[1]))
 			;
 		else
