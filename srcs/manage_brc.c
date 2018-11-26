@@ -31,12 +31,18 @@ static void	get_expr_start(t_list *lexems, t_list **new_lexems, \
 			enum e_token type)
 {
 	t_token	*token;
-
+	char	brc;
+	
+	brc = 0;
 	while (lexems->prev)
 	{
 		token = (t_token*)lexems->prev->data;
 		lexems = lexems->prev;
-		if (TYPE == type)
+		if (TYPE == LBRC)
+			++brc;
+		else if (TYPE == RBRC)
+			--brc;
+		if (TYPE == type && type == LBRC && brc == 1)
 			break ;
 	}
 	while (lexems->prev)
@@ -54,14 +60,20 @@ static char	create_expr_from_brc(t_list *lexems, t_token *token,
 				t_list **nw_lexems)
 {
 	t_list	*tmp;
+	char	brc;
 
+	brc = 0;
 	if (TYPE != RBRC)
 		get_expr_start(lexems, nw_lexems, LBRC);
 	tmp = lexems;
-	while (tmp && TYPE != RBRC && TYPE != END_EXPR)
+	while (tmp && (TYPE != RBRC || brc != -1) && TYPE != END_EXPR)
 	{
 		tmp = tmp->next;
 		token = (t_token*)tmp->data;
+		if (TYPE == LBRC)
+			++brc;
+		else if (TYPE == RBRC)
+			--brc;
 	}
 	if (tmp->next && TYPE != END_EXPR)
 		get_rest_expr(&tmp, nw_lexems);
@@ -78,14 +90,20 @@ void		manage_brc(t_list *lexems)
 {
 	t_token	*token;
 	t_list	*new_lexems;
+	char	brc;
 
 	new_lexems = NULL;
+	brc = 0;
 	while (lexems)
 	{
 		token = (t_token*)lexems->data;
-		if (TYPE == END_EXPR)
+		if (TYPE == LBRC)
+			++brc;
+		else if (TYPE == RBRC)
+			--brc;
+		else if (TYPE == END_EXPR)
 			break ;
-		if (TYPE == COM || TYPE == RBRC)
+		if ((TYPE == COM && !brc) || (TYPE == RBRC && brc == -1))
 		{
 			if (!(create_expr_from_brc(lexems, token, &new_lexems)))
 				break ;

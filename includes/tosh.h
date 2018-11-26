@@ -91,6 +91,9 @@ enum				e_token
 	TILD_EXPR,
 	EXPR,
 	BKT_EXPR,
+	START_RANGE_EXPR,
+	DASH,
+	END_RANGE_EXPR,
 	END_EXPR,
 	HIST,
 	VAR_OP,
@@ -135,6 +138,7 @@ typedef	struct		s_lexer
 	char			brc;
 	char			bkt;
 	char			bqt;
+	char			par;
 	char			her;
 }					t_lexer;
 
@@ -282,6 +286,7 @@ void				hist_a(t_sh *shell, char *path);
 void				browse_history(t_sh *shell, unsigned long arrow);
 void				add_line(t_sh *shell, char *toadd);
 void				clear_lexems(t_token *token);
+void				clear(t_sh *shell, t_list **begin, t_tree *commands_tree);
 void				move_to(int x, int y);
 void				add_new_var(char ***av, t_env **env);
 void				arrows(t_sh *shell, unsigned long c);
@@ -435,7 +440,8 @@ void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe,
 
 char				is_glob_token(enum e_token type);
 void				glob(t_list **first_lexems);
-int					nmatch(char *s1, char *s2, t_list *lexems);
+int					nmatch(char *s1, char *s2, t_list *lexems,
+					enum e_token type);
 void				replace_all_exprs(t_list **first_lexems);
 void				manage_wildcards(t_list *lex, char *match);
 DIR					*open_dir(char *dir_name, t_token *token);

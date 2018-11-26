@@ -29,6 +29,8 @@
 		"types.h": "c",
 		"initializer_list": "c",
 		"string_view": "c",
-		"typeinfo": "c"
+		"typeinfo": "c",
+		"__functional_base_03": "c",
+		"__tuple": "c"
 	}
 }

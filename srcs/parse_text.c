@@ -88,6 +88,12 @@ t_token		*text_rules(t_sh *sh, char is_inside_bqt)
 		eat(sh, TILD);
 	else if (sh->current_token->type == END_EXPR)
 		eat(sh, END_EXPR);
+	else if (sh->current_token->type == START_RANGE_EXPR)
+		eat(sh, START_RANGE_EXPR);
+	else if (sh->current_token->type == DASH)
+		eat(sh, DASH);
+	else if (sh->current_token->type == END_RANGE_EXPR)
+		eat(sh, END_RANGE_EXPR);
 	else
 		text_rules2(sh, &token);
 	return (token);

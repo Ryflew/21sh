@@ -108,9 +108,9 @@ void		manage_wildcards(t_list *lex, char *match)
 			: ft_strdup(ent->d_name);
 			if (ent->d_name[0] != '.' && (is_dir(join, token) ||
 			!is_end_path(lex->next)) && ((TYPE != EXPR &&
-			nmatch(ent->d_name, NULL, lex)) || (TYPE == EXPR && ((dir_path[0]
-			&& nmatch(ent->d_name, VAL + ft_strfind_by_end(VAL, '/') + 1, lex))
-			|| (!dir_path[0] && nmatch(ent->d_name, VAL, lex))))))
+			nmatch(ent->d_name, NULL, lex, NONE)) || (TYPE == EXPR && ((dir_path[0]
+			&& nmatch(ent->d_name, VAL + ft_strfind_by_end(VAL, '/') + 1, lex, NONE))
+			|| (!dir_path[0] && nmatch(ent->d_name, VAL, lex, NONE))))))
 				*match = fill_new_lexems(lex, is_end_path(lex->next), join);
 			free(join);
 		}

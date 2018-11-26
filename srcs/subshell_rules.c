@@ -102,7 +102,7 @@ void		bqt_rule(t_sh *sh, t_list **lexems,
 	delete_first_subshell_lexems(&sh->lexer->lexems, lexems);
 	if (*lexems)
 	{
-		subshell(sh, *lexems, BQT, is_cmd);
+		subshell(sh, *lexems, EBQT, is_cmd);
 		delete_subshell_lexems(&sh->lexer->lexems, lexems, BQT, EBQT);
 		if (prev_token && *lexems != prev_lexems && (*lexems != next_lexems || \
 			!((t_token*)next_lexems->data)->blank))

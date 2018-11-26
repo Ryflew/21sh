@@ -18,7 +18,7 @@ void		clear_lexems(t_token *token)
 	free(token);
 }
 
-static void	clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
+void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
 {
 	ft_clear_list(begin, (void*)&clear_lexems);
 	if (shell->save_env)

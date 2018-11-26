@@ -19,6 +19,7 @@ static void		init_lexer(t_lexer *lexer, char *line, int is_her)
 	lexer->brc = 0;
 	lexer->bkt = 0;
 	lexer->bqt = 0;
+	lexer->par = 0;
 	lexer->blank = 0;
 	lexer->red = 0;
 	lexer->her = is_her;

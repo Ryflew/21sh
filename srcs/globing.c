@@ -53,9 +53,9 @@ static char	check_bad_or_not(t_list *lexems, t_token *token, char *brc,
 {
 	if (TYPE == LBRC)
 	{
-		if (*brc || *bkt || ((t_token*)(lexems->next->data))->type == RBRC)
+		if (*bkt || (((t_token*)(lexems->next->data))->type == RBRC && *brc < 1))
 			return (1);
-		*brc = 1;
+		++(*brc);
 	}
 	else if (TYPE == COM && (*bkt || !*brc))
 		return (1);
@@ -63,7 +63,7 @@ static char	check_bad_or_not(t_list *lexems, t_token *token, char *brc,
 	{
 		if (*bkt || !*brc)
 			return (1);
-		*brc = 0;
+		--(*brc);
 	}
 	else if (TYPE == LBKT || TYPE == E_WILDCARD)
 	{

@@ -81,7 +81,7 @@ t_list			*add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd)
 	if ((tokens_line = get_new_tokens(sh)) == (void*)-1)
 		return (void*)-1;
 	new_lexems = NULL;
-	if (type == BQT)
+	if (type == EBQT)
 		split_line_to_tokens(tokens_line, &new_lexems);
 	else
 	{

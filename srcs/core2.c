@@ -78,27 +78,29 @@ char		**get_cmds(t_list **cmd_tokens, t_sh *sh)
 	return (create_cmds_with_tokens(*cmd_tokens));
 }
 
-static char	replace_par_subshell(t_sh *sh, t_list **cmd_tokens, char is_cmd)
+static char	replace_par_subshell(t_sh *sh, t_list **lexems, char is_cmd)
 {
-	t_list	*lexems;
 	t_token	*token;
 
-	lexems = *cmd_tokens;
-	sh->lexer->lexems = lexems;
-	while (lexems)
+	sh->lexer->lexems = *lexems;
+	while (*lexems)
 	{
-		token = (t_token*)lexems->data;
+		token = (t_token*)(*lexems)->data;
 		if (TYPE == LPAR && is_cmd)
 		{
 			sh->ssbqt = RPAR;
-			delete_first_subshell_lexems(cmd_tokens, &lexems);
-			subshell(sh, lexems, LPAR, is_cmd);
-			delete_subshell_lexems(cmd_tokens, &lexems, LPAR, RPAR);
+			delete_first_subshell_lexems(&sh->lexer->lexems, lexems);
+			if (*lexems)
+			{
+				subshell(sh, *lexems, RPAR, is_cmd);
+				delete_subshell_lexems(&sh->lexer->lexems, lexems, LPAR, RPAR);
+			}
 			sh->ssbqt = 0;
 		}
 		else
-			NEXT(lexems);
+			NEXT((*lexems));
 	}
+	*lexems = sh->lexer->lexems;
 	return (0);
 }
 
