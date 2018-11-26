@@ -108,16 +108,16 @@ void		shell_loop(t_sh *shell)
 			free(command);
 			continue ;
 		}
-		// if (check_history_excla(shell, &command, NULL, NULL))
-		// {
-		// 	if (shell->op)
-		// 		ft_strdel(&shell->op);
-		// 	if (shell->total_command)
-		// 		ft_strdel(&shell->total_command);
-		// 	shell->state = BASIC_SHELL;
-		// 	ft_putchar('\n');
-		// 	continue ;
-		// }
+		 if (check_history_excla(shell, &command, NULL, NULL))
+		 {
+		 	if (shell->op)
+		 		ft_strdel(&shell->op);
+		 	if (shell->total_command)
+		 		ft_strdel(&shell->total_command);
+		 	shell->state = BASIC_SHELL;
+		 	ft_putchar('\n');
+		 	continue ;
+		}
 		if (!shell->have_write_error)
 			shell->return_value = 0;
 		treat_command(shell, command);
