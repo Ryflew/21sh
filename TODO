@@ -6,11 +6,11 @@ Globing:
 
 VICTOR :
 
-- unset & export casse
-
 BASILE || VICTOR:
 
-- leaks: echo `ls -l`
+- leaks: echo `ls -l` => Il est dans subshell (callstack: 
+	main/sheel_loop/treat_command/go_core/commands_line_rules/replace_bqt_subshell/bqt_rule/subshell)
+	Je suis perdu, j'ai pas reussi a fix
 
 -------- LIST BONUS 21sh -------------
 - cmd "history"

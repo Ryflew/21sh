@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:26 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/11/13 17:16:38 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/15 15:56:07 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,14 @@ void	help_unset(void)
 {
 	first_step("unset");
 	ft_putendl("\tunset [name ...]\n");
+	ft_putstr(C_RESET);
 }
 
 void	help_export(void)
 {
 	first_step("export");
-	ft_putendl("\texport [name[=value] ...]\n");
+	ft_putendl("\texport [-n] [name[=value] ...] or export -p\n");
+	ft_putendl("\t-n: Remove the export property from subsequent NAMEs.");
+	ft_putendl("\t-p: Print the export list.\n");
+	ft_putstr(C_RESET);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_variable.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:15 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:45:16 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/11/15 17:29:57 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ void		concat_unused_add_var(t_list *cmd_tokens)
 	}
 }
 
+void		is_env_var_to_add2(char *name, char *content)
+{
+	add_var_twoline(name, content, &(get_shell()->shell_var));
+	if (is_exported(name, &get_shell()->export))
+		add_var_twoline(name, content, &(get_shell()->env));
+}
+
 char		is_env_var_to_add(t_list **cmd_tokens, t_list *tmp, char ret)
 {
 	t_token	*token;
@@ -62,8 +69,7 @@ char		is_env_var_to_add(t_list **cmd_tokens, t_list *tmp, char ret)
 			var_content = "";
 			if (tmp->next && ((t_token*)tmp->next->data)->type == VAR_WORD)
 				var_content = ((t_token*)tmp->next->data)->value;
-			add_var_twoline(((t_token*)tmp->prev->data)->value, \
-				var_content, &(get_shell()->shell_var));
+			is_env_var_to_add2(((t_token*)tmp->prev->data)->value, var_content);
 			free_lexems(&tmp->prev, cmd_tokens);
 			free_lexems(&tmp, cmd_tokens);
 			if (tmp && ((t_token*)tmp->data)->type == VAR_WORD)

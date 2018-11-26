@@ -46,6 +46,7 @@ FILES = add_char.c \
 				exclamation_point.c \
 				exit.c \
 				export.c \
+				export2.c \
 				ft_putcharint.c \
 				get_line.c \
 				get_next_line.c \
@@ -75,6 +76,7 @@ FILES = add_char.c \
 				second_prompt2.c \
 				setenv.c \
 				shell_loop.c \
+				shellvar.c \
 				split_quot.c \
 				termcap.c \
 				unsetenv.c \

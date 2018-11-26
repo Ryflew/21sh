@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:23:15 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/01 16:21:19 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/15 17:23:39 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	go_builtins2(char **cmd, t_sh *shell)
 		hash_tab(cmd, shell);
 	else if (!ft_strcmp(cmd[0], "read"))
 		read_builtin(shell, cmd);
+	else if (!ft_strcmp(cmd[0], "shellvar"))
+		shellvar(shell->shell_var);
 	else if (!ft_strcmp(cmd[0], "exit"))
 		exit_command(cmd, shell);
 	else if (!ft_strcmp(cmd[0], "help"))
@@ -77,6 +79,14 @@ char	is_writable_builtins(char **cmd)
 	return (1);
 }
 
+char	is_builtins2(char **cmd)
+{
+	if (!ft_strcmp(cmd[0], "shellvar"))
+		return (0);
+	else
+		return (is_writable_builtins(cmd));
+}
+
 char	is_builtins(char **cmd)
 {
 	if (!ft_strcmp(cmd[0], "cd"))
@@ -102,5 +112,5 @@ char	is_builtins(char **cmd)
 	else if (!ft_strcmp(cmd[0], "hash"))
 		return (0);
 	else
-		return (is_writable_builtins(cmd));
+		return (is_builtins2(cmd));
 }

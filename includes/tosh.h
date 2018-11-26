@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/10/23 18:18:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/15 17:16:31 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ typedef	struct		s_sh
 	t_env			*env;
 	t_env			*save_env;
 	t_env			*hash;
-	t_env			*export;
+	t_list			*export;
 	t_env			*shell_var;
 
 	t_lexer			*lexer;
@@ -242,7 +242,7 @@ void				set_env(char **av, t_env **env);
 void				unset_env(char **av, t_env **env);
 void				inc_shlvl(t_env *env);
 void				exit_command(char **av, t_sh *shell);
-char				export(char **av, t_env **export);
+char				export(char **av, t_list **export);
 char				is_string_op(char c);
 int					ft_putcharint(int c);
 int					get_current_pos_in_command(t_sh *shell);
@@ -485,5 +485,10 @@ void				get_start_str(t_sh *shell, char *buff);
 char				echo_env(char *str);
 void				cd_dot_dot(char **new_prompt, t_cd *opt);
 char				check_special_operator(char *str, int i, int *j, char *op);
+void				shellvar(t_env *shellvar);
+void				help_shellvar(void);
+t_list				*add_to_export(char **env);
+char				is_exported(char *name, t_list **export);
+void				add_export(char *name, t_list **export);
 
 #endif
