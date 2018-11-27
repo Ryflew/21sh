@@ -48,12 +48,12 @@ static void	init_checker(char *brc, char *bkt, char *pb)
 	*pb = 0;
 }
 
-static char	check_bad_or_not(t_list *lexems, t_token *token, char *brc,
+static char	check_bad_or_not(t_list *lxms, t_token *token, char *brc,
 				char *bkt)
 {
 	if (TYPE == LBRC)
 	{
-		if (*bkt || (((t_token*)(lexems->next->data))->type == RBRC && *brc < 1))
+		if (*bkt || (((t_token*)(lxms->next->data))->type == RBRC && *brc < 1))
 			return (1);
 		++(*brc);
 	}
@@ -67,7 +67,7 @@ static char	check_bad_or_not(t_list *lexems, t_token *token, char *brc,
 	}
 	else if (TYPE == LBKT || TYPE == E_WILDCARD)
 	{
-		if (*bkt || ((t_token*)(lexems->next->data))->type == RBKT)
+		if (*bkt || ((t_token*)(lxms->next->data))->type == RBKT)
 			return (1);
 		*bkt = 1;
 	}
@@ -124,7 +124,7 @@ void		glob(t_list **first_lexems)
 		}
 		else
 			lexems = lexems->next;
-	}
+	} 
 	replace_all_exprs(first_lexems);
 	replace_expr_by_word(first_lexems, *first_lexems);
 }

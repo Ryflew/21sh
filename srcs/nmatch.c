@@ -12,11 +12,6 @@
 
 #include "tosh.h"
 
-static char dot_or_slash(char c)
-{
-	return ((c == '.' || c == '/') ? 1 : 0);
-}
-
 static int	is_e_wildcard(char *s1, char *s2, t_list *lexems)
 {
 	t_token	*token;
@@ -78,34 +73,29 @@ static int	is_expr(char *s1, char *s2, t_list *lexems, enum e_token type)
 	return (0);
 }
 
-static int is_r_bkt(t_list *lexems, char *s1)
-{
-	return (nmatch(s1, NULL, lexems->next, NONE));
-}
-
 int			nmatch(char *s1, char *s2, t_list *lxms, enum e_token type)
 {
 	t_token			*token;
 
 	token = (t_token*)lxms->data;
-	if (TYPE == S_WILDCARD && *s1 == '\0' && !dot_or_slash(*s1))
+	if (TYPE == S_WILDCARD && *s1 == '\0' && !is_dot_or_slash(*s1))
 		return (nmatch(s1, NULL, lxms->next, type));
-	if (TYPE == S_WILDCARD && *s1 != '\0' && !dot_or_slash(*s1))
+	if (TYPE == S_WILDCARD && *s1 != '\0' && !is_dot_or_slash(*s1))
 		return (nmatch(s1 + 1, NULL, lxms, type) +
 				nmatch(s1, NULL, lxms->next, type));
 	if (*s1 == '\0' && (TYPE == END_EXPR || (s2 && *s2 == '/')))
 		return (1);
-	if (TYPE == E_WILDCARD && *s1 != '\0' && lxms->next && !dot_or_slash(*s1))
+	if (TYPE == E_WILDCARD && *s1 != '\0' && lxms->next && !is_dot_or_slash(*s1))
 		return (is_e_wildcard(s1, s2, lxms));
-	if (TYPE == LBKT && *s1 != '\0' && lxms->next && !dot_or_slash(*s1))
+	if (TYPE == LBKT && *s1 != '\0' && lxms->next && !is_dot_or_slash(*s1))
 		return (is_l_bkt(s1, s2, lxms));
-	if (TYPE == START_RANGE_EXPR && *s1 != '\0' && !dot_or_slash(*s1))
+	if (TYPE == START_RANGE_EXPR && *s1 != '\0' && !is_dot_or_slash(*s1))
 		return (is_range_expr(lxms, s1, type));
-	if (TYPE == Q_WILDCARD && *s1 != '\0' && !dot_or_slash(*s1))
+	if (TYPE == Q_WILDCARD && *s1 != '\0' && !is_dot_or_slash(*s1))
 		return (nmatch(s1 + 1, NULL, lxms->next, type));
 	if (TYPE == EXPR && TYPE != END_EXPR)
 		return (is_expr(s1, s2, lxms, type));
 	if (TYPE == RBKT)
-		return (is_r_bkt(lxms, s1));
+		return (nmatch(s1, NULL, lxms->next, NONE));
 	return (0);
 }

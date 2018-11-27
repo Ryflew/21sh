@@ -113,6 +113,9 @@ FILES = add_char.c \
 				here_docs2.c \
 				subshell_rules.c \
 				add_subshell_tokens.c \
+				is_regular_char.c \
+				isnt_brc_or_bkt.c \
+				isnt_glob_char.c
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN))
 

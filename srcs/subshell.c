@@ -12,16 +12,18 @@
 
 #include "tosh.h"
 
-static t_tree	*lex_and_parse_subshell(t_sh *sh, t_list *lexems, t_list **begin_lexems)
+static t_tree	*lex_and_parse_subshell(t_sh *sh, t_list *lexems, \
+				t_list **begin_lexems)
 {
 	t_tree	*sub_tree;
 
 	get_lexems(sh, ((t_token*)lexems->data)->value, 0);
 	sh->lexer->line = sh->total_command;
 	sh->lexer->her = 0;
-	if (!(sub_tree = commands_line_rules(sh, begin_lexems)) || sub_tree == (void*)-1)
+	if (!(sub_tree = commands_line_rules(sh, begin_lexems)) \
+	|| sub_tree == (void*)-1)
 	{
-		clear(sh, mbegin_lexems, NULL);
+		clear_lexer_parser(sh, begin_lexems, NULL);
 		if (sub_tree == (void*)-1)
 			parse_error(sh);
 		return (NULL);

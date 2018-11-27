@@ -18,7 +18,8 @@ void		clear_lexems(t_token *token)
 	free(token);
 }
 
-void		clear(t_sh *shell, t_list **begin, t_tree *commands_tree)
+void		clear_lexer_parser(t_sh *shell, t_list **begin,\
+			t_tree *commands_tree)
 {
 	ft_clear_list(begin, (void*)&clear_lexems);
 	if (shell->save_env)
@@ -53,10 +54,10 @@ void		go_core(char *command, t_sh *shell)
 	if ((cmds_tree = commands_line_rules(shell, &begin_lexems)) == (void*)-1)
 	{
 		parse_error(shell);
-		clear(shell, &begin_lexems, NULL);
+		clear_lexer_parser(shell, &begin_lexems, NULL);
 		return ;
 	}
 	if (cmds_tree)
 		browse_tree(cmds_tree, shell, NULL, 1);
-	clear(shell, &begin_lexems, cmds_tree);
+	clear_lexer_parser(shell, &begin_lexems, cmds_tree);
 }

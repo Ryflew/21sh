@@ -1,6 +1,8 @@
 
 -------- BUG -------------
 BASILE :
+ls */*[.ch]
+ls */*.c
 
 VICTOR :
 

@@ -90,15 +90,13 @@ static char	fill_new_lexems(t_list *lexems, char end_path, char *join)
 	return (1);
 }
 
-void		manage_wildcards(t_list *lex, char *match)
+void		manage_wildcards(t_list *lex, char *match, t_token *token)
 {
 	DIR				*dir;
 	struct dirent	*ent;
 	char			*dir_path;
-	t_token			*token;
 	char			*join;
 
-	token = (t_token*)lex->data;
 	dir_path = ft_strsub(VAL, 0, ft_strfind_by_end(VAL, '/'));
 	if ((dir = open_dir(dir_path, token)))
 	{
@@ -108,9 +106,10 @@ void		manage_wildcards(t_list *lex, char *match)
 			: ft_strdup(ent->d_name);
 			if (ent->d_name[0] != '.' && (is_dir(join, token) ||
 			!is_end_path(lex->next)) && ((TYPE != EXPR &&
-			nmatch(ent->d_name, NULL, lex, NONE)) || (TYPE == EXPR && ((dir_path[0]
-			&& nmatch(ent->d_name, VAL + ft_strfind_by_end(VAL, '/') + 1, lex, NONE))
-			|| (!dir_path[0] && nmatch(ent->d_name, VAL, lex, NONE))))))
+			nmatch(ent->d_name, NULL, lex, NONE)) \
+			|| (TYPE == EXPR && ((dir_path[0] && 
+			nmatch(ent->d_name, VAL + ft_strfind_by_end(VAL, '/') + 1, lex, \
+			NONE)) || (!dir_path[0] && nmatch(ent->d_name, VAL, lex, NONE))))))
 				*match = fill_new_lexems(lex, is_end_path(lex->next), join);
 			free(join);
 		}

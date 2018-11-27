@@ -22,6 +22,16 @@ static void		is_here_op(t_lexer *lexer, t_token **token)
 			*token = new_token(lexer, EBQT, "`", lexer->blank);
 		lexer->bqt = !lexer->bqt;
 	}
+	else if (*lexer->line == '(')
+	{
+		*token = new_token(lexer, LPAR, "(", lexer->blank);
+		lexer->par = 1;
+	}
+	else if (*lexer->line == ')')
+	{
+		*token = new_token(lexer, RPAR, ")", lexer->blank);
+		lexer->par = 0;
+	}
 	else if (*lexer->line == '$' && ft_isalnum(*(lexer->line + 1)))
 		*token = new_token(lexer, VAR_OP, "$", lexer->blank);
 }
@@ -35,16 +45,6 @@ static void		is_other_op(t_lexer *lexer, t_token **token, \
 		*token = new_token(lexer, S_WILDCARD, "*", lexer->blank);
 	else if (*lexer->line == '?')
 		*token = new_token(lexer, Q_WILDCARD, "?", lexer->blank);
-	else if (*lexer->line == '(')
-	{
-		*token = new_token(lexer, LPAR, "(", lexer->blank);
-		lexer->par = 1;
-	}
-	else if (*lexer->line == ')')
-	{
-		*token = new_token(lexer, RPAR, ")", lexer->blank);
-		lexer->par = 0;
-	}
 	else if (*lexer->line == '!')
 		*token = new_token(lexer, HIST, "!", lexer->blank);
 	else if (*lexer->line == ';')
@@ -65,14 +65,13 @@ static void		is_limit_glob_op(t_lexer *lexer, t_token **token,
 {
 	if (*lexer->line == '[')
 	{
-		if (*(lexer->line + 1) && (*(lexer->line + 1) == '!'
-			|| *(lexer->line + 1) == '^'))
-			*token = new_token(lexer, E_WILDCARD, "[!", lexer->blank);
-		else
-			*token = new_token(lexer, LBKT, "[", lexer->blank);
+		*token = (*(lexer->line + 1) && (*(lexer->line + 1) == '!' 
+		|| *(lexer->line + 1) == '^')) ? new_token(lexer, E_WILDCARD, "[!",\
+		 lexer->blank) : new_token(lexer, LBKT, "[", lexer->blank);	
 		lexer->bkt = 1;
 	}
-	else if (*lexer->line == ']' && lexer->bkt && l_tk && (l_tk->type != LBKT && l_tk->type != E_WILDCARD))
+	else if (*lexer->line == ']' && lexer->bkt && l_tk \
+	&& (l_tk->type != LBKT && l_tk->type != E_WILDCARD))
 	{
 		*token = new_token(lexer, RBKT, "]", lexer->blank);
 		lexer->bkt = 0;

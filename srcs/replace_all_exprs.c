@@ -92,7 +92,7 @@ void			replace_all_exprs(t_list **first_lexems)
 		if (!son)
 			save = lexems;
 		match = 0;
-		manage_wildcards(lexems, &match);
+		manage_wildcards(lexems, &match, lexems->data);
 		if (son)
 			clear_old_expr(&lexems, first_lexems, 1);
 		else
