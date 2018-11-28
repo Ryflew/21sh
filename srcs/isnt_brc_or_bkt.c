@@ -20,7 +20,8 @@ char	isnt_lbrc(t_lexer *lexer, char c)
 	return (c == '{' && lexer->bkt) ? 1 : 0;
 }
 
-char is_dot_or_slash(char c)
+char is_dot_or_slash(char c, t_glob glob)
 {
-	return ((c == '.' || c == '/') ? 1 : 0);
+	return (((c == '.' && !glob.hidden_f_d) || \
+	(c == '/' && !glob.dir)) ? 1 : 0);
 }

@@ -232,6 +232,13 @@ typedef	struct		s_sh
 	int				read_nchar;
 }					t_sh;
 
+typedef struct		s_glob
+{
+	enum			e_token type;
+	char			dir;
+	char			hidden_f_d;
+}					t_glob;
+
 extern pid_t		g_father;
 
 void				cd(char **av, t_env *env, t_sh *shell);
@@ -435,7 +442,7 @@ char				isnt_rbkt(t_lexer *lexer, char c, int i);
 char				isnt_lbkt(t_lexer *lexer, char c);
 char				isnt_rbrc(t_lexer *lexer, char c);
 char				isnt_lbrc(t_lexer *lexer, char c);
-char				is_dot_or_slash(char c);
+char				is_dot_or_slash(char c, t_glob glob);
 
 char				isnt_glob_char(t_lexer *lx, char c, int i);
 
@@ -458,8 +465,7 @@ void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe,
 
 char				is_glob_token(enum e_token type);
 void				glob(t_list **first_lexems);
-int					nmatch(char *s1, char *s2, t_list *lexems,
-					enum e_token type);
+int					nmatch(char *s1, char *s2, t_list *lexems, t_glob glob);
 void				replace_all_exprs(t_list **first_lexems);
 void				manage_wildcards(t_list *lex, char *match, t_token *token);
 DIR					*open_dir(char *dir_name, t_token *token);

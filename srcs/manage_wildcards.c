@@ -28,20 +28,6 @@ static char	is_end_path(t_list *lexems)
 	return (0);
 }
 
-void		free_join(char **s1, char *s2)
-{
-	char	*to_free;
-
-	if (*s1)
-	{
-		to_free = *s1;
-		*s1 = ft_strjoin(*s1, s2);
-		free(to_free);
-	}
-	else
-		*s1 = ft_strdup(s2);
-}
-
 static void	add_end_path(t_list *lexems, t_list **new_lexems)
 {
 	t_token	*token;
@@ -90,26 +76,34 @@ static char	fill_new_lexems(t_list *lexems, char end_path, char *join)
 	return (1);
 }
 
+static void	init_glob(t_glob *glob, char *file_name)
+{
+	glob->type = NONE;
+	glob->dir = 0;
+	glob->hidden_f_d = (file_name[0] == '.') ? 0 : 1;
+}
+
 void		manage_wildcards(t_list *lex, char *match, t_token *token)
 {
 	DIR				*dir;
 	struct dirent	*ent;
 	char			*dir_path;
 	char			*join;
+	t_glob			glob;
 
 	dir_path = ft_strsub(VAL, 0, ft_strfind_by_end(VAL, '/'));
 	if ((dir = open_dir(dir_path, token)))
 	{
 		while ((ent = readdir(dir)) != NULL)
 		{
+			init_glob(&glob, ent->d_name);
 			join = (dir_path[0]) ? ft_strstrjoin(dir_path, "/", ent->d_name) \
 			: ft_strdup(ent->d_name);
-			if (ent->d_name[0] != '.' && (is_dir(join, token) ||
-			!is_end_path(lex->next)) && ((TYPE != EXPR &&
-			nmatch(ent->d_name, NULL, lex, NONE)) \
-			|| (TYPE == EXPR && ((dir_path[0] && 
-			nmatch(ent->d_name, VAL + ft_strfind_by_end(VAL, '/') + 1, lex, \
-			NONE)) || (!dir_path[0] && nmatch(ent->d_name, VAL, lex, NONE))))))
+			if ((is_dir(join, token) || !is_end_path(lex->next)) && 
+			((TYPE != EXPR && nmatch(ent->d_name, NULL, lex, glob)) || 
+			(TYPE == EXPR && ((dir_path[0] && nmatch(ent->d_name, \
+			VAL + ft_strfind_by_end(VAL, '/') + 1, lex, glob)) || 
+			(!dir_path[0] && nmatch(ent->d_name, VAL, lex, glob))))))
 				*match = fill_new_lexems(lex, is_end_path(lex->next), join);
 			free(join);
 		}
