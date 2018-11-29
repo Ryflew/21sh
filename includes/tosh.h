@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/11/15 17:16:31 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/29 14:52:44 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,7 @@ typedef	struct		s_sh
 
 typedef struct		s_glob
 {
-	enum			e_token type;
+	enum e_token	type;
 	char			dir;
 	char			hidden_f_d;
 }					t_glob;
@@ -435,7 +435,7 @@ char				*get_word(char const *s, size_t len);
 
 char				is_operator(char c, char c2);
 char				is_regular_char_in_here(t_lexer *lexer, char c);
-char 				is_start_range_expr(t_lexer *lexer, t_token *last_token, \
+char				is_start_range_expr(t_lexer *lexer, t_token *last_token, \
 					char *line, int i);
 
 char				isnt_rbkt(t_lexer *lexer, char c, int i);
@@ -443,9 +443,7 @@ char				isnt_lbkt(t_lexer *lexer, char c);
 char				isnt_rbrc(t_lexer *lexer, char c);
 char				isnt_lbrc(t_lexer *lexer, char c);
 char				is_dot_or_slash(char c, t_glob glob);
-
 char				isnt_glob_char(t_lexer *lx, char c, int i);
-
 char				isnt_equal(t_lexer *lexer, char c, int i);
 char				is_bs_or_bqt_or_par(t_lexer *lexer, char bs, char c);
 char				isnt_var_val(t_token *last_token, char c);

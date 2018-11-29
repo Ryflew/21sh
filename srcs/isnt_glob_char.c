@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   isnt_glob_char.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/11/29 14:56:05 by vdarmaya          #+#    #+#             */
+/*   Updated: 2018/11/29 14:57:11 by vdarmaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tosh.h"
 
 static char	isnt_s_wildcard(t_lexer *lexer, char c)
@@ -17,8 +29,9 @@ static char	isnt_comma(t_lexer *lexer, char c)
 
 char		isnt_glob_char(t_lexer *lx, char c, int i)
 {
-	if (isnt_lbrc(lx, c) || isnt_rbrc(lx, c) || isnt_comma(lx, c) || isnt_lbkt(lx, c) \
-	|| isnt_rbkt(lx, c, i) || isnt_s_wildcard(lx, c) || isnt_q_wildcard(lx, c))
+	if (isnt_lbrc(lx, c) || isnt_rbrc(lx, c) || isnt_comma(lx, c) || \
+		isnt_lbkt(lx, c) || isnt_rbkt(lx, c, i) || isnt_s_wildcard(lx, c) || \
+		isnt_q_wildcard(lx, c))
 		return (1);
 	return (0);
 }

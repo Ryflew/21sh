@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:28:06 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 14:45:06 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/29 15:00:58 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	get_expr_start(t_list *lexems, t_list **new_lexems, \
 {
 	t_token	*token;
 	char	brc;
-	
+
 	brc = 0;
 	while (lexems->prev)
 	{

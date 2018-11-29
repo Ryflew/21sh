@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:58:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/11/13 17:41:23 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/29 15:06:25 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,15 @@ void		shell_loop(t_sh *shell)
 			free(command);
 			continue ;
 		}
-		 if (check_history_excla(shell, &command, NULL, NULL))
-		 {
-		 	if (shell->op)
-		 		ft_strdel(&shell->op);
-		 	if (shell->total_command)
-		 		ft_strdel(&shell->total_command);
-		 	shell->state = BASIC_SHELL;
-		 	ft_putchar('\n');
-		 	continue ;
+		if (check_history_excla(shell, &command, NULL, NULL))
+		{
+			if (shell->op)
+				ft_strdel(&shell->op);
+			if (shell->total_command)
+				ft_strdel(&shell->total_command);
+			shell->state = BASIC_SHELL;
+			ft_putchar('\n');
+			continue ;
 		}
 		if (!shell->have_write_error)
 			shell->return_value = 0;

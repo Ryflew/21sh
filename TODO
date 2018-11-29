@@ -6,6 +6,8 @@ ls */*.c
 
 VICTOR :
 
+export -n AAA puis export -n AAA
+
 BASILE || VICTOR:
 
 -------- LIST BONUS 21sh -------------

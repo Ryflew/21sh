@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:25:02 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/11/15 17:16:00 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/29 14:15:29 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ static void	remove_export(char **av, t_list **export)
 					tmp->prev->next = tmp->next;
 				free(tmp->data);
 				free(tmp);
-				unset_var_env(*av);
+				if (find_env(get_shell()->env, *av))
+					unset_var_env(*av);
 				break ;
 			}
 			NEXT(tmp);

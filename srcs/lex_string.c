@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lex_string.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 19:59:46 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/11/29 15:00:02 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,13 @@ int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op,
 	i = 0;
 	while ((lx->line)[i] && (is_bs_or_bqt_or_par(lx, bs, (lx->line)[i]) \
 	|| (!ft_isblank((lx->line)[i]) \
-	&& (!is_operator((lx->line)[i], (lx->line)[i + 1])
+	&& (!is_operator((lx->line)[i], (lx->line)[i + 1]) \
 	|| isnt_glob_char(lx, (lx->line)[i], i) \
 	|| isnt_var_op((lx->line)[i], (lx->line)[i + 1]) \
-	|| isnt_equal(lx, (lx->line)[i], i) || isnt_var_val(l_tk, (lx->line)[i])))\
+	|| isnt_equal(lx, (lx->line)[i], i) || isnt_var_val(l_tk, (lx->line)[i]))) \
 	|| is_regular_char_in_st_op(*st_op, (lx->line)[i]) \
-	|| is_regular_char_in_here(lx, (lx->line)[i]))) {
+	|| is_regular_char_in_here(lx, (lx->line)[i])))
+	{
 		if ((lx->line)[i] == '\\' && lx->bqt)
 			bs = 1;
 		if_its_word((lx->line)[i++], &bs, st_op, type);

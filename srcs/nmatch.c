@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nmatch.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:47:20 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:47:20 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/11/29 15:03:46 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	is_e_wildcard(char *s1, char *s2, t_list *lexems, t_glob glob)
 				match = 1;
 			else if (TYPE != START_RANGE_EXPR)
 			{
-				s2 = VAL;	
+				s2 = VAL;
 				while (*(s2))
 					if (*s1 != '\0' && *s2 != '\0' && *s2++ == *s1)
 						match = 1;
@@ -72,7 +72,7 @@ static int	is_l_bkt(char *s1, char *s2, t_list *lexems, t_glob glob)
 				match = 1;
 			else if (TYPE != START_RANGE_EXPR)
 			{
-				s2 = VAL;	
+				s2 = VAL;
 				while (*(s2))
 					if (*s1 != '\0' && *s2 != '\0' && *s2++ == *s1)
 						match = 1;
@@ -89,7 +89,7 @@ static int	is_l_bkt(char *s1, char *s2, t_list *lexems, t_glob glob)
 static int	is_expr(char *s1, char *s2, t_list *lexems, t_glob glob)
 {
 	t_token			*token;
-	
+
 	token = (t_token*)lexems->data;
 	if (!s2)
 		s2 = VAL;
@@ -117,14 +117,17 @@ int			nmatch(char *s1, char *s2, t_list *lxms, t_glob glob)
 	if (TYPE == S_WILDCARD && *s1 == '\0' && !is_dot_or_slash(*s1, glob))
 		return (nmatch(s1, NULL, lxms->next, glob));
 	if (TYPE == S_WILDCARD && *s1 != '\0' && !is_dot_or_slash(*s1, glob))
-		return (nmatch(s1 + 1, NULL, lxms, glob) +
-				nmatch(s1, NULL, lxms->next, glob));
+	{
+		return (nmatch(s1 + 1, NULL, lxms, glob) + \
+			nmatch(s1, NULL, lxms->next, glob));
+	}
 	if (*s1 == '\0' && (TYPE == END_EXPR || (s2 && *s2 == '/')))
 		return (1);
 	if (TYPE == E_WILDCARD && *s1 != '\0' && lxms->next && \
 	!is_dot_or_slash(*s1, glob))
 		return (is_e_wildcard(s1, s2, lxms->next, glob));
-	if (TYPE == LBKT && *s1 != '\0' && lxms->next && !is_dot_or_slash(*s1, glob))
+	if (TYPE == LBKT && *s1 != '\0' && lxms->next && \
+		!is_dot_or_slash(*s1, glob))
 		return (is_l_bkt(s1, s2, lxms->next, glob));
 	if (TYPE == Q_WILDCARD && *s1 != '\0' && !is_dot_or_slash(*s1, glob))
 		return (nmatch(s1 + 1, NULL, lxms->next, glob));

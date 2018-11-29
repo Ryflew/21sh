@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:03 by bdurst            #+#    #+#             */
-/*   Updated: 2018/11/13 14:32:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/29 15:05:34 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_tree	*lex_and_parse_subshell(t_sh *sh, t_list *lexems, \
 
 static void		manage_subshell(t_sh *sh, t_list *lexems)
 {
-	t_list *begin_lexems;
+	t_list	*begin_lexems;
 	t_tree	*sub_tree;
 
 	sh->fd_pipe = -1;
@@ -107,7 +107,6 @@ char			subshell(t_sh *sh, t_list *lexems, enum e_token type, \
 		while (end_bqt_lexem && ((t_token*)end_bqt_lexem->data)->type != type)
 			end_bqt_lexem = end_bqt_lexem->next;
 		ft_add_list(end_bqt_lexem, new_lexems);
-
 	}
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_wildcards.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:47:15 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:47:16 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/11/29 15:01:18 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,10 @@ void		manage_wildcards(t_list *lex, char *match, t_token *token)
 			init_glob(&glob, ent->d_name);
 			join = (dir_path[0]) ? ft_strstrjoin(dir_path, "/", ent->d_name) \
 			: ft_strdup(ent->d_name);
-			if ((is_dir(join, token) || !is_end_path(lex->next)) && 
-			((TYPE != EXPR && nmatch(ent->d_name, NULL, lex, glob)) || 
+			if ((is_dir(join, token) || !is_end_path(lex->next)) && \
+			((TYPE != EXPR && nmatch(ent->d_name, NULL, lex, glob)) || \
 			(TYPE == EXPR && ((dir_path[0] && nmatch(ent->d_name, \
-			VAL + ft_strfind_by_end(VAL, '/') + 1, lex, glob)) || 
+			VAL + ft_strfind_by_end(VAL, '/') + 1, lex, glob)) || \
 			(!dir_path[0] && nmatch(ent->d_name, VAL, lex, glob))))))
 				*match = fill_new_lexems(lex, is_end_path(lex->next), join);
 			free(join);

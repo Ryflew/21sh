@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:01 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 12:55:46 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/29 14:53:27 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void		glob(t_list **first_lexems)
 		}
 		else
 			lexems = lexems->next;
-	} 
+	}
 	replace_all_exprs(first_lexems);
 	replace_expr_by_word(first_lexems, *first_lexems);
 }

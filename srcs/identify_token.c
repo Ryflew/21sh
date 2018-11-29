@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:27:39 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/29 14:59:02 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ static void		is_limit_glob_op(t_lexer *lexer, t_token **token,
 {
 	if (*lexer->line == '[' && !lexer->bkt)
 	{
-		*token = (*(lexer->line + 1) && (*(lexer->line + 1) == '!' 
+		*token = (*(lexer->line + 1) && (*(lexer->line + 1) == '!' \
 		|| *(lexer->line + 1) == '^')) ? new_token(lexer, E_WILDCARD, "[!",\
-		 lexer->blank) : new_token(lexer, LBKT, "[", lexer->blank);	
+		lexer->blank) : new_token(lexer, LBKT, "[", lexer->blank);
 		lexer->bkt = 1;
 	}
 	else if (*lexer->line == ']' && lexer->bkt && l_tk \

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:44:33 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/01 22:29:40 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/29 15:05:51 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	only_space(char *str)
 	return (1);
 }
 
-void		free_join(char **s1, char *s2)
+void	free_join(char **s1, char *s2)
 {
 	char	*to_free;
 

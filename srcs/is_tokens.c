@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:45 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 14:45:57 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/11/29 14:55:25 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ char	is_glob_token(enum e_token type)
 	return (0);
 }
 
-char is_regular_char_in_here(t_lexer *lexer, char c)
+char	is_regular_char_in_here(t_lexer *lexer, char c)
 {
 	return (lexer->her && c != '`' && c != '$') ? 1 : 0;
 }
 
-char is_start_range_expr(t_lexer *lexer, t_token *last_token, char *line, \
+char	is_start_range_expr(t_lexer *lexer, t_token *last_token, char *line, \
 						int i)
 {
 	if (lexer->bkt && last_token->type != DASH && line[i] && line[i] == '-' \
