@@ -63,7 +63,7 @@ static void		is_other_op(t_lexer *lexer, t_token **token, \
 static void		is_limit_glob_op(t_lexer *lexer, t_token **token,
 								t_token *l_tk)
 {
-	if (*lexer->line == '[')
+	if (*lexer->line == '[' && !lexer->bkt)
 	{
 		*token = (*(lexer->line + 1) && (*(lexer->line + 1) == '!' 
 		|| *(lexer->line + 1) == '^')) ? new_token(lexer, E_WILDCARD, "[!",\
