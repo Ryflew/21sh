@@ -78,7 +78,6 @@ static char	fill_new_lexems(t_list *lexems, char end_path, char *join)
 
 static void	init_glob(t_glob *glob, char *file_name)
 {
-	glob->type = NONE;
 	glob->dir = 0;
 	glob->hidden_f_d = (file_name[0] == '.') ? 0 : 1;
 }
