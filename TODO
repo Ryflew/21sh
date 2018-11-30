@@ -6,9 +6,28 @@ ls */*.c
 
 VICTOR :
 
-export -n AAA puis export -n AAA
+- "read var" puis echo $var
+- history -[last]
+- apres tab quand ecoute y or n, ctrl c .
+{
+	history -d -1
+	echo $?
+	history -d 30000
+	history -d 3300
+	history -d 330
+	history -d 200
+	echo $?
+}
 
 BASILE || VICTOR:
+- cat | cat | cat | ls
+- ls [4]2sh{1,2,3}
+- echo ${PATH}
+- echo {1..50} // et inverse
+- rm wfwfwef 2>&1 1>&2
+- echo "`ls -l`" != echo `ls -l`
+- ls ~/*/* // ?
+- ${PATH}
 
 -------- LIST BONUS 21sh -------------
 - cmd "history"
