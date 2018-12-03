@@ -6,18 +6,7 @@ ls */*.c
 
 VICTOR :
 
-- "read var" puis echo $var
-- history -[last]
-- apres tab quand ecoute y or n, ctrl c .
-{
-	history -d -1
-	echo $?
-	history -d 30000
-	history -d 3300
-	history -d 330
-	history -d 200
-	echo $?
-}
+- A tester avant de rendre: "history -d 5;ls"
 
 BASILE || VICTOR:
 - cat | cat | cat | ls

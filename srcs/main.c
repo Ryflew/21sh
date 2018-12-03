@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/11/15 16:21:03 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/03 15:34:13 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void		sig_hand(int sig)
 		g_sh.tab_request = 0;
 		move_to(g_sh.pos.last.x, g_sh.pos.last.y);
 		ft_putstr("\n");
+		do_termcap("ce");
 		print_prompt(BASIC_SHELL, NULL);
 	}
 }

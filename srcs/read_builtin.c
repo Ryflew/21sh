@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:42 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/01 22:28:34 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/03 17:11:02 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ void		read_builtin(t_sh *shell, char **argv)
 		read_p(opt, *av, shell);
 	else if (opt[8])
 		read_u(opt, *av, shell);
-	else
+	else if (!*av)
 		read_a(opt, NULL, shell);
+	else
+		read_a(opt, *av, shell);
 }
