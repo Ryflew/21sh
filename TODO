@@ -6,10 +6,10 @@ ls */*.c
 
 VICTOR :
 
+- cat | cat | cat | ls // fixe normalement a tester.
 - A tester avant de rendre: "history -d 5;ls"
 
 BASILE || VICTOR:
-- cat | cat | cat | ls
 - ls [4]2sh{1,2,3}
 - echo ${PATH}
 - echo {1..50} // et inverse

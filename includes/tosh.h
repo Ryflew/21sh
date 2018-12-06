@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/11/29 14:52:44 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/06 17:53:50 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,12 @@ typedef struct		s_fd
 	enum e_token	type;
 }					t_fd;
 
+typedef struct		s_pids
+{
+	pid_t			pid;
+	struct s_pids	*next;
+}					t_pids;
+
 typedef	struct		s_sh
 {
 	t_list			*begin;
@@ -203,6 +209,7 @@ typedef	struct		s_sh
 	int				fd_pipe;
 	int				right_side;
 	char			ssbqt;
+	t_pids			*lst_pid;
 
 	char			*prompt;
 	char			*toaddstr;
@@ -512,5 +519,7 @@ void				help_shellvar(void);
 t_list				*add_to_export(char **env);
 char				is_exported(char *name, t_list **export);
 void				add_export(char *name, t_list **export);
+void				add_pid(t_pids **lst_pid, pid_t pid);
+void				check_pids(t_pids **lst_pid, t_sh *shell);
 
 #endif

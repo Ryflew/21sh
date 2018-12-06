@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:28:18 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/11 20:07:25 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/06 18:47:31 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,14 @@ static char	manage_children(t_tree *node, t_sh *shell, char rig, char ret)
 	{
 		if (node->TYPE == SCL)
 		{
-			if (shell->fds_out)
-				ft_clear_list(&shell->fds_out, (&free));
+			shell->fds_out ? ft_clear_list(&shell->fds_out, (&free)) : NULL;
 			reset_pipe(shell);
 		}
 		if ((ret = browse_tree(node->right, shell, node, rig)) == -1)
 			return (-1);
 	}
+	if (!node->left && !node->right && rig)
+		check_pids(&shell->lst_pid, shell);
 	return (ret);
 }
 
