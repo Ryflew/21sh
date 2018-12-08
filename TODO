@@ -6,15 +6,8 @@ BASILE :
 VICTOR :
 
 BASILE || VICTOR:
-- ls badfile 2>&1 1>&2 | tr o O // leaks !
 
--------- LIST BONUS 21sh -------------
-- cmd "history"
+-------- LIST BONUS 42sh -------------
 - ctrl + r
 - cmd "help"
 - hash table
-- cmd "read"
-- && 
-- ||
-- ()
-- globing (*)

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/10/24 11:44:59 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/08 21:19:16 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ char		check_quot(char *str, char *op, int *i, int *j)
 	char	c;
 
 	c = str[*i];
-	if ((*i >= 1 && str[*i - 1] == '\\') || \
-		(*i >= 2 && ((str[*i - 1] == '&' && str[*i - 2] == '&') || \
+	// check fini par &&
+	if ((*i > 0 && str[*i - 1] == '\\') || \
+		(*i > 1 && ((str[*i - 1] == '&' && str[*i - 2] == '&') || \
 		(str[*i - 1] == '|' && str[*i - 2] == '|'))))
 		return (0);
 	if (c != '|')
@@ -97,3 +98,61 @@ char		*check_quot_brackets(char *str, enum e_state *state)
 	op[++j] = '\0';
 	return (ft_strdup(op));
 }
+
+
+
+
+// ----------- NEW ONE ! -------------
+
+// (`\'yolo"
+// `\\\`ls\``
+// echo `ls "-la
+// echo "test
+// "`[
+
+
+// char		*check_quot_brackets(char *str, enum e_state *state)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	op[ft_strlen(str) + 1];
+// 	char	c;
+
+// 	j = -1;
+// 	i = -1;
+// 	c = 0;
+// 	while (i < (int)ft_strlen(str) && str[++i])
+// 	{
+// 		if ((!c || c == '(' || (c == '"' && str[i] == '`')) && (str[i] == '"' || str[i] == '\'' || str[i] == '`'|| str[i] == '('))
+// 		{
+// 			c = str[i];
+// 			op[++j] = str[i];
+// 			ft_putstr("ok\n");
+// 			continue ;
+// 		}
+// 		else if ((c == '`' && str[i] == '`') || \
+// 				(c == '"' && str[i] == '"') || \
+// 				(c == '\'' && str[i] == '\'') || \
+// 				(c == '(' && str[i] == ')'))
+// 		{
+// 			op[j--] = 0;
+// 			c = (j > -1) ? op[j] : 0;
+// 		}
+// 		else if (str[i] == ')' && c != str[i])
+// 		{
+// 			*state = BRACKET_ERROR;
+// 			return (NULL);
+// 		}
+// 		if (c != '"' && str[i] == '\\')
+// 		{
+// 			++i;
+// 			continue ;
+// 		}
+// 	}
+// 	if (op[0] == 0)
+// 		*state = BASIC_SHELL;
+// 	else
+// 		*state = ADVANCE_SHELL;
+// 	op[++j] = '\0';
+// 	return (ft_strdup(op));
+// }
