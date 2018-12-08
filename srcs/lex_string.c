@@ -95,12 +95,8 @@ int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op, t_token *l
 			ft_pop_node(&lx->st_ops, NULL);
 			*st_op = (lx->st_ops) ? *((char*)lx->st_ops->data) : 0;
 		}
-		else if (*st_op && ((*st_op != '`' || ((lx->line)[i] != '\'' && \
-		(lx->line)[i] != '"' && (lx->line)[i] != '$' && \
-		(lx->line)[i] != '\\' && (lx->line)[i] != '(')) && (*st_op != '(' || ((lx->line)[i] != '\'' && \
-		(lx->line)[i] != '"' && (lx->line)[i] != '$' && \
-		(lx->line)[i] != '\\' && (lx->line)[i] != '`')) && (*st_op != '"' || \
-		((lx->line)[i] != '\\' && (lx->line)[i] != '`' && (lx->line)[i] != '$'))))
+		else if (*st_op && (*st_op != '"' || \
+		((lx->line)[i] != '\\' && (lx->line)[i] != '`' && (lx->line)[i] != '$')))
 			;
 		else if ((lx->line)[i] == '\\' && !bs)
 			bs = 1;
@@ -217,7 +213,7 @@ t_token		*lex_word(t_lexer *lexer, t_token *last_token)
 		type = FD;
 	else
 		find_type(lexer, last_token, st_op, &type);
-	if (!(word = get_word(lexer->line, word_size)))
+	if (!(word = get_word(lexer, lexer->line, word_size)))
 	{
 		lexer->line += word_size;
 		return (NULL);

@@ -26,9 +26,9 @@ void	merge_expr(t_list *lexems)
 		if (lexems->prev)
 			prev_token = (t_token*)lexems->prev->data;
 		if (TYPE == EXPR && (!lexems->prev || !is_glob_token(prev_token->type) \
-		|| !prev_token->blank) && next_token->type == END_EXPR)
+		|| token->blank) && next_token->type == END_EXPR)
 			TYPE = WORD;
-		if (TYPE == EXPR && next_token->type == EXPR)
+		if (TYPE == EXPR && !next_token->blank && next_token->type == EXPR)
 		{
 			to_free = VAL;
 			VAL = ft_strjoin(VAL, next_token->value);

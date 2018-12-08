@@ -28,8 +28,9 @@ static char	execve_cmds(t_sh *shell, t_tree *node, t_env *env)
 	}
 	else if (!shell->have_write_error)
 	{
-		ft_fputstr("42sh: command not found: ", 2);
-		ft_fputendl(node->cmds[0], 2);
+		ft_fputstr("42sh: ", 2);
+		ft_fputstr(node->cmds[0], 2);
+		ft_fputendl(": command not found", 2);
 		ret = EXIT_FAILURE;
 	}
 	else

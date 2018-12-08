@@ -83,12 +83,12 @@ t_list			*add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd)
 	new_lexems = NULL;
 	if (type == EBQT)
 		split_line_to_tokens(tokens_line, &new_lexems);
-	else if (type == EBQT_INSIDE_ST_OP)
-		ft_node_push_back(&new_lexems, new_token(NULL, WORD, tokens_line, 1));
 	else
 	{
 		trim_line = ft_strtrim(tokens_line);
-		if (is_cmd && trim_line)
+		if (type == EBQT_INSIDE_ST_OP)
+			ft_node_push_back(&new_lexems, new_token(NULL, WORD, trim_line, 1));
+		else if (is_cmd && trim_line)
 		{
 			ft_node_push_back(&new_lexems, new_token(NULL, WORD, "echo", 1));
 			ft_node_push_back(&new_lexems, new_token(NULL, WORD, trim_line, 1));

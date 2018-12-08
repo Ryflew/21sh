@@ -443,7 +443,7 @@ void				init_shell_before_parser(t_sh *shell);
 char				subshell(t_sh *sh, t_list *cmd_tokens, enum e_token type, \
 						char is_cmd);
 
-char				*get_word(char const *s, size_t len);
+char				*get_word(t_lexer *lx, char const *s, size_t len);
 
 char				is_operator(char c, char c2);
 char				is_regular_char_in_here(t_lexer *lexer, char c);
