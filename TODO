@@ -1,18 +1,12 @@
 
 -------- BUG -------------
 BASILE :
-ls */*[.ch]
-ls */*.c
+
 
 VICTOR :
 
-- cat | cat | cat | ls // fixe normalement a tester.
-- A tester avant de rendre: "history -d 5;ls"
-
 BASILE || VICTOR:
-- echo "`ls -l`" != echo `ls -l`
-- ls badfile 2>&1 1>&2 | tr o O
-- lexer_string list of st_op
+- ls badfile 2>&1 1>&2 | tr o O // leaks !
 
 -------- LIST BONUS 21sh -------------
 - cmd "history"

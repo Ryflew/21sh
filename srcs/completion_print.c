@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 14:50:35 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/03 15:31:34 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/08 17:59:25 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,39 @@ static void	display_possibilities(int tab_count)
 	ft_putstr(" possibilities? (y or n)");
 }
 
+int		count_builtins(char *part)
+{
+	char	*arr[8];
+	int		count;
+
+	arr[0] = "setenv";
+	arr[1] = "unsetenv";
+	arr[2] = "exit";
+	arr[3] = "history";
+	arr[4] = "export";
+	arr[5] = "shellvar";
+	arr[6] = "help";
+	arr[7] = "unset";
+	count = 0;
+	if (!ft_strncmp(part, arr[0], ft_strlen(part)))
+		++count;
+	if (!ft_strncmp(part, arr[1], ft_strlen(part)))
+		++count;
+	if (!ft_strncmp(part, arr[2], ft_strlen(part)))
+		++count;
+	if (!ft_strncmp(part, arr[3], ft_strlen(part)))
+		++count;
+	if (!ft_strncmp(part, arr[4], ft_strlen(part)))
+		++count;
+	if (!ft_strncmp(part, arr[5], ft_strlen(part)))
+		++count;
+	if (!ft_strncmp(part, arr[6], ft_strlen(part)))
+		++count;
+	if (!ft_strncmp(part, arr[7], ft_strlen(part)))
+		++count;
+	return (count);
+}
+
 char		print_in_dir(char **env_path, char *path, char *part, char c)
 {
 	int			obj_len;
@@ -108,6 +141,8 @@ char		print_in_dir(char **env_path, char *path, char *part, char c)
 	if ((obj_len = !env_path ? dir_content_len(path, part, &tab_count) : \
 		bin_content_len(env_path, part, &tab_count, -1)) == -1)
 		return (0);
+	if (part)
+		tab_count += count_builtins(part);
 	if (tab_count > 99 && !get_shell()->tab_request)
 	{
 		display_possibilities(tab_count);
