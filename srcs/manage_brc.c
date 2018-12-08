@@ -48,7 +48,7 @@ static void	get_expr_start(t_list *lexems, t_list **new_lexems, \
 	while (lexems->prev)
 	{
 		token = (t_token*)lexems->prev->data;
-		if (is_glob_token(TYPE) || TYPE == EXPR)
+		if (is_glob_token(TYPE))
 			ft_node_push_front(new_lexems, new_token(NULL, TYPE, VAL, BLK));
 		else
 			break ;
@@ -56,17 +56,16 @@ static void	get_expr_start(t_list *lexems, t_list **new_lexems, \
 	}
 }
 
-static char	create_expr_from_brc(t_list *lexems, t_token *token,
-				t_list **nw_lexems)
+static void	create_expr_from_brc(t_list *lexems, t_token *token,
+				t_list **nw_lexems, t_list **nws_lexems)
 {
 	t_list	*tmp;
 	char	brc;
 
 	brc = 0;
-	if (TYPE != RBRC)
-		get_expr_start(lexems, nw_lexems, LBRC);
+	get_expr_start(lexems, nw_lexems, LBRC);
 	tmp = lexems;
-	while (tmp && (TYPE != RBRC || brc != -1) && TYPE != END_EXPR)
+	while (tmp && (TYPE != RBRC || (brc != -1 && tmp != lexems)))
 	{
 		tmp = tmp->next;
 		token = (t_token*)tmp->data;
@@ -75,24 +74,42 @@ static char	create_expr_from_brc(t_list *lexems, t_token *token,
 		else if (TYPE == RBRC)
 			--brc;
 	}
-	if (tmp->next && TYPE != END_EXPR)
+	if (tmp->next)
 		get_rest_expr(&tmp, nw_lexems);
 	ft_node_push_back(nw_lexems, new_token(NULL, END_EXPR, "", 0));
-	ft_add_list(tmp, *nw_lexems);
 	token = (t_token*)lexems->data;
-	if (TYPE == RBRC)
-		return (0);
+	if (*nws_lexems)
+		ft_add_list(ft_go_end_list(*nws_lexems), *nw_lexems);
+	else
+		*nws_lexems = *nw_lexems;
 	*nw_lexems = NULL;
-	return (1);
+}
+
+static void add_news_expr(t_list *lexems, t_list *begin_news_expr)
+{
+	t_list	*end_lexems;
+	t_token	*token;
+
+	end_lexems = lexems;
+	while (end_lexems)
+	{
+		token = (t_token*)end_lexems->data;
+		if (TYPE == END_EXPR)
+			break;
+		end_lexems = end_lexems->next;
+	}
+	ft_add_list(end_lexems, begin_news_expr);
 }
 
 void		manage_brc(t_list *lexems)
 {
 	t_token	*token;
 	t_list	*new_lexems;
+	t_list	*news_lexems;
 	char	brc;
 
 	new_lexems = NULL;
+	news_lexems = NULL;
 	brc = 0;
 	while (lexems)
 	{
@@ -105,11 +122,59 @@ void		manage_brc(t_list *lexems)
 			break ;
 		if ((TYPE == COM && !brc) || (TYPE == RBRC && brc == -1))
 		{
-			if (!(create_expr_from_brc(lexems, token, &new_lexems)))
-				break ;
+			create_expr_from_brc(lexems, token, &new_lexems, &news_lexems);
+			if (TYPE == RBRC)
+			{
+				add_news_expr(lexems, news_lexems);
+				return ;
+			}
 		}
 		else
 			ft_node_push_back(&new_lexems, new_token(NULL, TYPE, VAL, BLK));
+		lexems = lexems->next;
+	}
+}
+
+void		manage_range_brc(t_list *lexems)
+{
+	t_token	*token;
+	t_list	*new_lexems;
+	t_list	*news_lexems;
+	long	from;
+	long	to;
+
+	new_lexems = NULL;
+	news_lexems = NULL;
+	while (lexems)
+	{
+		token = (t_token*)lexems->data;
+		if (TYPE == END_EXPR)
+			break ;
+		if (TYPE == NUM_EXPR)
+		{
+			from = ft_atoi(VAL);
+			to = ft_atoi(((t_token*)(lexems->next->next->data))->value);
+			if (from <= to)
+			{
+				while (from <= to)
+				{
+					ft_node_push_back(&new_lexems, new_token(NULL, EXPR, ft_itoa(from), BLK));
+					create_expr_from_brc(lexems, token, &new_lexems, &news_lexems);
+					++from;
+				}
+			}
+			else
+			{
+				while (from >= to)
+				{
+					ft_node_push_back(&new_lexems, new_token(NULL, EXPR, ft_itoa(from), BLK));
+					create_expr_from_brc(lexems, token, &new_lexems, &news_lexems);
+					--from;
+				}
+			}
+			add_news_expr(lexems, news_lexems);
+			return ;
+		}
 		lexems = lexems->next;
 	}
 }

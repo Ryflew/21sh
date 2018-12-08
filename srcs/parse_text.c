@@ -39,6 +39,10 @@ static void	text_rules3(t_sh *sh, t_token **token)
 		eat(sh, EQUAL);
 	else if (sh->current_token->type == LPAR)
 		eat(sh, LPAR);
+	else if (sh->current_token->type == NUM_RANGE_EXPR)
+		eat(sh, NUM_RANGE_EXPR);
+	else if (sh->current_token->type == NUM_EXPR)
+		eat(sh, NUM_EXPR);
 	else
 		*token = NULL;
 }
@@ -84,6 +88,8 @@ t_token		*text_rules(t_sh *sh, char is_inside_bqt)
 		eat(sh, WORD);
 	else if (sh->current_token->type == NUM)
 		eat(sh, NUM);
+		else if (sh->current_token->type == NEG_NUM)
+		eat(sh, NEG_NUM);
 	else if (sh->current_token->type == TILD)
 		eat(sh, TILD);
 	else if (sh->current_token->type == END_EXPR)

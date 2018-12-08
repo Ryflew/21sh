@@ -26,7 +26,7 @@ static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 		{
 			sh->current_token = token;
 			sh->lexer->lexems = tmp;
-			while (tmp && ((t_token*)tmp->data)->type != EBQT)
+			while (tmp && ((t_token*)tmp->data)->type != EBQT && ((t_token*)tmp->data)->type != EBQT_INSIDE_ST_OP)
 				NEXT(tmp);
 			if (tmp)
 				end_bqt = tmp->next;
@@ -45,7 +45,8 @@ static void	lex_parse_heredoc2(t_list **begin_lexems, t_sh *sh, char **output, \
 	char	**cmds;
 	int		j;
 
-	cmds = get_cmds(begin_lexems, sh);
+	replace_tild_and_var_op(begin_lexems, sh);
+	cmds = create_cmds_with_tokens(*begin_lexems);
 	j = -1;
 	while (cmds[++j])
 	{

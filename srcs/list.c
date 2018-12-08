@@ -79,21 +79,24 @@ char	**list_to_tabstr(t_list *list)
 
 void	del_command_tree(t_tree *tree)
 {
-	if (tree->left)
-		del_command_tree(tree->left);
-	if (tree->right)
-		del_command_tree(tree->right);
-	if (tree->cmd_tokens)
-		ft_clear_list(&tree->cmd_tokens, (void*)&clear_lexems);
-	if (tree->cmds)
-		ft_strdelpp(&tree->cmds);
-	if (tree->aggregations)
-		ft_clear_list(&tree->aggregations, &free);
-	if (tree->tmp_env)
+	if (tree)
 	{
-		free(tree->tmp_env);
-		tree->tmp_env = NULL;
+		if (tree->left)
+			del_command_tree(tree->left);
+		if (tree->right)
+			del_command_tree(tree->right);
+		if (tree->cmd_tokens)
+			ft_clear_list(&tree->cmd_tokens, (void*)&clear_lexems);
+		if (tree->cmds)
+			ft_strdelpp(&tree->cmds);
+		if (tree->aggregations)
+			ft_clear_list(&tree->aggregations, &free);
+		if (tree->tmp_env)
+		{
+			free(tree->tmp_env);
+			tree->tmp_env = NULL;
+		}
+		free(tree);
+		tree = NULL;
 	}
-	free(tree);
-	tree = NULL;
 }

@@ -21,10 +21,7 @@ char	is_string_op(char c)
 
 char	is_operator(char c, char c2)
 {
-	if (c == '>' || c == '<' || (c == '&' && c2 == '&') || c == '|' || \
-		c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || \
-		c == '}' || c == ';' || c == '*' || c == '?' || c == '`' || \
-		c == '$' || c == '=' || c == ',')
+	if (c == '>' || c == '<' || (c == '&' && c2 == '&') || c == '|' || c == ';' || c == '?')
 		return (1);
 	return (0);
 }
@@ -34,7 +31,8 @@ char	is_glob_token(enum e_token type)
 	if (type == S_WILDCARD || type == Q_WILDCARD || type == E_WILDCARD \
 		|| type == LBKT || type == RBKT || type == LBRC || type == RBRC \
 		|| type == BKT_EXPR || type == START_RANGE_EXPR || type == DASH \
-		|| type == END_RANGE_EXPR)
+		|| type == END_RANGE_EXPR || type == EXPR || type == NUM_EXPR \
+		|| type == NUM_RANGE_EXPR || type == COM)
 		return (1);
 	return (0);
 }

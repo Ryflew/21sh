@@ -55,11 +55,11 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, \
 	while (((token = text_rules(sh, is_inside_bqt)) && token != (void*)-1) \
 	|| (token != (void*)-1 && (fd = aggregation_rules(sh)) && fd != (void*)-1))
 	{
-		fd ? ft_node_push_back(aggregations, fd) : NULL;
+		(fd && !*aggregations) ? ft_node_push_back(aggregations, fd) : NULL;
 		if (!(fd = NULL) && token)
 		{
 			TYPE == LPAR ? ++is_inside_bqt : 1;
-			(TYPE == EBQT || TYPE == RPAR) ? --is_inside_bqt : 1;
+			(TYPE == EBQT || TYPE == EBQT_INSIDE_ST_OP || TYPE == RPAR) ? --is_inside_bqt : 1;
 			if (TYPE != NONE)
 				ft_node_push_back(cmd_tokens, new_token(NULL, TYPE, VAL, BLK));
 			else

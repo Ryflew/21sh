@@ -18,9 +18,9 @@ static void	concat_var(t_list **lexems, t_token *token, t_token *last_token,
 	char	*to_free;
 	t_list	*last_lexems;
 
-	if (check_last && last_token->type != WORD && last_token->type != NUM)
+	if (check_last && last_token->type != WORD && last_token->type != NUM && last_token->type != NEG_NUM)
 		return ;
-	else if (!check_last && TYPE != WORD && TYPE != NUM)
+	else if (!check_last && TYPE != WORD && TYPE != NUM && TYPE != NEG_NUM)
 		return ;
 	to_free = last_token->value;
 	last_token->value = ft_strjoin(to_free, VAL);
@@ -88,6 +88,13 @@ void		replace_tild(t_token *token, t_env *env)
 	else if (TYPE == TILD_EXPR)
 	{
 		TYPE = EXPR;
+		to_free = VAL;
+		VAL = ft_strjoin(find_env(env, "HOME"), VAL + 1);
+		free(to_free);
+	}
+	else if (TYPE == TILD_VAR_WORD)
+	{
+		TYPE = VAR_WORD;
 		to_free = VAL;
 		VAL = ft_strjoin(find_env(env, "HOME"), VAL + 1);
 		free(to_free);

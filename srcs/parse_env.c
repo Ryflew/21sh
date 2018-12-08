@@ -87,7 +87,7 @@ char			**parse_env_cmds(t_sh *sh)
 	if (tmp->next)
 		token = tmp->next->data;
 	if (!sh->current_token || ft_strcmp(sh->current_token->value, "env")
-		|| !tmp->next || (TYPE != WORD && TYPE != NUM && TYPE != TILD && \
+		|| !tmp->next || (TYPE != WORD && TYPE != NUM && TYPE != NEG_NUM && TYPE != TILD && \
 		TYPE != VAR_WORD))
 		return (NULL);
 	tmp = tmp->next;

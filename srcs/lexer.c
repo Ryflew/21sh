@@ -20,8 +20,10 @@ static void		init_lexer(t_lexer *lexer, char *line, int is_her)
 	lexer->bkt = 0;
 	lexer->bqt = 0;
 	lexer->par = 0;
+	lexer->range_brc = 0;
 	lexer->blank = 0;
 	lexer->red = 0;
+	lexer->st_ops = NULL;
 	lexer->her = is_her;
 }
 
@@ -35,7 +37,11 @@ static t_token	*is_end_expr(t_lexer *lexer, t_token *l_tk)
 	if (isnt_here_and_bqt(lexer) && l_tk && (is_glob_token(l_tk->type)
 	|| l_tk->type == EXPR || l_tk->type == TILD_EXPR || l_tk->type == BKT_EXPR
 	|| l_tk->type == COM))
+	{
+		lexer->brc = 0;
+		lexer->bkt = 0;
 		return (new_token(lexer, END_EXPR, "", lexer->blank));
+	}
 	else if (l_tk && l_tk->type == ASCII_WORD)
 		l_tk->type = WORD;
 	return (NULL);
@@ -76,4 +82,10 @@ void			get_lexems(t_sh *sh, char *line, int is_her)
 	token = NULL;
 	while ((token = get_next_token(sh->lexer, token)))
 		ft_node_push_back(&(sh->lexer->lexems), token);
+	t_list	*tmp = sh->lexer->lexems;
+	while (tmp)
+	{
+		token = (t_token*)tmp->data;
+		tmp = tmp->next;
+	}
 }

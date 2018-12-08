@@ -30,7 +30,7 @@ static char	exec_cmds(t_tree *node, t_env **env, t_sh *shell)
 	return (ret);
 }
 
-static char	**create_cmds_with_tokens(t_list *lexems)
+char		**create_cmds_with_tokens(t_list *lexems)
 {
 	t_token	*token;
 	char	**cmds;
@@ -52,7 +52,7 @@ static char	**create_cmds_with_tokens(t_list *lexems)
 	return (cmds);
 }
 
-char		**get_cmds(t_list **cmd_tokens, t_sh *sh)
+char	replace_tild_and_var_op(t_list **cmd_tokens, t_sh *sh)
 {
 	t_list	*tmp;
 	t_token	*token;
@@ -63,7 +63,7 @@ char		**get_cmds(t_list **cmd_tokens, t_sh *sh)
 		token = (t_token*)tmp->data;
 		if (TYPE == VAR_OP)
 			manage_var_op(sh, &tmp, cmd_tokens, token);
-		else if (TYPE == TILD || TYPE == TILD_VAR_WORD)
+		else if (TYPE == TILD || TYPE == TILD_VAR_WORD || TYPE == TILD_EXPR)
 			replace_tild(token, sh->env);
 		else
 			NEXT(tmp);
@@ -75,7 +75,7 @@ char		**get_cmds(t_list **cmd_tokens, t_sh *sh)
 			return (0);
 		concat_unused_add_var(*cmd_tokens);
 	}
-	return (create_cmds_with_tokens(*cmd_tokens));
+	return (1);
 }
 
 static char	replace_par_subshell(t_sh *sh, t_list **lexems, char is_cmd)
@@ -106,10 +106,12 @@ static char	replace_par_subshell(t_sh *sh, t_list **lexems, char is_cmd)
 
 char		manage_cmds(t_tree *node, t_sh *sh, char is_cmd)
 {
-	replace_par_subshell(sh, &node->cmd_tokens, is_cmd);
 	if (node->tmp_env)
 		env_command(node->tmp_env, sh->env);
-	if (!(node->cmds = get_cmds(&node->cmd_tokens, sh)))
+	if (!replace_tild_and_var_op(&node->cmd_tokens, sh))
+		return (0);
+	replace_par_subshell(sh, &node->cmd_tokens, is_cmd);	
+	if (!(node->cmds = create_cmds_with_tokens(node->cmd_tokens)))
 		return (0);
 	if (!is_cmd)
 		return (1);

@@ -44,7 +44,7 @@ static t_tree	*cmd_with_op_rules(t_sh *sh)
 			left = (void*)-1;
 		return (left);
 	}
-	while ((left || !(basic_red = check_basic_red(sh))) && left != (void*)-1)
+	while ((left || (basic_red = check_basic_red(sh))) && left != (void*)-1)
 	{
 		if ((tmp = redirection_rules(sh, left)) && tmp != (void*)-1)
 			left = tmp;

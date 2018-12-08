@@ -12,26 +12,25 @@
 
 #include "tosh.h"
 
-static char	isnt_s_wildcard(t_lexer *lexer, char c)
+static char	is_s_wildcard(char c)
 {
-	return (c == '*' && lexer->bkt) ? 1 : 0;
+	return (c == '*') ? 1 : 0;
 }
 
-static char	isnt_q_wildcard(t_lexer *lexer, char c)
+static char	is_q_wildcard(char c)
 {
-	return (c == '?' && lexer->bkt) ? 1 : 0;
+	return (c == '?') ? 1 : 0;
 }
 
-static char	isnt_comma(t_lexer *lexer, char c)
+static char	is_comma(t_lexer *lexer, char c)
 {
-	return (c == ',' && (!lexer->brc || lexer->bkt)) ? 1 : 0;
+	return (c == ',' && lexer->brc) ? 1 : 0;
 }
 
-char		isnt_glob_char(t_lexer *lx, char c, int i)
+char		is_glob_char(t_lexer *lx, char c, int i)
 {
-	if (isnt_lbrc(lx, c) || isnt_rbrc(lx, c) || isnt_comma(lx, c) || \
-		isnt_lbkt(lx, c) || isnt_rbkt(lx, c, i) || isnt_s_wildcard(lx, c) || \
-		isnt_q_wildcard(lx, c))
+	if (is_lbrc(lx, i) || is_rbrc(lx, (lx->line)[i]) || is_lbkt(lx, i) || \
+	is_comma(lx, c) || is_s_wildcard(c) || is_q_wildcard(c))
 		return (1);
 	return (0);
 }

@@ -16,17 +16,19 @@ void	merge_expr(t_list *lexems)
 {
 	t_token	*token;
 	t_token	*next_token;
+	t_token	*prev_token;
 	char	*to_free;
 
 	while (lexems && lexems->next)
 	{
 		token = (t_token*)lexems->data;
 		next_token = (t_token*)lexems->next->data;
-		if (TYPE == EXPR && (!lexems->prev || (next_token->type == END_EXPR && \
-			!is_glob_token(((t_token*)lexems->prev->data)->type))))
+		if (lexems->prev)
+			prev_token = (t_token*)lexems->prev->data;
+		if (TYPE == EXPR && (!lexems->prev || !is_glob_token(prev_token->type) \
+		|| !prev_token->blank) && next_token->type == END_EXPR)
 			TYPE = WORD;
-		if ((TYPE == EXPR || TYPE == BKT_EXPR) && (next_token->type == EXPR
-			|| next_token->type == BKT_EXPR))
+		if (TYPE == EXPR && next_token->type == EXPR)
 		{
 			to_free = VAL;
 			VAL = ft_strjoin(VAL, next_token->value);

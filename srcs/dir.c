@@ -58,7 +58,19 @@ int		is_dir(char *dir_name, t_token *token)
 void	clear_old_expr(t_list **lexems, t_list **first_lexems, char match)
 {
 	t_token *token;
+	t_list	*save;
 
+	while (*lexems)
+	{
+		token = (t_token*)(*lexems)->data;
+		if (!is_glob_token(TYPE))
+			break ;
+		if (match)
+			ft_pop_node(lexems, (void*)&clear_lexems);
+		save = *lexems;
+		*lexems = (*lexems)->prev;
+	}
+	*lexems = save;
 	while (*lexems)
 	{
 		token = (t_token*)(*lexems)->data;

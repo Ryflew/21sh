@@ -72,12 +72,14 @@ enum				e_token
 	OR,
 	SCL,
 	NUM,
+	NEG_NUM,
 	WORD,
 	ASCII_WORD,
 	FD,
 	CLOSE_FD,
 	BQT,
 	EBQT,
+	EBQT_INSIDE_ST_OP,
 	LPAR,
 	RPAR,
 	S_WILDCARD,
@@ -95,6 +97,8 @@ enum				e_token
 	DASH,
 	END_RANGE_EXPR,
 	END_EXPR,
+	NUM_EXPR,
+	NUM_RANGE_EXPR,
 	HIST,
 	VAR_OP,
 	VAR_WORD,
@@ -131,7 +135,6 @@ typedef	struct		s_lexer
 {
 	char			*line;
 	int				red;
-	char			string_operator;
 	t_list			*lexems;
 	char			bs;
 	char			blank;
@@ -139,7 +142,9 @@ typedef	struct		s_lexer
 	char			bkt;
 	char			bqt;
 	char			par;
+	char			range_brc;
 	char			her;
+	t_list			*st_ops;
 }					t_lexer;
 
 typedef	struct		s_token
@@ -438,25 +443,27 @@ char				is_regular_char_in_here(t_lexer *lexer, char c);
 char				is_start_range_expr(t_lexer *lexer, t_token *last_token, \
 					char *line, int i);
 
-char				isnt_rbkt(t_lexer *lexer, char c, int i);
-char				isnt_lbkt(t_lexer *lexer, char c);
-char				isnt_rbrc(t_lexer *lexer, char c);
-char				isnt_lbrc(t_lexer *lexer, char c);
+char				is_rbkt(t_lexer *lexer, char c, int i, t_token *l_tk);
+char				is_lbkt(t_lexer *lexer, int i);
+char				is_rbrc(t_lexer *lexer, char c);
+char				is_lbrc(t_lexer *lexer, int i);
 char				is_dot_or_slash(char c, t_glob glob);
-char				isnt_glob_char(t_lexer *lx, char c, int i);
-char				isnt_equal(t_lexer *lexer, char c, int i);
+char				is_glob_char(t_lexer *lx, char c, int i);
+char				is_equal(t_lexer *lexer, char c, int i);
 char				is_bs_or_bqt_or_par(t_lexer *lexer, char bs, char c);
 char				isnt_var_val(t_token *last_token, char c);
 char				is_regular_char_in_st_op(char st_op, char c);
-char				isnt_var_op(char c1, char c2);
+char				is_var_op(char c1, char c2);
+char				is_num_range_expr(t_lexer *lx, int i);
 
 void				manage_var_op(t_sh *sh, t_list **tmp, t_list **cmd_tokens,\
 								t_token *token);
 void				replace_tild(t_token *token, t_env *env);
 
 char				manage_cmds(t_tree *node, t_sh *sh, char is_cmd);
-char				**get_cmds(t_list **cmds_token, t_sh *sh);
 char				replace_bqt_subshell(t_sh *sh);
+char				replace_tild_and_var_op(t_list **cmds_token, t_sh *sh);
+char				**create_cmds_with_tokens(t_list *lexems);
 
 void				manage_child_fd(t_sh *shell, t_tree *node, int *pipe,
 					int *heredoc_pipe);
@@ -471,6 +478,7 @@ int					is_dir(char *dir_name, t_token *token);
 void				clear_old_expr(t_list **lexems, t_list **first_lexems,
 					char match);
 void				manage_brc(t_list *lexems);
+void				manage_range_brc(t_list *lexems);
 void				merge_expr_to_word(t_list *lexems);
 void				merge_expr(t_list *lexems);
 

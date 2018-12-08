@@ -12,24 +12,98 @@
 
 #include "tosh.h"
 
-char	isnt_rbkt(t_lexer *lexer, char c, int i)
+char	is_rbkt(t_lexer *lexer, char c, int i, t_token *l_tk)
 {
-	return (c == ']' && (!lexer->bkt || !i)) ? 1 : 0;
+	return (c == ']' && (lexer->bkt && i && l_tk && (l_tk->type == LBKT || l_tk->type == E_WILDCARD))) ? 1 : 0;
 }
 
-char	isnt_lbkt(t_lexer *lexer, char c)
+char	is_lbkt(t_lexer *lexer, int i)
 {
-	return (c == '[' && lexer->bkt) ? 1 : 0;
+	char	bkt;
+	char	save;
+
+	if ((lexer->line)[i] == '[' && lexer->bkt)
+		return (1);
+	else if ((lexer->line)[i] != '[')
+		return (0);
+	if ((lexer->line)[i + 1] == '^' || (lexer->line)[i + 1] == '!')
+		++i;
+	bkt = 1;
+	save = i;
+	while ((lexer->line)[++i])
+		if ((lexer->line)[i] == ']' && save != i - 1)
+		{
+			bkt = 0;
+			break;
+		}
+	if (bkt)
+		return (0);
+	return (1);
 }
 
-char	isnt_rbrc(t_lexer *lexer, char c)
+char	is_rbrc(t_lexer *lexer, char c)
 {
-	return (c == '}' && !lexer->brc) ? 1 : 0;
+	return (c == '}' && lexer->brc) ? 1 : 0;
 }
 
-char	isnt_lbrc(t_lexer *lexer, char c)
+char	is_lbrc(t_lexer *lexer, int i)
 {
-	return (c == '{' && lexer->bkt) ? 1 : 0;
+	char	brc;
+	char	bs;
+	char	com;
+	char 	st_op;
+	int		save;
+	t_list	*st_ops;
+
+	if ((lexer->line)[i] == '{' && lexer->bkt)
+		return (0);
+	else if ((lexer->line)[i] != '{')
+		return (0);
+	brc = 1;
+	bs = 0;
+	com = 0;
+	st_op = 0;
+	st_ops = NULL;
+	while ((lexer->line)[++i])
+	{
+		if (bs)
+			bs = 0;
+		else if (st_op && ((lexer->line)[i] == st_op || (st_op == '[' && \
+		(lexer->line)[i] == ']' && save != i - 1) || (st_op == '(' && (lexer->line)[i] == ')')))
+		{
+			ft_pop_node(&st_ops, NULL);
+			st_op = (st_ops) ? *((char*)st_ops->data) : 0;
+		}
+		else if (st_op && ((st_op != '`' && st_op != '(') || ((lexer->line)[i] != '\'' && \
+		(lexer->line)[i] != '"' && (lexer->line)[i] != '\'' && \
+		(lexer->line)[i] != '\\')) && (st_op != '"' || \
+		((lexer->line)[i] != '\\' && (lexer->line)[i] != '`')))
+			continue;
+		else if ((lexer->line)[i] == '\\' && !bs)
+			bs = 1;
+		else if (is_string_op((lexer->line)[i]) || (lexer->line)[i] == '(' || (lexer->line)[i] == '[' || (lexer->line)[i] == '`')
+		{
+			if ((lexer->line)[i] == '[')
+				save = i;
+			ft_node_push_front(&st_ops, &(lexer->line)[i]);
+			st_op = (lexer->line)[i];
+		}
+		else if ((lexer->line)[i] == '{')
+			++brc;
+		else if ((lexer->line)[i] == '}')
+		{
+			--brc;
+			if (!brc)
+				break;
+		}
+		else if ((lexer->line)[i] == ',' && brc == 1)
+			++com;
+		else if (ft_isblank((lexer->line)[i]))
+			break;
+	}
+	if (!brc && com)
+		return (1);
+	return (0);
 }
 
 char	is_dot_or_slash(char c, t_glob glob)
