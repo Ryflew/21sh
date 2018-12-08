@@ -55,7 +55,7 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, \
 	while (((token = text_rules(sh, is_inside_bqt)) && token != (void*)-1) \
 	|| (token != (void*)-1 && (fd = aggregation_rules(sh)) && fd != (void*)-1))
 	{
-		(fd && !*aggregations) ? ft_node_push_back(aggregations, fd) : NULL;
+		(fd && !*aggregations) ? ft_node_push_back(aggregations, fd) : free(fd);
 		if (!(fd = NULL) && token)
 		{
 			TYPE == LPAR ? ++is_inside_bqt : 1;
