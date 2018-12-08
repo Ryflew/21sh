@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 18:29:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/11/15 16:21:03 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/06 17:22:42 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	init_shell(t_sh *shell, t_lexer *lexer)
 	shell->read_delimiter = 0;
 	shell->read_nchar = 0;
 	shell->tab_request = 0;
+	shell->lst_pid = NULL;
 }
 
 static void	get_current_path(t_env *env)
@@ -77,6 +78,7 @@ void		sig_hand(int sig)
 		g_sh.tab_request = 0;
 		move_to(g_sh.pos.last.x, g_sh.pos.last.y);
 		ft_putstr("\n");
+		do_termcap("ce");
 		print_prompt(BASIC_SHELL, NULL);
 	}
 }

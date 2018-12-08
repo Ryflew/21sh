@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:25:08 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/07/01 22:22:28 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/06 17:35:20 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int			father(t_sh *shell, int *fd, int *heredoc_pipe, t_tree *node)
 {
 	int ret;
 
+	add_pid(&shell->lst_pid, g_father);
 	close(fd[1]);
 	if (node && node->TYPE == DCHEVB)
 		close(heredoc_pipe[1]);

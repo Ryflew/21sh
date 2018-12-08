@@ -115,7 +115,8 @@ FILES = add_char.c \
 				add_subshell_tokens.c \
 				is_regular_char.c \
 				isnt_brc_or_bkt.c \
-				isnt_glob_char.c
+				isnt_glob_char.c \
+				lst_pids.c
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN))
 
@@ -129,7 +130,7 @@ RM = /bin/rm -rf
 all: mkdirobj $(DEP_OBJ)
 		@ make -C $(DIR_LIB)
 		@ /bin/echo -n "Archiving object in $(NAME):"
-		@ $(CC) -o $(NAME) $(OBJS) $(MFLAGS) -L $(DIR_LIB) #-fsanitize=address
+		@ $(CC) -o $(NAME) $(OBJS) $(MFLAGS) -L $(DIR_LIB) -fsanitize=address
 		@ echo " \033[32mAll done!\033[0m"
 
 $(DIR_OBJ)%.o: $(SRC_DIR)%.c

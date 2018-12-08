@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:48 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/11/13 17:46:32 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/03 13:26:47 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	history_prompt(t_sh *shell, int nb, char is_minus)
 	}
 	else
 	{
-		if (i - nb >= 0 && nb < i)
+		if (i - nb >= 0 && nb <= i)
 			shell->toaddstr = ft_strdup(shell->history[i - nb]);
 		else
 			errexit("history", "Wrong number.");

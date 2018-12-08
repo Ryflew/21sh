@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 20:56:37 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/27 18:45:05 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/03 17:09:48 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void		save_history(t_sh *shell)
 	if (!shell->history || !(home = find_env(shell->env, "HOME")))
 		return ;
 	home = ft_strjoin(home, "/.42sh_history");
-	if ((fd = open(home, O_WRONLY | O_CREAT, S_IRWXU)) != -1)
+	if ((fd = open(home, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU)) != -1)
 	{
 		i = -1;
 		while (shell->history[++i])
