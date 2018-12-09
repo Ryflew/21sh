@@ -3,46 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   subshell_rules.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:09 by bdurst            #+#    #+#             */
-/*   Updated: 2018/12/09 18:23:24 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 20:57:02 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tosh.h"
-
-void		delete_first_subshell_lexems(t_list **first_lexems, t_list **lexems)
-{
-	if (*first_lexems == *lexems)
-		*first_lexems = (*lexems)->next;
-	ft_pop_node(lexems, (void*)&clear_lexems);
-}
-
-void		delete_subshell_lexems(t_list **first_lexems, t_list **lexems,
-								enum e_token open_type, enum e_token close_type)
-{
-	t_token	*token;
-	char	open;
-
-	open = 0;
-	while (*lexems)
-	{
-		token = (t_token*)(*lexems)->data;
-		if (TYPE == open_type)
-			++open;
-		if (TYPE == close_type)
-		{
-			if (!open)
-			{
-				delete_first_subshell_lexems(first_lexems, lexems);
-				break ;
-			}
-			--open;
-		}
-		delete_first_subshell_lexems(first_lexems, lexems);
-	}
-}
 
 static void	concat_prev_bqt(t_list **lexems, t_token *prev_token)
 {
@@ -82,6 +50,15 @@ static void	concat_next_bqt(t_list **lexems, t_list *next_lexems)
 	}
 }
 
+static void set_type_and_next_lexems(t_list **next_lexems, enum e_token *end_type)
+{
+	if (*next_lexems)
+	{
+		*end_type = ((t_token*)(*next_lexems)->data)->type;
+		*next_lexems = (*next_lexems)->next;
+	}
+}
+
 void		bqt_rule(t_sh *sh, t_list **lexems,
 					char is_cmd)
 {
@@ -98,11 +75,7 @@ void		bqt_rule(t_sh *sh, t_list **lexems,
 	while (next_lexems && ((t_token*)next_lexems->data)->type != EBQT && \
 		((t_token*)next_lexems->data)->type != EBQT_INSIDE_ST_OP)
 		NEXT(next_lexems);
-	if (next_lexems)
-	{
-		end_type = ((t_token*)next_lexems->data)->type;
-		next_lexems = next_lexems->next;
-	}
+	set_type_and_next_lexems(&next_lexems, &end_type);
 	delete_first_subshell_lexems(&sh->lexer->lexems, lexems);
 	if (*lexems)
 	{
