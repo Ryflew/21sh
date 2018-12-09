@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/08 21:19:16 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 16:14:01 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,34 +70,34 @@ char		check_special_operator(char *str, int i, int *j, char *op)
 	return (0);
 }
 
-char		*check_quot_brackets(char *str, enum e_state *state)
-{
-	int		i;
-	int		j;
-	char	op[ft_strlen(str) + 1];
+// char		*check_quot_brackets(char *str, enum e_state *state)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	op[ft_strlen(str) + 1];
 
-	j = -1;
-	i = -1;
-	while (str[++i])
-	{
-		if ((str[i] == '"' || str[i] == '\'' || str[i] == '`' || \
-			(str[i] == '|' && str[i - 1] != '|' && only_space(str + i + 1))) &&
-			check_quot(str, op, &i, &j))
-			break ;
-		else
-		{
-			if (check_quot_brackets2(str, op, i, &j) && \
-				(*state = BRACKET_ERROR) == BRACKET_ERROR)
-				return (NULL);
-		}
-	}
-	if (!check_special_operator(str, i, &j, op) && j == -1)
-		*state = COMMAND_RUN;
-	else
-		*state = ADVANCE_SHELL;
-	op[++j] = '\0';
-	return (ft_strdup(op));
-}
+// 	j = -1;
+// 	i = -1;
+// 	while (str[++i])
+// 	{
+// 		if ((str[i] == '"' || str[i] == '\'' || str[i] == '`' || \
+// 			(str[i] == '|' && str[i - 1] != '|' && only_space(str + i + 1))) &&
+// 			check_quot(str, op, &i, &j))
+// 			break ;
+// 		else
+// 		{
+// 			if (check_quot_brackets2(str, op, i, &j) && \
+// 				(*state = BRACKET_ERROR) == BRACKET_ERROR)
+// 				return (NULL);
+// 		}
+// 	}
+// 	if (!check_special_operator(str, i, &j, op) && j == -1)
+// 		*state = COMMAND_RUN;
+// 	else
+// 		*state = ADVANCE_SHELL;
+// 	op[++j] = '\0';
+// 	return (ft_strdup(op));
+// }
 
 
 
@@ -110,49 +110,50 @@ char		*check_quot_brackets(char *str, enum e_state *state)
 // echo "test
 // "`[
 
+static char	check_quot_brackets3(char *str, char *op, int i, int *j)
+{
+	char	c;
 
-// char		*check_quot_brackets(char *str, enum e_state *state)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	op[ft_strlen(str) + 1];
-// 	char	c;
+	c = *j > 0 ? op[*j - 1] : 0;
+	if ((!c || c == '(' || (c == '"' && str[i] == '`')) && \
+		(str[i] == '"' || str[i] == '\'' || str[i] == '`'|| str[i] == '('))
+	{
+		op[(*j)++] = str[i];
+		return (1);
+	}
+	else if ((c == '`' && str[i] == '`') || \
+			(c == '"' && str[i] == '"') || \
+			(c == '\'' && str[i] == '\'') || \
+			(c == '(' && str[i] == ')'))
+	{
+		op[--(*j)] = 0;
+	}
 
-// 	j = -1;
-// 	i = -1;
-// 	c = 0;
-// 	while (i < (int)ft_strlen(str) && str[++i])
-// 	{
-// 		if ((!c || c == '(' || (c == '"' && str[i] == '`')) && (str[i] == '"' || str[i] == '\'' || str[i] == '`'|| str[i] == '('))
-// 		{
-// 			c = str[i];
-// 			op[++j] = str[i];
-// 			ft_putstr("ok\n");
-// 			continue ;
-// 		}
-// 		else if ((c == '`' && str[i] == '`') || \
-// 				(c == '"' && str[i] == '"') || \
-// 				(c == '\'' && str[i] == '\'') || \
-// 				(c == '(' && str[i] == ')'))
-// 		{
-// 			op[j--] = 0;
-// 			c = (j > -1) ? op[j] : 0;
-// 		}
-// 		else if (str[i] == ')' && c != str[i])
-// 		{
-// 			*state = BRACKET_ERROR;
-// 			return (NULL);
-// 		}
-// 		if (c != '"' && str[i] == '\\')
-// 		{
-// 			++i;
-// 			continue ;
-// 		}
-// 	}
-// 	if (op[0] == 0)
-// 		*state = BASIC_SHELL;
-// 	else
-// 		*state = ADVANCE_SHELL;
-// 	op[++j] = '\0';
-// 	return (ft_strdup(op));
-// }
+	return (0);
+}
+
+char		*check_quot_brackets(char *str, enum e_state *state)
+{
+	int		i;
+	int		j;
+	char	op[ft_strlen(str) + 1];
+
+	j = 0;
+	i = -1;
+	op[j] = 0;
+	while (i < (int)ft_strlen(str) && str[++i])
+	{
+		char c = str[i];
+		(void)c;
+		if (check_quot_brackets3(str, op, i, &j))
+			continue ;
+		if (str[i] == '\\' && ++i)
+			continue ;
+	}
+	if (!check_special_operator(str, i, &j, op) && !j)
+		*state = COMMAND_RUN;
+	else
+		*state = ADVANCE_SHELL;
+	op[j] = '\0';
+	return (ft_strdup(op));
+}

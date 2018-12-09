@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:58:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/08 21:17:31 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 15:23:34 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	shell_loop3(char **command, char **last, enum e_state *state, \
 		else
 		{
 			tmp = *last;
-			if (*op[ft_strlen(*op) - 1] == '\\')
+			if (*(*op + ft_strlen(*op) - 1) == '\\')
 				*last = ft_strjoin(*last, *command);
 			else
 				*last = ft_strstrjoin(*last, *command, "\n");
