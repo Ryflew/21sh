@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:09 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 21:15:51 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 18:23:24 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void	concat_next_bqt(t_list **lexems, t_list *next_lexems)
 void		bqt_rule(t_sh *sh, t_list **lexems,
 					char is_cmd)
 {
-	t_token 		*prev_token;
+	t_token			*prev_token;
 	t_list			*next_lexems;
 	t_list			*prev_lexems;
 	char			blank;
@@ -95,7 +95,8 @@ void		bqt_rule(t_sh *sh, t_list **lexems,
 	prev_token = (prev_lexems) ? (t_token*)prev_lexems->data : NULL;
 	blank = ((t_token*)(*lexems)->data)->blank;
 	next_lexems = (*lexems)->next;
-	while (next_lexems && ((t_token*)next_lexems->data)->type != EBQT && ((t_token*)next_lexems->data)->type != EBQT_INSIDE_ST_OP)
+	while (next_lexems && ((t_token*)next_lexems->data)->type != EBQT && \
+		((t_token*)next_lexems->data)->type != EBQT_INSIDE_ST_OP)
 		NEXT(next_lexems);
 	if (next_lexems)
 	{
@@ -109,7 +110,8 @@ void		bqt_rule(t_sh *sh, t_list **lexems,
 		delete_subshell_lexems(&sh->lexer->lexems, lexems, BQT, end_type);
 		if (prev_token && *lexems != prev_lexems && !blank)
 			concat_prev_bqt(lexems, prev_token);
-		if (next_lexems && *lexems != next_lexems && !((t_token*)next_lexems->data)->blank)
+		if (next_lexems && *lexems != next_lexems && \
+			!((t_token*)next_lexems->data)->blank)
 			concat_next_bqt(lexems, next_lexems);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:38:43 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/01 16:23:04 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 18:21:40 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ static t_token	*get_tokens_cmd(t_sh *sh, t_list **aggregations, \
 		if (!(fd = NULL) && token)
 		{
 			TYPE == LPAR ? ++is_inside_bqt : 1;
-			(TYPE == EBQT || TYPE == EBQT_INSIDE_ST_OP || TYPE == RPAR) ? --is_inside_bqt : 1;
+			(TYPE == EBQT || TYPE == EBQT_INSIDE_ST_OP || TYPE == RPAR) ? \
+				--is_inside_bqt : 1;
 			if (TYPE != NONE)
 				ft_node_push_back(cmd_tokens, new_token(NULL, TYPE, VAL, BLK));
 			else

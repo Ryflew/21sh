@@ -103,6 +103,7 @@ FILES = add_char.c \
 				manage_wildcards.c \
 				replace_all_exprs.c \
 				manage_brc.c \
+				manage_brc2.c \
 				merge_expr.c \
 				shell_variable.c \
 				subshell.c \

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:24 by bdurst            #+#    #+#             */
-/*   Updated: 2018/11/15 14:54:29 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 18:22:06 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static void	concat_var(t_list **lexems, t_token *token, t_token *last_token,
 	char	*to_free;
 	t_list	*last_lexems;
 
-	if (check_last && last_token->type != WORD && last_token->type != NUM && last_token->type != NEG_NUM)
+	if (check_last && last_token->type != WORD && last_token->type != NUM && \
+		last_token->type != NEG_NUM)
 		return ;
 	else if (!check_last && TYPE != WORD && TYPE != NUM && TYPE != NEG_NUM)
 		return ;

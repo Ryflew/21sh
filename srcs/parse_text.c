@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_text.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst <bdurst@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:59 by bdurst            #+#    #+#             */
-/*   Updated: 2017/10/11 17:46:00 by bdurst           ###   ########.fr       */
+/*   Updated: 2018/12/09 18:20:30 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static void	text_rules3(t_sh *sh, t_token **token)
 		eat(sh, NUM_RANGE_EXPR);
 	else if (sh->current_token->type == NUM_EXPR)
 		eat(sh, NUM_EXPR);
+	else if (sh->current_token->type == END_RANGE_EXPR)
+		eat(sh, END_RANGE_EXPR);
 	else
 		*token = NULL;
 }
@@ -88,7 +90,7 @@ t_token		*text_rules(t_sh *sh, char is_inside_bqt)
 		eat(sh, WORD);
 	else if (sh->current_token->type == NUM)
 		eat(sh, NUM);
-		else if (sh->current_token->type == NEG_NUM)
+	else if (sh->current_token->type == NEG_NUM)
 		eat(sh, NEG_NUM);
 	else if (sh->current_token->type == TILD)
 		eat(sh, TILD);
@@ -98,8 +100,6 @@ t_token		*text_rules(t_sh *sh, char is_inside_bqt)
 		eat(sh, START_RANGE_EXPR);
 	else if (sh->current_token->type == DASH)
 		eat(sh, DASH);
-	else if (sh->current_token->type == END_RANGE_EXPR)
-		eat(sh, END_RANGE_EXPR);
 	else
 		text_rules2(sh, &token);
 	return (token);
