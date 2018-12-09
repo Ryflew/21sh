@@ -14,7 +14,8 @@
 
 char	is_rbkt(t_lexer *lexer, char c, int i, t_token *l_tk)
 {
-	return (c == ']' && (lexer->bkt && i && l_tk && (l_tk->type == LBKT || l_tk->type == E_WILDCARD))) ? 1 : 0;
+	return (c == ']' && (lexer->bkt && i && l_tk && (l_tk->type == LBKT || \
+	l_tk->type == E_WILDCARD))) ? 1 : 0;
 }
 
 char	is_lbkt(t_lexer *lexer, int i)
