@@ -6,7 +6,7 @@
 /*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 14:57:30 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/09 20:35:48 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/09 20:41:54 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	is_lbkt(t_lexer *lexer, int i)
 		if ((lexer->line)[i] == ']' && save != i - 1)
 		{
 			bkt = 0;
-			break;
+			break ;
 		}
 	if (bkt)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 20:36:39 by bdurst2812        #+#    #+#             */
-/*   Updated: 2018/12/09 20:36:41 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/09 20:41:40 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,22 @@
 
 static char	manage_st_op_or_bs(t_lexer *lx, int i, int *save, t_list *st_ops)
 {
-	char 	st_op;
+	char	st_op;
 
 	st_op = (st_ops) ? *((char*)st_ops->data) : 0;
 	if (st_op && ((lx->line)[i] == st_op || (st_op == '[' && \
-	(lx->line)[i] == ']' && *save != i - 1) || (st_op == '(' && (lx->line)[i] == ')')))
+	(lx->line)[i] == ']' && *save != i - 1) || (st_op == '(' && \
+	(lx->line)[i] == ')')))
 	{
 		ft_pop_node(&st_ops, NULL);
 		st_op = (st_ops) ? *((char*)st_ops->data) : 0;
 	}
-	else if (st_op && ((st_op != '`' && st_op != '(') || (lx->line)[i] != '\\') && (st_op != '"' || \
+	else if (st_op && ((st_op != '`' && st_op != '(') || (lx->line)[i] != '\\')\
+	&& (st_op != '"' || \
 	((lx->line)[i] != '\\' && (lx->line)[i] != '`')))
 		;
-	else if (is_string_op((lx->line)[i]) || (lx->line)[i] == '(' || is_lbkt(lx, i) || (lx->line)[i] == '`')
+	else if (is_string_op((lx->line)[i]) || (lx->line)[i] == '(' || \
+	is_lbkt(lx, i) || (lx->line)[i] == '`')
 	{
 		if ((lx->line)[i] == '[')
 			*save = i;
@@ -81,7 +84,7 @@ char	is_lbrc(t_lexer *lx, int i)
 		else if (is_brc_char(lx, i, &brc, &com))
 			;
 		else if (ft_isblank((lx->line)[i]))
-			break;
+			break ;
 		if (!brc)
 			break ;
 	}
