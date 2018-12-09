@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/09 16:34:42 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 20:28:04 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 char		check_quot_brackets2(char *str, char *op, int i, int *j)
 {
 	if (str[i] == '(')
-		op[++*j] = str[i];
-	else if (*j > -1 && (str[i] == ')' && op[*j] != '('))
+		op[(*j)++] = str[i];
+	else if (*j > 0 && (str[i] == ')' && op[*j - 1] != '('))
 		return (1);
-	else if (*j > -1 && ((str[i] == ')' && op[*j] == '(')))
-		op[(*j)--] = 0;
+	else if (*j > 0 && ((str[i] == ')' && op[*j -1 ] == '(')))
+		op[--(*j)] = 0;
 	return (0);
 }
 
@@ -48,22 +48,22 @@ char		check_quot(char *str, char *op, int *i, int *j)
 				return (0);
 		}
 	}
-	op[++*j] = c;
+	op[(*j)++] = c;
 	return (1);
 }
 
 char		check_special_operator(char *str, int i, int *j, char *op)
 {
-	if (*j == -1 && ((i >= 1 && str[i - 1] == '\\') ||
+	if (*j == 0 && ((i >= 1 && str[i - 1] == '\\') ||
 		(i >= 2 && ((str[i - 1] == '&' && str[i - 2] == '&') ||
 		(str[i - 1] == '|' && str[i - 2] == '|')))))
 	{
 		if (str[i - 1] == '&')
-			op[++*j] = '&';
+			op[(*j)++] = '&';
 		else if (str[i - 1] == '|')
-			op[++*j] = 'o';
+			op[(*j)++] = 'o';
 		else
-			op[++*j] = '\\';
+			op[(*j)++] = '\\';
 		return (1);
 	}
 	return (0);
