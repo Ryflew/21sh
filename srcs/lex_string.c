@@ -12,19 +12,6 @@
 
 #include "tosh.h"
 
-static void	if_its_word(char c, enum e_token *type, int i)
-{
-	if (!ft_isdigit(c))
-	{
-		if (!i && c == '-')
-			*type = NEG_NUM;
-		else if (!ft_isalnum(c))
-			*type = WORD;
-		else if (*type != WORD)
-			*type = ASCII_WORD;
-	}
-}
-
 char		is_num_range_expr(t_lexer *lx, int i)
 {
 	int	saveIndex;
@@ -50,63 +37,6 @@ char		is_num_range_expr(t_lexer *lx, int i)
 		}
 	}
 	return (0);
-}
-
-int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op, t_token *l_tk)
-{
-	char	bs;
-	int		i;
-
-	bs = 0;
-	*st_op = (lx->st_ops) ? *((char*)lx->st_ops->data) : 0;
-	i = 0;
-	while ((lx->line)[i])
-	{
-		if (bs)
-			bs = 0;
-		else if (*st_op && ((lx->line)[i] == *st_op || (*st_op == '[' && \
-		(lx->line)[i] == ']' && i) || (*st_op == '(' && (lx->line)[i] == ')')))
-		{
-			if (!is_string_op(*st_op))
-				break;
-			ft_pop_node(&lx->st_ops, NULL);
-			*st_op = (lx->st_ops) ? *((char*)lx->st_ops->data) : 0;
-		}
-		else if (*st_op && ((*st_op != '`' && *st_op != '(') || (lx->line)[i] != '\\') && (*st_op != '"' || \
-		((lx->line)[i] != '\\' && (lx->line)[i] != '`' && (lx->line)[i] != '$')))
-			;
-		else if ((lx->line)[i] == '\\' && !bs)
-			bs = 1;
-		else if (is_string_op((lx->line)[i]) || (lx->line)[i] == '(' || is_lbkt(lx, i) || (lx->line)[i] == '`')
-		{
-			if (!is_string_op((lx->line)[i]))
-				break;
-			ft_node_push_front(&lx->st_ops, &(lx->line)[i]);
-			*st_op = (lx->st_ops) ? *((char*)lx->st_ops->data) : 0;
-		}
-		else if (is_regular_char_in_here(lx, (lx->line)[i]))
-			;
-		else if (is_glob_char(lx, (lx->line)[i], i) || ((lx->line)[i] == '.' && lx->range_brc))
-			break;
-		else if (ft_isblank((lx->line)[i]))
-			break;
-		else if (is_operator((lx->line)[i], (lx->line)[i + 1]))
-			break;
-		else if (is_var_op((lx->line)[i], (lx->line)[i + 1]))
-			break;
-		else if (is_equal(lx, (lx->line)[i], i))
-			break;
-		else if (isnt_var_val(l_tk, (lx->line)[i]))
-			break;
-		else if (is_num_range_expr(lx, i))
-			break ;
-		if_its_word((lx->line)[i], type, i);
-		if (is_start_range_expr(lx, l_tk, lx->line, ++i))
-			return (i == 1) ? i : --i;
-		if (l_tk && l_tk->type == DASH && i == 1)
-			return (i);
-	}
-	return (i);
 }
 
 static void	find_type(t_lexer *lx, t_token *l_tk, char st_op, \

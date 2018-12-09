@@ -119,7 +119,9 @@ FILES = add_char.c \
 				isnt_glob_char.c \
 				lst_pids.c \
 				completion_builtin.c \
-				completion_builtin2.c
+				completion_builtin2.c \
+				compute_word_size.c \
+				is_lbrc.c
 
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN))

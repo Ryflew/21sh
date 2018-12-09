@@ -450,6 +450,9 @@ char				is_regular_char_in_here(t_lexer *lexer, char c);
 char				is_start_range_expr(t_lexer *lexer, t_token *last_token, \
 					char *line, int i);
 
+int					compute_word_size(t_lexer *lx, enum e_token *type, \
+					char *st_op, t_token *l_tk);
+
 char				is_rbkt(t_lexer *lexer, char c, int i, t_token *l_tk);
 char				is_lbkt(t_lexer *lexer, int i);
 char				is_rbrc(t_lexer *lexer, char c);
