@@ -6,7 +6,7 @@
 /*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:49 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/09 20:39:50 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/09 20:44:08 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 char		is_num_range_expr(t_lexer *lx, int i)
 {
-	int	saveIndex;
+	int	save_index;
 
 	if ((lx->line)[i] != '{' || lx->bkt)
 		return (0);
-	saveIndex = ++i;
+	save_index = ++i;
 	while ((lx->line)[i] && (ft_isdigit((lx->line)[i]) || \
-	(i == saveIndex && (lx->line)[i] == '-')))
-			++i;
+	(i == save_index && (lx->line)[i] == '-')))
+		++i;
 	if (i && (lx->line)[i++] == '.')
 	{
 		if ((lx->line)[i] && (lx->line)[i++] != '.')
 			return (0);
-		saveIndex = i;
+		save_index = i;
 		while ((lx->line)[i] && (ft_isdigit((lx->line)[i]) || \
-		(i == saveIndex && (lx->line)[i] == '-')))
+		(i == save_index && (lx->line)[i] == '-')))
 			++i;
-		if ((lx->line)[i] == '}' && i > saveIndex)
+		if ((lx->line)[i] == '}' && i > save_index)
 		{
 			lx->range_brc = 1;
 			return (1);

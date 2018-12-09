@@ -6,7 +6,7 @@
 /*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 20:36:39 by bdurst2812        #+#    #+#             */
-/*   Updated: 2018/12/09 20:41:40 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/09 20:42:52 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	manage_st_op_or_bs(t_lexer *lx, int i, int *save, t_list *st_ops)
 static char	is_brc_char(t_lexer *lx, int i, char *brc, char *com)
 {
 	if ((lx->line)[i] == '{')
-			++(*brc);
+		++(*brc);
 	else if ((lx->line)[i] == '}')
 		--(*brc);
 	else if ((lx->line)[i] == ',' && *brc == 1)
@@ -62,7 +62,7 @@ static void init_is_lbrc_var(char *brc, char *bs, char *com, t_list **st_ops)
 	*st_ops = NULL;
 }
 
-char	is_lbrc(t_lexer *lx, int i)
+char		is_lbrc(t_lexer *lx, int i)
 {
 	char	brc;
 	char	bs;

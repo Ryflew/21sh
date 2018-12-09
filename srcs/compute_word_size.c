@@ -6,7 +6,7 @@
 /*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 20:36:47 by bdurst2812        #+#    #+#             */
-/*   Updated: 2018/12/09 20:39:42 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/09 20:49:28 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,12 @@ static char	manage_bs_and_st_op(t_lexer *lx, int i, char *bs, char *st_op)
 	return (0);
 }
 
+static void	init_var(char *bs, int *i)
+{
+	*bs = 0;
+	*i = 0;
+}
+
 int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op, \
 							t_token *l_tk)
 {
@@ -81,9 +87,8 @@ int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op, \
 	int		i;
 	char	ret;
 
-	bs = 0;
+	init_var(&bs, &i);
 	*st_op = (lx->st_ops) ? *((char*)lx->st_ops->data) : 0;
-	i = 0;
 	while ((lx->line)[i])
 	{
 		if (bs)
