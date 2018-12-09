@@ -77,7 +77,7 @@ int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op, t_token *l
 			;
 		else if ((lx->line)[i] == '\\' && !bs)
 			bs = 1;
-		else if (is_string_op((lx->line)[i]) || (lx->line)[i] == '(' || (lx->line)[i] == '[' || (lx->line)[i] == '`')
+		else if (is_string_op((lx->line)[i]) || (lx->line)[i] == '(' || is_lbkt(lx, i) || (lx->line)[i] == '`')
 		{
 			if (!is_string_op((lx->line)[i]))
 				break;
