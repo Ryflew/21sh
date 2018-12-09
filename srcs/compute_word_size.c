@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 20:36:47 by bdurst2812        #+#    #+#             */
-/*   Updated: 2018/12/09 20:48:44 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 20:52:05 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	is_special_char(t_lexer *lx, int i, t_token *l_tk)
 static char	manage_bs_and_st_op(t_lexer *lx, int i, char *bs, char *st_op)
 {
 	if (*st_op && ((lx->line)[i] == *st_op || (*st_op == '[' && \
-	(lx->line)[i] == ']' && i) || (*st_op == '(' && (lx->line)[i] == ')')))
+		(lx->line)[i] == ']' && i) || (*st_op == '(' && (lx->line)[i] == ')')))
 	{
 		if (!is_string_op(*st_op))
 			return (1);
@@ -56,13 +56,13 @@ static char	manage_bs_and_st_op(t_lexer *lx, int i, char *bs, char *st_op)
 		*st_op = (lx->st_ops) ? *((char*)lx->st_ops->data) : 0;
 	}
 	else if (*st_op && ((*st_op != '`' && *st_op != '(') || \
-	(lx->line)[i] != '\\') && (*st_op != '"' || \
-	((lx->line)[i] != '\\' && (lx->line)[i] != '`' && (lx->line)[i] != '$')))
+		(lx->line)[i] != '\\') && (*st_op != '"' || ((lx->line)[i] != '\\' && \
+		(lx->line)[i] != '`' && (lx->line)[i] != '$')))
 		;
 	else if ((lx->line)[i] == '\\' && !*bs)
 		*bs = 1;
 	else if (is_string_op((lx->line)[i]) || (lx->line)[i] == '(' || \
-	is_lbkt(lx, i) || (lx->line)[i] == '`')
+		is_lbkt(lx, i) || (lx->line)[i] == '`')
 	{
 		if (!is_string_op((lx->line)[i]))
 			return (1);
@@ -74,6 +74,12 @@ static char	manage_bs_and_st_op(t_lexer *lx, int i, char *bs, char *st_op)
 	return (0);
 }
 
+static void	init_var(char *bs, int *i)
+{
+	*bs = 0;
+	*i = 0;
+}
+
 int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op, \
 							t_token *l_tk)
 {
@@ -81,9 +87,8 @@ int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op, \
 	int		i;
 	char	ret;
 
-	bs = 0;
+	init_var(&bs, &i);
 	*st_op = (lx->st_ops) ? *((char*)lx->st_ops->data) : 0;
-	i = 0;
 	while ((lx->line)[i])
 	{
 		if (bs)
