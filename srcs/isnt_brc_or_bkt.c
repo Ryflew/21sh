@@ -80,7 +80,7 @@ char	is_lbrc(t_lexer *lx, int i)
 			continue;
 		else if ((lx->line)[i] == '\\' && !bs)
 			bs = 1;
-		else if (is_string_op((lx->line)[i]) || (lx->line)[i] == '(' || (lx->line)[i] == '[' || (lx->line)[i] == '`')
+		else if (is_string_op((lx->line)[i]) || (lx->line)[i] == '(' || is_lbkt(lx, i) || (lx->line)[i] == '`')
 		{
 			if ((lx->line)[i] == '[')
 				save = i;
