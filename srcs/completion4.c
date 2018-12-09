@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/27 15:59:22 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/27 17:44:49 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 19:08:46 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void		convert_tild(t_sh *shell, char *str)
 	char	*home;
 	size_t	home_len;
 	char	buff[4097];
+	char	*tmp;
 
 	if (*str == '~' && (home = find_env(shell->env, "HOME")))
 		;
@@ -65,8 +66,10 @@ void		convert_tild(t_sh *shell, char *str)
 	home_len = ft_strlen(home);
 	if (home_len > 4000)
 		return ;
-	ft_strcpy(str + home_len, str + 1);
+	tmp = ft_strdup(str);
 	ft_strncpy(str, home, home_len);
+	ft_strcpy(str + home_len, tmp + 1);
+	free(tmp);
 }
 
 void		write_to_prompt(t_sh *shell, char *str, char *part)
