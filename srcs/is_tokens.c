@@ -21,7 +21,8 @@ char	is_string_op(char c)
 
 char	is_operator(char c, char c2)
 {
-	if (c == '>' || c == '<' || (c == '&' && c2 == '&') || c == '|' || c == ';' || c == '?')
+	if (c == '>' || c == '<' || (c == '&' && c2 == '&') || c == '|' \
+	|| c == ';' || c == '?')
 		return (1);
 	return (0);
 }

@@ -12,27 +12,6 @@
 
 #include "tosh.h"
 
-// static void	if_its_word(char c, char *bs, char *st_op, enum e_token *type, int i)
-// {
-// 	if (!ft_isdigit(c))
-// 	{
-// 		if (!i && c == '-')
-// 			*type = NEG_NUM;
-// 		else if (!ft_isalnum(c))
-// 			*type = WORD;
-// 		else if (*type != WORD)
-// 			*type = ASCII_WORD;
-// 	}
-// 	if (is_string_op(c) && !*st_op)
-// 		*st_op = c;
-// 	else if (c == *st_op)
-// 		*st_op = 0;
-// 	if (c == '\\' && *st_op != '\'' && !*bs)
-// 		*bs = 1;
-// 	else
-// 		*bs = 0;
-// }
-
 static void	if_its_word(char c, enum e_token *type, int i)
 {
 	if (!ft_isdigit(c))
@@ -50,21 +29,19 @@ char		is_num_range_expr(t_lexer *lx, int i)
 {
 	int	saveIndex;
 
-	if ((lx->line)[i] == '{' && lx->bkt)
-		return (0);
-	else if ((lx->line)[i] != '{')
+	if ((lx->line)[i] != '{' || lx->bkt)
 		return (0);
 	saveIndex = ++i;
-	while ((lx->line)[i] && (ft_isdigit((lx->line)[i]) || (i == saveIndex && (lx->line)[i] == '-')))
+	while ((lx->line)[i] && (ft_isdigit((lx->line)[i]) || \
+	(i == saveIndex && (lx->line)[i] == '-')))
 			++i;
-	if (!i)
-		return (0);
-	if ((lx->line)[i++] == '.')
+	if (i && (lx->line)[i++] == '.')
 	{
 		if ((lx->line)[i] && (lx->line)[i++] != '.')
 			return (0);
 		saveIndex = i;
-		while ((lx->line)[i] && (ft_isdigit((lx->line)[i]) || (i == saveIndex && (lx->line)[i] == '-')))
+		while ((lx->line)[i] && (ft_isdigit((lx->line)[i]) || \
+		(i == saveIndex && (lx->line)[i] == '-')))
 			++i;
 		if ((lx->line)[i] == '}' && i > saveIndex)
 		{
@@ -95,7 +72,7 @@ int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op, t_token *l
 			ft_pop_node(&lx->st_ops, NULL);
 			*st_op = (lx->st_ops) ? *((char*)lx->st_ops->data) : 0;
 		}
-		else if (*st_op && (*st_op != '"' || \
+		else if (*st_op && ((*st_op != '`' && *st_op != '(') || (lx->line)[i] != '\\') && (*st_op != '"' || \
 		((lx->line)[i] != '\\' && (lx->line)[i] != '`' && (lx->line)[i] != '$')))
 			;
 		else if ((lx->line)[i] == '\\' && !bs)
@@ -132,39 +109,6 @@ int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op, t_token *l
 	return (i);
 }
 
-// int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op,
-// 								t_token *l_tk)
-// {
-// 	char	bs;
-// 	int		i;
-// 	t_list	*st_ops;
-
-// 	bs = 0;
-// 	st_ops = NULL;
-// 	*st_op = 0;
-// 	i = 0;
-// while ((lx->line)[i] && (is_bs_or_bqt_or_par(lx, bs, (lx->line)[i]) \
-// 	|| (!ft_isblank((lx->line)[i]) \
-// 	&& (!is_operator((lx->line)[i], (lx->line)[i + 1]) \
-// 	|| isnt_glob_char(lx, (lx->line)[i], i) || ((lx->line)[i] == '.' && !lx->range_brc) \
-// 	|| isnt_var_op(lx, (lx->line)[i], (lx->line)[i + 1]) \
-// 	|| isnt_equal(lx, (lx->line)[i], i) || isnt_var_val(l_tk, (lx->line)[i]))) \
-// 	|| is_regular_char_in_st_op(*st_op, (lx->line)[i]) \
-// 	|| is_regular_char_in_here(lx, (lx->line)[i])))
-// 	{
-// 		// if ((lx->line)[i] == '\\' && lx->bqt)
-// 		// 	bs = 1;
-// 		if (is_num_range_expr(lx, i))
-// 			return (i);
-// 		if_its_word((lx->line)[i], &bs, st_op, type, i);
-// 		if (is_start_range_expr(lx, l_tk, lx->line, ++i))
-// 			return (i == 1) ? i : --i;
-// 		if (l_tk && l_tk->type == DASH && i == 1)
-// 			return (i);
-// 	}
-// 	return (i);
-// }
-
 static void	find_type(t_lexer *lx, t_token *l_tk, char st_op, \
 				enum e_token *type)
 {
@@ -176,14 +120,14 @@ static void	find_type(t_lexer *lx, t_token *l_tk, char st_op, \
 	else if (l_tk && (l_tk->type == VAR_OP)
 			&& !lx->blank)
 		*type = VAR_WORD;
-	else if (isnt_here_and_bqt(lx) && l_tk && l_tk->type == EQUAL \
-			&& !lx->blank && !lx->blank)
+	else if (isnt_here_and_bqt(lx) && l_tk && l_tk->type == EQUAL && !lx->blank)
 		*type = (*lx->line == '~') ? TILD_VAR_WORD : VAR_WORD;
 	if (lx->range_brc && (*type == NUM || *type == NEG_NUM))
 		*type = NUM_EXPR;
 	else if (isnt_here_and_bqt(lx) && l_tk && is_glob_token(l_tk->type)\
 		&& !lx->blank)
 	{
+		*type = EXPR;
 		if (*lx->line && is_start_range_expr(lx, l_tk, lx->line, 1))
 			*type = START_RANGE_EXPR;
 		else if (l_tk && l_tk->type == DASH)
@@ -192,8 +136,6 @@ static void	find_type(t_lexer *lx, t_token *l_tk, char st_op, \
 			*type = BKT_EXPR;
 		else if (*type == TILD)
 			*type = TILD_EXPR;
-		else
-			*type = EXPR;
 	}
 }
 

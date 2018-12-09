@@ -24,12 +24,38 @@ static void		is_here_op(t_lexer *lx, t_token **token)
 		else
 		{
 			ft_pop_node(&lx->st_ops, NULL);
-			if (lx->st_ops && *((char*)lx->st_ops->data) == '"')
-				*token = new_token(lx, EBQT_INSIDE_ST_OP, "`", lx->blank);
-			else
-				*token = new_token(lx, EBQT, "`", lx->blank);
+			*token = (lx->st_ops && *((char*)lx->st_ops->data) == '"') ? \
+			new_token(lx, EBQT_INSIDE_ST_OP, "`", lx->blank) : \
+			new_token(lx, EBQT, "`", lx->blank);
 		}
 		lx->bqt = !lx->bqt;
+	}
+	else if (*lx->line == '$' && ft_isalnum(*(lx->line + 1)))
+		*token = new_token(lx, VAR_OP, "$", lx->blank);
+	else if (lx->range_brc && *lx->line == '.')
+		*token = new_token(lx, NUM_RANGE_EXPR, "..", lx->blank);
+}
+
+static void		is_other_op(t_lexer *lx, t_token **token, \
+					t_token *l_tk)
+{
+	if (*lx->line == ',' && lx->brc)
+		*token = new_token(lx, COM, ",", lx->blank);
+	else if (*lx->line == '*')
+		*token = new_token(lx, S_WILDCARD, "*", lx->blank);
+	else if (*lx->line == '?')
+		*token = new_token(lx, Q_WILDCARD, "?", lx->blank);
+	else if (*lx->line == '!')
+		*token = new_token(lx, HIST, "!", lx->blank);
+	else if (*lx->line == ';')
+		*token = new_token(lx, SCL, ";", lx->blank);
+	else if (*lx->line == '-' && l_tk && (l_tk->type == FRED || l_tk->type == BRED))
+		*token = new_token(lx, CLOSE_FD, "-", lx->blank);
+	else if (*lx->line == '=' && !lx->blank && l_tk &&
+	(l_tk->type == ASCII_WORD || l_tk->type == NUM || l_tk->type == NEG_NUM))
+	{
+		*token = new_token(lx, EQUAL, "=", lx->blank);
+		l_tk->type = VAR_WORD;
 	}
 	else if (*lx->line == '(')
 	{
@@ -42,34 +68,6 @@ static void		is_here_op(t_lexer *lx, t_token **token)
 		ft_pop_node(&lx->st_ops, NULL);
 		*token = new_token(lx, RPAR, ")", lx->blank);
 		lx->par = 0;
-	}
-	else if (*lx->line == '$' && ft_isalnum(*(lx->line + 1)))
-		*token = new_token(lx, VAR_OP, "$", lx->blank);
-	else if (lx->range_brc && *lx->line == '.')
-		*token = new_token(lx, NUM_RANGE_EXPR, "..", lx->blank);
-}
-
-static void		is_other_op(t_lexer *lx, t_token **token, \
-					t_token *last_token)
-{
-	if (*lx->line == ',' && lx->brc)
-		*token = new_token(lx, COM, ",", lx->blank);
-	else if (*lx->line == '*')
-		*token = new_token(lx, S_WILDCARD, "*", lx->blank);
-	else if (*lx->line == '?')
-		*token = new_token(lx, Q_WILDCARD, "?", lx->blank);
-	else if (*lx->line == '!')
-		*token = new_token(lx, HIST, "!", lx->blank);
-	else if (*lx->line == ';')
-		*token = new_token(lx, SCL, ";", lx->blank);
-	else if (*lx->line == '-' && last_token
-			&& (last_token->type == FRED || last_token->type == BRED))
-		*token = new_token(lx, CLOSE_FD, "-", lx->blank);
-	else if (*lx->line == '=' && !lx->blank && last_token &&
-			(last_token->type == ASCII_WORD || last_token->type == NUM || last_token->type == NEG_NUM))
-	{
-		*token = new_token(lx, EQUAL, "=", lx->blank);
-		last_token->type = VAR_WORD;
 	}
 }
 
@@ -84,7 +82,8 @@ static void		is_limit_glob_op(t_lexer *lx, t_token **token,
 		lx->blank) : new_token(lx, LBKT, "[", lx->blank);
 		lx->bkt = 1;
 	}
-	else if (*lx->line == ']' && lx->bkt && l_tk && l_tk->type != LBKT && l_tk->type != E_WILDCARD)
+	else if (*lx->line == ']' && lx->bkt && l_tk && l_tk->type != LBKT \
+	&& l_tk->type != E_WILDCARD)
 	{
 		ft_pop_node(&lx->st_ops, NULL);
 		*token = new_token(lx, RBKT, "]", lx->blank);

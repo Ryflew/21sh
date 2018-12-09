@@ -43,24 +43,25 @@ static void	replace_expr_by_word(t_list **lexems, t_list *tmp)
 
 void		glob(t_list **first_lexems)
 {
-	t_list	*lexems;
+	t_list	*lxms;
 	t_token	*token;
 
-	lexems = *first_lexems;
-	while (lexems)
+	lxms = *first_lexems;
+	while (lxms)
 	{
-		token = (t_token*)lexems->data;
+		token = (t_token*)lxms->data;
 		if (TYPE == LBRC)
 		{
-			if (lexems->next && ((t_token*)lexems->next->data)->type == NUM_EXPR)
-				manage_range_brc(lexems->next);
+			if (lxms->next && ((t_token*)lxms->next->data)->type == NUM_EXPR)
+				manage_range_brc(lxms->next);
 			else
-				manage_brc(lexems->next);
-			clear_old_expr(&lexems, first_lexems, 1);
+				manage_brc(lxms->next);
+			clear_old_expr(&lxms, first_lexems, 1);
 			merge_expr(*first_lexems);
+			lxms = *first_lexems;
 		}
 		else
-			lexems = lexems->next;
+			lxms = lxms->next;
 	}
 	replace_all_exprs(first_lexems);
 	replace_expr_by_word(first_lexems, *first_lexems);
