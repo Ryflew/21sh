@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/12/06 17:53:50 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/08 18:56:42 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -529,5 +529,7 @@ char				is_exported(char *name, t_list **export);
 void				add_export(char *name, t_list **export);
 void				add_pid(t_pids **lst_pid, pid_t pid);
 void				check_pids(t_pids **lst_pid, t_sh *shell);
+int					check_builtin(char *part, char *to_add);
+void				add_builtins(char **tabu, char *part, int *i);
 
 #endif

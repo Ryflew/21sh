@@ -1,20 +1,14 @@
 
 -------- BUG -------------
 BASILE :
-
+- diff <(echo -n abc | openssl base64) <(echo -n abc | openssl base64) // je le note mais osef
+- "`[`" // ca explose le shell
 
 VICTOR :
 
 BASILE || VICTOR:
-- ls badfile 2>&1 1>&2 | tr o O // leaks !
 
--------- LIST BONUS 21sh -------------
-- cmd "history"
+-------- LIST BONUS 42sh -------------
 - ctrl + r
 - cmd "help"
 - hash table
-- cmd "read"
-- && 
-- ||
-- ()
-- globing (*)

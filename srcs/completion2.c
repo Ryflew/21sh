@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 13:06:14 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/08 17:23:30 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/08 18:29:21 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,39 +61,6 @@ static char	check_dir_content(char *path, char *part, char *to_add, char *fill)
 	}
 	closedir(dir);
 	return (out);
-}
-
-int		check_builtin(char *part, char *to_add)
-{
-	char	*arr[8];
-	int		out;
-
-	arr[0] = "setenv";
-	arr[1] = "unsetenv";
-	arr[2] = "exit";
-	arr[3] = "history";
-	arr[4] = "export";
-	arr[5] = "shellvar";
-	arr[6] = "help";
-	arr[7] = "unset";
-	out = 0;
-	if (!ft_strncmp(part, arr[0], ft_strlen(part)) && ++out)
-		ft_strcpy(to_add, arr[0] + ft_strlen(part));
-	if (!ft_strncmp(part, arr[1], ft_strlen(part)) && ++out)
-		ft_strcpy(to_add, arr[1] + ft_strlen(part));
-	if (!ft_strncmp(part, arr[2], ft_strlen(part)) && ++out)
-		ft_strcpy(to_add, arr[2] + ft_strlen(part));
-	if (!ft_strncmp(part, arr[3], ft_strlen(part)) && ++out)
-		ft_strcpy(to_add, arr[3] + ft_strlen(part));
-	if (!ft_strncmp(part, arr[4], ft_strlen(part)) && ++out)
-		ft_strcpy(to_add, arr[4] + ft_strlen(part));
-	if (!ft_strncmp(part, arr[5], ft_strlen(part)) && ++out)
-		ft_strcpy(to_add, arr[5] + ft_strlen(part));
-	if (!ft_strncmp(part, arr[6], ft_strlen(part)) && ++out)
-		ft_strcpy(to_add, arr[6] + ft_strlen(part));
-	if (!ft_strncmp(part, arr[7], ft_strlen(part)) && ++out)
-		ft_strcpy(to_add, arr[7] + ft_strlen(part));
-	return (out > 1 ? 1 : 0);
 }
 
 char		get_bin_occur(t_sh *shell, char *part, char *to_add, int i)

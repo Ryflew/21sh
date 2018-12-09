@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:21 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/10/10 20:27:22 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 15:26:04 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void		treat_history_cmd(t_tree *tree)
 {
 	char	opt[6];
 
-	if (tree->cmds && !ft_strcmp(tree->cmds[0], "history"))
+	if (*tree->cmds && !ft_strcmp(tree->cmds[0], "history"))
 	{
 		ft_bzero(opt, 6);
 		history_get_opt(tree->cmds, opt, 1);
