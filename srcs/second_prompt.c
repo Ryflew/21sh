@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 23:43:54 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/09 13:43:59 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 18:21:00 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ void		treat_second_prompt(char *string, char **op, enum e_state *state)
 		return ;
 	}
 	sync_op(new_op, *op);
-	if (*(*op + ft_strlen(*op) - 1) == '\\' || *(*op + ft_strlen(*op) - 1) == '&' || \
+	if (*(*op + ft_strlen(*op) - 1) == '\\' || \
+		*(*op + ft_strlen(*op) - 1) == '&' || \
 		*(*op + ft_strlen(*op) - 1) == 'o')
 		new_op[j--] = '\0';
 	continue_treat(str, &j, new_op, state);

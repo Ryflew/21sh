@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:46:04 by bdurst            #+#    #+#             */
-/*   Updated: 2018/07/01 22:28:02 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 18:18:31 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ char			**parse_env_cmds(t_sh *sh)
 	if (tmp->next)
 		token = tmp->next->data;
 	if (!sh->current_token || ft_strcmp(sh->current_token->value, "env")
-		|| !tmp->next || (TYPE != WORD && TYPE != NUM && TYPE != NEG_NUM && TYPE != TILD && \
-		TYPE != VAR_WORD))
+		|| !tmp->next || (TYPE != WORD && TYPE != NUM && TYPE != NEG_NUM && \
+		TYPE != TILD && TYPE != VAR_WORD))
 		return (NULL);
 	tmp = tmp->next;
 	size = 1;

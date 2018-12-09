@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/12/09 17:41:06 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 18:17:02 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -533,5 +533,8 @@ int					check_builtin(char *part, char *to_add);
 void				add_builtins(char **tabu, char *part, int *i);
 int					count_builtins(char *part);
 void				is_other_op(t_lexer *lx, t_token **token, t_token *l_tk);
+void				create_expr_from_brc(t_list *lexems, t_token *token, \
+						t_list **nw_lexems, t_list **nws_lexems);
+void				add_news_expr(t_list *lexems, t_list *begin_news_expr);
 
 #endif
