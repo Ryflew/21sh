@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:01 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/11/29 14:53:27 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 17:02:32 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void		glob(t_list **first_lexems)
 		token = (t_token*)lexems->data;
 		if (TYPE == LBRC)
 		{
-			if (lexems->next && ((t_token*)lexems->next->data)->type == NUM_EXPR)
+			if (lexems->next && \
+				((t_token*)lexems->next->data)->type == NUM_EXPR)
 				manage_range_brc(lexems->next);
 			else
 				manage_brc(lexems->next);
