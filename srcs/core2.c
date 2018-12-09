@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:24:01 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/06 17:42:23 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 16:35:49 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char		**create_cmds_with_tokens(t_list *lexems)
 	return (cmds);
 }
 
-char	replace_tild_and_var_op(t_list **cmd_tokens, t_sh *sh)
+char		replace_tild_and_var_op(t_list **cmd_tokens, t_sh *sh)
 {
 	t_list	*tmp;
 	t_token	*token;
@@ -110,7 +110,7 @@ char		manage_cmds(t_tree *node, t_sh *sh, char is_cmd)
 		env_command(node->tmp_env, sh->env);
 	if (!replace_tild_and_var_op(&node->cmd_tokens, sh))
 		return (0);
-	replace_par_subshell(sh, &node->cmd_tokens, is_cmd);	
+	replace_par_subshell(sh, &node->cmd_tokens, is_cmd);
 	if (!(node->cmds = create_cmds_with_tokens(node->cmd_tokens)))
 		return (0);
 	if (!is_cmd)

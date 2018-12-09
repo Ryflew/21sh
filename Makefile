@@ -92,6 +92,7 @@ FILES = add_char.c \
 				create.c \
 				open_file.c \
 				identify_token.c \
+				identify_token2.c \
 				parse_env.c \
 				father.c \
 				globing.c \
@@ -117,7 +118,9 @@ FILES = add_char.c \
 				isnt_brc_or_bkt.c \
 				isnt_glob_char.c \
 				lst_pids.c \
-				completion_builtin.c
+				completion_builtin.c \
+				completion_builtin2.c
+
 
 SRCS = $(addprefix $(SRC_DIR), $(FILES)) $(addprefix $(SRC_DIR), $(MAIN))
 

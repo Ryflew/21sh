@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 14:57:30 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/11/29 14:57:37 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 17:47:40 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 char	is_rbkt(t_lexer *lexer, char c, int i, t_token *l_tk)
 {
-	return (c == ']' && (lexer->bkt && i && l_tk && (l_tk->type == LBKT || l_tk->type == E_WILDCARD))) ? 1 : 0;
+	return (c == ']' && (lexer->bkt && i && l_tk && (l_tk->type == LBKT || \
+	l_tk->type == E_WILDCARD))) ? 1 : 0;
 }
 
 char	is_lbkt(t_lexer *lexer, int i)
@@ -46,7 +47,7 @@ char	is_rbrc(t_lexer *lexer, char c)
 	return (c == '}' && lexer->brc) ? 1 : 0;
 }
 
-char	is_lbrc(t_lexer *lexer, int i)
+char	is_lbrc(t_lexer *lx, int i)
 {
 	char	brc;
 	char	bs;
@@ -55,50 +56,48 @@ char	is_lbrc(t_lexer *lexer, int i)
 	int		save;
 	t_list	*st_ops;
 
-	if ((lexer->line)[i] == '{' && lexer->bkt)
+	if ((lx->line)[i] == '{' && lx->bkt)
 		return (0);
-	else if ((lexer->line)[i] != '{')
+	else if ((lx->line)[i] != '{')
 		return (0);
 	brc = 1;
 	bs = 0;
 	com = 0;
 	st_op = 0;
 	st_ops = NULL;
-	while ((lexer->line)[++i])
+	while ((lx->line)[++i])
 	{
 		if (bs)
 			bs = 0;
-		else if (st_op && ((lexer->line)[i] == st_op || (st_op == '[' && \
-		(lexer->line)[i] == ']' && save != i - 1) || (st_op == '(' && (lexer->line)[i] == ')')))
+		else if (st_op && ((lx->line)[i] == st_op || (st_op == '[' && \
+		(lx->line)[i] == ']' && save != i - 1) || (st_op == '(' && (lx->line)[i] == ')')))
 		{
 			ft_pop_node(&st_ops, NULL);
 			st_op = (st_ops) ? *((char*)st_ops->data) : 0;
 		}
-		else if (st_op && ((st_op != '`' && st_op != '(') || ((lexer->line)[i] != '\'' && \
-		(lexer->line)[i] != '"' && (lexer->line)[i] != '\'' && \
-		(lexer->line)[i] != '\\')) && (st_op != '"' || \
-		((lexer->line)[i] != '\\' && (lexer->line)[i] != '`')))
+		else if (st_op && ((st_op != '`' && st_op != '(') || (lx->line)[i] != '\\') && (st_op != '"' || \
+		((lx->line)[i] != '\\' && (lx->line)[i] != '`')))
 			continue;
-		else if ((lexer->line)[i] == '\\' && !bs)
+		else if ((lx->line)[i] == '\\' && !bs)
 			bs = 1;
-		else if (is_string_op((lexer->line)[i]) || (lexer->line)[i] == '(' || (lexer->line)[i] == '[' || (lexer->line)[i] == '`')
+		else if (is_string_op((lx->line)[i]) || (lx->line)[i] == '(' || (lx->line)[i] == '[' || (lx->line)[i] == '`')
 		{
-			if ((lexer->line)[i] == '[')
+			if ((lx->line)[i] == '[')
 				save = i;
-			ft_node_push_front(&st_ops, &(lexer->line)[i]);
-			st_op = (lexer->line)[i];
+			ft_node_push_front(&st_ops, &(lx->line)[i]);
+			st_op = (lx->line)[i];
 		}
-		else if ((lexer->line)[i] == '{')
+		else if ((lx->line)[i] == '{')
 			++brc;
-		else if ((lexer->line)[i] == '}')
+		else if ((lx->line)[i] == '}')
 		{
 			--brc;
 			if (!brc)
 				break;
 		}
-		else if ((lexer->line)[i] == ',' && brc == 1)
+		else if ((lx->line)[i] == ',' && brc == 1)
 			++com;
-		else if (ft_isblank((lexer->line)[i]))
+		else if (ft_isblank((lx->line)[i]))
 			break;
 	}
 	if (!brc && com)

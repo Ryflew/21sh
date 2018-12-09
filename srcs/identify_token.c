@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:38 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/11/29 14:59:02 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 17:40:53 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,11 @@ static void		is_here_op(t_lexer *lx, t_token **token)
 		else
 		{
 			ft_pop_node(&lx->st_ops, NULL);
-			if (lx->st_ops && *((char*)lx->st_ops->data) == '"')
-				*token = new_token(lx, EBQT_INSIDE_ST_OP, "`", lx->blank);
-			else
-				*token = new_token(lx, EBQT, "`", lx->blank);
+			*token = (lx->st_ops && *((char*)lx->st_ops->data) == '"') ? \
+			new_token(lx, EBQT_INSIDE_ST_OP, "`", lx->blank) : \
+			new_token(lx, EBQT, "`", lx->blank);
 		}
 		lx->bqt = !lx->bqt;
-	}
-	else if (*lx->line == '(')
-	{
-		ft_node_push_front(&lx->st_ops, &(*lx->line));
-		*token = new_token(lx, LPAR, "(", lx->blank);
-		lx->par = 1;
-	}
-	else if (*lx->line == ')')
-	{
-		ft_pop_node(&lx->st_ops, NULL);
-		*token = new_token(lx, RPAR, ")", lx->blank);
-		lx->par = 0;
 	}
 	else if (*lx->line == '$' && ft_isalnum(*(lx->line + 1)))
 		*token = new_token(lx, VAR_OP, "$", lx->blank);
@@ -49,42 +36,30 @@ static void		is_here_op(t_lexer *lx, t_token **token)
 		*token = new_token(lx, NUM_RANGE_EXPR, "..", lx->blank);
 }
 
-static void		is_other_op(t_lexer *lx, t_token **token, \
-					t_token *last_token)
+static void		is_limit_glob_op2(t_lexer *lx, t_token **token, t_token *l_tk)
 {
-	if (*lx->line == ',' && lx->brc)
-		*token = new_token(lx, COM, ",", lx->blank);
-	else if (*lx->line == '*')
-		*token = new_token(lx, S_WILDCARD, "*", lx->blank);
-	else if (*lx->line == '?')
-		*token = new_token(lx, Q_WILDCARD, "?", lx->blank);
-	else if (*lx->line == '!')
-		*token = new_token(lx, HIST, "!", lx->blank);
-	else if (*lx->line == ';')
-		*token = new_token(lx, SCL, ";", lx->blank);
-	else if (*lx->line == '-' && last_token
-			&& (last_token->type == FRED || last_token->type == BRED))
-		*token = new_token(lx, CLOSE_FD, "-", lx->blank);
-	else if (*lx->line == '=' && !lx->blank && last_token &&
-			(last_token->type == ASCII_WORD || last_token->type == NUM || last_token->type == NEG_NUM))
+	if (*lx->line == '}' && lx->brc && !lx->bkt)
 	{
-		*token = new_token(lx, EQUAL, "=", lx->blank);
-		last_token->type = VAR_WORD;
+		*token = new_token(lx, RBRC, "}", lx->blank);
+		--(lx->brc);
+		lx->range_brc = 0;
 	}
+	else if (l_tk && l_tk->type == START_RANGE_EXPR)
+		*token = new_token(lx, DASH, "-", lx->blank);
 }
 
-static void		is_limit_glob_op(t_lexer *lx, t_token **token,
-								t_token *l_tk)
+static void		is_limit_glob_op(t_lexer *lx, t_token **token, t_token *l_tk)
 {
 	if (*lx->line == '[' && is_lbkt(lx, 0))
 	{
 		ft_node_push_front(&lx->st_ops, &(*lx->line));
 		*token = (*(lx->line + 1) && (*(lx->line + 1) == '!' \
-		|| *(lx->line + 1) == '^')) ? new_token(lx, E_WILDCARD, "[!",\
+			|| *(lx->line + 1) == '^')) ? new_token(lx, E_WILDCARD, "[!",\
 		lx->blank) : new_token(lx, LBKT, "[", lx->blank);
 		lx->bkt = 1;
 	}
-	else if (*lx->line == ']' && lx->bkt && l_tk && l_tk->type != LBKT && l_tk->type != E_WILDCARD)
+	else if (*lx->line == ']' && lx->bkt && l_tk && l_tk->type != LBKT && \
+		l_tk->type != E_WILDCARD)
 	{
 		ft_pop_node(&lx->st_ops, NULL);
 		*token = new_token(lx, RBKT, "]", lx->blank);
@@ -95,14 +70,8 @@ static void		is_limit_glob_op(t_lexer *lx, t_token **token,
 		*token = new_token(lx, LBRC, "{", lx->blank);
 		++(lx->brc);
 	}
-	else if (*lx->line == '}' && lx->brc && !lx->bkt)
-	{
-		*token = new_token(lx, RBRC, "}", lx->blank);
-		--(lx->brc);
-		lx->range_brc = 0;
-	}
-	else if (l_tk && l_tk->type == START_RANGE_EXPR)
-		*token = new_token(lx, DASH, "-", lx->blank);
+	else
+		is_limit_glob_op2(lx, token, l_tk);
 }
 
 static t_token	*is_reg_op(t_lexer *lx)
@@ -148,7 +117,8 @@ t_token			*identify_token(t_lexer *lx, t_token *l_tk)
 		token = lex_word(lx, l_tk);
 	if (isnt_here_and_bqt(lx) && token && is_glob_token(TYPE) &&
 	!lx->blank && l_tk && (l_tk->type == WORD ||
-		l_tk->type == TILD || l_tk->type == NUM || l_tk->type == ASCII_WORD || l_tk->type == NEG_NUM))
+		l_tk->type == TILD || l_tk->type == NUM || l_tk->type == ASCII_WORD || \
+		l_tk->type == NEG_NUM))
 	{
 		if (l_tk->type == TILD)
 			l_tk->type = TILD_EXPR;

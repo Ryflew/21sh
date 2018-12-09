@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:28:06 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/11/29 15:00:58 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 17:59:53 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void	create_expr_from_brc(t_list *lexems, t_token *token,
 	*nw_lexems = NULL;
 }
 
-static void add_news_expr(t_list *lexems, t_list *begin_news_expr)
+static void	add_news_expr(t_list *lexems, t_list *begin_news_expr)
 {
 	t_list	*end_lexems;
 	t_token	*token;
@@ -95,10 +95,21 @@ static void add_news_expr(t_list *lexems, t_list *begin_news_expr)
 	{
 		token = (t_token*)end_lexems->data;
 		if (TYPE == END_EXPR)
-			break;
+			break ;
 		end_lexems = end_lexems->next;
 	}
 	ft_add_list(end_lexems, begin_news_expr);
+}
+
+static char	manage_brc2(t_token *token, char *brc)
+{
+	if (TYPE == LBRC)
+		++(*brc);
+	else if (TYPE == RBRC)
+		--(*brc);
+	else if (TYPE == END_EXPR)
+		return (1);
+	return (0);
 }
 
 void		manage_brc(t_list *lexems)
@@ -114,20 +125,13 @@ void		manage_brc(t_list *lexems)
 	while (lexems)
 	{
 		token = (t_token*)lexems->data;
-		if (TYPE == LBRC)
-			++brc;
-		else if (TYPE == RBRC)
-			--brc;
-		else if (TYPE == END_EXPR)
+		if (manage_brc2(token, &brc))
 			break ;
 		if ((TYPE == COM && !brc) || (TYPE == RBRC && brc == -1))
 		{
 			create_expr_from_brc(lexems, token, &new_lexems, &news_lexems);
 			if (TYPE == RBRC)
-			{
-				add_news_expr(lexems, news_lexems);
-				return ;
-			}
+				return (add_news_expr(lexems, news_lexems));
 		}
 		else
 			ft_node_push_back(&new_lexems, new_token(NULL, TYPE, VAL, BLK));
@@ -158,8 +162,10 @@ void		manage_range_brc(t_list *lexems)
 			{
 				while (from <= to)
 				{
-					ft_node_push_back(&new_lexems, new_token(NULL, EXPR, ft_itoa(from), BLK));
-					create_expr_from_brc(lexems, token, &new_lexems, &news_lexems);
+					ft_node_push_back(&new_lexems, new_token(NULL, EXPR, \
+						ft_itoa(from), BLK));
+					create_expr_from_brc(lexems, token, &new_lexems, \
+						&news_lexems);
 					++from;
 				}
 			}
@@ -167,8 +173,10 @@ void		manage_range_brc(t_list *lexems)
 			{
 				while (from >= to)
 				{
-					ft_node_push_back(&new_lexems, new_token(NULL, EXPR, ft_itoa(from), BLK));
-					create_expr_from_brc(lexems, token, &new_lexems, &news_lexems);
+					ft_node_push_back(&new_lexems, new_token(NULL, EXPR, \
+						ft_itoa(from), BLK));
+					create_expr_from_brc(lexems, token, &new_lexems, \
+						&news_lexems);
 					--from;
 				}
 			}

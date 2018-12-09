@@ -1,7 +1,6 @@
 
 -------- BUG -------------
 BASILE :
-- diff <(echo -n abc | openssl base64) <(echo -n abc | openssl base64) // je le note mais osef
 - "`[`" // ca explose le shell
 
 VICTOR :

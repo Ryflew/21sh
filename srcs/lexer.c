@@ -82,10 +82,4 @@ void			get_lexems(t_sh *sh, char *line, int is_her)
 	token = NULL;
 	while ((token = get_next_token(sh->lexer, token)))
 		ft_node_push_back(&(sh->lexer->lexems), token);
-	t_list	*tmp = sh->lexer->lexems;
-	while (tmp)
-	{
-		token = (t_token*)tmp->data;
-		tmp = tmp->next;
-	}
 }

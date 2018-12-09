@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/12/08 18:56:42 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/09 17:41:06 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -531,5 +531,7 @@ void				add_pid(t_pids **lst_pid, pid_t pid);
 void				check_pids(t_pids **lst_pid, t_sh *shell);
 int					check_builtin(char *part, char *to_add);
 void				add_builtins(char **tabu, char *part, int *i);
+int					count_builtins(char *part);
+void				is_other_op(t_lexer *lx, t_token **token, t_token *l_tk);
 
 #endif
