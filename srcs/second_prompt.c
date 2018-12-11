@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 23:43:54 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/11 17:09:24 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 23:10:25 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ void		treat_second_prompt(char *string, char **op, enum e_state *state)
 	if (ft_strlen(*op) > 0 && \
 		(*(*op + ft_strlen(*op) - 1) == '\\' || \
 		*(*op + ft_strlen(*op) - 1) == '&' || \
-		*(*op + ft_strlen(*op) - 1) == 'o'))
+		*(*op + ft_strlen(*op) - 1) == 'o' || \
+		*(*op + ft_strlen(*op) - 1) == '|'))
 		new_op[--j] = '\0';
 	continue_treat(str, &j, new_op, state);
-	// check_special_operator(str, ft_strlen(str), &j, new_op);
 	new_op[j] = '\0';
 	free(*op);
 	*op = ft_strdup(new_op);
