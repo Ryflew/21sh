@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/09 20:39:11 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 15:19:21 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char		check_special_operator(char *str, int i, int *j, char *op)
 	return (0);
 }
 
-static char	check_quot_brackets3(char *str, char *op, int i, int *j)
+char	check_quot_brackets3(char *str, char *op, int i, int *j)
 {
 	char	c;
 

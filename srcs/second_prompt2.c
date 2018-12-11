@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 02:57:40 by vdarmaya          #+#    #+#             */
-/*   Updated: 2017/08/10 03:06:17 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 15:07:56 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,16 @@ char		check_new_open(char *str, char *op, int *j)
 	return (0);
 }
 
-char		go_to_c(char **str, char c)
+char		go_to_c(char **str, char c, char *op, int j)
 {
 	int		i;
 
 	i = -1;
 	while ((*str)[++i])
 	{
-		if ((*str)[i] == c)
+		if ((c == '"' && (*str)[i] == c && j > 1 && op[j - 2] == '`'))
+			continue ;
+		else if ((*str)[i] == c)
 		{
 			*str += i + 1;
 			return (1);

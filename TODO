@@ -1,7 +1,7 @@
 
 -------- BUG -------------
 BASILE :
-- "`[`" // ca explose le shell
+cat << EOF
 
 VICTOR :
 

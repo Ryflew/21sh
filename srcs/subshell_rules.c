@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subshell_rules.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:45:09 by bdurst            #+#    #+#             */
-/*   Updated: 2018/12/09 20:57:02 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/09 22:48:47 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static void	concat_next_bqt(t_list **lexems, t_list *next_lexems)
 	}
 }
 
-static void set_type_and_next_lexems(t_list **next_lexems, enum e_token *end_type)
+static void	set_type_and_next_lexems(t_list **next_lexems, \
+			enum e_token *end_type)
 {
 	if (*next_lexems)
 	{
@@ -83,7 +84,7 @@ void		bqt_rule(t_sh *sh, t_list **lexems,
 		delete_subshell_lexems(&sh->lexer->lexems, lexems, BQT, end_type);
 		if (prev_token && *lexems != prev_lexems && !blank)
 			concat_prev_bqt(lexems, prev_token);
-		if (next_lexems && *lexems != next_lexems && \
+		if (next_lexems && *lexems && *lexems != next_lexems && \
 			!((t_token*)next_lexems->data)->blank)
 			concat_next_bqt(lexems, next_lexems);
 	}

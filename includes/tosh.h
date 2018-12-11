@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/12/09 18:54:25 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 15:19:28 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,7 +354,7 @@ void				print_history2(t_sh *shell, t_sh *bis_sh);
 char				add_char(char *command, int *j, t_sh *shell, \
 						unsigned long c);
 char				check_alpha(char *str);
-char				go_to_c(char **str, char c);
+char				go_to_c(char **str, char c, char *new_op, int j);
 char				*get_tmp(char **av);
 char				cd_path_validity(char *path);
 char				*is_absolute(t_tree *node, t_env *env, t_sh *shell);
@@ -539,5 +539,6 @@ void				is_other_op(t_lexer *lx, t_token **token, t_token *l_tk);
 void				create_expr_from_brc(t_list *lexems, t_token *token, \
 						t_list **nw_lexems, t_list **nws_lexems);
 void				add_news_expr(t_list *lexems, t_list *begin_news_expr);
+char				check_quot_brackets3(char *str, char *op, int i, int *j);
 
 #endif

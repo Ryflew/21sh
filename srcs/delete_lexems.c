@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_lexems.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 20:55:14 by bdurst2812        #+#    #+#             */
-/*   Updated: 2018/12/09 20:55:15 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/09 22:32:38 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		delete_subshell_lexems(t_list **first_lexems, t_list **lexems,
 		token = (t_token*)(*lexems)->data;
 		if (TYPE == open_type)
 			++open;
-		if (TYPE == close_type)
+		if (TYPE == close_type && TYPE != NONE)
 		{
 			if (!open)
 			{
