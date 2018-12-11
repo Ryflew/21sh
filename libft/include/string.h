@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/13 19:47:25 by bdurst            #+#    #+#             */
-/*   Updated: 2018/09/25 17:13:28 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 21:37:09 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ int					ft_strfind_by_end(const char *s, int c);
 int					ft_strfind(const char *s, int start, int c);
 char				ft_strcont(char *s1, char *s2);
 size_t				ft_counttab(char **tabu);
+char				**ft_strrealsplit(char const *s, char c);
 
 #endif

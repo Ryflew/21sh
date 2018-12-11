@@ -96,7 +96,8 @@ SRC_STRING =	ft_atoi.c \
 				ft_strfind_by_end.c \
 				ft_strcont.c \
 				ft_counttab.c \
-				ft_sorttab.c
+				ft_sorttab.c \
+				ft_strrealsplit.c
 
 OBJ_ASCII =		$(patsubst %.c, $(DIR_OBJ)%.o, $(SRC_ASCII))
 OBJ_IO =		$(patsubst %.c, $(DIR_OBJ)%.o, $(SRC_IO))

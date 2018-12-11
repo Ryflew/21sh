@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tosh.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:39:27 by bdurst            #+#    #+#             */
-/*   Updated: 2018/12/11 15:19:28 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 20:55:14 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -372,7 +372,7 @@ char				stop_binary(int sig);
 char				check_new_open(char *str, char *op, int *j);
 char				check_quot(char *str, char *op, int *i, int *j);
 char				manage_here_doc_bqt(t_sh *sh, t_list *end_bqt, \
-						t_list **tmp, t_list **begin_lexems);
+										t_list **begin_lexems);
 void				history_cmd(char **av, t_sh *shell);
 void				treat_history_cmd(t_tree *tree);
 char				check_quot_brackets2(char *str, char *op, int i, int *j);
@@ -503,7 +503,7 @@ t_list				*add_subshell_tokens(t_sh *sh, enum e_token type, \
 						char is_cmd);
 void				delete_first_subshell_lexems(t_list **first_lexems, \
 						t_list **lexems);
-void				delete_subshell_lexems(t_list **first_lexems,
+char				delete_subshell_lexems(t_list **first_lexems,
 					t_list **lexems, enum e_token open_type,
 					enum e_token close_type);
 char				is_valid_dir(char *path);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_docs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:31 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/09/29 14:17:31 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 22:45:51 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,13 @@ static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 			((t_token*)tmp->data)->type != EBQT_INSIDE_ST_OP)
 				NEXT(tmp);
 			if (tmp)
-				end_bqt = tmp->next;
-			tmp = sh->lexer->lexems;
-			manage_here_doc_bqt(sh, end_bqt, &tmp, begin_lexems);
+			{
+				end_bqt = tmp;
+				tmp = end_bqt->next;
+			}
+			manage_here_doc_bqt(sh, end_bqt, begin_lexems);
 		}
-		if (tmp)
+		else if (tmp)
 			NEXT(tmp);
 	}
 	return (1);
@@ -68,7 +70,7 @@ static char	*lex_parse_heredoc(t_sh *sh, char *heredoc_line, int i)
 	char	**line;
 	char	*output;
 
-	line = ft_strsplit(heredoc_line, '\n');
+	line = ft_strrealsplit(heredoc_line, '\n');
 	output = NULL;
 	while (line[++i])
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   compute_word_size.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 20:36:47 by bdurst2812        #+#    #+#             */
-/*   Updated: 2018/12/09 20:52:05 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 20:23:33 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int			compute_word_size(t_lexer *lx, enum e_token *type, char *st_op, \
 		else if (!ret)
 			;
 		else if (is_regular_char_in_here(lx, (lx->line)[i]))
-			return (0);
+			;
 		else if (is_special_char(lx, i, l_tk))
 			break ;
 		if_its_word((lx->line)[i], type, i);

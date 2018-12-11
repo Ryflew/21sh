@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_lexems.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 20:55:14 by bdurst2812        #+#    #+#             */
-/*   Updated: 2018/12/09 22:32:38 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 21:01:12 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void		delete_first_subshell_lexems(t_list **first_lexems, t_list **lexems)
 	ft_pop_node(lexems, (void*)&clear_lexems);
 }
 
-void		delete_subshell_lexems(t_list **first_lexems, t_list **lexems,
+char		delete_subshell_lexems(t_list **first_lexems, t_list **lexems,
 								enum e_token open_type, enum e_token close_type)
 {
 	t_token	*token;
@@ -36,10 +36,11 @@ void		delete_subshell_lexems(t_list **first_lexems, t_list **lexems,
 			if (!open)
 			{
 				delete_first_subshell_lexems(first_lexems, lexems);
-				break ;
+				return (1);
 			}
 			--open;
 		}
 		delete_first_subshell_lexems(first_lexems, lexems);
 	}
+	return (0);
 }
