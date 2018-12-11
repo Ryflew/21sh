@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_subshell_tokens.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 14:56:34 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/11/13 14:29:27 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 23:45:54 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ t_list			*add_subshell_tokens(t_sh *sh, enum e_token type, char is_cmd)
 	if ((tokens_line = get_new_tokens(sh)) == (void*)-1)
 		return (void*)-1;
 	new_lexems = NULL;
-	if (type == EBQT)
+	if (type == EBQT && !sh->lexer->her)
 		split_line_to_tokens(tokens_line, &new_lexems);
 	else
 	{
 		trim_line = ft_strtrim(tokens_line);
-		if (type == EBQT_INSIDE_ST_OP)
+		if (type == EBQT_INSIDE_ST_OP || sh->lexer->her)
 			ft_node_push_back(&new_lexems, new_token(NULL, WORD, trim_line, 1));
 		else if (is_cmd && trim_line)
 		{

@@ -6,7 +6,7 @@
 /*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:31 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/11 22:45:51 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/11 23:57:59 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,14 @@
 static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 {
 	t_list	*tmp;
-	t_token	*token;
 	t_list	*end_bqt;
 
 	tmp = *begin_lexems;
 	while (tmp)
 	{
-		token = (t_token*)tmp->data;
-		if (TYPE == BQT)
+		if (((t_token*)tmp->data)->type == BQT)
 		{
-			sh->current_token = token;
+			sh->current_token = (t_token*)tmp->data;
 			sh->lexer->lexems = tmp;
 			while (tmp && ((t_token*)tmp->data)->type != EBQT && \
 			((t_token*)tmp->data)->type != EBQT_INSIDE_ST_OP)
@@ -45,22 +43,22 @@ static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 static void	lex_parse_heredoc2(t_list **begin_lexems, t_sh *sh, char **output, \
 			char *tmp)
 {
-	char	**cmds;
-	int		j;
+	t_list	*lexems;
+	t_token	*token;
 
 	replace_tild_and_var_op(begin_lexems, sh);
-	cmds = create_cmds_with_tokens(*begin_lexems);
-	j = -1;
-	while (cmds[++j])
+	lexems = *begin_lexems;
+	while (lexems)
 	{
-		if (j > 0)
+		token = (t_token*)lexems->data;
+		if (lexems != *begin_lexems && lexems->next && \
+			((t_token*)lexems->next->data)->blank)
 			free_join(output, " ");
-		free_join(output, cmds[j]);
+		free_join(output, VAL);
+		lexems = lexems->next;
 	}
 	if (tmp)
 		free_join(output, "\n");
-	free_join(output, cmds[j]);
-	ft_strdelpp(&cmds);
 	ft_clear_list(begin_lexems, (void*)&clear_lexems);
 }
 

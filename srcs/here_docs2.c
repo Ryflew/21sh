@@ -6,7 +6,7 @@
 /*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:20:09 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/11 22:44:38 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/11 23:28:49 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 static void	manage_here_doc_bqt0(t_sh *sh, enum e_token end_type, \
 								t_list **begin_lexems)
 {
-	eat(sh, BQT);
+	delete_first_subshell_lexems(begin_lexems, &sh->lexer->lexems);
 	if (!(subshell(sh, sh->lexer->lexems, end_type, 1)))
 		return ;
-	delete_first_subshell_lexems(&sh->lexer->lexems, begin_lexems);
-	if (!delete_subshell_lexems(&sh->lexer->lexems, begin_lexems, BQT, end_type))
+	if (!delete_subshell_lexems(begin_lexems, &sh->lexer->lexems, BQT, end_type))
 		errexit("42sh", "parse error: backquote isn't close");
 }
 
