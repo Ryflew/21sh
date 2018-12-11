@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 01:55:53 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/11 15:19:21 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 17:15:02 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	check_quot_brackets3(char *str, char *op, int i, int *j)
 	char	c;
 
 	c = *j > 0 ? op[*j - 1] : 0;
-	if ((!c || c == '(' || (c == '"' && str[i] == '`')) && \
+	if ((!c || c == '(' || (c == '"' && str[i] == '`') || (c == '`' && str[i] != '`')) && \
 		(str[i] == '"' || str[i] == '\'' || str[i] == '`' || str[i] == '('))
 	{
 		op[(*j)++] = str[i];
@@ -101,7 +101,12 @@ char		*check_quot_brackets(char *str, enum e_state *state)
 	op[j] = 0;
 	while (i < (int)ft_strlen(str) && str[++i])
 	{
-		if (check_quot_brackets3(str, op, i, &j))
+		if (ft_strchr(op, '`') && str[i] == '`' && op[j - 1] != '`')
+		{
+			*state = BRACKET_ERROR;
+			return (NULL);
+		}
+		else if (check_quot_brackets3(str, op, i, &j))
 			continue ;
 		if (str[i] == '\\' && ++i)
 			continue ;

@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 23:43:54 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/11 15:32:50 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2018/12/11 17:09:24 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ static void	continue_treat(char *str, int *j, char *op, enum e_state *state)
 	i = -1;
 	while (i < (int)ft_strlen(str) && str[++i])
 	{
+		if (ft_strchr(op, '`') && str[i] == '`' && op[*j - 1] != '`')
+		{
+			*state = BRACKET_ERROR;
+			return ;
+		}
 		if (check_quot_brackets3(str, op, i, j))
 			continue ;
 		if (str[i] == '\\' && ++i)
