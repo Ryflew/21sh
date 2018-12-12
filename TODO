@@ -1,7 +1,7 @@
 
 -------- BUG -------------
 BASILE :
-cat << EOF
+ls --q $PWD 2>3>&1
 
 VICTOR :
 

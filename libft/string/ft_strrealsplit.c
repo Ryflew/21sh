@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrealsplit.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
+/*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 21:34:47 by bdurst2812        #+#    #+#             */
-/*   Updated: 2018/12/11 22:52:32 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/12 18:15:19 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static size_t	ft_nb_words(char const *s, char c)
 				i++;
 		}
 	}
-	return ((i > 0 && s[i - 1] == c) ? j : j - 1);
+	return (j);
 }
-// a\n
+
 char			**ft_strrealsplit(char const *s, char c)
 {
 	char	**tab;
