@@ -6,7 +6,7 @@
 /*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:26:31 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/12 03:20:14 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/12 11:59:43 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 {
 	t_list	*tmp;
 	t_list	*end_bqt;
-	t_token	*prev;
-	int		i;
 
 	tmp = *begin_lexems;
 	while (tmp)
@@ -26,8 +24,6 @@ static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 		{
 			sh->current_token = (t_token*)tmp->data;
 			sh->lexer->lexems = tmp;
-			if (tmp->prev)
-				prev = (t_token*)tmp->prev->data;
 			while (tmp && ((t_token*)tmp->data)->type != EBQT && \
 			((t_token*)tmp->data)->type != EBQT_INSIDE_ST_OP)
 				NEXT(tmp);
@@ -37,13 +33,6 @@ static char	is_bqt_in_heredoc(t_sh *sh, t_list **begin_lexems)
 				tmp = end_bqt->next;
 			}
 			manage_here_doc_bqt(sh, end_bqt, begin_lexems);
-			if (prev && ft_isblank(prev->value[ft_strlen(prev->value) - 1]))
-			{
-				((t_token*)end_bqt->data)->blank = 1;
-				i = 1;
-				while (ft_isblank(prev->value[ft_strlen(prev->value) - i]))
-					prev->value[ft_strlen(prev->value) - i++] = 0;
-			}
 		}
 		else if (tmp)
 			NEXT(tmp);
@@ -63,7 +52,7 @@ static void	lex_parse_heredoc2(t_list **begin_lexems, t_sh *sh, char **output, \
 	{
 		token = (t_token*)lexems->data;
 		if (lexems != *begin_lexems && lexems->next && \
-			!((t_token*)lexems->next->data)->blank)
+			((t_token*)lexems->next->data)->blank)
 			free_join(output, " ");
 		free_join(output, VAL);
 		lexems = lexems->next;

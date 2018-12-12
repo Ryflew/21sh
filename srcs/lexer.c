@@ -6,7 +6,7 @@
 /*   By: bdurst2812 <bdurst2812@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 20:27:54 by vdarmaya          #+#    #+#             */
-/*   Updated: 2018/12/12 03:17:07 by bdurst2812       ###   ########.fr       */
+/*   Updated: 2018/12/12 11:57:18 by bdurst2812       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static t_token	*get_next_token(t_lexer *lexer, t_token *last_token)
 	while (*lexer->line)
 	{
 		token = NULL;
-		if (ft_isblank(*lexer->line))
+		if (ft_isblank(*lexer->line) && !lexer->her)
 		{
 			while (*lexer->line && ft_isblank(*lexer->line))
 				++lexer->line;
